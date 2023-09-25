@@ -1,0 +1,1 @@
+Thư mục chứa các component là page(duoc cấu hình trong router)

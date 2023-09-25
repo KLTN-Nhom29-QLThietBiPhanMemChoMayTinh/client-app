@@ -1,0 +1,1 @@
+Chứa thứ cấu hình và các thư viện tự viết, hoặc sd bên ngoài
