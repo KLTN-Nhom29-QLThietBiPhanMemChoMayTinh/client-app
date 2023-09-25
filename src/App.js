@@ -1,18 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
-import { Outlet } from 'react-router-dom';
-import HearHome from './components/HearHome';
-import SideBar from './components/SideBar';
+import logo from "./logo.svg";
+import "./App.css";
+import { Outlet,NavLink } from "react-router-dom";
+import SideBar from "./components/SideBar";
+import HearHome from "./components/HearHome";
 
 function App() {
   return (
     <div className="App">
-      <header >
-          <HearHome />
-      </header>
-      <main>
-        <SideBar />
-      </main>
+
+      <HearHome />
+
+      {/*  */}
+      <SideBar />
       <Outlet />
     </div>
   );
