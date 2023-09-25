@@ -1,3 +1,8 @@
+# App Quản lý thiết bị phần mềm cho phòng máy tính DHCN
+
+## ảnh minh họa
+![...](./AnhMinhHoa/img_minhHoa.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
