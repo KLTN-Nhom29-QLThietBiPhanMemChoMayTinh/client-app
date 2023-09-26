@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import * as BiIcons from "react-icons/bi";
+import * as RiIcons from "react-icons/ri";
 import { SidebarData } from "./SidebarData";
 import SubMenu from "./SubMenu.jsx";
 import { IconContext } from "react-icons/lib";
@@ -50,12 +51,15 @@ const Sidebar = () => {
   return (
     <>
       <IconContext.Provider value={{ color: "#fff" }}>
-        <Nav className="" style={{background:'#25c5fa'}}>
+        <Nav className="" style={{ background: "#25c5fa" }}>
           <NavIcon to="#">
             <FaIcons.FaBars onClick={showSidebar} />
           </NavIcon>
           <div className="col-10 pe-4" style={{ textAlign: "right" }}>
-            <BiIcons.BiUserCircle className="me-2" style={{fontSize:'30px', color: 'black'}} />
+            <BiIcons.BiUserCircle
+              className="me-2"
+              style={{ fontSize: "30px", color: "black" }}
+            />
             Admin
           </div>
         </Nav>
@@ -67,6 +71,19 @@ const Sidebar = () => {
             {SidebarData.map((item, index) => {
               return <SubMenu item={item} key={index} />;
             })}
+
+            <SubMenu
+              item={{
+                title: "Đăng Xuất",
+                path: "/logout",
+                icon: (
+                  <RiIcons.RiLogoutCircleRLine
+                    style={{ marginBottom: "6px", fontSize: "25px" }}
+                  />
+                ),
+              }}
+              key={"index"}
+            />
           </SidebarWrap>
         </SidebarNav>
       </IconContext.Provider>

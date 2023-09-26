@@ -5,6 +5,9 @@ import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
 import * as LiaIcons from 'react-icons/lia';
+import * as MdIcons from 'react-icons/md';
+import * as Si from 'react-icons/si';
+import * as PiIcons from 'react-icons/pi';
 
 export const SidebarData = [
     
@@ -15,7 +18,7 @@ export const SidebarData = [
   },
   {
     title: 'Quản Lý',
-    path: '/quanly',
+    path: '/quan-ly',
     icon: <IoIcons.IoMdOptions style={{marginBottom:'6px', fontSize:'25px'}} />,
     iconClosed: <RiIcons.RiArrowDownSFill style={{marginBottom:'6px', fontSize:'20px'}}  />,
     iconOpened: <RiIcons.RiArrowUpSFill style={{marginBottom:'6px', fontSize:'20px'}} />,
@@ -23,108 +26,78 @@ export const SidebarData = [
     subNav: [
       {
         title: 'Khu vực',
-        path: '/quanly/khuvuc',
-        icon: <FaIcons.FaMapMarkedAlt />
+        path: '/quan-ly/khu-vuc',
+        icon: <FaIcons.FaMapMarkedAlt style={{marginBottom:'6px', fontSize:'25px'}} />
       },
       {
         title: 'Phòng máy',
-        path: '/quanly/phong',
-        icon: <Fa6Icons.FaComputer />
+        path: '/quan-ly/phong',
+        icon: <Fa6Icons.FaComputer style={{marginBottom:'6px', fontSize:'25px'}} />
       },
       {
         title: 'Thiết bị',
-        path: '/quanly/thietbi',
-        icon: <Fa6Icons.FaComputer />
-      },
-      {
-        title: 'Thiết bị',
-        path: '/quanly/thietbi',
-        icon: <Fa6Icons.FaComputer />
+        path: '/quan-ly/thiet-bi',
+        icon: <Fa6Icons.FaComputer style={{marginBottom:'6px', fontSize:'25px'}} />
       },
       {
         title: 'Phần mềm',
-        path: '/quanly/phanmem',
-        icon: <Fa6Icons.FaComputer />
+        path: '/quan-ly/phan-mem',
+        icon: <Si.SiJirasoftware style={{marginBottom:'6px', fontSize:'25px'}} />
       },
       {
         title: 'Khoa',
-        path: '/quanly/khoa',
-        icon: <Fa6Icons.FaComputer />
+        path: '/quan-ly/khoa',
+        icon: <MdIcons.MdOutlineScience style={{marginBottom:'6px', fontSize:'25px'}} />
       },
       {
         title: 'Môn học',
-        path: '/quanly/Mon',
-        icon: <Fa6Icons.FaComputer />
+        path: '/quan-ly/mon',
+        icon: <IoIcons.IoMdBook style={{marginBottom:'6px', fontSize:'25px'}} />
       },
       {
         title: 'Giáo viên',
-        path: '/quanly/giaovien',
-        icon: <LiaIcons.LiaChalkboardTeacherSolid />
+        path: '/quan-ly/giao-vien',
+        icon: <LiaIcons.LiaChalkboardTeacherSolid style={{marginBottom:'6px', fontSize:'25px'}} />
       }
 
     ]
   },
   {
-    title: 'Reports',
-    path: '/reports',
-    icon: <IoIcons.IoIosPaper />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
+    title: 'Phân công lịch',
+    path: '/phan-cong',
+    icon: <IoIcons.IoIosPaper style={{marginBottom:'6px', fontSize:'25px'}} />,
+    iconClosed: <RiIcons.RiArrowDownSFill style={{marginBottom:'6px', fontSize:'20px'}} />,
+    iconOpened: <RiIcons.RiArrowUpSFill style={{marginBottom:'6px', fontSize:'20px'}} />,
 
     subNav: [
       {
-        title: 'Reports',
-        path: '/reports/reports1',
-        icon: <IoIcons.IoIosPaper />,
+        title: 'Lịch trực',
+        path: '/phan-cong/lich-truc',
+        icon: <IoIcons.IoIosPaper style={{marginBottom:'6px', fontSize:'25px'}} />,
         cName: 'sub-nav'
       },
       {
-        title: 'Reports 2',
-        path: '/reports/reports2',
-        icon: <IoIcons.IoIosPaper />,
+        title: 'Lịch thực hành',
+        path: '/phan-cong/lich-thuc-hanh',
+        icon: <IoIcons.IoIosPaper style={{marginBottom:'6px', fontSize:'25px'}}  />,
         cName: 'sub-nav'
-      },
-      {
-        title: 'Reports 3',
-        path: '/reports/reports3',
-        icon: <IoIcons.IoIosPaper />
       }
     ]
   },
   {
-    title: 'Products',
-    path: '/products',
-    icon: <FaIcons.FaCartPlus />
+    title: 'Thông tin tài khoản',
+    path: '/account',
+    icon: <MdIcons.MdManageAccounts style={{marginBottom:'6px', fontSize:'25px'}}  />
   },
   {
-    title: 'Team',
-    path: '/team',
-    icon: <IoIcons.IoMdPeople />
-  },
-  {
-    title: 'Messages',
-    path: '/messages',
-    icon: <FaIcons.FaEnvelopeOpenText />,
-
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
-
-    subNav: [
-      {
-        title: 'Message 1',
-        path: '/messages/message1',
-        icon: <IoIcons.IoIosPaper />
-      },
-      {
-        title: 'Message 2',
-        path: '/messages/message2',
-        icon: <IoIcons.IoIosPaper />
-      }
-    ]
+    title: 'Thời khóa biểu',
+    path: '/thoi-khoa-bieu',
+    icon: <PiIcons.PiArticleNyTimesLight style={{marginBottom:'6px', fontSize:'25px'}} />
   },
   {
     title: 'Support',
     path: '/support',
-    icon: <IoIcons.IoMdHelpCircle />
+    icon: <IoIcons.IoMdHelpCircle style={{marginBottom:'6px', fontSize:'25px'}} />
   }
+
 ];

@@ -1,12 +1,13 @@
 //rafcp
 import React from 'react'
 import PropTypes from 'prop-types'
+import {NavLink} from 'react-router-dom'
 
 const Page404 = props => {
   return (
-    <div>
-      Page404
-    </div>
+    <>
+      <h4 className="mt-5">Không tìm thấy!!! Quay lại <NavLink to="">trang chủ</NavLink>.</h4>
+    </>
   )
 }
 
