@@ -1,14 +1,14 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { Outlet,NavLink } from "react-router-dom";
-import SideBar from "./components/SideBar";
+import { Outlet } from "react-router-dom";
+import SideBar from "./components/common/SideBar/SideBar";
 import HearHome from "./components/HearHome";
 
 function App() {
   return (
     <div className="App">
 
-      <HearHome />
+      {/* <HearHome /> */}
 
       {/*  */}
       <SideBar />
