@@ -8,6 +8,7 @@ import "./assets/scss/style.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Page404 from "./pages/Page404/Page404";
 import PageHome from "./pages/PageHome/PageHome";
+import PageQlKhuVuc from "./pages/PageKhuVuc/PageQlKhuVuc";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,6 +16,7 @@ root.render(
     <Routes>
       <Route path="" element={<App />}>
         <Route path="" element={<PageHome />}></Route>
+        <Route path="/quan-ly/khu-vuc" element={<PageQlKhuVuc />}></Route>
         <Route path="*" element={<Page404 />}></Route>
       </Route>
     </Routes>

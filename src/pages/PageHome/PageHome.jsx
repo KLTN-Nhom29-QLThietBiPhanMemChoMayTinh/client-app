@@ -6,7 +6,7 @@ import SideBar from '../../components/common/SideBar/SideBar'
 
 const PageHome = props => {
   return (
-    <div>
+    <div className='container'>
         Home
     </div>
   )
