@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    body {
+      font-family: arial;
+      margin: 50px;
+    }
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      border-bottom: 1px dotted black;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      top: -5px;
+      right: 110%; /* Tooltip sẽ hiện lên dần dần, độ mờ tăng dần từ 0 lên 100% trong 2s */
+      opacity: 0;
+      transition: opacity 2s;
+    }
+    .tooltip:hover .tooltiptext::after {
+      content: "abc";
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      margin-top: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent transparent black;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+  <body style="text-align: center">
+    <p>Di chuột qua văn bản dưới đây:</p>
+    <div class="tooltip">
+      Hãy di chuột qua tôi nào! 
+      <span class="tooltiptext">Tooltip text</span>
+    </div>
+  </body>
+</html>

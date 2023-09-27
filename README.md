@@ -6,6 +6,13 @@
 ### ảnh quản lý phòng
 ![QL Phòng](./AnhMinhHoa/img_QLPhong.png)
 
+### ảnh quản khu vực
+![QL Phòng](./AnhMinhHoa/img_QLKhuVuc.png)
+
+
+## Note
+    - cần sửa lại tabbar link chưa phù hợp
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+/* Hover chuc nang */
+.btn_moune {
+  cursor: pointer;
+}
+td {
+  vertical-align: middle;
+}
+
