@@ -8,18 +8,38 @@ import NavTab from "../../components/common/NavTab/NavTab";
 
 const PageQlKhuVuc = (props) => {
   const dataKhuVuc = [
-    { id: 1, name: "Tòa nhà A" },
+    { id: 1, name: "Tòa nhaa A" },
     { id: 2, name: "Tòa nhà B" },
     { id: 3, name: "Tòa nhà C" },
     { id: 4, name: "Tòa nhà D" },
   ];
 
   let [arrKhuVuc, setArrKhuVuc] = useState([]);
+  let [txtSearch, setTxtSearch] = useState("");
 
   useEffect(() => {
-    setArrKhuVuc(dataKhuVuc);
-  }, []);
+    // setArrKhuVuc(dataKhuVuc);
 
+    filterData();
+  }, [txtSearch]);
+
+  //search
+  const handleSearchChange = (event) => {
+    setTxtSearch(event.target.value);
+  };
+  // Hàm tìm kiếm dựa trên giá trị của searchText
+  const filterData = () => {
+    const arrNew = dataKhuVuc.filter((item) => {
+      const search = txtSearch.toLowerCase();
+      return (
+        (item.id + "").toLowerCase().includes(search) ||
+        item.name.toLowerCase().includes(search)
+      );
+    });
+    console.log("🚀 ~ file: PageQlKhuVuc.jsx:44 ~ arrNew ~ arrNew:", arrNew);
+    setArrKhuVuc([...arrNew]);
+  };
+  //
   const renderDataKhuVuc = () => {
     // console.log("24 ---" + arrKhuVuc);
 
@@ -66,6 +86,7 @@ const PageQlKhuVuc = (props) => {
       );
     });
   };
+  //
   return (
     <div className="container">
       {/*  */}
@@ -90,6 +111,8 @@ const PageQlKhuVuc = (props) => {
                 name
                 id
                 placeholder="tìm kiếm..."
+                value={txtSearch}
+                onChange={handleSearchChange}
               />
             </div>
           </div>
