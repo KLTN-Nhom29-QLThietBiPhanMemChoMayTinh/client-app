@@ -1,39 +1,40 @@
-import React, { useState } from "react";
-import NavTab from "../common/NavTab/NavTab";
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import NavTab from '../common/NavTab/NavTab'
 
-function FormAddKhuVuc() {
-  let [txtText, setTxtText] = useState("");
-  let [txtErr, setTxtErr] = useState("*");
 
-  // lay gia trị của text name
-  const handleChangeText = (event) => {
-    let str = event.target.value
-    if (str !== "") {
-      setTxtErr("*")
-     
-    }
-    setTxtText(str);
-  };
-
-  // su ly du kien submit
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (txtText === "") {
-      setTxtErr("Hãy nhập dữ liệu !!!")
-      return
-    }
-    alert(txtText);
-  };
-
+const FormKhuVucUpdate = props => {
+    console.log("🚀 ~ file: FormKhuVucUpdate.jsx:8 ~ FormKhuVucUpdate ~ props:", props)
+    let [txtText, setTxtText] = useState("");
+    let [txtErr, setTxtErr] = useState("*");
+  
+    // lay gia trị của text name
+    const handleChangeText = (event) => {
+      let str = event.target.value
+      if (str !== "") {
+        setTxtErr("*")
+       
+      }
+      setTxtText(str);
+    };
+  
+    // su ly du kien submit
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      if (txtText === "") {
+        setTxtErr("Hãy nhập dữ liệu !!!")
+        return
+      }
+      alert(txtText);
+    };
   return (
-    <div className="container ">
-      <div className="">
-        {/*  */}
-        <NavTab
+    <div className='container'>
+      {/*  */}
+      <NavTab
           itemLink={{
             name: "Quản lý khu vực",
             link: "/quan-ly/khu-vuc",
-            chucNang: "Tạo mới",
+            chucNang: "Cập nhật",
           }}
         />
         {/* Form */}
@@ -48,7 +49,6 @@ function FormAddKhuVuc() {
                 className="form-control"
                 id="txtnameKV"
                 aria-describedby="txtnameKV"
-                // value={txtText}
                 placeholder="Tòa nhà a..."
                 onChange={handleChangeText}
               />
@@ -62,10 +62,11 @@ function FormAddKhuVuc() {
             </button>
           </form>
         </div>
-        <div>abc</div>
-      </div>
     </div>
-  );
+  )
 }
 
-export default FormAddKhuVuc;
+FormKhuVucUpdate.propTypes = {
+}
+
+export default FormKhuVucUpdate

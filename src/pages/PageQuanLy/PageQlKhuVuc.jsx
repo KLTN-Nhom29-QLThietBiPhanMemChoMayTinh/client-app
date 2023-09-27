@@ -5,8 +5,7 @@ import { ImBin2 } from "react-icons/im";
 import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
 import NavTab from "../../components/common/NavTab/NavTab";
-import {NavLink} from 'react-router-dom'
-
+import { NavLink } from "react-router-dom";
 
 const PageQlKhuVuc = (props) => {
   const dataKhuVuc = [
@@ -52,16 +51,21 @@ const PageQlKhuVuc = (props) => {
           </td>
           <td>{item.name}</td>
           <td>
-            <button
+            <NavLink
+              to={"/quan-ly/khu-vuc/update"}
               onClick={() => {
                 alert(`Update -- ${item.id}`);
+                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
               }}
-              type="button"
-              class="btn btn-primary mx-2 px-2"
-              style={{ padding: "2px" }}
             >
-              <FaPencilAlt color="white" size={16} />
-            </button>{" "}
+              <button
+                type="button"
+                class="btn btn-primary mx-2 px-2"
+                style={{ padding: "2px" }}
+              >
+                <FaPencilAlt color="white" size={16} />
+              </button>
+            </NavLink>
             <button
               onClick={() => {
                 alert(`Del -- ${item.id}`);
@@ -91,7 +95,9 @@ const PageQlKhuVuc = (props) => {
   return (
     <div className="container">
       {/*  */}
-      <NavTab itemLink={{ name: "Quản lý khu vực",link:'', chucNang: "Danh sách" }} />
+      <NavTab
+        itemLink={{ name: "Quản lý khu vực", link: "", chucNang: "Danh sách" }}
+      />
       {/* table data */}
       <div className="bg-white p-3">
         {/* Phần top với tiêu đề và thanh tìm kiếm - btn thêm */}
@@ -106,7 +112,7 @@ const PageQlKhuVuc = (props) => {
           <h2 style={{ margin: "0" }}>Danh sách khu vực</h2>
           {/* input tim kiem */}
           <div style={{ display: "flex", alignItems: "center" }}>
-            <div >
+            <div>
               <input
                 type="text"
                 className="form-control"
@@ -117,16 +123,17 @@ const PageQlKhuVuc = (props) => {
                 onChange={handleSearchChange}
               />
             </div>
-            
-          {/* Btn them */}
-          <NavLink
-            to="/quan-ly/khu-vuc/add"
-          type="button" className="btn btn-success ms-5 view_center_vertical"  >
-            <MdAdd color="white" size={25}  />
-            Tạo mới</NavLink>
 
+            {/* Btn them */}
+            <NavLink
+              to="/quan-ly/khu-vuc/add"
+              type="button"
+              className="btn btn-success ms-5 view_center_vertical"
+            >
+              <MdAdd color="white" size={25} />
+              Tạo mới
+            </NavLink>
           </div>
-
         </div>
       </div>
       {/* Bảng danh sách data */}

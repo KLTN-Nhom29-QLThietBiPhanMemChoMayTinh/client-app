@@ -11,6 +11,7 @@ import PageHome from "./pages/PageHome/PageHome";
 import PageQlKhuVuc from "./pages/PageQuanLy/PageQlKhuVuc";
 import PageQLPhongMay from "./pages/PageQuanLy/PageQLPhongMay";
 import FromAddKhuVuc from './components/layout/FormAddKhuVuc'
+import FormKhuVucUpdate from "./components/layout/FormKhuVucUpdate";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,6 +22,7 @@ root.render(
         <Route path="/quan-ly" element={<PageQlKhuVuc />}></Route>
         <Route path="/quan-ly/khu-vuc" element={<PageQlKhuVuc />}></Route>
         <Route path="/quan-ly/khu-vuc/add" element={<FromAddKhuVuc />}></Route>
+        <Route path="/quan-ly/khu-vuc/update" element={<FormKhuVucUpdate />}></Route>
         <Route path="/quan-ly/phong" element={<PageQLPhongMay />}></Route>
         <Route path="*" element={<Page404 />}></Route>
       </Route>

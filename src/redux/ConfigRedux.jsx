@@ -1,13 +1,14 @@
 // import productReducer from "./reducers/productReducer";
-// import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers } from "redux";
+import { ReducerKhuVuc } from "./reducers/ReducerKhuVuc";
 
-// const rootReducer = combineReducers({
-//     // Nơi chứa các state của ứng dụng
+const rootReducer = combineReducers({
+    // Nơi chứa các state của ứng dụng
+    reducerKhuVuc:ReducerKhuVuc,
+    
+})
 
-//     productReducer: productReducer,
-// })
-
-// export const store  = createStore(
-//     rootReducer,
-//     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// );
+export const store  = createStore(
+    rootReducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // de co the xem redux tren gg chorme
+);
