@@ -3,13 +3,14 @@ import { AiOutlineRight, AiOutlineHome } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
 
 function NavTab(props) {
-    // itemLink=    {name:'Khu vực', chucNang:'Danh sách'}
+    // itemLink=    {name:'Khu vực',link:'', chucNang:'Danh sách'}
 
     /**
      * name: chi nơi ở hiên tại 
+     * link: chi luong quay lai truoc do(theo name)
      * chucNang: xe hiện ra ở component này
      */
-    let {name,chucNang} = props.itemLink;
+    let {name, link,chucNang} = props.itemLink;
 
 
   return (
@@ -20,7 +21,7 @@ function NavTab(props) {
             Trang chủ
           </NavLink>
           <AiOutlineRight className="mx-1 mt-1" />
-          <NavLink style={{ textDecorationLine: "none", marginTop:'1px' }} to="">{name}</NavLink>
+          <NavLink style={{ textDecorationLine: "none", marginTop:'1px' }} to={link}>{name}</NavLink>
           <AiOutlineRight className="mx-1 mt-1" />
           <span style={{ opacity: 0.7, marginTop:'1px' }}>{chucNang}</span>
         </div>

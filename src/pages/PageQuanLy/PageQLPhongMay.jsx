@@ -100,7 +100,7 @@ const PageQLPhongMay = props => {
     <div className="container">
       {/*  */}
       <NavTab itemLink={
-        {name:'Quản lý phòng máy', chucNang:'Danh sách'}
+        {name:'Quản lý phòng máy',link:'', chucNang:'Danh sách'}
         } />
 
       {/* Bảng danh sách phòng máy bao quanh bởi một div */}
