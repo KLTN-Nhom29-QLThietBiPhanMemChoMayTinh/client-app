@@ -36,6 +36,17 @@ const SidebarNav = styled.nav`
   top: 0;
   left: ${({ sidebar }) => (sidebar ? "0" : "-100%")};
   transition: 350ms;
+  z-index: 11;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); 
+  display: ${({ sidebar }) => (sidebar ? "block" : "none")};
   z-index: 10;
 `;
 
@@ -63,6 +74,7 @@ const Sidebar = () => {
             Admin
           </div>
         </Nav>
+        <Overlay sidebar={sidebar} onClick={showSidebar} />
         <SidebarNav sidebar={sidebar}>
           <SidebarWrap>
             <NavIcon to="#">

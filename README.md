@@ -3,6 +3,9 @@
 ## ảnh minh họa
 ![...](./AnhMinhHoa/img_minhHoa.png)
 
+### ảnh quản lý phòng
+![QL Phòng](./AnhMinhHoa/img_QLPhong.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
