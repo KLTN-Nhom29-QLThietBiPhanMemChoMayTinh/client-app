@@ -15,6 +15,7 @@
     - cần sửa lại tabbar link chưa phù hợp - 90%
     - can tang khoang cach giua component -
     - can lay va chuyen data qu cac man hinh
+    - overFlow
 
 # Getting Started with Create React App
 
