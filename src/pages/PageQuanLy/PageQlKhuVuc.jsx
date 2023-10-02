@@ -11,10 +11,10 @@ const PageQlKhuVuc = (props) => {
 
 
   const dataKhuVuc = [
-    { id: 1, name: "Tòa nhaa A" },
-    { id: 2, name: "Tòa nhà B" },
-    { id: 3, name: "Tòa nhà C" },
-    { id: 4, name: "Tòa nhà D" },
+    { id: 1, name: "Tòa nhaa A", soTang:5 },
+    { id: 2, name: "Tòa nhà B", soTang:2 },
+    { id: 3, name: "Tòa nhà C", soTang:4 },
+    { id: 4, name: "Tòa nhà D", soTang:5 },
   ];
 
   let [arrKhuVuc, setArrKhuVuc] = useState([]);
@@ -36,15 +36,14 @@ const PageQlKhuVuc = (props) => {
       const search = txtSearch.toLowerCase();
       return (
         (item.id + "").toLowerCase().includes(search) ||
-        item.name.toLowerCase().includes(search)
+        item.name.toLowerCase().includes(search)||
+        (item.soTang + "").toLowerCase().includes(search)
       );
     });
     setArrKhuVuc([...arrNew]);
   };
   //
   const renderDataKhuVuc = () => {
-    // console.log("24 ---" + arrKhuVuc);
-
     return arrKhuVuc.map((item, index) => {
       return (
         <tr class="" key={item.id}>
@@ -52,6 +51,7 @@ const PageQlKhuVuc = (props) => {
             {item.id}
           </td>
           <td>{item.name}</td>
+          <td>{item.soTang}</td>
           <td style={{display:'flex', justifyContent:'center'}}>
             <NavLink
               to={"/quan-ly/khu-vuc/update"}
@@ -63,7 +63,7 @@ const PageQlKhuVuc = (props) => {
             >
               <button
                 type="button"
-                class="btn btn-primary mx-2 px-2"
+                className="btn btn-primary mx-2 px-2"
                 style={{ padding: "2px" }}
               >
                 <FaPencilAlt color="white" size={16} />
@@ -74,32 +74,35 @@ const PageQlKhuVuc = (props) => {
                 alert(`Del -- ${item.id}`);
               }}
               type="button"
-              class="btn btn-danger mx-2 px-2"
+              className="btn btn-danger mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <ImBin2 color="white" size={16} />
             </button>{" "}
-            <button
+            <NavLink
               onClick={() => {
-                alert(`Add -- item`);
+                alert(`Chi tiet -- item`);
               }}
-              type="button"
-              class="btn btn-info mx-2 px-2"
+              to={"../quan-ly/tang"}
+              className="btn bg-info mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </button>
+            </NavLink>
           </td>
         </tr>
       );
     });
   };
-  //
+  // Mảng quản lý data navtab
+  let arrLinkNavTab = [
+    {name: "Quản lý khu vực", link: ""},
+  ]
   return (
     <div className="container">
       {/*  */}
       <NavTab
-        itemLink={{ name: "Quản lý khu vực", link: "", chucNang: "Danh sách" }}
+        itemLink={{arrLinkNavTab: arrLinkNavTab, chucNang: "Danh sách" }}
       />
       {/* table data */}
       <div className="bg-white p-3">
@@ -150,6 +153,7 @@ const PageQlKhuVuc = (props) => {
             <tr>
               <th scope="col">Mã khu vực</th>
               <th scope="col">Tên khu vực</th>
+              <th scope="col">Số tầng</th>
               <th scope="col">Hành động</th>
             </tr>
           </thead>

@@ -98,12 +98,15 @@ const PageHome = (props) => {
       room.status.toLowerCase().includes(searchTerm)
     );
   });
-
+ // Mảng quản lý data navtab
+ let arrLinkNavTab = [
+  {name: "Quản lý phòng máy", link: "/phong-may"},
+]
   return (
     <div className="container">
       {/*  */}
       <NavTab itemLink={
-        {name:'Quản lý phòng máy', chucNang:'Danh sách'}
+        {arrLinkNavTab, chucNang:'Danh sách'}
         } />
 
       {/* Bảng danh sách phòng máy bao quanh bởi một div */}

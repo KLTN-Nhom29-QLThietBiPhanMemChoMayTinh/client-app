@@ -8,13 +8,11 @@ import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 
 const PageQLTang = (props) => {
-
-  
   const dataTang = [
-    { id: 1, name: "Tầng 1" },
-    { id: 2, name: "Tầng 2" },
-    { id: 3, name: "Tầng 3" },
-    { id: 4, name: "Tầng 4" },
+    { id: 1, name: "Tầng 1", soPhong:5 },
+    { id: 2, name: "Tầng 2", soPhong:2 },
+    { id: 3, name: "Tầng 3", soPhong:5 },
+    { id: 4, name: "Tầng 4", soPhong:6 },
   ];
 
   let [arrTang, setArrTang] = useState([]);
@@ -36,15 +34,14 @@ const PageQLTang = (props) => {
       const search = txtSearch.toLowerCase();
       return (
         (item.id + "").toLowerCase().includes(search) ||
-        item.name.toLowerCase().includes(search)
+        item.name.toLowerCase().includes(search) ||
+        (item.soPhong + "").toLowerCase().includes(search)
       );
     });
     setArrTang([...arrNew]);
   };
   //
   const renderDataTang = () => {
-    // console.log("24 ---" + arrTang);
-
     return arrTang.map((item, index) => {
       return (
         <tr class="" key={index}>
@@ -52,13 +49,13 @@ const PageQLTang = (props) => {
             {item.id}
           </td>
           <td>{item.name}</td>
-          <td style={{display:'flex', justifyContent:'center'}}>
+          <td>{item.soPhong}</td>
+          <td style={{ display: "flex", justifyContent: "center" }}>
             <NavLink
               to={"/quan-ly/tang/update"}
               onClick={() => {
                 alert(`Update -- ${item.id}`);
                 // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-
               }}
             >
               <button
@@ -74,7 +71,7 @@ const PageQLTang = (props) => {
                 alert(`Del -- ${item.id}`);
               }}
               type="button"
-              class="btn btn-danger mx-2 px-2"
+              className="btn btn-danger mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <ImBin2 color="white" size={16} />
@@ -84,7 +81,7 @@ const PageQLTang = (props) => {
                 alert(`Add -- item`);
               }}
               type="button"
-              class="btn btn-info mx-2 px-2"
+              className="btn btn-info mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
@@ -95,11 +92,17 @@ const PageQLTang = (props) => {
     });
   };
   //
+  // Mảng quản lý data navtab
+  let arrLinkNavTab = [
+    { name: "Quản lý khu vực", link: "../quan-ly/khu-vuc" },
+    { name: "Quản lý tầng", link: "" }
+  ];
+  //
   return (
     <div className="container">
       {/*  */}
       <NavTab
-        itemLink={{ name: "Quản lý tầng", link: "", chucNang: "Danh sách" }}
+        itemLink={{ arrLinkNavTab , chucNang: "Danh sách" }}
       />
       {/* table data */}
       <div className="bg-white p-3">
@@ -150,6 +153,7 @@ const PageQLTang = (props) => {
             <tr>
               <th scope="col">Mã tầng</th>
               <th scope="col">Tên tầng</th>
+              <th scope="col">Số phòng</th>
               <th scope="col">Hành động</th>
             </tr>
           </thead>

@@ -96,11 +96,16 @@ const PageQLPhongMay = props => {
     );
   });
 
+ // Mảng quản lý data navtab
+ let arrLinkNavTab = [
+  {name: "Quản lý phòng máy", link: ""},
+]
+
   return (
     <div className="container">
       {/*  */}
       <NavTab itemLink={
-        {name:'Quản lý phòng máy',link:'', chucNang:'Danh sách'}
+        {arrLinkNavTab: arrLinkNavTab, chucNang:'Danh sách'}
         } />
 
       {/* Bảng danh sách phòng máy bao quanh bởi một div */}
