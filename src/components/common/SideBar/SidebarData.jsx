@@ -18,7 +18,7 @@ export const SidebarData = [
   },
   {
     title: 'Quản Lý',
-    path: '/quan-ly',
+    // path: '',
     icon: <IoIcons.IoMdOptions style={{marginBottom:'6px', fontSize:'25px'}} />,
     iconClosed: <RiIcons.RiArrowDownSFill style={{marginBottom:'6px', fontSize:'20px'}}  />,
     iconOpened: <RiIcons.RiArrowUpSFill style={{marginBottom:'6px', fontSize:'20px'}} />,
@@ -27,6 +27,11 @@ export const SidebarData = [
       {
         title: 'Khu vực',
         path: '/quan-ly/khu-vuc',
+        icon: <FaIcons.FaMapMarkedAlt style={{marginBottom:'6px', fontSize:'25px'}} />
+      },
+      {
+        title: 'Tầng',
+        path: '/quan-ly/tang',
         icon: <FaIcons.FaMapMarkedAlt style={{marginBottom:'6px', fontSize:'25px'}} />
       },
       {
@@ -64,7 +69,7 @@ export const SidebarData = [
   },
   {
     title: 'Phân công lịch',
-    path: '/phan-cong',
+    // path: '/phan-cong',
     icon: <IoIcons.IoIosPaper style={{marginBottom:'6px', fontSize:'25px'}} />,
     iconClosed: <RiIcons.RiArrowDownSFill style={{marginBottom:'6px', fontSize:'20px'}} />,
     iconOpened: <RiIcons.RiArrowUpSFill style={{marginBottom:'6px', fontSize:'20px'}} />,

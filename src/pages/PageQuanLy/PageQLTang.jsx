@@ -7,21 +7,21 @@ import { BiSolidDetail } from "react-icons/bi";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 
-const PageQlKhuVuc = (props) => {
+const PageQLTang = (props) => {
 
-
-  const dataKhuVuc = [
-    { id: 1, name: "Tòa nhaa A" },
-    { id: 2, name: "Tòa nhà B" },
-    { id: 3, name: "Tòa nhà C" },
-    { id: 4, name: "Tòa nhà D" },
+  
+  const dataTang = [
+    { id: 1, name: "Tầng 1" },
+    { id: 2, name: "Tầng 2" },
+    { id: 3, name: "Tầng 3" },
+    { id: 4, name: "Tầng 4" },
   ];
 
-  let [arrKhuVuc, setArrKhuVuc] = useState([]);
+  let [arrTang, setArrTang] = useState([]);
   let [txtSearch, setTxtSearch] = useState("");
 
   useEffect(() => {
-    // setArrKhuVuc(dataKhuVuc);
+    // setArrTang(dataTang);
 
     filterData();
   }, [txtSearch]);
@@ -32,29 +32,29 @@ const PageQlKhuVuc = (props) => {
   };
   // Hàm tìm kiếm dựa trên giá trị của searchText
   const filterData = () => {
-    const arrNew = dataKhuVuc.filter((item) => {
+    const arrNew = dataTang.filter((item) => {
       const search = txtSearch.toLowerCase();
       return (
         (item.id + "").toLowerCase().includes(search) ||
         item.name.toLowerCase().includes(search)
       );
     });
-    setArrKhuVuc([...arrNew]);
+    setArrTang([...arrNew]);
   };
   //
-  const renderDataKhuVuc = () => {
-    // console.log("24 ---" + arrKhuVuc);
+  const renderDataTang = () => {
+    // console.log("24 ---" + arrTang);
 
-    return arrKhuVuc.map((item, index) => {
+    return arrTang.map((item, index) => {
       return (
-        <tr class="" key={item.id}>
+        <tr class="" key={index}>
           <td scope="row" style={{ fontWeight: 600, justifyItems: "center" }}>
             {item.id}
           </td>
           <td>{item.name}</td>
           <td style={{display:'flex', justifyContent:'center'}}>
             <NavLink
-              to={"/quan-ly/khu-vuc/update"}
+              to={"/quan-ly/tang/update"}
               onClick={() => {
                 alert(`Update -- ${item.id}`);
                 // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
@@ -99,7 +99,7 @@ const PageQlKhuVuc = (props) => {
     <div className="container">
       {/*  */}
       <NavTab
-        itemLink={{ name: "Quản lý khu vực", link: "", chucNang: "Danh sách" }}
+        itemLink={{ name: "Quản lý tầng", link: "", chucNang: "Danh sách" }}
       />
       {/* table data */}
       <div className="bg-white p-3">
@@ -112,7 +112,7 @@ const PageQlKhuVuc = (props) => {
             marginBottom: "20px",
           }}
         >
-          <h2 style={{ margin: "0" }}>Danh sách khu vực</h2>
+          <h2 style={{ margin: "0" }}>Danh sách tầng</h2>
           {/* input tim kiem */}
           <div style={{ display: "flex", alignItems: "center" }}>
             <div>
@@ -129,7 +129,7 @@ const PageQlKhuVuc = (props) => {
 
             {/* Btn them */}
             <NavLink
-              to="/quan-ly/khu-vuc/add"
+              to="/quan-ly/tang/add"
               type="button"
               className="btn btn-success ms-5 view_center_vertical"
             >
@@ -148,14 +148,14 @@ const PageQlKhuVuc = (props) => {
         >
           <thead>
             <tr>
-              <th scope="col">Mã khu vực</th>
-              <th scope="col">Tên khu vực</th>
+              <th scope="col">Mã tầng</th>
+              <th scope="col">Tên tầng</th>
               <th scope="col">Hành động</th>
             </tr>
           </thead>
           <tbody>
             {/*  */}
-            {renderDataKhuVuc()}
+            {renderDataTang()}
           </tbody>
         </table>
       </div>
@@ -166,6 +166,4 @@ const PageQlKhuVuc = (props) => {
   );
 };
 
-PageQlKhuVuc.propTypes = {};
-
-export default PageQlKhuVuc;
+export default PageQLTang;

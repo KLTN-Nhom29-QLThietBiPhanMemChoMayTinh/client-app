@@ -14,6 +14,9 @@ import FromAddKhuVuc from "./components/layout/FormAddKhuVuc";
 import FormKhuVucUpdate from "./components/layout/FormKhuVucUpdate";
 import { Provider } from "react-redux";
 import { store } from "./redux/ConfigRedux";
+import PageQLTang from "./pages/PageQuanLy/PageQLTang";
+import FormAddTang from "./components/layout/FormAddTang";
+import FormUpdateTang from "./components/layout/FormUpdateTang";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -31,6 +34,15 @@ root.render(
           <Route
             path="/quan-ly/khu-vuc/update"
             element={<FormKhuVucUpdate />}
+          ></Route>
+          <Route path="/quan-ly/tang" element={<PageQLTang />}></Route>
+          <Route
+            path="/quan-ly/tang/add"
+            element={<FormAddTang />}
+          ></Route>
+          <Route
+            path="/quan-ly/tang/update"
+            element={<FormUpdateTang />}
           ></Route>
           <Route path="/quan-ly/phong" element={<PageQLPhongMay />}></Route>
           <Route path="*" element={<Page404 />}></Route>
