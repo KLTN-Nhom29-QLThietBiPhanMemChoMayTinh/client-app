@@ -76,8 +76,8 @@ const PageQLTang = (props) => {
               style={{ padding: "2px" }}
             >
               <ImBin2 color="white" size={16} />
-            </button>{" "}
-            <button
+            </button>
+            {/* <button
               onClick={() => {
                 alert(`Add -- item`);
               }}
@@ -86,7 +86,7 @@ const PageQLTang = (props) => {
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </button>
+            </button> */}
           </td>
         </tr>
       );

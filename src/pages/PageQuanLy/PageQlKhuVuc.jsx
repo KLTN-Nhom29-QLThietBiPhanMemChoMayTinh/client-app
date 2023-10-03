@@ -76,17 +76,17 @@ const PageQlKhuVuc = (props) => {
               style={{ padding: "2px" }}
             >
               <ImBin2 color="white" size={16} />
-            </button>{" "}
-            <NavLink
+            </button>
+            {/* <NavLink
               onClick={() => {
                 alert(`Chi tiet -- item`);
               }}
-              to={"../quan-ly/tang"}
+              to={`../quan-ly/tang/detail/${item.id}`}
               className="btn bg-info mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink>
+            </NavLink> */}
           </td>
         </tr>
       );

@@ -17,6 +17,7 @@ import { store } from "./redux/ConfigRedux";
 import PageQLTang from "./pages/PageQuanLy/PageQLTang";
 import FormAddTang from "./components/layout/FormAddTang";
 import FormUpdateTang from "./components/layout/FormUpdateTang";
+import DetailTang from "./components/layout/Detail/DetailTang";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -40,10 +41,10 @@ root.render(
             path="/quan-ly/tang/add"
             element={<FormAddTang />}
           ></Route>
-          <Route
-            path="/quan-ly/tang/update"
-            element={<FormUpdateTang />}
-          ></Route>
+          <Route path="/quan-ly/tang/update" element={<FormUpdateTang />}></Route>
+          <Route path="/quan-ly/tang/detail" >
+            <Route path=":id" element={<DetailTang />} ></Route>
+          </Route>
           <Route path="/quan-ly/phong" element={<PageQLPhongMay />}></Route>
           <Route path="*" element={<Page404 />}></Route>
         </Route>
