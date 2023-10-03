@@ -2,6 +2,7 @@
 
 ## ảnh minh họa
 ![...](./AnhMinhHoa/img_minhHoa.png)
+![...](./AnhMinhHoa/img_code.png)
 
 ### ảnh quản lý phòng
 ![QL Phòng](./AnhMinhHoa/img_QLPhong.png)

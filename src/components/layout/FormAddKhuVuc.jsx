@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import NavTab from "../common/NavTab/NavTab";
+import Footer from "../common/Footer/Footer";
 
 function FormAddKhuVuc() {
   let [txtText, setTxtText] = useState("");
@@ -25,14 +26,23 @@ function FormAddKhuVuc() {
     alert(txtText);
   };
 
+    
+  // Mảng quản lý data navtab
+  let arrLinkNavTab = [
+    { name: "Quản lý khu vực", link: "../quan-ly/khu-vuc" }
+    
+  ];
+  //
+  
   return (
-    <div className="container ">
-      <div className="">
+
+    <div className="container " style={{height:'100vh'}}>
+      <div className="d-flex flex-column justify-content-between h-100">
+        <div className="">
         {/*  */}
         <NavTab
           itemLink={{
-            name: "Quản lý khu vực",
-            link: "/quan-ly/khu-vuc",
+            arrLinkNavTab,
             chucNang: "Tạo mới",
           }}
         />
@@ -62,7 +72,9 @@ function FormAddKhuVuc() {
             </button>
           </form>
         </div>
-        <div>abc</div>
+        </div>
+        
+        <Footer />
       </div>
     </div>
   );

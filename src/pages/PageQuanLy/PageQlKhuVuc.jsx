@@ -6,15 +6,14 @@ import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
+import Footer from "../../components/common/Footer/Footer";
 
 const PageQlKhuVuc = (props) => {
-
-
   const dataKhuVuc = [
-    { id: 1, name: "Tòa nhaa A", soTang:5 },
-    { id: 2, name: "Tòa nhà B", soTang:2 },
-    { id: 3, name: "Tòa nhà C", soTang:4 },
-    { id: 4, name: "Tòa nhà D", soTang:5 },
+    { id: 1, name: "Tòa nhaa A", soTang: 5 },
+    { id: 2, name: "Tòa nhà B", soTang: 2 },
+    { id: 3, name: "Tòa nhà C", soTang: 4 },
+    { id: 4, name: "Tòa nhà D", soTang: 5 },
   ];
 
   let [arrKhuVuc, setArrKhuVuc] = useState([]);
@@ -36,7 +35,7 @@ const PageQlKhuVuc = (props) => {
       const search = txtSearch.toLowerCase();
       return (
         (item.id + "").toLowerCase().includes(search) ||
-        item.name.toLowerCase().includes(search)||
+        item.name.toLowerCase().includes(search) ||
         (item.soTang + "").toLowerCase().includes(search)
       );
     });
@@ -52,13 +51,12 @@ const PageQlKhuVuc = (props) => {
           </td>
           <td>{item.name}</td>
           <td>{item.soTang}</td>
-          <td style={{display:'flex', justifyContent:'center'}}>
+          <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
               to={"/quan-ly/khu-vuc/update"}
               onClick={() => {
                 alert(`Update -- ${item.id}`);
                 // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-
               }}
             >
               <button
@@ -95,81 +93,80 @@ const PageQlKhuVuc = (props) => {
     });
   };
   // Mảng quản lý data navtab
-  let arrLinkNavTab = [
-    {name: "Quản lý khu vực", link: ""},
-  ]
+  let arrLinkNavTab = [{ name: "Quản lý khu vực", link: "" }];
   return (
-    <div className="container">
-      {/*  */}
-      <NavTab
-        itemLink={{arrLinkNavTab: arrLinkNavTab, chucNang: "Danh sách" }}
-      />
-      {/* table data */}
-      <div className="bg-white p-3">
-        {/* Phần top với tiêu đề và thanh tìm kiếm - btn thêm */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "20px",
-          }}
-        >
-          <h2 style={{ margin: "0" }}>Danh sách khu vực</h2>
-          {/* input tim kiem */}
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div>
-              <input
-                type="text"
-                className="form-control"
-                name
-                id
-                placeholder="tìm kiếm..."
-                value={txtSearch}
-                onChange={handleSearchChange}
-              />
-            </div>
-
-            {/* Btn them */}
-            <NavLink
-              to="/quan-ly/khu-vuc/add"
-              type="button"
-              className="btn btn-success ms-5 view_center_vertical"
+    <div className="container " style={{ height: "100vh" }}>
+      <div className="d-flex flex-column justify-content-between h-100">
+        <div className="">
+          {/*  */}
+          <NavTab
+            itemLink={{ arrLinkNavTab: arrLinkNavTab, chucNang: "Danh sách" }}
+          />
+          {/* table data */}
+          <div className="bg-white p-3">
+            {/* Phần top với tiêu đề và thanh tìm kiếm - btn thêm */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
             >
-              <MdAdd color="white" size={25} />
-              Tạo mới
-            </NavLink>
+              <h2 style={{ margin: "0" }}>Danh sách khu vực</h2>
+              {/* input tim kiem */}
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name
+                    id
+                    placeholder="tìm kiếm..."
+                    value={txtSearch}
+                    onChange={handleSearchChange}
+                  />
+                </div>
+
+                {/* Btn them */}
+                <NavLink
+                  to="/quan-ly/khu-vuc/add"
+                  type="button"
+                  className="btn btn-success ms-5 view_center_vertical"
+                >
+                  <MdAdd color="white" size={25} />
+                  Tạo mới
+                </NavLink>
+              </div>
+            </div>
+          </div>
+          {/* Bảng danh sách data */}
+
+          <div class="table-responsive">
+            <table
+              class="table bg-white table-hover table-striped table-bordered 
+          "
+            >
+              <thead>
+                <tr>
+                  <th scope="col">Mã khu vực</th>
+                  <th scope="col">Tên khu vực</th>
+                  <th scope="col">Số tầng</th>
+                  <th scope="col">Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/*  */}
+                {renderDataKhuVuc()}
+              </tbody>
+            </table>
           </div>
         </div>
-      </div>
-      {/* Bảng danh sách data */}
 
-      <div class="table-responsive">
-        <table
-          class="table bg-white table-hover table-striped table-bordered 
-          "
-        >
-          <thead>
-            <tr>
-              <th scope="col">Mã khu vực</th>
-              <th scope="col">Tên khu vực</th>
-              <th scope="col">Số tầng</th>
-              <th scope="col">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/*  */}
-            {renderDataKhuVuc()}
-          </tbody>
-        </table>
+        <Footer />
       </div>
-
-      {/*  */}
-      <div className="p-4"></div>
     </div>
   );
 };
-
-PageQlKhuVuc.propTypes = {};
 
 export default PageQlKhuVuc;

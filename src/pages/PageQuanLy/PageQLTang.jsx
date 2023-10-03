@@ -6,13 +6,14 @@ import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
+import Footer from "../../components/common/Footer/Footer";
 
 const PageQLTang = (props) => {
   const dataTang = [
-    { id: 1, name: "Tầng 1", soPhong:5 },
-    { id: 2, name: "Tầng 2", soPhong:2 },
-    { id: 3, name: "Tầng 3", soPhong:5 },
-    { id: 4, name: "Tầng 4", soPhong:6 },
+    { id: 1, name: "Tầng 1", soPhong: 5 },
+    { id: 2, name: "Tầng 2", soPhong: 2 },
+    { id: 3, name: "Tầng 3", soPhong: 5 },
+    { id: 4, name: "Tầng 4", soPhong: 6 },
   ];
 
   let [arrTang, setArrTang] = useState([]);
@@ -50,7 +51,7 @@ const PageQLTang = (props) => {
           </td>
           <td>{item.name}</td>
           <td>{item.soPhong}</td>
-          <td style={{ display: "flex", justifyContent: "center" }}>
+          <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
               to={"/quan-ly/tang/update"}
               onClick={() => {
@@ -95,77 +96,78 @@ const PageQLTang = (props) => {
   // Mảng quản lý data navtab
   let arrLinkNavTab = [
     { name: "Quản lý khu vực", link: "../quan-ly/khu-vuc" },
-    { name: "Quản lý tầng", link: "" }
+    { name: "Quản lý tầng", link: "" },
   ];
   //
   return (
-    <div className="container">
-      {/*  */}
-      <NavTab
-        itemLink={{ arrLinkNavTab , chucNang: "Danh sách" }}
-      />
-      {/* table data */}
-      <div className="bg-white p-3">
-        {/* Phần top với tiêu đề và thanh tìm kiếm - btn thêm */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "20px",
-          }}
-        >
-          <h2 style={{ margin: "0" }}>Danh sách tầng</h2>
-          {/* input tim kiem */}
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div>
-              <input
-                type="text"
-                className="form-control"
-                name
-                id
-                placeholder="tìm kiếm..."
-                value={txtSearch}
-                onChange={handleSearchChange}
-              />
-            </div>
-
-            {/* Btn them */}
-            <NavLink
-              to="/quan-ly/tang/add"
-              type="button"
-              className="btn btn-success ms-5 view_center_vertical"
+    <div className="container " style={{ height: "100vh" }}>
+      <div className="d-flex flex-column justify-content-between h-100">
+        <div className="">
+          {/*  */}
+          <NavTab itemLink={{ arrLinkNavTab, chucNang: "Danh sách" }} />
+          {/* table data */}
+          <div className="bg-white p-3">
+            {/* Phần top với tiêu đề và thanh tìm kiếm - btn thêm */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
             >
-              <MdAdd color="white" size={25} />
-              Tạo mới
-            </NavLink>
+              <h2 style={{ margin: "0" }}>Danh sách tầng</h2>
+              {/* input tim kiem */}
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name
+                    id
+                    placeholder="tìm kiếm..."
+                    value={txtSearch}
+                    onChange={handleSearchChange}
+                  />
+                </div>
+
+                {/* Btn them */}
+                <NavLink
+                  to="/quan-ly/tang/add"
+                  type="button"
+                  className="btn btn-success ms-5 view_center_vertical"
+                >
+                  <MdAdd color="white" size={25} />
+                  Tạo mới
+                </NavLink>
+              </div>
+            </div>
+          </div>
+          {/* Bảng danh sách data */}
+
+          <div class="table-responsive">
+            <table
+              class="table bg-white table-hover table-striped table-bordered 
+          "
+            >
+              <thead>
+                <tr>
+                  <th scope="col">Mã tầng</th>
+                  <th scope="col">Tên tầng</th>
+                  <th scope="col">Số phòng</th>
+                  <th scope="col">Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/*  */}
+                {renderDataTang()}
+              </tbody>
+            </table>
           </div>
         </div>
+        {/*  */}
+        <Footer />
       </div>
-      {/* Bảng danh sách data */}
-
-      <div class="table-responsive">
-        <table
-          class="table bg-white table-hover table-striped table-bordered 
-          "
-        >
-          <thead>
-            <tr>
-              <th scope="col">Mã tầng</th>
-              <th scope="col">Tên tầng</th>
-              <th scope="col">Số phòng</th>
-              <th scope="col">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/*  */}
-            {renderDataTang()}
-          </tbody>
-        </table>
-      </div>
-
-      {/*  */}
-      <div className="p-4"></div>
     </div>
   );
 };
