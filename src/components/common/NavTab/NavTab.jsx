@@ -14,7 +14,7 @@ function NavTab(props) {
   let { arrLinkNavTab, chucNang } = props.itemLink;
 
   return (
-    <div className="py-4 px-3">
+    <div className="py-3 px-3">
       <div className="d-flex justify-content-start">
         <NavLink style={{ textDecorationLine: "none" }} to="../../">
           <AiOutlineHome style={{ marginBottom: "5px", fontSize: "22px" }} />

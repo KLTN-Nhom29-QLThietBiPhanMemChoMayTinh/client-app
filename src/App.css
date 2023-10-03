@@ -1,5 +1,5 @@
 /*  */
-.view_center_vertical{
+.view_center_vertical {
   display: "flex";
   align-items: "center";
 }
@@ -14,4 +14,7 @@ td {
 
 tr th {
   text-align: center;
+}
+.over_flow_auto {
+  overflow: auto;
 }

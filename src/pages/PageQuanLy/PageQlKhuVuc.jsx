@@ -77,7 +77,7 @@ const PageQlKhuVuc = (props) => {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            {/* <NavLink
+            <NavLink
               onClick={() => {
                 alert(`Chi tiet -- item`);
               }}
@@ -86,7 +86,7 @@ const PageQlKhuVuc = (props) => {
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink> */}
+            </NavLink>
           </td>
         </tr>
       );
