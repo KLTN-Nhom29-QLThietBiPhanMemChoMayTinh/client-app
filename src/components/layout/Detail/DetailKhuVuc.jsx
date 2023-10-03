@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import Footer from "../../common/Footer/Footer";
 import NavTab from "../../common/NavTab/NavTab";
+import Database from "../../../util/database/Database";
+
 import { GoDash } from "react-icons/go";
 import { IoMdAdd } from "react-icons/io";
+import { SiGoogleclassroom } from "react-icons/si";
+import { FaRegBuilding } from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
+import { ImBin2 } from "react-icons/im";
+import { AiOutlineRight } from "react-icons/ai";
 
 // data Api
 //  lấy được khu vuc theo params.id
@@ -17,6 +24,9 @@ const arrTang1 = [
   { id: 4, name: "Tầng 4", soPhong: 6 },
 ];
 
+//data khu vuc
+let arrKhuVuc1 = Database.dataKhuVuc;
+
 export default function DetailKhuVuc() {
   let date = new Date();
   console.log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`);
@@ -26,14 +36,18 @@ export default function DetailKhuVuc() {
 
   // lưu trữ khu vuc hien tai
   let [khuVuc, setKhuVuc] = useState({});
-  console.log("🚀 ~ file: DetailKhuVuc.jsx:29 ~ DetailKhuVuc ~ khuVuc:", khuVuc)
+  console.log(
+    "🚀 ~ file: DetailKhuVuc.jsx:29 ~ DetailKhuVuc ~ khuVuc:",
+    khuVuc
+  );
   let [arrtang, setArrTang] = useState([]);
 
   useEffect(() => {
-    if (Object.keys(khuVuc).length === 0) { // kiem tra obj co data chua
+    if (Object.keys(khuVuc).length === 0) {
+      // kiem tra obj co data chua
       getKhuVuc();
     }
-    if (arrtang.length == 0) {
+    if (arrtang.length === 0) {
       getAllbyIdKhuVuc();
     }
   }, []);
@@ -55,26 +69,64 @@ export default function DetailKhuVuc() {
     setKhuVuc(item);
   };
 
-  // Mảng quản lý data navtab
-  let arrLinkNavTab = [{ name: "Quản lý khu vực", link: "../quan-ly/khu-vuc" }];
-  //
+
+  //render
+  const renderListTang = () => {
+    return arrTang1.map((item, index)=>{
+      return (
+        <div key={index}
+          className=" m-2 card text-white align-items-center color_green pt-3"
+          style={{ width: "250px", height: "200px" }}
+        >
+          <FaRegBuilding size={55} />
+          <div className="card-body">
+            <h4 className="card-title ">{item.name}</h4>
+            <div className="d-flex justify-content-between">
+              <FaPencilAlt size={18} />
+              <ImBin2 size={18} />
+            </div>
+          </div>
+          <div className="card-footer d-flex justify-content-center w-100">
+            <NavLink className="text-decoration-none  text-white ">
+              Danh sách <AiOutlineRight className="ms-3" size={16} />
+            </NavLink>
+          </div>
+        </div>
+      );
+    })
+    
+  };
 
   //render hidden
   let [rdHiddenSearch, setRDHiddenSearch] = useState(true);
 
+  // Mảng quản lý data navtab
+  let arrLinkNavTab = [
+    { name: "Quản lý khu vực", link: "../../quan-ly/khu-vuc" },
+  ];
+  //
   return (
     <div className="container " style={{ height: "100vh" }}>
-      <div className="d-flex flex-column justify-content-between h-100">
-        <div className="" style={{ height: "80%" }}>
+      <div
+        className="d-flex flex-column justify-content-between"
+        style={{ height: "100vh" }}
+      >
+        <div className="" style={{ height: "80vh" }}>
           {/*  */}
-          <NavTab
-            itemLink={{ arrLinkNavTab, chucNang: `Chi tiết ${khuVuc.name}` }}
-          />
+          <div style={{ height: "8vh" }}>
+            <NavTab
+              itemLink={{ arrLinkNavTab, chucNang: `Chi tiết ${khuVuc.name}` }}
+            />
+          </div>
+
           {/* Search */}
-          <div className="bg-white p-3 rounded" style={{ height: "auto" }}>
+          <div
+            className="bg-white p-3 rounded"
+            style={{ height: `${rdHiddenSearch ? "20vh" : "8vh"}` }}
+          >
             {/* Tab tim kiem */}
             <div className="d-flex justify-content-between align-items-center">
-              <span className="fw-bold text-primary" >Tìm kiếm</span>
+              <span className="fw-bold text-primary ">Tìm kiếm</span>
               {rdHiddenSearch ? (
                 <GoDash
                   size={20}
@@ -99,15 +151,33 @@ export default function DetailKhuVuc() {
               <div>
                 <hr />
 
-                <div className="row">
-                  <div className="col m-2">
-                    <input type="text" className=" form-control " placeholder="Search ..." name="txtname" id="txtname" />
+                <div className="row justify-content-around">
+                  <div className="col-3 m-2">
+                    <select
+                      className="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected>{khuVuc.name}</option>
+                      {arrKhuVuc1.map((item, index) => {
+                        return item.name === khuVuc.name ? (
+                          <></>
+                        ) : (
+                          <option value={index}>{item.name}</option>
+                        );
+                      })}
+                    </select>
                   </div>
-                  <div className="col m-2">
+                  {/* <div className="col m-2">
                     <input type="text" className=" form-control " placeholder="Search ..." name="txtname" id="txtname" />
-                  </div>
-                  <div className="col m-2">
-                    <input type="text" className=" form-control" placeholder="Search ..." name="txtname" id="txtname" />
+                  </div> */}
+                  <div className="col-3 m-2">
+                    <input
+                      type="text"
+                      className=" form-control"
+                      placeholder="Tìm kiếm theo tầng..."
+                      name="txtname"
+                      id="txtname"
+                    />
                   </div>
                 </div>
               </div>
@@ -119,183 +189,42 @@ export default function DetailKhuVuc() {
           {/* data */}
           <div
             className="bg-white p-3 mt-2 rounded"
-            style={{ height: "auto", maxHeight: "80%" }}
+            style={{ height: `${rdHiddenSearch ? "61vh" : "73vh"}` }}
           >
-            {/* Tab tim kiem */}
-            <div className="d-flex justify-content-between " style={{height:'40px'}}>
-              <span className="fw-bold text-primary" >Danh sách tầng</span>
-              </div>
+            {/* Tab name */}
+            <div
+              className="d-flex justify-content-between border-bottom border-1"
+              style={{ height: "5vh" }}
+            >
+              <span className="fw-bold text-primary ">Danh sách tầng</span>
+            </div>
 
-                {/* table */}
-            <div className="over_flow_auto" style={{  maxHeight: "400px" }}>
-              <div className="table-responsive " >
-                <table className="table table-primary">
-                  <thead>
-                    <tr>
-                      <th scope="col">Column 1</th>
-                      <th scope="col">Column 2</th>
-                      <th scope="col">Column 3</th>
-                    </tr>
-                  </thead>
-                  <tbody className="">
-                    <tr className>
-                      <td scope="row">R1C1</td>
-                      <td>R1C2</td>
-                      <td>R1C3</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                    <tr className>
-                      <td scope="row">Item</td>
-                      <td>Item</td>
-                      <td>Item</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            {/* table note : style={{  height: `${rdHiddenSearch? "50vh" : "62vh"}` }} */}
+            <div
+              className="d-flex align-content-start flex-wrap  over_flow_auto"
+              style={{ height: `${rdHiddenSearch ? "50vh" : "62vh"}` }}
+            >
+              {/* item */}
+              {/* <div
+                className=" m-2 card text-white align-items-center color_green pt-3"
+                style={{ width: "250px", height: "200px" }}
+              >
+                <FaRegBuilding size={55} />
+                <div className="card-body">
+                  <h4 className="card-title ">toa nha 1</h4>
+                  <div className="d-flex justify-content-between">
+                    <FaPencilAlt size={18} />
+                    <ImBin2 size={18} />
+                  </div>
+                </div>
+                <div className="card-footer d-flex justify-content-center w-100">
+                  <NavLink className="text-decoration-none  text-white ">
+                    Danh sách <AiOutlineRight className="ms-3" size={16} />
+                  </NavLink>
+                </div>
+              </div> */}
+
+              {renderListTang()}
             </div>
           </div>
         </div>

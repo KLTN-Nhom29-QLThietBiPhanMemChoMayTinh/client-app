@@ -15,6 +15,21 @@ td {
 tr th {
   text-align: center;
 }
-.over_flow_auto {
+/* con lăn */
+.over_flow_auto { 
   overflow: auto;
+}
+
+
+/* color */
+.color_green{
+  background-color: #1c6612;
+}
+.color_green2{
+  background-color: #13500a;
+}
+
+
+.color_red{
+  background-color: #910000;
 }
