@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
+//
+import NavTab from "../../components/common/NavTab/NavTab";
+import Footer from "../../components/common/Footer/Footer";
+import Database from "../../util/database/Database";
+//
 import { FaPencilAlt } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
 import { MdAdd } from "react-icons/md";
-import NavTab from "../../components/common/NavTab/NavTab";
-import { NavLink } from "react-router-dom";
-import Footer from "../../components/common/Footer/Footer";
-import Database from "../../util/database/Database";
 import { BiSolidDetail } from "react-icons/bi";
 
-const dataServer = Database.dataTang; // giả đỉnh data tren server chua lấy về
+
+/**
+ * giả đỉnh data tren server chua lấy về
+ */
+const dataServer = Database.dataTang; 
 /**
  *lưu trữ data get tu API
  */
@@ -20,12 +25,10 @@ const getAllTangApi = () => {
 };
 
 const PageQLTang = (props) => {
-
   let [arrTang, setArrTang] = useState([]); // lưu trữ data sẽ thay đổi theo txtsearch
   let [txtSearch, setTxtSearch] = useState("");
 
   useEffect(() => {
-    // setArrTang(dataTang);
     if (dataLocal.length === 0) {
       getAllTangApi();
     }
@@ -109,12 +112,17 @@ const PageQLTang = (props) => {
   //
   return (
     <div className="container " style={{ height: "100vh" }}>
-      <div className="d-flex flex-column justify-content-between h-100">
-        <div className="">
+      <div
+        className="d-flex flex-column justify-content-between "
+        style={{ height: "100vh" }}
+      >
+        <div style={{ height: "80vh" }}>
           {/*  */}
-          <NavTab itemLink={{ arrLinkNavTab, chucNang: "Danh sách" }} />
+          <div style={{ height: "8vh" }}>
+            <NavTab itemLink={{ arrLinkNavTab, chucNang: "Danh sách" }} />
+          </div>
           {/* table data */}
-          <div className="bg-white p-3">
+          <div className="bg-white rounded p-3" style={{ height: "82vh" }}>
             {/* Phần top với tiêu đề và thanh tìm kiếm - btn thêm */}
             <div
               style={{
@@ -122,6 +130,7 @@ const PageQLTang = (props) => {
                 justifyContent: "space-between",
                 alignItems: "center",
                 marginBottom: "20px",
+                height: "6vh"
               }}
             >
               <h2 style={{ margin: "0" }}>Danh sách tầng</h2>
@@ -150,27 +159,24 @@ const PageQLTang = (props) => {
                 </NavLink>
               </div>
             </div>
-          </div>
-          {/* Bảng danh sách data */}
 
-          <div class="table-responsive">
-            <table
-              class="table bg-white table-hover table-striped table-bordered 
-          "
-            >
-              <thead>
-                <tr>
-                  <th scope="col">Mã tầng</th>
-                  <th scope="col">Tên tầng</th>
-                  <th scope="col">Số phòng</th>
-                  <th scope="col">Hành động</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/*  */}
-                {renderDataTang()}
-              </tbody>
-            </table>
+            {/* Bảng danh sách data */}
+            <div class="table-responsive" style={{ height: "69vh" }} >
+              <table class="table bg-white table-hover table-striped table-bordered ">
+                <thead>
+                  <tr>
+                    <th scope="col">Mã tầng</th>
+                    <th scope="col">Tên tầng</th>
+                    <th scope="col">Số phòng</th>
+                    <th scope="col" style={{width:'220px'}}>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody className="over_flow_auto">
+                  {/*  */}
+                  {renderDataTang()}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         {/*  */}

@@ -7,20 +7,32 @@ import { BiSolidDetail } from "react-icons/bi";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import Footer from "../../components/common/Footer/Footer";
+import Database from "../../util/database/Database";
+
+
+/**
+ * giả đỉnh data tren server chua lấy về
+ */
+const dataServer = Database.dataKhuVuc; 
+/**
+ *lưu trữ data get tu API
+ */
+let dataLocal = [];
+
+const getAllKhuVucApi = () => {
+  dataLocal = [...dataServer];
+};
 
 const PageQlKhuVuc = (props) => {
-  const dataKhuVuc = [
-    { id: 1, name: "Tòa nhaa A", soTang: 5 },
-    { id: 2, name: "Tòa nhà B", soTang: 2 },
-    { id: 3, name: "Tòa nhà C", soTang: 4 },
-    { id: 4, name: "Tòa nhà D", soTang: 5 },
-  ];
 
   let [arrKhuVuc, setArrKhuVuc] = useState([]);
   let [txtSearch, setTxtSearch] = useState("");
 
   useEffect(() => {
-    // setArrKhuVuc(dataKhuVuc);
+    if (dataLocal.length === 0) {
+      getAllKhuVucApi();
+    }
+
 
     filterData();
   }, [txtSearch]);
@@ -31,7 +43,7 @@ const PageQlKhuVuc = (props) => {
   };
   // Hàm tìm kiếm dựa trên giá trị của searchText
   const filterData = () => {
-    const arrNew = dataKhuVuc.filter((item) => {
+    const arrNew = dataLocal.filter((item) => {
       const search = txtSearch.toLowerCase();
       return (
         (item.id + "").toLowerCase().includes(search) ||
@@ -96,14 +108,18 @@ const PageQlKhuVuc = (props) => {
   let arrLinkNavTab = [{ name: "Quản lý khu vực", link: "" }];
   return (
     <div className="container " style={{ height: "100vh" }}>
-      <div className="d-flex flex-column justify-content-between h-100">
-        <div className="">
+      <div
+        className="d-flex flex-column justify-content-between "
+        style={{ height: "100vh" }}
+      >
+        <div style={{ height: "100vh" }}>
           {/*  */}
+          <div style={{ height: "8vh" }}>
           <NavTab
             itemLink={{ arrLinkNavTab: arrLinkNavTab, chucNang: "Danh sách" }}
-          />
+          /></div>
           {/* table data */}
-          <div className="bg-white p-3">
+          <div className="bg-white rounded p-3 " style={{ height: "82vh" }}>
             {/* Phần top với tiêu đề và thanh tìm kiếm - btn thêm */}
             <div
               style={{
@@ -111,6 +127,7 @@ const PageQlKhuVuc = (props) => {
                 justifyContent: "space-between",
                 alignItems: "center",
                 marginBottom: "20px",
+                height: "5vh",
               }}
             >
               <h2 style={{ margin: "0" }}>Danh sách khu vực</h2>
@@ -139,27 +156,27 @@ const PageQlKhuVuc = (props) => {
                 </NavLink>
               </div>
             </div>
-          </div>
-          {/* Bảng danh sách data */}
 
-          <div class="table-responsive">
-            <table
-              class="table bg-white table-hover table-striped table-bordered 
+            {/* Bảng danh sách data */}
+            <div class="table-responsive" style={{ height: "69vh" }}>
+              <table
+                class="table bg-white table-hover table-striped table-bordered 
           "
-            >
-              <thead>
-                <tr>
-                  <th scope="col">Mã khu vực</th>
-                  <th scope="col">Tên khu vực</th>
-                  <th scope="col">Số tầng</th>
-                  <th scope="col">Hành động</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/*  */}
-                {renderDataKhuVuc()}
-              </tbody>
-            </table>
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">Mã khu vực</th>
+                    <th scope="col">Tên khu vực</th>
+                    <th scope="col">Số tầng</th>
+                    <th scope="col" style={{width:'220px'}} >Hành động</th>
+                  </tr>
+                </thead>
+                <tbody className="over_flow_auto">
+                  {/*  */}
+                  {renderDataKhuVuc()}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
