@@ -5,7 +5,7 @@ import { ImBin2 } from "react-icons/im";
 import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
 import NavTab from "../../components/common/NavTab/NavTab";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Footer from "../../components/common/Footer/Footer";
 import Database from "../../util/database/Database";
 
@@ -24,6 +24,11 @@ const getAllKhuVucApi = () => {
 };
 
 const PageQlKhuVuc = (props) => {
+
+  /**
+   * navigate chuyển trang(component)
+   */
+  const navigate = useNavigate();
 
   let [arrKhuVuc, setArrKhuVuc] = useState([]);
   let [txtSearch, setTxtSearch] = useState("");
@@ -57,28 +62,23 @@ const PageQlKhuVuc = (props) => {
   const renderDataKhuVuc = () => {
     return arrKhuVuc.map((item, index) => {
       return (
-        <tr class="" key={item.id}>
+        <tr class="" key={index}>
           <td scope="row" style={{ fontWeight: 600, justifyItems: "center" }}>
             {item.id}
           </td>
           <td>{item.name}</td>
           <td>{item.soTang}</td>
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink
-              to={"/quan-ly/khu-vuc/update"}
-              onClick={() => {
-                alert(`Update -- ${item.id}`);
-                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-              }}
-            >
               <button
                 type="button"
                 className="btn btn-primary mx-2 px-2"
                 style={{ padding: "2px" }}
+                onClick={() => {
+                    navigate(`/quan-ly/khu-vuc/update/${item.id}`)
+                }}
               >
                 <FaPencilAlt color="white" size={16} />
               </button>
-            </NavLink>
             <button
               onClick={() => {
                 alert(`Del -- ${item.id}`);

@@ -2,12 +2,15 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import NavTab from "../common/NavTab/NavTab";
 import Footer from "../common/Footer/Footer";
+import { useParams } from "react-router-dom";
 
 const FormKhuVucUpdate = (props) => {
-  console.log(
-    "🚀 ~ file: FormKhuVucUpdate.jsx:8 ~ FormKhuVucUpdate ~ props:",
-    props
-  );
+  
+  // sd useParams de nhan data truyen toi theo router
+  const params = useParams();
+  console.log("DetailKhuVuc - id : ", params.id);
+  
+  // khai bao
   let [txtText, setTxtText] = useState("");
   let [txtErr, setTxtErr] = useState("*");
 
@@ -31,7 +34,7 @@ const FormKhuVucUpdate = (props) => {
   };
 
   // Mảng quản lý data navtab
-  let arrLinkNavTab = [{ name: "Quản lý khu vực", link: "../quan-ly/khu-vuc" }];
+  let arrLinkNavTab = [{ name: "Quản lý khu vực", link: "../../quan-ly/khu-vuc" }];
   //
 
   return (

@@ -32,7 +32,9 @@ root.render(
             path="/quan-ly/khu-vuc/add"
             element={<FromAddKhuVuc />}
           ></Route>
-          <Route path="/quan-ly/khu-vuc/update" element={<FormKhuVucUpdate />}></Route>
+          <Route path="/quan-ly/khu-vuc/update">
+            <Route path=":id"  element={<FormKhuVucUpdate />} ></Route>
+          </Route>
           <Route path="/quan-ly/khu-vuc/detail" >
             <Route path=":id" element={<DetailKhuVuc />} ></Route>
           </Route>
