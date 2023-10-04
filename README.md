@@ -9,6 +9,7 @@
 
 ### ảnh quản khu vực
 ![QL Phòng](./AnhMinhHoa/img_QLKhuVuc.png)
+![QL Phòng](./AnhMinhHoa/img_Detail_KhuVuc.png)
 ![QL Phòng](./AnhMinhHoa/img_QLKhuVuc_Form.png)
 
 

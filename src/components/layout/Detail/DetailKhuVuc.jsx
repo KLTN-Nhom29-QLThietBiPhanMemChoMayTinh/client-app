@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import Footer from "../../common/Footer/Footer";
 import NavTab from "../../common/NavTab/NavTab";
 import Database from "../../../util/database/Database";
@@ -24,7 +24,7 @@ const arrTang1 = [
   { id: 4, name: "Tầng 4", soPhong: 6 },
 ];
 
-//data khu vuc
+//data khu vuc - handleChangeSelect
 let arrKhuVuc1 = Database.dataKhuVuc;
 
 export default function DetailKhuVuc() {
@@ -34,12 +34,11 @@ export default function DetailKhuVuc() {
   const params = useParams();
   console.log("DetailKhuVuc - id : ", params.id);
 
+  // 2. navigate -- dung de chuyeenr trang(component)
+  const navigate = useNavigate();
+
   // lưu trữ khu vuc hien tai
   let [khuVuc, setKhuVuc] = useState({});
-  console.log(
-    "🚀 ~ file: DetailKhuVuc.jsx:29 ~ DetailKhuVuc ~ khuVuc:",
-    khuVuc
-  );
   let [arrtang, setArrTang] = useState([]);
 
   useEffect(() => {
@@ -69,12 +68,22 @@ export default function DetailKhuVuc() {
     setKhuVuc(item);
   };
 
+  //Handle
+  const handleChangeSelect = (e) => {
+    let { value } = e.target; // value == name cua obj khuvuc
+    let itemKhuVuc = arrKhuVuc1.find((item) => {
+      return item.name === value;
+    });
+    
+    navigate(`../${itemKhuVuc.id}`);
+  };
 
   //render
   const renderListTang = () => {
-    return arrTang1.map((item, index)=>{
+    return arrTang1.map((item, index) => {
       return (
-        <div key={index}
+        <div
+          key={index}
           className=" m-2 card text-white align-items-center color_green pt-3"
           style={{ width: "250px", height: "200px" }}
         >
@@ -93,8 +102,7 @@ export default function DetailKhuVuc() {
           </div>
         </div>
       );
-    })
-    
+    });
   };
 
   //render hidden
@@ -156,13 +164,17 @@ export default function DetailKhuVuc() {
                     <select
                       className="form-select"
                       aria-label="Default select example"
+                      onChange={handleChangeSelect}
+                      id="nameKV"
                     >
                       <option selected>{khuVuc.name}</option>
                       {arrKhuVuc1.map((item, index) => {
                         return item.name === khuVuc.name ? (
                           <></>
                         ) : (
-                          <option value={index}>{item.name}</option>
+                          <option key={index} value={item.name}>
+                            {item.name}
+                          </option>
                         );
                       })}
                     </select>

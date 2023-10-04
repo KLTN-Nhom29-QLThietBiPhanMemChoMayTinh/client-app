@@ -81,7 +81,7 @@ const PageQlKhuVuc = (props) => {
               onClick={() => {
                 alert(`Chi tiet -- item`);
               }}
-              to={`../quan-ly/tang/detail/${item.id}`}
+              to={`../quan-ly/khu-vuc/detail/${item.id}`}
               className="btn bg-info mx-2 px-2"
               style={{ padding: "2px" }}
             >
