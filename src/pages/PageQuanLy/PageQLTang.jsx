@@ -3,25 +3,32 @@ import PropTypes from "prop-types";
 import { FaPencilAlt } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
 import { MdAdd } from "react-icons/md";
-import { BiSolidDetail } from "react-icons/bi";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import Footer from "../../components/common/Footer/Footer";
+import Database from "../../util/database/Database";
+import { BiSolidDetail } from "react-icons/bi";
+
+const dataServer = Database.dataTang; // giả đỉnh data tren server chua lấy về
+/**
+ *lưu trữ data get tu API
+ */
+let dataLocal = [];
+
+const getAllTangApi = () => {
+  dataLocal = [...dataServer];
+};
 
 const PageQLTang = (props) => {
-  const dataTang = [
-    { id: 1, name: "Tầng 1", soPhong: 5 },
-    { id: 2, name: "Tầng 2", soPhong: 2 },
-    { id: 3, name: "Tầng 3", soPhong: 5 },
-    { id: 4, name: "Tầng 4", soPhong: 6 },
-  ];
 
-  let [arrTang, setArrTang] = useState([]);
+  let [arrTang, setArrTang] = useState([]); // lưu trữ data sẽ thay đổi theo txtsearch
   let [txtSearch, setTxtSearch] = useState("");
 
   useEffect(() => {
     // setArrTang(dataTang);
-
+    if (dataLocal.length === 0) {
+      getAllTangApi();
+    }
     filterData();
   }, [txtSearch]);
 
@@ -31,7 +38,7 @@ const PageQLTang = (props) => {
   };
   // Hàm tìm kiếm dựa trên giá trị của searchText
   const filterData = () => {
-    const arrNew = dataTang.filter((item) => {
+    const arrNew = dataLocal.filter((item) => {
       const search = txtSearch.toLowerCase();
       return (
         (item.id + "").toLowerCase().includes(search) ||
@@ -77,7 +84,8 @@ const PageQLTang = (props) => {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            {/* <button
+            <NavLink
+              to={`../quan-ly/tang/detail/${item.id}`}
               onClick={() => {
                 alert(`Add -- item`);
               }}
@@ -86,7 +94,7 @@ const PageQLTang = (props) => {
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </button> */}
+            </NavLink>
           </td>
         </tr>
       );

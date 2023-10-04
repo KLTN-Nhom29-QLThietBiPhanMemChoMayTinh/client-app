@@ -54,7 +54,7 @@ export default function DetailKhuVuc() {
   // lay data tằng theo khu vuc hien tai
   const getAllbyIdKhuVuc = () => {
     // GET APi
-    const arr = arrTang1;
+    const arr = {...arrTang1};
     // update State
     setArrTang(arr);
   };
@@ -80,7 +80,7 @@ export default function DetailKhuVuc() {
 
   //render
   const renderListTang = () => {
-    return arrTang1.map((item, index) => {
+    return arrtang.map((item, index) => {
       return (
         <div
           key={index}
@@ -96,7 +96,7 @@ export default function DetailKhuVuc() {
             </div>
           </div>
           <div className="card-footer d-flex justify-content-center w-100">
-            <NavLink className="text-decoration-none  text-white ">
+            <NavLink onClick={() => {alert("go to DetailTang")}} className="text-decoration-none  text-white ">
               Danh sách <AiOutlineRight className="ms-3" size={16} />
             </NavLink>
           </div>
