@@ -19,3 +19,4 @@
     - can lay va chuyen data qu cac man hinh - z
     - overFlow -z 
     - tìm kiếm  detailKhuVuc chưa có gì
+    - PageQLPhongMay - can 1 search theo status

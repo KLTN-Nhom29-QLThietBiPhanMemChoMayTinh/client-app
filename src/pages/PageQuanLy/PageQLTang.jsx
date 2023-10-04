@@ -25,6 +25,7 @@ const getAllTangApi = () => {
 };
 
 const PageQLTang = (props) => {
+  
   let [arrTang, setArrTang] = useState([]); // lưu trữ data sẽ thay đổi theo txtsearch
   let [txtSearch, setTxtSearch] = useState("");
 
