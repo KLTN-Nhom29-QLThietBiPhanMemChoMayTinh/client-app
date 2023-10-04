@@ -68,6 +68,8 @@ function PageQLPhongMay() {
           </td>
           <td>{item.description}</td>
           <td>{item.numberOfMachines}</td>
+          <td>{item.soThietBi}</td>
+          <td>{item.soPhanMem}</td>
           {item.status===1 ? <td className="bg-success">Đang sử dụng</td> : item.status===0 ? <td>Phòng trống</td> : <td className="bg-danger">Đang bảo trì</td>}
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
@@ -143,7 +145,7 @@ function PageQLPhongMay() {
                 height: "6vh"
               }}
             >
-              <h2 style={{ margin: "0" }}>Danh sách tầng</h2>
+              <h2 style={{ margin: "0" }}>Danh sách phòng học</h2>
               {/* input tim kiem */}
               <div style={{ display: "flex", alignItems: "center" }}>
                 <div>
@@ -178,6 +180,8 @@ function PageQLPhongMay() {
                     <th scope="col">Mã phòng</th>
                     <th scope="col">Tên phòng</th>
                     <th scope="col">Số máy</th>
+                    <th scope="col">Số thiết bị</th>
+                    <th scope="col">Số ứng dụng PM</th>
                     <th scope="col">Trạng thái</th>
                     <th scope="col" style={{width:'220px'}}>Hành động</th>
                   </tr>

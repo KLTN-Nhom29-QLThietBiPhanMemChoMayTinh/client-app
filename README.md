@@ -6,11 +6,12 @@
 
 ### ảnh quản lý phòng
 ![QL Phòng](./AnhMinhHoa/img_QLPhong.png)
+![QL Phòng](./AnhMinhHoa/img_QLPhong_Form.png)
 
 ### ảnh quản khu vực
-![QL Phòng](./AnhMinhHoa/img_QLKhuVuc.png)
-![QL Phòng](./AnhMinhHoa/img_Detail_KhuVuc.png)
-![QL Phòng](./AnhMinhHoa/img_QLKhuVuc_Form.png)
+![QL khu vực](./AnhMinhHoa/img_QLKhuVuc.png)
+![QL khu vực](./AnhMinhHoa/img_Detail_KhuVuc.png)
+![QL khu vực](./AnhMinhHoa/img_QLKhuVuc_Form.png)
 
 
 ## Note
@@ -18,5 +19,9 @@
     - can tang khoang cach giua component - z (dang ep cứng khoang cach)
     - can lay va chuyen data qu cac man hinh - z
     - overFlow -z 
-    - tìm kiếm  detailKhuVuc chưa có gì
+
+    - tìm kiếm -  detailKhuVuc chưa có gì
     - PageQLPhongMay - can 1 search theo status
+    - Đăng nhập thêm checkbox - Đăng nhập với quyền quản lý 
+    - thêm phong phải them dược cac so may - so thiet bị - so phan mem
+    - FormAddPhong - chua bat su kien cua checkbox
