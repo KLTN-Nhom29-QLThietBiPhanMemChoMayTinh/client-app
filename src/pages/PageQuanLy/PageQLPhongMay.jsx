@@ -73,11 +73,7 @@ function PageQLPhongMay() {
           {item.status===1 ? <td className="bg-success">Đang sử dụng</td> : item.status===0 ? <td>Phòng trống</td> : <td className="bg-danger">Đang bảo trì</td>}
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
-              to={"/quan-ly/phong/update"}
-              onClick={() => {
-                alert(`Update -- ${item.id} - dang cập nhật.`);
-                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-              }}
+              to={`/quan-ly/phong/update/${item.id}`}
             >
               <button
                 type="button"

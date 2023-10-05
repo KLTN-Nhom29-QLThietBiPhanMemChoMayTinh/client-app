@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./assets/scss/style.scss";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
 import Page404 from "./pages/Page404/Page404";
 import PageHome from "./pages/PageHome/PageHome";
 import PageQlKhuVuc from "./pages/PageQuanLy/PageQlKhuVuc";
@@ -19,6 +19,7 @@ import FormAddTang from "./components/layout/FormAddTang";
 import FormUpdateTang from "./components/layout/FormUpdateTang";
 import DetailKhuVuc from "./components/layout/Detail/DetailKhuVuc";
 import FormAddPhong from "./components/layout/FormAddPhong";
+import FormUpdatePhong from "./components/layout/FormUpdatePhong";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -56,6 +57,9 @@ root.render(
           </Route>
           <Route path="/quan-ly/phong" element={<PageQLPhongMay />}></Route>
           <Route path="/quan-ly/phong/add" element={<FormAddPhong />}></Route>
+          <Route path="/quan-ly/phong/update" >
+            <Route path=":id" element={<FormUpdatePhong />} ></Route>
+          </Route>
           <Route path="*" element={<Page404 />}></Route>
         </Route>
       </Routes>

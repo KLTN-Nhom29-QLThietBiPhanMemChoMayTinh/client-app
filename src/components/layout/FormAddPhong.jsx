@@ -51,30 +51,30 @@ export default function FormAddPhong() {
   // handle
   //
   const handleCheckTbi = (e) => {
+    let {checked,value} = e.target;
     var updateList = [...itemPhongRef.current.phanCung];
-    if (e.target.checked) {
+    if (checked) {
       updateList.push(
-        dataServer_TBi.find((item) => item.idCode === e.target.value)
+        dataServer_TBi.find((item) => item.idCode === value)
       );
     } else {
       updateList.splice(
-        dataServer_TBi.find((item) => item.idCode === e.target.value),
-        1
+        dataServer_TBi.indexOf(value),  1
       );
     }
 
-    itemPhongRef.current.phanCung = updateList;
+    itemPhongRef.current.phanCung = [...updateList];
   };
   const handleCheckPM = (e) => {
+    let {checked,value} = e.target;
     var updateList = [...itemPhongRef.current.phanMem];
-    if (e.target.checked) {
+    if (checked) {
       updateList.push(
-        dataServer_PM.find((item) => item.idCode === e.target.value)
+        dataServer_PM.find((item) => item.idCode === value)
       );
     } else {
       updateList.splice(
-        dataServer_PM.find((item) => item.idCode === e.target.value),
-        1
+        dataServer_PM.indexOf(value), 1
       );
     }
 
@@ -98,7 +98,7 @@ export default function FormAddPhong() {
   };
   // check data
   const checkDataInput = () => {
-    let { name, soLuongMay, phanMem, phanCung } = itemPhongRef.current;
+    let { name,  phanMem, phanCung } = itemPhongRef.current;
 
     let errName = "";
     let errPhanMem = "";
@@ -188,6 +188,7 @@ export default function FormAddPhong() {
 
   const renderFooterData = () => {
     let { name, soLuongMay, phanMem, phanCung } = itemPhongRef.current;
+    console.log("🚀 ~ file: FormAddPhong.jsx:191 ~ renderFooterData ~ itemPhongRef.current:", itemPhongRef.current)
     let strName = "";
     let strPM = "";
     let strTbi = "";
@@ -300,21 +301,7 @@ export default function FormAddPhong() {
                     }}
                   >
                     {/* item */}
-                    {/* <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        defaultValue="Tb1"
-                        id="cb1"
-                      />
-                      <label
-                        className="form-check-label"
-                        style={{ marginTop: "2px" }}
-                        htmlFor="cb1"
-                      >
-                        Thiet bi 1
-                      </label>
-                    </div> */}
+                    
 
                     {renderCheckBox_TBi()}
                   </div>
@@ -348,7 +335,13 @@ export default function FormAddPhong() {
               <button type="submit" className="btn btn-success">
                 Submit
               </button>
-              <button type="reset" className="btn btn-danger mx-3">
+              <button onClick={() => {
+                itemPhongRef.current.name = "";
+                itemPhongRef.current.soLuongMay = 1;
+                itemPhongRef.current.phanMem = [];
+                itemPhongRef.current.phanCung = [];
+                setBtnReload(btnReload + 1);
+              }} type="reset" className="btn btn-danger mx-3">
                 Reset
               </button>
             </form>
