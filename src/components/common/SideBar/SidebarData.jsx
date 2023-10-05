@@ -13,7 +13,7 @@ export const SidebarData = [
     
   {
     title: 'Trang chủ',
-    path: '/',
+    path: '/detail-khu-vuc/1',
     icon: <AiIcons.AiTwotoneHome style={{marginBottom:'6px', fontSize:'25px'}} />
   },
   {

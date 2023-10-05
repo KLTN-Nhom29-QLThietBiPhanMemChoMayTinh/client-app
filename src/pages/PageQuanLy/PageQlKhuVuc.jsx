@@ -74,8 +74,8 @@ const PageQlKhuVuc = (props) => {
                 className="btn btn-primary mx-2 px-2"
                 style={{ padding: "2px" }}
                 onClick={() => {
-                    navigate(`/quan-ly/khu-vuc/update/${item.id}`)
-                }}
+                  navigate(`/quan-ly/khu-vuc/update/${item.id}`)
+              }}
               >
                 <FaPencilAlt color="white" size={16} />
               </button>
@@ -90,10 +90,7 @@ const PageQlKhuVuc = (props) => {
               <ImBin2 color="white" size={16} />
             </button>
             <NavLink
-              onClick={() => {
-                alert(`Chi tiet -- item`);
-              }}
-              to={`../quan-ly/khu-vuc/detail/${item.id}`}
+              to={`../quan-ly/tang`}
               className="btn bg-info mx-2 px-2"
               style={{ padding: "2px" }}
             >

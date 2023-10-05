@@ -26,7 +26,11 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="" element={<App />}>
-          <Route path="" element={<PageHome />}></Route>
+          <Route path="/" element={<PageHome />}>
+            <Route path="/detail-khu-vuc" >
+              <Route path=":id" element={<DetailKhuVuc />} ></Route>
+            </Route>
+          </Route>
           <Route path="/quan-ly" element={<PageQlKhuVuc />}></Route>
           <Route path="/quan-ly/khu-vuc" element={<PageQlKhuVuc />}></Route>
           <Route
@@ -36,9 +40,9 @@ root.render(
           <Route path="/quan-ly/khu-vuc/update">
             <Route path=":id"  element={<FormKhuVucUpdate />} ></Route>
           </Route>
-          <Route path="/quan-ly/khu-vuc/detail" >
+          {/* <Route path="/quan-ly/khu-vuc/detail" >
             <Route path=":id" element={<DetailKhuVuc />} ></Route>
-          </Route>
+          </Route> */}
           <Route path="/quan-ly/tang" element={<PageQLTang />}></Route>
           <Route
             path="/quan-ly/tang/add"

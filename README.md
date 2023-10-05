@@ -26,3 +26,4 @@
     - PageQLPhongMay - can 1 search theo status
     - Đăng nhập thêm checkbox - Đăng nhập với quyền quản lý 
     - FormAddPhong - can checkbox ALL
+    - PageQLPhongMay - chua co sk  btn update - detail

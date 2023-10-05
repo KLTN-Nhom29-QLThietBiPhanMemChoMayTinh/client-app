@@ -75,7 +75,7 @@ export default function DetailKhuVuc() {
       return item.name === value;
     });
 
-    navigate(`../${itemKhuVuc.id}`);
+    navigate(`../detail-khu-vuc/${itemKhuVuc.id}`);
   };
 
   //render
@@ -115,7 +115,7 @@ export default function DetailKhuVuc() {
 
   // Mảng quản lý data navtab
   let arrLinkNavTab = [
-    { name: "Quản lý khu vực", link: "../../quan-ly/khu-vuc" },
+    // { name: "Quản lý khu vực", link: "../../quan-ly/khu-vuc" },
   ];
   //
   return (

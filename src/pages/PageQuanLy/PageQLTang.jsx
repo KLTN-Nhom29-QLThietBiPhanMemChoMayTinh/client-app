@@ -89,10 +89,7 @@ const PageQLTang = (props) => {
               <ImBin2 color="white" size={16} />
             </button>
             <NavLink
-              to={`../quan-ly/tang/detail/${item.id}`}
-              onClick={() => {
-                alert(`Add -- item`);
-              }}
+              to={`../quan-ly/phong`}
               type="button"
               className="btn btn-info mx-2 px-2"
               style={{ padding: "2px" }}
