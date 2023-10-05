@@ -33,6 +33,7 @@ export default function DetailKhuVuc() {
   // sd useParams de nhan data truyen toi theo router
   const params = useParams();
   console.log("DetailKhuVuc - id : ", params.id);
+ 
 
   // 2. navigate -- dung de chuyeenr trang(component)
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ export default function DetailKhuVuc() {
 
   // lay khu vuc theo Api
   const getKhuVuc = () => {
-    // GET APi
+    // GET APi theo params.id
     const item = khuVuc1;
 
     // update State

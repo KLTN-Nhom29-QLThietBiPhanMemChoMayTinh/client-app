@@ -43,7 +43,9 @@ root.render(
           {/* <Route path="/quan-ly/khu-vuc/detail" >
             <Route path=":id" element={<DetailKhuVuc />} ></Route>
           </Route> */}
-          <Route path="/quan-ly/tang" element={<PageQLTang />}></Route>
+          <Route path="/quan-ly/tang" element={<PageQLTang />}>
+            <Route path=":id" element={<PageQLTang />} ></Route>  
+          </Route>
           <Route
             path="/quan-ly/tang/add"
             element={<FormAddTang />}
