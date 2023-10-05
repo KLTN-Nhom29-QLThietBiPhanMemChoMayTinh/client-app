@@ -188,7 +188,6 @@ export default function FormAddPhong() {
 
   const renderFooterData = () => {
     let { name, soLuongMay, phanMem, phanCung } = itemPhongRef.current;
-    console.log("🚀 ~ file: FormAddPhong.jsx:191 ~ renderFooterData ~ itemPhongRef.current:", itemPhongRef.current)
     let strName = "";
     let strPM = "";
     let strTbi = "";
