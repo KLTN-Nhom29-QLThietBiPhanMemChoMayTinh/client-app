@@ -123,21 +123,21 @@ const dataTang = [
 
 //8.	Thiết bị (mã thiết bị, tên thiết bị, trạng thái, ngày cài đặt, tuổi thọ)
 const dataThietBi = [
-  {id:1, idCode:"TBi001", name:'chuột HP', status:1, ngaySuDung: date1, tuoiTho:36 },
-  {id:2, idCode:"TBi002", name:'Man hinh A', status:1, ngaySuDung: date1, tuoiTho:Math.floor(Math.random() * 24) + 12 },
-  {id:3, idCode:"TBi003", name:'CPU 123', status:1, ngaySuDung: date1, tuoiTho:Math.floor(Math.random() * 24) + 12 },
-  {id:4, idCode:"TBi004", name:'SSD-1TB', status:1, ngaySuDung: date1, tuoiTho:Math.floor(Math.random() * 24) + 12 },
-  {id:5, idCode:"TBi005", name:'CORE - 1', status:1, ngaySuDung: date1, tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:1, idCode:"TBi001", name:'chuột HP', status:1, ngaySuDung: date1(), tuoiTho:36 },
+  {id:2, idCode:"TBi002", name:'Man hinh A', status:1, ngaySuDung: date1(), tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:3, idCode:"TBi003", name:'CPU 123', status:1, ngaySuDung: date1(), tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:4, idCode:"TBi004", name:'SSD-1TB', status:1, ngaySuDung: date1(), tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:5, idCode:"TBi005", name:'CORE - 1', status:1, ngaySuDung: date1(), tuoiTho:Math.floor(Math.random() * 24) + 12 },
 ]
 
 //4.	Phần mềm (mã phần mềm, tên phần mềm, trạng thái, ngay bd, tuoitho  )
 
 const dataPhanMem = [
-  {id:1, idCode:'PM001', name:'mySQL Server 2019', status:1, ngaySuDung:date1,tuoiTho:Math.floor(Math.random() * 24) + 12  },
-  {id:2, idCode:'PM002', name:'mySQL 2019', status:1, ngaySuDung:date1,tuoiTho:Math.floor(Math.random() * 24) + 12  },
-  {id:3, idCode:'PM003', name:'mariadb 2020', status:1, ngaySuDung:date1,tuoiTho:Math.floor(Math.random() * 24) + 12  },
-  {id:4, idCode:'PM004', name:'eclipse 2023', status:1, ngaySuDung:date1,tuoiTho:Math.floor(Math.random() * 24) + 12  },
-  {id:5, idCode:'PM005', name:'Node js', status:1, ngaySuDung:date1,tuoiTho:Math.floor(Math.random() * 24) + 12  },
+  {id:1, idCode:'PM001', name:'mySQL Server 2019', status:1, ngaySuDung:date1(),tuoiTho:Math.floor(Math.random() * 24) + 12  },
+  {id:2, idCode:'PM002', name:'mySQL 2019', status:1, ngaySuDung:date1(),tuoiTho:Math.floor(Math.random() * 24) + 12  },
+  {id:3, idCode:'PM003', name:'mariadb 2020', status:1, ngaySuDung:date1(),tuoiTho:Math.floor(Math.random() * 24) + 12  },
+  {id:4, idCode:'PM004', name:'eclipse 2023', status:1, ngaySuDung:date1(),tuoiTho:Math.floor(Math.random() * 24) + 12  },
+  {id:5, idCode:'PM005', name:'Node js', status:1, ngaySuDung:date1(),tuoiTho:Math.floor(Math.random() * 24) + 12  },
 ]
 
 export default { dataKhuVuc,dataPhongMay,dataTang,dataThietBi,dataPhanMem };

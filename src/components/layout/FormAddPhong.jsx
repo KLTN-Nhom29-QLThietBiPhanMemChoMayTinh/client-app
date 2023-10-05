@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NavTab from "../common/NavTab/NavTab";
 import Footer from "../common/Footer/Footer";
 import Database from "../../util/database/Database";
+
+import { IoReloadOutline } from "react-icons/io5";
 
 /**
  * VD data ở server chưa lấy lên
@@ -23,10 +25,22 @@ const getApiData_PM_TBi = () => {
  *
  */
 export default function FormAddPhong() {
-
-  let [itemPhong, setItemPhong] = useState(
-   {name:'', soLuongMay:'', phanMem:[], phanCung:[]}
-  );
+  //
+  let [btnReload, setBtnReload] = useState(1);
+  // phong err
+  let [errPhong, setErrPhong] = useState({
+    name: "",
+    soLuongMay: "",
+    phanMem: "",
+    phanCung: "",
+  });
+  // phong moi
+  const itemPhongRef = useRef({
+    name: "",
+    soLuongMay: 1,
+    phanMem: [],
+    phanCung: [],
+  });
 
   useEffect(() => {
     if (datalocal_PM.length === 0 && datalocal_TBi.length === 0) {
@@ -36,14 +50,98 @@ export default function FormAddPhong() {
 
   // handle
   //
-  const handleChange = (e) => {
-   console.log("🚀 ~ file: FormAddPhong.jsx:40 ~ FormAddPhong ~ e:", e)
+  const handleCheckTbi = (e) => {
+    var updateList = [...itemPhongRef.current.phanCung];
+    if (e.target.checked) {
+      updateList.push(
+        dataServer_TBi.find((item) => item.idCode === e.target.value)
+      );
+    } else {
+      updateList.splice(
+        dataServer_TBi.find((item) => item.idCode === e.target.value),
+        1
+      );
+    }
+
+    itemPhongRef.current.phanCung = updateList;
   };
-  
+  const handleCheckPM = (e) => {
+    var updateList = [...itemPhongRef.current.phanMem];
+    if (e.target.checked) {
+      updateList.push(
+        dataServer_PM.find((item) => item.idCode === e.target.value)
+      );
+    } else {
+      updateList.splice(
+        dataServer_PM.find((item) => item.idCode === e.target.value),
+        1
+      );
+    }
+
+    itemPhongRef.current.phanMem = updateList;
+    
+  };
+  const handleChangeText = (e) => {
+    let { id, value } = e.target;
+
+    itemPhongRef.current[id] = value;
+    
+  };
   //
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    if (checkDataInput()) {
+      //true - di tiep
+      alert('Run - ' + itemPhongRef.current.name);
+    }
   };
+  // check data
+  const checkDataInput = () => {
+    let { name, soLuongMay, phanMem, phanCung } = itemPhongRef.current;
+
+    let errName = "";
+    let errPhanMem = "";
+    let errPhanCung = "";
+
+    let check = 1;
+
+    if (name.trim().length === 0) {
+      errName = " Hãy nhập dữ liệu!!";
+      check = 0;
+      //
+    } else {
+      // so sanh khac cua name
+    }
+    //
+    
+    if (phanMem.length === 0) {
+      errPhanMem = " Hãy nhập dữ liệu!!";
+      check = 0;
+      //
+    } else {
+      //
+      // so sanh khac cua phanMem
+    }
+
+    //
+    if (phanCung.length === 0) {
+      errPhanCung = " Hãy nhập dữ liệu!!";
+      check = 0;
+    } else {
+      // so sanh khac cua phanCung
+    }
+
+    setErrPhong({
+      name: errName,
+      phanMem: errPhanMem,
+      phanCung: errPhanCung,
+    });
+
+    return check;
+
+
+  }
 
   // Render
   const renderCheckBox_TBi = () => {
@@ -55,6 +153,7 @@ export default function FormAddPhong() {
             type="checkbox"
             defaultValue={item.idCode}
             id={item.idCode}
+            onChange={handleCheckTbi}
           />
           <label
             className="form-check-label"
@@ -69,23 +168,43 @@ export default function FormAddPhong() {
   };
 
   const renderCheckBox_PM = () => {
-   return datalocal_PM.map((item, index) => {
+    return datalocal_PM.map((item, index) => {
       return (
         <div key={index} className="form-check">
           <input
             className="form-check-input"
             type="checkbox"
-            defaultValue={item}
+            value={item.idCode}
             id={item.idCode}
-            onChange={handleChange()}
+            onChange={handleCheckPM}
           />
           <label className="form-check-label" htmlFor={item.idCode}>
             {item.name}
           </label>
         </div>
       );
-    })
-  }
+    });
+  };
+
+  const renderFooterData = () => {
+    let { name, soLuongMay, phanMem, phanCung } = itemPhongRef.current;
+    let strName = "";
+    let strPM = "";
+    let strTbi = "";
+    if (name.trim() !== "") {
+      strName = `${name} -- có ${soLuongMay} máy `;
+    }
+    if (phanCung.length > 0) {
+      strTbi = "-- thiết bị: ";
+      phanCung.forEach(item => strTbi += `${item.name}, `)
+    }
+    if (phanMem.length > 0) {
+      strPM = "-- phần mềm: ";
+      phanMem.forEach(item => strPM += `${item.name}, `)
+    }
+    let str = "" + strName + strTbi + strPM;
+    return <div className=""><span className='fw-bold'>Thông tin phòng mới: </span>{str}</div>;
+  };
 
   //
   // Mảng quản lý data navtab
@@ -119,19 +238,19 @@ export default function FormAddPhong() {
                     Tên phòng{" "}
                     <small
                       id="errTenPhong"
-                      className="form-text text-muted text-danger mx-2"
+                      className="form-text  text-danger mx-2"
                     >
-                      *
+                      *{errPhong.name}
                     </small>
                   </label>
                   <input
                     type="text"
                     className="form-control"
                     name="txtTenPhong"
-                    id="txtTenPhong"
+                    id="name"
                     aria-describedby="errTenPhong"
                     placeholder="Phòng máy..."
-                    
+                    onChange={handleChangeText}
                   />
                 </div>
                 <div className="mb-3 col">
@@ -139,9 +258,9 @@ export default function FormAddPhong() {
                     Số lượng máy tính
                     <small
                       id="errSoLuongMay"
-                      className="form-text text-muted mx-2 text-danger"
+                      className="form-text mx-2 text-danger"
                     >
-                      *
+                      *{errPhong.soLuongMay}
                     </small>
                   </label>
                   <input
@@ -151,6 +270,10 @@ export default function FormAddPhong() {
                     id="soLuongMay"
                     aria-describedby="errSoLuongMay"
                     placeholder="Số lượng máy ..."
+                    min={1}
+                    max={150}
+                    defaultValue={1}
+                    onChange={handleChangeText}
                   />
                 </div>
               </div>
@@ -160,12 +283,12 @@ export default function FormAddPhong() {
                 {/* checkbox - Tbi */}
                 <div className=" col">
                   <label htmlFor="soLuongMay" className="form-label">
-                    Chọn thiết bị phần cững cho máy tính
+                    Chọn thiết bị phần cứng cho máy tính
                     <small
                       id="errSoLuongMay"
-                      className="form-text text-muted mx-2 text-danger"
+                      className="form-text mx-2 text-danger"
                     >
-                      *asbdfhajkshfdkjsfhdjsahfjshdfjs
+                      *{errPhong.phanCung}
                     </small>
                   </label>
                   <div
@@ -200,12 +323,12 @@ export default function FormAddPhong() {
                 {/* checkbox - PM */}
                 <div className="col">
                   <label htmlFor="soLuongMay" className="form-label">
-                    Chọn thiết bị phần cững cho máy tính
+                    Chọn ứng dụng phần mềm cho máy tính
                     <small
                       id="errSoLuongMay"
-                      className="form-text text-muted mx-2 text-danger"
+                      className="form-text  mx-2 text-danger"
                     >
-                      *asbdfhajkshfdkjsfhdjsahfjshdfjs
+                      *{errPhong.phanMem}
                     </small>
                   </label>
                   <div
@@ -217,8 +340,6 @@ export default function FormAddPhong() {
                     }}
                   >
                     {renderCheckBox_PM()}
-
-
                   </div>
                 </div>
               </div>
@@ -231,6 +352,17 @@ export default function FormAddPhong() {
                 Reset
               </button>
             </form>
+          </div>
+
+          <div className=" bg-white px-4 py-2 pt-3 rounded text-dark mt-2 d-flex justify-content-between ">
+            {renderFooterData()}
+            <IoReloadOutline
+              className="btn_moune " style={{width:'20px'}}
+              onClick={() => {
+                setBtnReload(btnReload + 1);
+              }}
+              size={20}
+            />
           </div>
         </div>
 

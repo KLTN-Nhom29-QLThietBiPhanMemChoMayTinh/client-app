@@ -19,9 +19,10 @@
     - can tang khoang cach giua component - z (dang ep cứng khoang cach)
     - can lay va chuyen data qu cac man hinh - z
     - overFlow -z 
+    - FormAddPhong - chua bat su kien cua checkbox - z
+    - thêm phong phải them dược cac so may - so thiet bị - so phan mem -z
 
     - tìm kiếm -  detailKhuVuc chưa có gì
     - PageQLPhongMay - can 1 search theo status
     - Đăng nhập thêm checkbox - Đăng nhập với quyền quản lý 
-    - thêm phong phải them dược cac so may - so thiet bị - so phan mem
-    - FormAddPhong - chua bat su kien cua checkbox
+    - FormAddPhong - can checkbox ALL
