@@ -20,6 +20,7 @@ import FormUpdateTang from "./components/layout/FormUpdateTang";
 import DetailKhuVuc from "./components/layout/Detail/DetailKhuVuc";
 import FormAddPhong from "./components/layout/FormAddPhong";
 import FormUpdatePhong from "./components/layout/FormUpdatePhong";
+import PageQLPhanMem from "./pages/PageQuanLy/PageQLPhanMem";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -60,6 +61,7 @@ root.render(
           <Route path="/quan-ly/phong/update" >
             <Route path=":id" element={<FormUpdatePhong />} ></Route>
           </Route>
+          <Route path="/quan-ly/phan-mem" element={<PageQLPhanMem />}></Route>
           <Route path="*" element={<Page404 />}></Route>
         </Route>
       </Routes>

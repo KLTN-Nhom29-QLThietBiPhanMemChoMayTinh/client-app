@@ -25,6 +25,6 @@
     - tìm kiếm -  detailKhuVuc chưa có gì
     - PageQLPhongMay - can 1 search theo status
     - Đăng nhập thêm checkbox - Đăng nhập với quyền quản lý 
-    - FormAddPhong - can checkbox ALL
+    - FormAddPhong - Formupdate- can checkbox ALL
     - PageQLPhongMay - chua co sk  btn update - detail
-    - 
+    - chưa sử lý tgian hết hạn sử dụng của Tbi - PM

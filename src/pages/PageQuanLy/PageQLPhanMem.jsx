@@ -10,69 +10,39 @@ import { ImBin2 } from "react-icons/im";
 import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
 
-/**
- * giả đỉnh data tren server chua lấy về
- */
-const dataServer = Database.dataTang;
-const dataKhuVuc = Database.dataKhuVuc;
-/**
- *lưu trữ data get tu API
- */
-let dataLocal = [];
-let dataLocalKV = [];
-/**
- *lưu trữ 1 obj khu duoc goi den theo router
- */
-let objKhuVuc = {};
+const dataServerPM = Database.dataPhanMem;
 
-const getAllTangApi = () => {
-  dataLocal = [...dataServer];
-};
-const getAllKhuVucApi = () => {
-  dataLocalKV = [...dataKhuVuc];
+let dataLocalArrPM = [];
+
+const getCallApiDataPM = () => {
+  dataLocalArrPM = [...dataServerPM];
 };
 
-// fun getbyid_KhuVuc - APi
-const getKhuVucbyId = (idTim) => {
-  // tim khu vuc
-  objKhuVuc = dataLocalKV.find((item) => item.id == idTim);
-};
-
-const PageQLTang = (props) => {
-  // 2. navigate -- dung de chuyeenr trang(component)
-  const navigate = useNavigate();
-
-  // sd useParams de nhan data truyen toi theo router
-  const params = useParams();
-
-  let [arrTang, setArrTang] = useState([]); // lưu trữ data sẽ thay đổi theo txtsearch
+/**
+ * môn học - phòng máy
+ * 4.	Phần mềm (mã phần mềm, tên phần mềm, trạng thái, ngay bd, tuoitho )
+ */
+export default function PageQLPhanMem() {
+  let [arrPhanMem, setArrPhanMem] = useState([]);
+  console.log(
+    "🚀 ~ file: PageQLPhanMem.jsx:28 ~ PageQLPhanMem ~ arrPhanMem:",
+    arrPhanMem
+  );
   let [txtSearch, setTxtSearch] = useState("");
 
+  // useEffect lay data khoi dau
   useEffect(() => {
-    if (dataLocal.length === 0 && dataLocalKV.length === 0) {
-      getAllTangApi();
-      getAllKhuVucApi();
-      if (params.id) {
-        // kiem tra ng dung mở trang này bằng all hay theo một id .
-        // so sanh neu nguoi dung vao theo 1 router id thi se lay obj khu vuc tu list Khuvuc
-        console.log(
-          "🚀 ~ file: PageQLTang.jsx:61 ~ useEffect ~ params.id:",
-          params.id
-        );
-        getKhuVucbyId(params.id); // tim vaf gan vao objKhuVuc
-      }
+    if (dataLocalArrPM.length === 0) {
+      getCallApiDataPM();
     }
-
+  }, []);
+  useEffect(() => {
     filterData();
   }, [txtSearch]);
 
-  //search
-  const handleSearchChange = (event) => {
-    setTxtSearch(event.target.value);
-  };
   // Hàm tìm kiếm dựa trên giá trị của searchText
   const filterData = () => {
-    const arrNew = dataLocal.filter((item) => {
+    const arrNew = dataLocalArrPM.filter((item) => {
       const search = txtSearch.toLowerCase();
       return (
         (item.id + "").toLowerCase().includes(search) ||
@@ -80,38 +50,74 @@ const PageQLTang = (props) => {
         (item.soPhong + "").toLowerCase().includes(search)
       );
     });
-    setArrTang([...arrNew]);
+    setArrPhanMem([...arrNew]);
   };
-
   //handle
-  //
-  const handleChangeSelect = (e) => {
-    let { value } = e.target; // value == name cua obj khuvuc
-    if (value === "khuvuc_all") {
-      navigate(`../quan-ly/tang`);
-      return;
-    }
-
-    let itemKhuVuc = dataLocalKV.find((item) => {
-      return item.name === value;
-    });
-
-    navigate(`../quan-ly/tang/${itemKhuVuc.id}`);
+  const handleChangeSearch = (e) => {
+    setTxtSearch(e.target.value);
   };
+  //Render
+  const renderSelectTheoRouterMon = () => {
+    return <></>;
+  };
+  const renderDataPM = () => {
+    console.log("renderDataPM");
+    return arrPhanMem.map((item, index) => {
+      console.log(
+        "🚀 ~ file: PageQLPhanMem.jsx:62 ~ returnarrPhanMem.map ~ item:",
+        item
+      );
 
-  //
-  const renderDataTang = () => {
-    return arrTang.map((item, index) => {
+      let ngaySuDung = item.ngaySuDung;
+      let ngayHetHan = new Date(ngaySuDung);
+
+      ngayHetHan.setMonth(ngayHetHan.getMonth() + item.tuoiTho);
+      console.log(
+        "🚀 ~ file: PageQLPhanMem.jsx:73 ~ returnarrPhanMem.map ~ ngayHetHan:",
+        ngayHetHan
+      );
+
+      let strNgaySuDung = `${item.ngaySuDung.getDate()}/${item.ngaySuDung.getMonth()+1}/${
+        item.ngaySuDung.getYear() + 1900
+      }`;
+      let strNgatHethan = `${ngayHetHan.getDate()}/${ngayHetHan.getMonth() +1}/${
+        ngayHetHan.getYear() + 1900
+      }`;
+      const strTrangThai = () => {
+        let date = new Date();
+        if (date <= ngayHetHan) {
+          date.setDate(date.getDate() + 30)
+          console.log(item.id);
+          console.log("🚀 ~ file: PageQLPhanMem.jsx:90 ~ strTrangThai ~ date:", date)
+          console.log("🚀 ~ file: PageQLPhanMem.jsx:90 ~ strTrangThai ~ ngayHetHan:", ngayHetHan)
+          console.log(ngayHetHan <= date);
+          if (ngayHetHan <= date ) {
+            return <td className="bg-warning">Sắp hết hạn</td>
+          }
+          return <td className="bg-success text-white ">Còn hạn sử dụng</td>
+        }
+        return <td className="bg-danger">Hết hạn</td>
+        // return <td className="bg-danger">Hết hạn sử dụng</td>
+        // return <td className="bg-success text-white ">Còn hạn sử dụng</td>
+      } ;
+
       return (
         <tr key={index}>
-          <td scope="row" style={{ fontWeight: 600, justifyItems: "center" }}>
-            {item.id}
+          <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
+            {index < 9 ? `0${index + 1}` : index + 1}
           </td>
+          <td>{item.idCode}</td>
           <td>{item.name}</td>
-          <td>{item.soPhong}</td>
-          <td style={{ display: "flex", justifyContent: "space-evenly" }}>
+          <td>{item.mota}</td>
+          <td>{strNgaySuDung}</td>
+          <td>{strNgatHethan}</td>
+          <td>{item.tuoiTho}</td>
+          {strTrangThai()}
+
+          {/* <td style={{ display: "flex", justifyContent: "space-evenly" }}> */}
+          <td className=" ">
             <NavLink
-              to={"/quan-ly/tang/update"}
+              to={"/quan-ly/phan-mem/update"}
               onClick={() => {
                 alert(`Update -- ${item.id}`);
                 // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
@@ -119,7 +125,7 @@ const PageQLTang = (props) => {
             >
               <button
                 type="button"
-                class="btn btn-primary mx-2 px-2"
+                className="btn btn-primary mx-2 px-2"
                 style={{ padding: "2px" }}
               >
                 <FaPencilAlt color="white" size={16} />
@@ -148,59 +154,9 @@ const PageQLTang = (props) => {
       );
     });
   };
-  //
-  const renderSelectTheoRouterKhuVuc = () => {
-    if (Object.keys(objKhuVuc).length === 0) {
-      // TH router all
-      return (
-        <div className="col-3 m-2">
-          <select
-            className="form-select"
-            aria-label="Default select example"
-            onChange={handleChangeSelect}
-            id="nameKV"
-          >
-            <option selected>tất cả</option>
-            {dataLocalKV.map((item, index) => {
-              return (
-                <option key={index} value={item.name}>
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-      );
-    }
-    return (
-      <div className="col-3 m-2">
-        <select
-          className="form-select"
-          aria-label="Default select example"
-          onChange={handleChangeSelect}
-          id="nameKV"
-        >
-          <option selected>{objKhuVuc.name}</option>
-          <option value="khuvuc_all"> tất cả </option>
-          {dataLocalKV.map((item, index) => {
-            return item.name === objKhuVuc.name ? (
-              <></>
-            ) : (
-              <option key={index} value={item.name}>
-                {item.name}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-    );
-  };
-  //
+
   // Mảng quản lý data navtab
-  let arrLinkNavTab = [
-    { name: "Quản lý khu vực", link: "../quan-ly/khu-vuc" },
-    { name: "Quản lý tầng", link: "" },
-  ];
+  let arrLinkNavTab = [{ name: "Quản lý thiết bị phần mềm", link: "" }];
   //
   return (
     <div className="container " style={{ height: "100vh" }}>
@@ -225,10 +181,11 @@ const PageQLTang = (props) => {
                 height: "6vh",
               }}
             >
-              <h2 style={{ margin: "0" }}>Danh sách tầng</h2>
+              <h2 style={{ margin: "0" }}>Danh sách phần mềm</h2>
               {/* input tim kiem */}
               <div style={{ display: "flex", alignItems: "center" }}>
-                {renderSelectTheoRouterKhuVuc()}
+                {renderSelectTheoRouterMon()}
+                {renderSelectTheoRouterMon()}
 
                 <div>
                   <input
@@ -238,7 +195,7 @@ const PageQLTang = (props) => {
                     id
                     placeholder="tìm kiếm..."
                     value={txtSearch}
-                    onChange={handleSearchChange}
+                    onChange={handleChangeSearch}
                   />
                 </div>
 
@@ -259,17 +216,22 @@ const PageQLTang = (props) => {
               <table className="table bg-white table-hover table-striped table-bordered ">
                 <thead>
                   <tr>
-                    <th scope="col">Mã tầng</th>
-                    <th scope="col">Tên tầng</th>
-                    <th scope="col">Số phòng</th>
-                    <th scope="col" style={{ width: "220px" }}>
-                      Hành động
+                    <th>STT</th>
+                    <th style={{ minWidth: "90px" }}>Mã phần mềm</th>
+                    <th style={{ minWidth: "120px" }}>Tên phần mềm</th>
+                    <th style={{ minWidth: "200px" }}>Mô tả</th>
+                    <th >Ngày cài đặt</th>
+                    <th >Ngày hết hạn </th>
+                    <th style={{ minWidth: "90px" }}>
+                      Hạn sử dụng(tháng)
                     </th>
+                    <th style={{ minWidth: "100px" }}>Trạng thái</th>
+                    <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
                 </thead>
                 <tbody className="over_flow_auto">
                   {/*  */}
-                  {renderDataTang()}
+                  {renderDataPM()}
                 </tbody>
               </table>
             </div>
@@ -280,6 +242,4 @@ const PageQLTang = (props) => {
       </div>
     </div>
   );
-};
-
-export default PageQLTang;
+}
