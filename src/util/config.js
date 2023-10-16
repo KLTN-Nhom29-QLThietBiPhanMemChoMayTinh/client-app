@@ -102,7 +102,7 @@ export const {
 const TOKEN_CYBERSOFT = 'z123456';
 
 export const http = axios.create({
-  baseURL:`https://shop.cyberlearn.vn/api`,
+  baseURL:`https://localhost:8080/api`,
   timeout:6000// thoi gian duy tri 600s
 })
 

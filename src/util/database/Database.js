@@ -1,10 +1,13 @@
 // const date = new Date(Math.floor(Math.random() * 5) + 2019,Math.floor(Math.random() * 12) + 1,Math.floor(Math.random() * 29) +1)
 
 const date1 = () => {
-  return new Date(Math.floor(Math.random() * 5) + 2019,Math.floor(Math.random() * 12) + 1,Math.floor(Math.random() * 29) +1)
+  return new Date(Math.floor(Math.random() * 5) + 2020,Math.floor(Math.random() * 12) + 1,Math.floor(Math.random() * 29) +1)
 }
 const date2 = () => {
   return new Date(2023,Math.floor(Math.random() * 10) + 1,Math.floor(Math.random() * 29) +1)
+}
+const date3 = () => {
+  return new Date(2024,Math.floor(Math.random() * 12) + 1,Math.floor(Math.random() * 29) +1)
 }
 
 
@@ -152,13 +155,15 @@ let arrPhongMay2 = [
 
 // 5.	Môn học (mã môn, tên môn , ngày bắt đầu môn, ngày kết thúc môn - so tuần)
 const dataMonHoc = [
-  {id:'MH001', name:'Lập trình www.', ngayBatDau: date2, soBuoi:15 },
-  {id:'MH002', name:'Lập trình java cơ bản', ngayBatDau: date2, soBuoi:15 },
-  {id:'MH003', name:'Mạng máy tính', ngayBatDau: date2, soBuoi:15 },
-  {id:'MH004', name:'Nhập môn lập trình', ngayBatDau: date2, soBuoi:15 },
-  {id:'MH005', name:'Lập trình hướng đối tượng', ngayBatDau: date2, soBuoi:15 },
-  {id:'MH006', name:'Lập trình hướng sự kiện.', ngayBatDau: date2, soBuoi:15 },
-  {id:'MH007', name:'Hệ cơ sở dữ liệu', ngayBatDau: date1, soBuoi:15 },
+  {idCode:'MH001', name:'Lập trình www.', ngayBatDau: date1(), soBuoi:20 },
+  {idCode:'MH002', name:'Lập trình java cơ bản', ngayBatDau: date3(), soBuoi:15 },
+  {idCode:'MH003', name:'Mạng máy tính', ngayBatDau: date2(), soBuoi:15 },
+  {idCode:'MH004', name:'Nhập môn lập trình', ngayBatDau: date2(), soBuoi:20 },
+  {idCode:'MH005', name:'Lập trình hướng đối tượng', ngayBatDau: date3(), soBuoi:15 },
+  {idCode:'MH006', name:'Lập trình hướng sự kiện.', ngayBatDau: date2(), soBuoi:13 },
+  {idCode:'MH007', name:'Hệ cơ sở dữ liệu', ngayBatDau: date3(), soBuoi:15 },
+  {idCode:'MH008', name:'Hệ thống máy tính', ngayBatDau: date3(), soBuoi:13 },
+  {idCode:'MH009', name:'Hệ thống máy tính', ngayBatDau: date1(), soBuoi:13 },
 ]
 const arrMonhoc1= [
   dataMonHoc[Math.floor(Math.random() * dataMonHoc.length)],
@@ -182,6 +187,5 @@ const dataPhanMem = [
   {id:5, idCode:'PM005', name:'Node js', mota:'MySQL là hệ quản trị cơ sở dữ liệu tự do nguồn mở phổ biến nhất thế giới và được các nhà phát triển rất ưa chuộng trong quá trình phát triển ứng dụng.', status:1, arrPhongMay: arrPhongMay1, arrMonhoc:arrMonhoc1 , ngaySuDung:date1(),tuoiTho:Math.floor(Math.random() * 24) + 12  },
   {id:6, idCode:'PM006', name:'Python 2.0', mota:'MySQL là hệ quản trị cơ sở dữ liệu tự do nguồn mở phổ biến nhất thế giới và được các nhà phát triển rất ưa chuộng trong quá trình phát triển ứng dụng.', status:1, arrPhongMay: arrPhongMay2, arrMonhoc:arrMonhoc2 , ngaySuDung:new Date(2021,10,2),tuoiTho:24  },
 ]
-console.log("🚀 ~ file: Database.js:170 ~ dataPhanMem:", dataPhanMem)
 
-export default { dataKhuVuc,dataPhongMay,dataTang,dataThietBi,dataPhanMem };
+export default { dataKhuVuc,dataPhongMay,dataTang,dataThietBi,dataPhanMem,dataMonHoc };

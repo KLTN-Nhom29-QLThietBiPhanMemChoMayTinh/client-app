@@ -119,7 +119,7 @@ const PageQLTang = (props) => {
             >
               <button
                 type="button"
-                class="btn btn-primary mx-2 px-2"
+                className="btn btn-primary mx-2 px-2"
                 style={{ padding: "2px" }}
               >
                 <FaPencilAlt color="white" size={16} />

@@ -37,3 +37,7 @@
     - FormAddPhong - Formupdate- can checkbox ALL
     - PageQLPhongMay - chua co sk  btn update - detail
     - PageQLPhanMem - chuc nang CRUD chua co gi
+    - PageQlMonHoc: Chuc nang CRUD chua co
+    - PageQlMonHoc can test lai cot trang thai
+
+
