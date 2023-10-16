@@ -4,8 +4,10 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./assets/scss/style.scss";
+import { createBrowserHistory } from "history";
+import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
 import Page404 from "./pages/Page404/Page404";
 import PageHome from "./pages/PageHome/PageHome";
 import PageQlKhuVuc from "./pages/PageQuanLy/PageQlKhuVuc";
@@ -22,10 +24,13 @@ import FormAddPhong from "./components/layout/FormAddPhong";
 import FormUpdatePhong from "./components/layout/FormUpdatePhong";
 import PageQLPhanMem from "./pages/PageQuanLy/PageQLPhanMem";
 
+export const history = createBrowserHistory();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <HistoryRouter history={history}>
+    {/* <BrowserRouter> */}
       <Routes>
         <Route path="" element={<App />}>
           <Route path="/" element={<PageHome />}>
@@ -62,10 +67,12 @@ root.render(
             <Route path=":id" element={<FormUpdatePhong />} ></Route>
           </Route>
           <Route path="/quan-ly/phan-mem" element={<PageQLPhanMem />}></Route>
+          {/* <Route path="/quan-ly/mon" element={<PageQlMonHoc />}></Route> */}
           <Route path="*" element={<Page404 />}></Route>
         </Route>
       </Routes>
-    </BrowserRouter>
+    {/* </BrowserRouter> */}
+    </HistoryRouter>
   </Provider>
 );
 

@@ -21,10 +21,11 @@
     - overFlow -z 
     - FormAddPhong - chua bat su kien cua checkbox - z
     - thêm phong phải them dược cac so may - so thiet bị - so phan mem -z
+    - chưa sử lý tgian hết hạn sử dụng của Tbi - PM (dang them +1 vao thang) - y
 
     - tìm kiếm -  detailKhuVuc chưa có gì
     - PageQLPhongMay - can 1 search theo status
     - Đăng nhập thêm checkbox - Đăng nhập với quyền quản lý 
     - FormAddPhong - Formupdate- can checkbox ALL
     - PageQLPhongMay - chua co sk  btn update - detail
-    - chưa sử lý tgian hết hạn sử dụng của Tbi - PM
+    - PageQLPhanMem - chuc nang CRUD chua co gi

@@ -24,10 +24,7 @@ const getCallApiDataPM = () => {
  */
 export default function PageQLPhanMem() {
   let [arrPhanMem, setArrPhanMem] = useState([]);
-  console.log(
-    "🚀 ~ file: PageQLPhanMem.jsx:28 ~ PageQLPhanMem ~ arrPhanMem:",
-    arrPhanMem
-  );
+
   let [txtSearch, setTxtSearch] = useState("");
 
   // useEffect lay data khoi dau
@@ -61,45 +58,32 @@ export default function PageQLPhanMem() {
     return <></>;
   };
   const renderDataPM = () => {
-    console.log("renderDataPM");
     return arrPhanMem.map((item, index) => {
-      console.log(
-        "🚀 ~ file: PageQLPhanMem.jsx:62 ~ returnarrPhanMem.map ~ item:",
-        item
-      );
-
       let ngaySuDung = item.ngaySuDung;
       let ngayHetHan = new Date(ngaySuDung);
 
       ngayHetHan.setMonth(ngayHetHan.getMonth() + item.tuoiTho);
-      console.log(
-        "🚀 ~ file: PageQLPhanMem.jsx:73 ~ returnarrPhanMem.map ~ ngayHetHan:",
-        ngayHetHan
-      );
 
-      let strNgaySuDung = `${item.ngaySuDung.getDate()}/${item.ngaySuDung.getMonth()+1}/${
-        item.ngaySuDung.getYear() + 1900
-      }`;
-      let strNgatHethan = `${ngayHetHan.getDate()}/${ngayHetHan.getMonth() +1}/${
-        ngayHetHan.getYear() + 1900
-      }`;
+      let strNgaySuDung = `${item.ngaySuDung.getDate()}/${
+        item.ngaySuDung.getMonth() + 1
+      }/${item.ngaySuDung.getYear() + 1900}`;
+      let strNgatHethan = `${ngayHetHan.getDate()}/${
+        ngayHetHan.getMonth() + 1
+      }/${ngayHetHan.getYear() + 1900}`;
       const strTrangThai = () => {
         let date = new Date();
         if (date <= ngayHetHan) {
-          date.setDate(date.getDate() + 30)
-          console.log(item.id);
-          console.log("🚀 ~ file: PageQLPhanMem.jsx:90 ~ strTrangThai ~ date:", date)
-          console.log("🚀 ~ file: PageQLPhanMem.jsx:90 ~ strTrangThai ~ ngayHetHan:", ngayHetHan)
-          console.log(ngayHetHan <= date);
-          if (ngayHetHan <= date ) {
-            return <td className="bg-warning">Sắp hết hạn</td>
+          date.setDate(date.getDate() + 30);
+
+          if (ngayHetHan <= date) {
+            return <td className="bg-warning">Sắp hết hạn</td>;
           }
-          return <td className="bg-success text-white ">Còn hạn sử dụng</td>
+          return <td className="bg-success text-white ">Còn hạn sử dụng</td>;
         }
-        return <td className="bg-danger">Hết hạn</td>
+        return <td className="bg-danger">Hết hạn</td>;
         // return <td className="bg-danger">Hết hạn sử dụng</td>
         // return <td className="bg-success text-white ">Còn hạn sử dụng</td>
-      } ;
+      };
 
       return (
         <tr key={index}>
@@ -117,9 +101,9 @@ export default function PageQLPhanMem() {
           {/* <td style={{ display: "flex", justifyContent: "space-evenly" }}> */}
           <td className=" ">
             <NavLink
-              to={"/quan-ly/phan-mem/update"}
+              // to={"/quan-ly/phan-mem/update"}
               onClick={() => {
-                alert(`Update -- ${item.id}`);
+                alert(`Update -- ${item.id} -- dang cập nhật!`);
                 // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
               }}
             >
@@ -133,7 +117,7 @@ export default function PageQLPhanMem() {
             </NavLink>
             <button
               onClick={() => {
-                alert(`Del -- ${item.id}`);
+                alert(`Del -- ${item.id} -- dang cập nhật!`);
               }}
               type="button"
               className="btn btn-danger mx-2 px-2"
@@ -142,7 +126,10 @@ export default function PageQLPhanMem() {
               <ImBin2 color="white" size={16} />
             </button>
             <NavLink
-              to={`../quan-ly/phong`}
+              // to={`../quan-ly/phong`}
+              onClick={() => {
+                alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
+              }}
               type="button"
               className="btn btn-info mx-2 px-2"
               style={{ padding: "2px" }}
@@ -201,7 +188,10 @@ export default function PageQLPhanMem() {
 
                 {/* Btn them */}
                 <NavLink
-                  to="/quan-ly/tang/add"
+                  // to="/quan-ly/tang/add"
+                  onClick={() => {
+                    alert(`tạo mới -- dang cập nhật!`);
+                  }}
                   type="button"
                   className="btn btn-success ms-5 view_center_vertical"
                 >
@@ -220,11 +210,9 @@ export default function PageQLPhanMem() {
                     <th style={{ minWidth: "90px" }}>Mã phần mềm</th>
                     <th style={{ minWidth: "120px" }}>Tên phần mềm</th>
                     <th style={{ minWidth: "200px" }}>Mô tả</th>
-                    <th >Ngày cài đặt</th>
-                    <th >Ngày hết hạn </th>
-                    <th style={{ minWidth: "90px" }}>
-                      Hạn sử dụng(tháng)
-                    </th>
+                    <th>Ngày cài đặt</th>
+                    <th>Ngày hết hạn </th>
+                    <th style={{ minWidth: "90px" }}>Hạn sử dụng(tháng)</th>
                     <th style={{ minWidth: "100px" }}>Trạng thái</th>
                     <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
