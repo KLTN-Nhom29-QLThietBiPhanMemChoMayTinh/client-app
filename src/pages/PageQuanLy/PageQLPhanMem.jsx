@@ -76,11 +76,11 @@ export default function PageQLPhanMem() {
           date.setDate(date.getDate() + 30);
 
           if (ngayHetHan <= date) {
-            return <td className="bg-warning">Sắp hết hạn</td>;
+            return <td style={{backgroundColor:'#fff563'}}>Sắp hết hạn</td>;
           }
-          return <td className="bg-success text-white ">Còn hạn sử dụng</td>;
+          return <td style={{backgroundColor:'#4dff7c'}}>Còn hạn sử dụng</td>;
         }
-        return <td className="bg-danger">Hết hạn</td>;
+        return <td style={{backgroundColor:'#ff6666'}}>Hết hạn</td>;
         // return <td className="bg-danger">Hết hạn sử dụng</td>
         // return <td className="bg-success text-white ">Còn hạn sử dụng</td>
       };

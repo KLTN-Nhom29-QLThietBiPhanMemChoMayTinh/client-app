@@ -151,14 +151,14 @@ let arrPhongMay2 = [
 
 
 // 5.	Môn học (mã môn, tên môn , ngày bắt đầu môn, ngày kết thúc môn - so tuần)
-const dataMonHoc = [{id:'MH001', name:'Lập trình www.', ngayBatDau: date2, tgianKetThuc:15 },
-  
-  {id:'MH002', name:'Lập trình java cơ bản', ngayBatDau: date2, tgianKetThuc:15 },
-  {id:'MH003', name:'Mạng máy tính', ngayBatDau: date2, tgianKetThuc:15 },
-  {id:'MH004', name:'Nhập môn lập trình', ngayBatDau: date2, tgianKetThuc:15 },
-  {id:'MH005', name:'Lập trình hướng đối tượng', ngayBatDau: date2, tgianKetThuc:15 },
-  {id:'MH006', name:'Lập trình hướng sự kiện.', ngayBatDau: date2, tgianKetThuc:15 },
-  {id:'MH007', name:'Hệ cơ sở dữ liệu', ngayBatDau: date1, tgianKetThuc:15 },
+const dataMonHoc = [
+  {id:'MH001', name:'Lập trình www.', ngayBatDau: date2, soBuoi:15 },
+  {id:'MH002', name:'Lập trình java cơ bản', ngayBatDau: date2, soBuoi:15 },
+  {id:'MH003', name:'Mạng máy tính', ngayBatDau: date2, soBuoi:15 },
+  {id:'MH004', name:'Nhập môn lập trình', ngayBatDau: date2, soBuoi:15 },
+  {id:'MH005', name:'Lập trình hướng đối tượng', ngayBatDau: date2, soBuoi:15 },
+  {id:'MH006', name:'Lập trình hướng sự kiện.', ngayBatDau: date2, soBuoi:15 },
+  {id:'MH007', name:'Hệ cơ sở dữ liệu', ngayBatDau: date1, soBuoi:15 },
 ]
 const arrMonhoc1= [
   dataMonHoc[Math.floor(Math.random() * dataMonHoc.length)],

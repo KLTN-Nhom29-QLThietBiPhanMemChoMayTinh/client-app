@@ -67,6 +67,17 @@ export const configs = {
   clearLocalStorage: (name) => {
     localStorage.removeItem(name);
   },
+  /**
+   * Format Date -> String 
+   * dd/mm/yyyy 
+   * @returns String
+   */
+  formatStringDate: (day = new Date()) => {
+    var date = day.getDate();
+    var month = day.getMonth() + 1;
+    var year = day.getYear();
+    return `${date<10? '0'+date: date}/${month<10? '0'+month: month}/${year + 1900}`;
+  },
   ACCESS_TOKEN: 'accessToken',
   USER_LOGIN:'userLogin'
 };
@@ -80,6 +91,7 @@ export const {
   getStoreJSON,
   clearCookie,
   clearLocalStorage,
+  formatStringDate,
   ACCESS_TOKEN,
   USER_LOGIN,
 } = configs;

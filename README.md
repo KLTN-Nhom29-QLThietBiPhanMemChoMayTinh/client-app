@@ -14,6 +14,14 @@
 ![QL khu vực](./AnhMinhHoa/img_QLKhuVuc_Form.png)
 
 
+### ảnh quản tầng
+![QL tầng](./AnhMinhHoa/img_QLTang.png)
+
+### ảnh quản môn học
+![QL môn](./AnhMinhHoa/img_QLMon.png)
+
+
+
 ## Note
     - cần sửa lại tabbar link chưa phù hợp - 90%
     - can tang khoang cach giua component - z (dang ep cứng khoang cach)

@@ -23,6 +23,7 @@ import DetailKhuVuc from "./components/layout/Detail/DetailKhuVuc";
 import FormAddPhong from "./components/layout/FormAddPhong";
 import FormUpdatePhong from "./components/layout/FormUpdatePhong";
 import PageQLPhanMem from "./pages/PageQuanLy/PageQLPhanMem";
+import PageQlMonHoc from "./pages/PageQuanLy/PageQlMonHoc";
 
 export const history = createBrowserHistory();
 
@@ -67,7 +68,7 @@ root.render(
             <Route path=":id" element={<FormUpdatePhong />} ></Route>
           </Route>
           <Route path="/quan-ly/phan-mem" element={<PageQLPhanMem />}></Route>
-          {/* <Route path="/quan-ly/mon" element={<PageQlMonHoc />}></Route> */}
+          <Route path="/quan-ly/mon" element={<PageQlMonHoc />}></Route>
           <Route path="*" element={<Page404 />}></Route>
         </Route>
       </Routes>
