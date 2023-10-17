@@ -30,7 +30,6 @@ const searchData = (arrData, valSearch, valSelect) => {
       formatStringDate(ngayKT).toLowerCase().includes(textSearch)
     );
   });
-  console.log(arrUpdate);
 
   // search -- select
   let day = new Date();
@@ -72,7 +71,7 @@ const initialState = {
       id: 1,
       idCode: "MH001",
       name: "Lập trình www.",
-      ngayBatDau: new Date(2022, 9, 9),
+      ngayBatDau: "02/02/1234",
       soBuoi: 15,
     },
   ],

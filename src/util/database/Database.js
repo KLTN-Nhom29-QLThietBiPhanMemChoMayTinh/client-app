@@ -128,13 +128,27 @@ const dataTang = [
   { id: 4, name: "Tầng 4", soPhong: 6 },
 ];
 
+const random1_0 = () => {
+  let x = Math.floor(Math.random() * 10);
+  if (x === 2|| x === 6 || x === 7) {
+    return 0
+  }
+  return 1
+}
 //8.	Thiết bị (mã thiết bị, tên thiết bị, trạng thái, ngày cài đặt, tuổi thọ)
 const dataThietBi = [
-  {id:1, idCode:"TBi001", name:'chuột HP', status:1, ngaySuDung: date1(), tuoiTho:36 },
-  {id:2, idCode:"TBi002", name:'Man hinh A', status:1, ngaySuDung: date1(), tuoiTho:Math.floor(Math.random() * 24) + 12 },
-  {id:3, idCode:"TBi003", name:'CPU 123', status:1, ngaySuDung: date1(), tuoiTho:Math.floor(Math.random() * 24) + 12 },
-  {id:4, idCode:"TBi004", name:'SSD-1TB', status:1, ngaySuDung: date1(), tuoiTho:Math.floor(Math.random() * 24) + 12 },
-  {id:5, idCode:"TBi005", name:'CORE - 1', status:1, ngaySuDung: date1(), tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:1, idCode:"TBi001", name:'chuột HP', status:random1_0(), ngaySuDung: date1()+"", tuoiTho:36 },
+  {id:2, idCode:"TBi002", name:'Man hinh A', status:random1_0(), ngaySuDung: date2()+"", tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:3, idCode:"TBi003", name:'CPU 123', status:random1_0(), ngaySuDung: date3()+"", tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:4, idCode:"TBi004", name:'SSD-1TB', status:random1_0(), ngaySuDung: date1()+"", tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:5, idCode:"TBi005", name:'RAM Kingston 8GB ', status:random1_0(), ngaySuDung: date3()+"", tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:6, idCode:"TBi006", name:'RAM PC Fury', status:random1_0(), ngaySuDung: date2()+"", tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:7, idCode:"TBi007", name:'SSD Kingston XS1000', status:random1_0(), ngaySuDung: date2()+"", tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:8, idCode:"TBi008", name:'Card GeForce GT 1030', status:random1_0(), ngaySuDung: date1()+"", tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:9, idCode:"TBi009", name:' SSD/HDD Orico 25PW1-U3-BK', status:random1_0(), ngaySuDung: date1()+"", tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:10, idCode:"TBi010", name:'CORE - 1', status:random1_0(), ngaySuDung: date2()+"", tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:11, idCode:"TBi011", name:'CORE - 1', status:random1_0(), ngaySuDung: date1()+"", tuoiTho:Math.floor(Math.random() * 24) + 12 },
+  {id:12, idCode:"TBi012", name:'CORE - 1', status:random1_0(), ngaySuDung: 'Tue Oct 28 2021 16:38:31 GMT+0700 (GMT+07:00)', tuoiTho:24 },
 ]
 
 let arrPhongMay1 = [
