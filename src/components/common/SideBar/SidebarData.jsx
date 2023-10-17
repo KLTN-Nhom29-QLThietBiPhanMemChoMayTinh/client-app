@@ -25,7 +25,7 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: 'Khu vực',
+        title: 'tòa nhà',
         path: '/quan-ly/khu-vuc',
         icon: <FaIcons.FaMapMarkedAlt style={{marginBottom:'6px', fontSize:'25px'}} />
       },

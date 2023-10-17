@@ -102,7 +102,7 @@ const PageQlKhuVuc = (props) => {
     });
   };
   // Mảng quản lý data navtab
-  let arrLinkNavTab = [{ name: "Quản lý khu vực", link: "" }];
+  let arrLinkNavTab = [{ name: "Quản lý tòa nhà", link: "" }];
   return (
     <div className="container " style={{ height: "100vh" }}>
       <div
@@ -127,7 +127,7 @@ const PageQlKhuVuc = (props) => {
                 height: "5vh",
               }}
             >
-              <h2 style={{ margin: "0" }}>Danh sách khu vực</h2>
+              <h2 style={{ margin: "0" }}>Danh sách tòa nhà</h2>
               {/* input tim kiem */}
               <div style={{ display: "flex", alignItems: "center" }}>
                 <div>
@@ -162,8 +162,8 @@ const PageQlKhuVuc = (props) => {
               >
                 <thead>
                   <tr>
-                    <th scope="col">Mã khu vực</th>
-                    <th scope="col">Tên khu vực</th>
+                    <th scope="col">Mã tòa nhà</th>
+                    <th scope="col">Tên tòa nhà</th>
                     <th scope="col">Số tầng</th>
                     <th scope="col" style={{width:'220px'}} >Hành động</th>
                   </tr>

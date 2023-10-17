@@ -8,17 +8,20 @@
 ![QL Phòng](./AnhMinhHoa/img_QLPhong.png)
 ![QL Phòng](./AnhMinhHoa/img_QLPhong_Form.png)
 
-### ảnh quản khu vực
+### ảnh quản lý khu vực
 ![QL khu vực](./AnhMinhHoa/img_QLKhuVuc.png)
 ![QL khu vực](./AnhMinhHoa/img_Detail_KhuVuc.png)
 ![QL khu vực](./AnhMinhHoa/img_QLKhuVuc_Form.png)
 
 
-### ảnh quản tầng
+### ảnh quản lý tầng
 ![QL tầng](./AnhMinhHoa/img_QLTang.png)
 
-### ảnh quản môn học
+### ảnh quản lý môn học
 ![QL môn](./AnhMinhHoa/img_QLMon.png)
+
+### ảnh quản lý Thiết bị
+![QL môn](./AnhMinhHoa/img_QLThietbi.png)
 
 
 
@@ -36,6 +39,7 @@
     - Đăng nhập thêm checkbox - Đăng nhập với quyền quản lý 
     - FormAddPhong - Formupdate- can checkbox ALL
     - PageQLPhongMay - chua co sk  btn update - detail
+    - PageQLPhongMay - chua co ai quan ly o do
     - PageQLPhanMem - chuc nang CRUD chua co gi
     - PageQlMonHoc: Chuc nang CRUD chua co
     - PageQlMonHoc can test lai cot trang thai
