@@ -155,15 +155,15 @@ let arrPhongMay2 = [
 
 // 5.	Môn học (mã môn, tên môn , ngày bắt đầu môn, ngày kết thúc môn - so tuần)
 const dataMonHoc = [
-  {idCode:'MH001', name:'Lập trình www.', ngayBatDau: date1(), soBuoi:20 },
-  {idCode:'MH002', name:'Lập trình java cơ bản', ngayBatDau: date3(), soBuoi:15 },
-  {idCode:'MH003', name:'Mạng máy tính', ngayBatDau: date2(), soBuoi:15 },
-  {idCode:'MH004', name:'Nhập môn lập trình', ngayBatDau: date2(), soBuoi:20 },
-  {idCode:'MH005', name:'Lập trình hướng đối tượng', ngayBatDau: date3(), soBuoi:15 },
-  {idCode:'MH006', name:'Lập trình hướng sự kiện.', ngayBatDau: date2(), soBuoi:13 },
-  {idCode:'MH007', name:'Hệ cơ sở dữ liệu', ngayBatDau: date3(), soBuoi:15 },
-  {idCode:'MH008', name:'Hệ thống máy tính', ngayBatDau: date3(), soBuoi:13 },
-  {idCode:'MH009', name:'Hệ thống máy tính', ngayBatDau: date1(), soBuoi:13 },
+  {idCode:'MH001', name:'Lập trình www.', ngayBatDau: date1()+"", soBuoi:20 },
+  {idCode:'MH002', name:'Lập trình java cơ bản', ngayBatDau: date3()+"", soBuoi:15 },
+  {idCode:'MH003', name:'Mạng máy tính', ngayBatDau: date2()+"", soBuoi:15 },
+  {idCode:'MH004', name:'Nhập môn lập trình', ngayBatDau: date2()+"", soBuoi:20 },
+  {idCode:'MH005', name:'Lập trình hướng đối tượng', ngayBatDau: date3()+"", soBuoi:15 },
+  {idCode:'MH006', name:'Lập trình hướng sự kiện.', ngayBatDau: date2()+"", soBuoi:13 },
+  {idCode:'MH007', name:'Hệ cơ sở dữ liệu', ngayBatDau: date3()+"", soBuoi:15 },
+  {idCode:'MH008', name:'Hệ thống máy tính', ngayBatDau: date3()+"", soBuoi:13 },
+  {idCode:'MH009', name:'Hệ thống máy tính', ngayBatDau: date1()+"", soBuoi:13 },
 ]
 const arrMonhoc1= [
   dataMonHoc[Math.floor(Math.random() * dataMonHoc.length)],

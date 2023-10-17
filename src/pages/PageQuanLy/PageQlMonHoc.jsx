@@ -35,8 +35,7 @@ export default function PageQlMonHoc() {
   const renderDataMon = () => {
 
     return arrMonHoc?.map((item, index) => {
-      console.log("🚀 ~ file: PageQlMonHoc.jsx:38 ~ returnarrMonHoc?.map ~ item:", item)
-      let ngayBD = item?.ngayBatDau;
+      let ngayBD = new Date(item?.ngayBatDau);
       let ngayKT = new Date(ngayBD);
 
       ngayKT.setDate(ngayKT.getDate() + item?.soBuoi * 7);
@@ -61,7 +60,7 @@ export default function PageQlMonHoc() {
           <td>{item?.idCode}</td>
           <td>{item?.name}</td>
           <td>{item?.soBuoi}</td>
-          <td>{formatStringDate(item?.ngayBatDau)}</td>
+          <td>{formatStringDate(ngayBD)}</td>
           <td>{formatStringDate(ngayKT)}</td>
           {renderTrangThai()}
 
@@ -147,7 +146,7 @@ export default function PageQlMonHoc() {
                     name
                     id
                     placeholder="tìm kiếm..."
-                    // value={txtSearch}
+                    value={txtSearch}
                     onChange={handleChangeSearch}
                   />
                 </div>
