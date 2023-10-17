@@ -11,15 +11,12 @@ import Footer from "../../components/common/Footer/Footer";
 import Database from "../../util/database/Database";
 import { formatStringDate } from "../../util/config";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMonHoc, setArrMonHocSortAction } from "../../redux/reducers/monHocReducer";
+import { getAllMonHoc, setValueSelectAction, setValueTxtSearchAction } from "../../redux/reducers/monHocReducer";
 
 export default function PageQlMonHoc() {
   const dispatch = useDispatch();
 
-  let [txtSearch, setTxtSearch] = useState("");
-  console.log(txtSearch);
-
-  let { arrMonHoc,arrMonHocSort } = useSelector((state) => state.monHocReducer);
+  let { arrMonHocSort } = useSelector((state) => state.monHocReducer);
 
   // useEffect -- call data mon hoc
   useEffect(() => {
@@ -27,19 +24,16 @@ export default function PageQlMonHoc() {
     dispatch(action);
   }, []);
 
-  useEffect(()=>{
-    // filterData();
-    const action = setArrMonHocSortAction(txtSearch)
-    dispatch(action);
-  }, [txtSearch])
-
-
-  //search 
 
   //handle
   const handleChangeSearch = (e) => {
-    setTxtSearch(e.target.value);
+    dispatch(setValueTxtSearchAction(e.target.value.trim()));
+
   };
+  const handleChangeSelectAction = (e) => {
+    dispatch(setValueSelectAction(e.target.value.trim()));
+
+  }
 
   //render
   const renderDataMon = () => {
@@ -116,6 +110,18 @@ export default function PageQlMonHoc() {
       );
     });
   };
+  const renderSelectTrangThai = () => {
+    return (
+        <div className=" col-2 m-2 ">
+          <select className="form-select " name=""  id="" onChange={handleChangeSelectAction}>
+            <option value='0'>Toàn bộ</option>
+            <option value="1">Kết thúc</option>
+            <option value="2">Chờ mở lớp</option>
+            <option value="3">Đang học</option>
+          </select>
+        </div>
+    )
+  }
 
   // Mảng quản lý data navtab
   let arrLinkNavTab = [{ name: "Quản lý môn học", link: "" }];
@@ -136,19 +142,18 @@ export default function PageQlMonHoc() {
             {/* Phần top với tiêu đề và thanh tìm kiếm - btn thêm */}
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
                 marginBottom: "20px",
                 height: "6vh",
               }}
+              className="d-flex justify-content-between align-items-center"
             >
               <h2 style={{ margin: "0" }}>Danh sách môn học</h2>
+              <div></div>
+                {renderSelectTrangThai()}
               {/* input tim kiem */}
               <div style={{ display: "flex", alignItems: "center" }}>
                 {/* {renderSelectTheoRouterMon()}
                 {renderSelectTheoRouterMon()} */}
-
                 <div>
                   <input
                     type="text"
@@ -167,7 +172,7 @@ export default function PageQlMonHoc() {
                     alert(`tạo mới -- dang cập nhật!`);
                   }}
                   type="button"
-                  className="btn btn-success ms-5 view_center_vertical"
+                  className="btn btn-success ms-4 view_center_vertical"
                 >
                   <MdAdd color="white" size={25} />
                   Tạo mới
