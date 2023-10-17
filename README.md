@@ -43,6 +43,6 @@
     - PageQLPhanMem - chuc nang CRUD chua co gi
     - PageQlMonHoc: Chuc nang CRUD chua co
     - PageQlMonHoc can test lai cot trang thai
-
+    - PageQLThietBi: Chuc nang CRUD chua co
 ## error
 ![image err](./AnhMinhHoa/img_error.png)

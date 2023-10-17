@@ -113,7 +113,7 @@ export default function PageQlMonHoc() {
   const renderSelectTrangThai = () => {
     return (
         <div className=" col-2 m-2 ">
-          <select className="form-select " name=""  id="" onChange={handleChangeSelectAction}>
+          <select className="form-select " onChange={handleChangeSelectAction}>
             <option value='0'>Toàn bộ</option>
             <option value="1">Kết thúc</option>
             <option value="2">Chờ mở lớp</option>
@@ -149,12 +149,11 @@ export default function PageQlMonHoc() {
             >
               <h2 style={{ margin: "0" }}>Danh sách môn học</h2>
               <div></div>
+
+              {/* select - option */}
                 {renderSelectTrangThai()}
               {/* input tim kiem */}
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {/* {renderSelectTheoRouterMon()}
-                {renderSelectTheoRouterMon()} */}
-                <div>
+               <div>
                   <input
                     type="text"
                     className="form-control"
@@ -166,6 +165,7 @@ export default function PageQlMonHoc() {
                 </div>
 
                 {/* Btn them */}
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <NavLink
                   // to="/quan-ly/tang/add"
                   onClick={() => {
