@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 //
 import { FaPencilAlt } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
@@ -11,20 +11,30 @@ import Footer from "../../components/common/Footer/Footer";
 import Database from "../../util/database/Database";
 import { formatStringDate } from "../../util/config";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMonHoc } from "../../redux/reducers/monHocReducer";
+import { getAllMonHoc, setArrMonHocSortAction } from "../../redux/reducers/monHocReducer";
 
 export default function PageQlMonHoc() {
   const dispatch = useDispatch();
 
   let [txtSearch, setTxtSearch] = useState("");
+  console.log(txtSearch);
 
-  let { arrMonHoc } = useSelector((state) => state.monHocReducer);
+  let { arrMonHoc,arrMonHocSort } = useSelector((state) => state.monHocReducer);
 
   // useEffect -- call data mon hoc
   useEffect(() => {
     const action = getAllMonHoc;
     dispatch(action);
   }, []);
+
+  useEffect(()=>{
+    // filterData();
+    const action = setArrMonHocSortAction(txtSearch)
+    dispatch(action);
+  }, [txtSearch])
+
+
+  //search 
 
   //handle
   const handleChangeSearch = (e) => {
@@ -34,7 +44,7 @@ export default function PageQlMonHoc() {
   //render
   const renderDataMon = () => {
 
-    return arrMonHoc?.map((item, index) => {
+    return arrMonHocSort?.map((item, index) => {
       let ngayBD = new Date(item?.ngayBatDau);
       let ngayKT = new Date(ngayBD);
 
@@ -143,10 +153,9 @@ export default function PageQlMonHoc() {
                   <input
                     type="text"
                     className="form-control"
-                    name
                     id
                     placeholder="tìm kiếm..."
-                    value={txtSearch}
+                    // value={txtSearch}
                     onChange={handleChangeSearch}
                   />
                 </div>
