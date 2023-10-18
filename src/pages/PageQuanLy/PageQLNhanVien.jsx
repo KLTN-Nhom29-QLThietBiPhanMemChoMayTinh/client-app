@@ -12,80 +12,77 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllNhanVienApi } from "../../redux/reducers/nhanVienReducer";
 
 export default function PageQLNhanVien() {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
+  const { arrNhanVienSearch } = useSelector((state) => state.nhanVienReducer);
 
-    const {arrNhanVienSearch} = useSelector(state => state.nhanVienReducer);
+  useEffect(() => {
+    dispatch(getAllNhanVienApi);
+  }, []);
 
-    useEffect(() => {
-        dispatch(getAllNhanVienApi)
-    }, [])
+  //handle
+  const handleChangeSearch = (e) => {};
+  //render
+  const renderDataNhanVien = () => {
+    // let item = {id: 2, idCode: 'NV0002', name: 'Trần Thị Lê', ngaySinh: 'Sun Jan 10 1982 00:00:00 GMT+0700 (GMT+07:00)', sdt: '0951753133',email:"O8tCSZpcx@gmail.com"}
+    // let index =1;
+    return arrNhanVienSearch.map((item, index) => {
+      let ngaySinh = new Date(item.ngaySinh);
+      return (
+        <tr key={index}>
+          <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
+            {index < 9 ? `0${index + 1}` : index + 1}
+          </td>
+          <td>{item?.idCode}</td>
+          <td>{item?.name}</td>
+          <td>{ngaySinh.getYear() + 1900}</td>
+          <td>{item?.sdt}</td>
+          <td>{item?.email}</td>
 
-    //handle 
-    const handleChangeSearch = (e) => {
+          <td style={{ display: "flex", justifyContent: "space-evenly" }}>
+            <NavLink
+              // to={"/quan-ly/phan-mem/update"}
+              onClick={() => {
+                alert(`Update -- ${item.id} -- dang cập nhật!`);
+                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
+              }}
+            >
+              <button
+                type="button"
+                className="btn btn-primary mx-2 px-2"
+                style={{ padding: "2px" }}
+              >
+                <FaPencilAlt color="white" size={16} />
+              </button>
+            </NavLink>
+            <button
+              onClick={() => {
+                alert(`Del -- ${item.id} -- dang cập nhật!`);
+              }}
+              type="button"
+              className="btn btn-danger mx-2 px-2"
+              style={{ padding: "2px" }}
+            >
+              <ImBin2 color="white" size={16} />
+            </button>
+            <NavLink
+              // to={`../quan-ly/phong`}
+              onClick={() => {
+                alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
+              }}
+              type="button"
+              className="btn btn-info mx-2 px-2"
+              style={{ padding: "2px" }}
+            >
+              <BiSolidDetail color="white" size={16} />
+            </NavLink>
+          </td>
+        </tr>
+      );
+    });
+  };
 
-    }
-    //render
-    const renderDataNhanVien = () => {
-        let item = {id: 2, idCode: 'NV0002', name: 'Trần Thị Lê', ngaySinh: 'Sun Jan 10 1982 00:00:00 GMT+0700 (GMT+07:00)', sdt: '0951753133',email:"O8tCSZpcx@gmail.com"}
-        let index =1;
-
-        let ngaySinh = new Date(item.ngaySinh);
-        return (
-            <tr key={index}>
-              <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
-                {index < 9 ? `0${index + 1}` : index + 1}
-              </td>
-              <td>{item?.idCode}</td>
-              <td>{item?.name}</td>
-              <td>{ngaySinh.getYear() + 1900}</td>
-              <td>{item?.sdt}</td>
-              <td>{item?.email}</td>
-              
-              <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-                <NavLink
-                  // to={"/quan-ly/phan-mem/update"}
-                  onClick={() => {
-                    alert(`Update -- ${item.id} -- dang cập nhật!`);
-                    // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-                  }}
-                >
-                  <button
-                    type="button"
-                    className="btn btn-primary mx-2 px-2"
-                    style={{ padding: "2px" }}
-                  >
-                    <FaPencilAlt color="white" size={16} />
-                  </button>
-                </NavLink>
-                <button
-                  onClick={() => {
-                    alert(`Del -- ${item.id} -- dang cập nhật!`);
-                  }}
-                  type="button"
-                  className="btn btn-danger mx-2 px-2"
-                  style={{ padding: "2px" }}
-                >
-                  <ImBin2 color="white" size={16} />
-                </button>
-                <NavLink
-                  // to={`../quan-ly/phong`}
-                  onClick={() => {
-                    alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
-                  }}
-                  type="button"
-                  className="btn btn-info mx-2 px-2"
-                  style={{ padding: "2px" }}
-                >
-                  <BiSolidDetail color="white" size={16} />
-                </NavLink>
-              </td>
-            </tr>
-          );
-
-    }
-
-      // Mảng quản lý data navtab
+  // Mảng quản lý data navtab
   let arrLinkNavTab = [{ name: "Quản lý nhân viên", link: "" }];
   //
   return (
@@ -170,5 +167,5 @@ export default function PageQLNhanVien() {
         <Footer />
       </div>
     </div>
-  )
+  );
 }

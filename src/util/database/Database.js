@@ -29,7 +29,24 @@ const random_email = () => {
     }
     return result+'@gmail.com';
 
-  return "0951753"+Math.floor(Math.random() * 899)+100;
+}
+const full_name = [
+  'Nguyễn Văn Bảo',
+  'Nguyễn Thị Hà',
+  'Nguyễn Văn Cỗi',
+  'Trần Văn Bình',
+  'Trần Văn Ba',
+  'Trần Thị Hiền',
+  'Lê Đức Thọ',
+  'Lê Bảo Bình',
+  'Phạm Công Thành',
+  'Chương Thị Hảo',
+  'Võ Tắc Chí',
+  'Vũ Thị Mai',
+  'Vũ Thị Chung',
+]
+const random_fullName = () => {
+  return full_name[Math.floor(Math.random()*full_name.length)]
 }
 
 
@@ -226,15 +243,15 @@ const dataPhanMem = [
 
 //
 const dataNhanVien = [
-  {id:1, idCode:'NV0001', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
-  {id:2, idCode:'NV0002', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
-  {id:3, idCode:'NV0003', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
-  {id:4, idCode:'NV0004', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
-  {id:5, idCode:'NV0005', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
-  {id:6, idCode:'NV0006', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
-  {id:7, idCode:'NV0007', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
-  {id:8, idCode:'NV0008', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
-  {id:9, idCode:'NV0009', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:1, idCode:'NV0001', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:2, idCode:'NV0002', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:3, idCode:'NV0003', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:4, idCode:'NV0004', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:5, idCode:'NV0005', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:6, idCode:'NV0006', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:7, idCode:'NV0007', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:8, idCode:'NV0008', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:9, idCode:'NV0009', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
 ]
 // console.log("🚀 ~ file: Database.js:239 ~ dataNhanVien:", dataNhanVien[1])
 
