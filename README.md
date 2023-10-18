@@ -21,13 +21,21 @@
 ![QL môn](./AnhMinhHoa/img_QLMon.png)
 
 ### ảnh quản lý Thiết bị
-![QL môn](./AnhMinhHoa/img_QLThietbi.png)
+![QL Thiết bị](./AnhMinhHoa/img_QLThietbi.png)
 
 ### ảnh quản lý Nhân viên
-![QL môn](./AnhMinhHoa/img_QLNhanVien.png)
+![QL Nhân viên](./AnhMinhHoa/img_QLNhanVien.png)
 
-### ảnh quản lý Nhân viên
-![QL môn](./AnhMinhHoa/img_QLKhoa.png)
+### ảnh quản lý Khoa
+![QL Khoa](./AnhMinhHoa/img_QLKhoa.png)
+
+### ảnh quản lý Giáo viên
+![QL Giáo viên](./AnhMinhHoa/img_QLGiaoVien.png)
+
+### ảnh quản lý tai khoan
+![QL tai khoan](./AnhMinhHoa/img_QLTaiKhoan.png)
+
+
 
 
 

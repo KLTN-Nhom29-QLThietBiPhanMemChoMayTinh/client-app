@@ -19,7 +19,8 @@ export default function PageQLGiaoVien() {
   const { arrGiaoVienSearch } = useSelector((state) => state.giaoVienReducer);
 
   useEffect(() => {
-    dispatch(getAllGiaoVienApi);
+    const action = getAllGiaoVienApi;
+      dispatch(action);
   }, []);
 
   //handle
@@ -151,7 +152,7 @@ export default function PageQLGiaoVien() {
 
             {/* Bảng danh sách data */}
             <div className="table-responsive" style={{ height: "69vh" }}>
-              <table className="table bg-white table-hover table-striped table-bordered ">
+              <table className="table bg-white table-hover table-striped table-bordered align-middle">
                 <thead>
                   <tr>
                     <th>STT</th>

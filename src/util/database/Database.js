@@ -287,6 +287,65 @@ const dataKhoa = [
   {id:5, idCode:'KH0005', name:'Trí tuệ nhân tạo', soGiaoVien:Math.floor(Math.random()*10)+10,truongKhoa:dataGiaoVien[4]},
 ]
 // console.log("🚀 ~ file: Database.js:262 ~ dataKhoa:", dataKhoa)
+const dataQuyen = [
+  {id:1, idCode:'QN0001', mota:'Giáo viên'},
+  {id:2, idCode:'QN0002', mota:'Nhân viên hệ thống'},
+  {id:3, idCode:'QN0003', mota:'Nhân viên bảo trì'},
+  {id:4, idCode:'QN0004', mota:'Nhân viên Quản lý'},
+]
+const random_quyen = (val) => {
+  let a = Math.floor(Math.random()*8)+1;
+  if (val === 0) {
+    return dataQuyen[0];
+  }
+  if (a % 3 === 0) {
+    return dataQuyen[3];
+  }
+  else if (a%3 === 1) {
+      return dataQuyen[1];
+  }
+  else if (a%3 === 2) {
+      return dataQuyen[2];
+  }
+return a
+}
+const random_username = () => {
+
+    let result = '';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const charactersLength = characters.length;
+      let max = Math.floor(Math.random() * 4)+8;
+      let counter = 0;
+      while (counter < max) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
+      }
+      return result;
+  
+}
+
+// 
+const random_GV = () => {
+  let a = Math.floor(Math.random()*dataGiaoVien.length);
+  return dataGiaoVien[a];
+}
+const random_NV = () => {
+  let a = Math.floor(Math.random()*dataNhanVien.length);
+  return dataNhanVien[a];
+}
+
+//
+const dataTaiKhoan = [
+  {id:1, idCode:'TK0001', userName:random_username(), password:'11111111', mota: random_GV(), quyen: random_quyen(0) },
+  {id:2, idCode:'TK0002', userName:random_username(), password:'11111111', mota: random_NV(), quyen: random_quyen() },
+  {id:3, idCode:'TK0003', userName:random_username(), password:'11111111', mota: random_NV(), quyen: random_quyen() },
+  {id:4, idCode:'TK0004', userName:random_username(), password:'11111111', mota: random_NV(), quyen: random_quyen() },
+  {id:5, idCode:'TK0005', userName:random_username(), password:'11111111', mota: random_GV(), quyen: random_quyen(0) },
+  {id:6, idCode:'TK0006', userName:random_username(), password:'11111111', mota: random_NV(), quyen: random_quyen() },
+  {id:7, idCode:'TK0007', userName:random_username(), password:'11111111', mota: random_GV(), quyen: random_quyen(0) },
+  {id:8, idCode:'TK0008', userName:random_username(), password:'11111111', mota: random_NV(), quyen: random_quyen() },
+  {id:9, idCode:'TK0009', userName:random_username(), password:'11111111', mota: random_GV(), quyen: random_quyen(0) },
+]
 
 
 
@@ -299,5 +358,6 @@ export default {
   dataMonHoc, 
   dataNhanVien, 
   dataGiaoVien, 
-  dataKhoa 
+  dataKhoa,
+  dataTaiKhoan,
 };

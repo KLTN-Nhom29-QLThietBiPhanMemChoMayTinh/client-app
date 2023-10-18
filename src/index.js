@@ -28,6 +28,7 @@ import PageQLThietBi from "./pages/PageQuanLy/PageQLThietBi";
 import PageQLNhanVien from "./pages/PageQuanLy/PageQLNhanVien";
 import PageQLKhoa from "./pages/PageQuanLy/PageQLKhoa";
 import PageQLGiaoVien from "./pages/PageQuanLy/PageQLGiaoVien";
+import PageQLTaiKhoan from "./pages/PageQuanLy/PageQLTaiKhoan";
 
 export const history = createBrowserHistory();
 
@@ -77,6 +78,7 @@ root.render(
           <Route path="/quan-ly/nhan-vien" element={<PageQLNhanVien />}></Route>
           <Route path="/quan-ly/khoa" element={<PageQLKhoa />}></Route>
           <Route path="/quan-ly/giao-vien" element={<PageQLGiaoVien />}></Route>
+          <Route path="/quan-ly/tai-khoan" element={<PageQLTaiKhoan />}></Route>
           <Route path="*" element={<Page404 />}></Route>
         </Route>
       </Routes>
