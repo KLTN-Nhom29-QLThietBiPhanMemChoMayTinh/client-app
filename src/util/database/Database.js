@@ -9,6 +9,28 @@ const date2 = () => {
 const date3 = () => {
   return new Date(2024,Math.floor(Math.random() * 12) + 1,Math.floor(Math.random() * 29) +1)
 }
+const date_NgaySinh = () => {
+  return new Date(Math.floor(Math.random() * 20) + 1970,Math.floor(Math.random() * 12) + 1,Math.floor(Math.random() * 29) +1)
+}
+
+const random_sdt = () => {
+  return "0951753"+(Math.floor(Math.random() * 899)+100);
+}
+const random_email = () => {
+
+  let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let max = Math.floor(Math.random() * 4)+6;
+    let counter = 0;
+    while (counter < max) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result+'@gmail.com';
+
+  return "0951753"+Math.floor(Math.random() * 899)+100;
+}
 
 
 const dataKhuVuc = [
@@ -201,5 +223,19 @@ const dataPhanMem = [
   {id:5, idCode:'PM005', name:'Node js', mota:'MySQL là hệ quản trị cơ sở dữ liệu tự do nguồn mở phổ biến nhất thế giới và được các nhà phát triển rất ưa chuộng trong quá trình phát triển ứng dụng.', status:1, arrPhongMay: arrPhongMay1, arrMonhoc:arrMonhoc1 , ngaySuDung:date1(),tuoiTho:Math.floor(Math.random() * 24) + 12  },
   {id:6, idCode:'PM006', name:'Python 2.0', mota:'MySQL là hệ quản trị cơ sở dữ liệu tự do nguồn mở phổ biến nhất thế giới và được các nhà phát triển rất ưa chuộng trong quá trình phát triển ứng dụng.', status:1, arrPhongMay: arrPhongMay2, arrMonhoc:arrMonhoc2 , ngaySuDung:new Date(2021,10,2),tuoiTho:24  },
 ]
+
+//
+const dataNhanVien = [
+  {id:1, idCode:'NV0001', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:2, idCode:'NV0002', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:3, idCode:'NV0003', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:4, idCode:'NV0004', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:5, idCode:'NV0005', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:6, idCode:'NV0006', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:7, idCode:'NV0007', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:8, idCode:'NV0008', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+  {id:9, idCode:'NV0009', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
+]
+console.log("🚀 ~ file: Database.js:239 ~ dataNhanVien:", dataNhanVien[1])
 
 export default { dataKhuVuc,dataPhongMay,dataTang,dataThietBi,dataPhanMem,dataMonHoc };

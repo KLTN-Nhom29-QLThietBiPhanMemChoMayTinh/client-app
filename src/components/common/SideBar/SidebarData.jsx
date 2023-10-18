@@ -1,20 +1,21 @@
 import React from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as Fa6Icons from 'react-icons/fa6';
-import * as AiIcons from 'react-icons/ai';
+import {AiTwotoneHome} from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
 import * as LiaIcons from 'react-icons/lia';
 import * as MdIcons from 'react-icons/md';
 import * as Si from 'react-icons/si';
 import * as PiIcons from 'react-icons/pi';
+import {FaUserFriends} from 'react-icons/fa'
 
 export const SidebarData = [
     
   {
     title: 'Trang chủ',
     path: '/detail-khu-vuc/1',
-    icon: <AiIcons.AiTwotoneHome style={{marginBottom:'6px', fontSize:'25px'}} />
+    icon: <AiTwotoneHome style={{marginBottom:'6px', fontSize:'25px'}} />
   },
   {
     title: 'Quản Lý',
@@ -25,7 +26,7 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: 'tòa nhà',
+        title: 'Tòa nhà',
         path: '/quan-ly/khu-vuc',
         icon: <FaIcons.FaMapMarkedAlt style={{marginBottom:'6px', fontSize:'25px'}} />
       },
@@ -63,6 +64,11 @@ export const SidebarData = [
         title: 'Giáo viên',
         path: '/quan-ly/giao-vien',
         icon: <LiaIcons.LiaChalkboardTeacherSolid style={{marginBottom:'6px', fontSize:'25px'}} />
+      },
+      {
+        title: 'Nhân viên',
+        path: '/quan-ly/nhan-vien',
+        icon: <FaUserFriends style={{marginBottom:'6px', fontSize:'25px'}} />
       }
 
     ]
