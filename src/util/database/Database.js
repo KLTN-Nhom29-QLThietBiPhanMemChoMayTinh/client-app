@@ -236,6 +236,6 @@ const dataNhanVien = [
   {id:8, idCode:'NV0008', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
   {id:9, idCode:'NV0009', name:"Trần Thị Lê", ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
 ]
-console.log("🚀 ~ file: Database.js:239 ~ dataNhanVien:", dataNhanVien[1])
+// console.log("🚀 ~ file: Database.js:239 ~ dataNhanVien:", dataNhanVien[1])
 
-export default { dataKhuVuc,dataPhongMay,dataTang,dataThietBi,dataPhanMem,dataMonHoc };
+export default { dataKhuVuc,dataPhongMay,dataTang,dataThietBi,dataPhanMem,dataMonHoc, dataNhanVien };

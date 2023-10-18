@@ -9,8 +9,17 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllNhanVienApi } from "../../redux/reducers/nhanVienReducer";
 
 export default function PageQLNhanVien() {
+
+    const dispatch = useDispatch();
+
+    const {arrNhanVienSearch} = useSelector(state => state.nhanVienReducer);
+
+    useEffect(() => {
+        dispatch(getAllNhanVienApi)
+    }, [])
 
     //handle 
     const handleChangeSearch = (e) => {
