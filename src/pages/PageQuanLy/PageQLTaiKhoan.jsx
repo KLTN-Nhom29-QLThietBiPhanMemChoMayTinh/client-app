@@ -9,16 +9,17 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllTaiKhoanApi } from "../../redux/reducers/taiKhoanReducer";
 
 
 export default function PageQLTaiKhoan() {
 
   const dispatch = useDispatch();
 
-  // const { arrTaiKhoanSearch } = useSelector((state) => state.taiKhoanReducer);
+  const { arrTaiKhoanSearch } = useSelector((state) => state.taiKhoanReducer);
 
   useEffect(() => {
-      // dispatch(getAllTaiKhoanApi);
+      dispatch(getAllTaiKhoanApi);
   }, []);
 
   //handle
@@ -28,56 +29,60 @@ export default function PageQLTaiKhoan() {
   //render
   const renderDataTaiKhoan = () => {
 
-    // return arrTaiKhoanSearch?.map((item, index) => {
-    //   return (
-    //     <tr key={index}>
-    //       <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
-    //         {index < 9 ? `0${index + 1}` : index + 1}
-    //       </td>
-    //       <td>{item?.idCode}</td>
-    //       <td>{item.name}</td>
+    return arrTaiKhoanSearch?.map((item, index) => {
 
-    //       <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-    //         <NavLink
-    //           // to={"/quan-ly/tai-khoan/update"}
-    //           onClick={() => {
-    //             alert(`Update -- ${item.id} -- dang cập nhật!`);
-    //             // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-    //           }}
-    //         >
-    //           <button
-    //             type="button"
-    //             className="btn btn-primary mx-2 px-2"
-    //             style={{ padding: "2px" }}
-    //           >
-    //             <FaPencilAlt color="white" size={16} />
-    //           </button>
-    //         </NavLink>
-    //         <button
-    //           onClick={() => {
-    //             alert(`Del -- ${item.id} -- dang cập nhật!`);
-    //           }}
-    //           type="button"
-    //           className="btn btn-danger mx-2 px-2"
-    //           style={{ padding: "2px" }}
-    //         >
-    //           <ImBin2 color="white" size={16} />
-    //         </button>
-    //         <NavLink
-    //           // to={`../quan-ly/phong`}
-    //           onClick={() => {
-    //             alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
-    //           }}
-    //           type="button"
-    //           className="btn btn-info mx-2 px-2"
-    //           style={{ padding: "2px" }}
-    //         >
-    //           <BiSolidDetail color="white" size={16} />
-    //         </NavLink>
-    //       </td>
-    //     </tr>
-    //   );
-    // });
+      return (
+        <tr key={index}>
+          <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
+            {index < 9 ? `0${index + 1}` : index + 1}
+          </td>
+          <td>{item?.idCode}</td>
+          <td>{item.userName}</td>
+          <td>{item.quyen.mota}</td>
+          <td>{item.mota.idCode}</td>
+          <td>{item.mota.name}</td>
+
+          <td style={{ display: "flex", justifyContent: "space-evenly" }}>
+            <NavLink
+              // to={"/quan-ly/tai-khoan/update"}
+              onClick={() => {
+                alert(`Update -- ${item.id} -- dang cập nhật!`);
+                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
+              }}
+            >
+              <button
+                type="button"
+                className="btn btn-primary mx-2 px-2"
+                style={{ padding: "2px" }}
+              >
+                <FaPencilAlt color="white" size={16} />
+              </button>
+            </NavLink>
+            <button
+              onClick={() => {
+                alert(`Del -- ${item.id} -- dang cập nhật!`);
+              }}
+              type="button"
+              className="btn btn-danger mx-2 px-2"
+              style={{ padding: "2px" }}
+            >
+              <ImBin2 color="white" size={16} />
+            </button>
+            <NavLink
+              // to={`../quan-ly/phong`}
+              onClick={() => {
+                alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
+              }}
+              type="button"
+              className="btn btn-info mx-2 px-2"
+              style={{ padding: "2px" }}
+            >
+              <BiSolidDetail color="white" size={16} />
+            </NavLink>
+          </td>
+        </tr>
+      );
+    });
   };
   // Mảng quản lý data navtab
   let arrLinkNavTab = [
@@ -149,7 +154,9 @@ export default function PageQLTaiKhoan() {
                     <th>STT</th>
                     <th style={{ minWidth: "90px" }}>Mã tài khoản</th>
                     <th style={{ minWidth: "200px" }}>Tên đăng nhập</th>
-                    <th style={{ minWidth: "80px" }}>Mật khẩu</th>
+                    <th style={{ minWidth: "100px" }}>Quyền sử dụng</th>
+                    <th style={{ minWidth: "100px" }}>Mã người dùng</th>
+                    <th style={{ minWidth: "110px" }}>Tên người dùng</th>
                     <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
                 </thead>
