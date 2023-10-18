@@ -26,6 +26,10 @@
 ### ảnh quản lý Nhân viên
 ![QL môn](./AnhMinhHoa/img_QLNhanVien.png)
 
+### ảnh quản lý Nhân viên
+![QL môn](./AnhMinhHoa/img_QLKhoa.png)
+
+
 
 
 ## Note
@@ -47,7 +51,8 @@
     - PageQlMonHoc: Chuc nang CRUD chua co
     - PageQlMonHoc can test lai cot trang thai
     - PageQLThietBi: Chuc nang CRUD chua co
-    - PageQLNhanVien: 
+    - PageQLNhanVien: Chuc nang CRUD chua co
+    - PageQLKhoa: Chuc nang CRUD chua co
     
 ## error
 ![image err](./AnhMinhHoa/img_error.png)

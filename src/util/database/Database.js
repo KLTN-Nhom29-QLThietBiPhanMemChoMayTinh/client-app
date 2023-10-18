@@ -31,24 +31,22 @@ const random_email = () => {
 
 }
 const full_name = [
-  'Nguyễn Văn Bảo',
-  'Nguyễn Thị Hà',
-  'Nguyễn Văn Cỗi',
-  'Trần Văn Bình',
-  'Trần Văn Ba',
-  'Trần Thị Hiền',
-  'Lê Đức Thọ',
-  'Lê Bảo Bình',
-  'Phạm Công Thành',
-  'Chương Thị Hảo',
-  'Võ Tắc Chí',
-  'Vũ Thị Mai',
-  'Vũ Thị Chung',
+  'Nguyễn Văn Bảo', 'Nguyễn Thị Hà', 'Nguyễn Văn Cỗi', 'Trần Văn Bình', 'Trần Văn Ba',
+  'Trần Thị Hiền', 'Lê Đức Thọ', 'Lê Bảo Bình', 'Phạm Công Thành', 'Chương Thị Hảo',
+  'Võ Tắc Chí', 'Vũ Thị Mai', 'Vũ Thị Chung','Nguyễn Chiến Thắng', 'Nguyễn Thái Học',
+  'Trần Văn Học', 'Vũ Thị Thái', 'Lê Chung Kiên', 'Nguyễn Văn Chung', 'Võ Thị Hằng',
+  'Trần Thị Kiều', 'Vũ Trần Thái Nguyên', 'Lê Văn Nguyên', 'Nguyễn Văn Thái', 'Võ Thị Trúc',
 ]
 const random_fullName = () => {
   return full_name[Math.floor(Math.random()*full_name.length)]
 }
-
+//
+const random_HocVi = () => {
+  let a = Math.floor(Math.random()*2);
+  if (a === 1)
+    return 'Tiến sĩ'
+  return "Thạc sĩ"
+}
 
 const dataKhuVuc = [
   { id: 1, name: "Tòa nhaa A", soTang: 5 },
@@ -253,6 +251,53 @@ const dataNhanVien = [
   {id:8, idCode:'NV0008', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
   {id:9, idCode:'NV0009', name:random_fullName(), ngaySinh: date_NgaySinh()+"", sdt:random_sdt(), email:random_email() },
 ]
-// console.log("🚀 ~ file: Database.js:239 ~ dataNhanVien:", dataNhanVien[1])
+//
+const random_TenKhoa = () => {
+  let nameKhoa=[
+    'Công nghệ thông tin','Kỹ thuật phần mềm','Hệ thống thông tin','Khoa học máy tính','Trí tuệ nhân tạo',
+  ]
+  let a = Math.floor(Math.random()*4);
+  return nameKhoa[a]
+}
+// 
+const dataGiaoVien = [
+  {id:1, idCode:'GV0001', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:'Công nghệ thông tin', sdt:random_sdt(), email:random_email(), chucVu:'Trưởng Khoa', hocVi:'Giáo sư' },
+  {id:2, idCode:'GV0002', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:'Kỹ thuật phần mềm', sdt:random_sdt(), email:random_email(), chucVu:'Trưởng Khoa', hocVi:'Giáo sư' },
+  {id:3, idCode:'GV0003', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:'Hệ thống thông tin', sdt:random_sdt(), email:random_email(), chucVu:'Trưởng Khoa', hocVi:'Giáo sư' },
+  {id:4, idCode:'GV0004', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:'Khoa học máy tính', sdt:random_sdt(), email:random_email(), chucVu:'Trưởng Khoa', hocVi:'Giáo sư' },
+  {id:5, idCode:'GV0005', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:'Trí tuệ nhân tạo', sdt:random_sdt(), email:random_email(), chucVu:'Trưởng Khoa', hocVi:'Giáo sư' },
+  {id:6, idCode:'GV0006', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:random_TenKhoa(), sdt:random_sdt(), email:random_email(), chucVu:'', hocVi:random_HocVi()},
+  {id:7, idCode:'GV0007', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:random_TenKhoa(), sdt:random_sdt(), email:random_email(), chucVu:'', hocVi:random_HocVi()},
+  {id:8, idCode:'GV0008', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:random_TenKhoa(), sdt:random_sdt(), email:random_email(), chucVu:'', hocVi:random_HocVi()},
+  {id:9, idCode:'GV0009', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:random_TenKhoa(), sdt:random_sdt(), email:random_email(), chucVu:'', hocVi:random_HocVi()},
+  {id:10, idCode:'GV0010', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:random_TenKhoa(), sdt:random_sdt(), email:random_email(), chucVu:'', hocVi:random_HocVi()},
+  {id:11, idCode:'GV0011', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:random_TenKhoa(), sdt:random_sdt(), email:random_email(), chucVu:'', hocVi:random_HocVi()},
+  {id:12, idCode:'GV0012', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:random_TenKhoa(), sdt:random_sdt(), email:random_email(), chucVu:'', hocVi:random_HocVi()},
+  {id:13, idCode:'GV0013', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:random_TenKhoa(), sdt:random_sdt(), email:random_email(), chucVu:'', hocVi:random_HocVi()},
+  {id:14, idCode:'GV0014', name: random_fullName(), ngaySinh:date_NgaySinh()+'', tenKhoa:random_TenKhoa(), sdt:random_sdt(), email:random_email(), chucVu:'', hocVi:random_HocVi()},
+]
+// console.log("🚀 ~ file: Database.js:286 ~ dataGiaoVien:", dataGiaoVien)
 
-export default { dataKhuVuc,dataPhongMay,dataTang,dataThietBi,dataPhanMem,dataMonHoc, dataNhanVien };
+//
+const dataKhoa = [
+  {id:1, idCode:'KH0001', name:'Công nghệ thông tin', soGiaoVien:Math.floor(Math.random()*10)+10,truongKhoa:dataGiaoVien[0]},
+  {id:2, idCode:'KH0002', name:'Kỹ thuật phần mềm', soGiaoVien:Math.floor(Math.random()*10)+10,truongKhoa:dataGiaoVien[1]},
+  {id:3, idCode:'KH0003', name:'Hệ thống thông tin', soGiaoVien:Math.floor(Math.random()*10)+10,truongKhoa:dataGiaoVien[2]},
+  {id:4, idCode:'KH0004', name:'Khoa học máy tính', soGiaoVien:Math.floor(Math.random()*10)+10,truongKhoa:dataGiaoVien[3]},
+  {id:5, idCode:'KH0005', name:'Trí tuệ nhân tạo', soGiaoVien:Math.floor(Math.random()*10)+10,truongKhoa:dataGiaoVien[4]},
+]
+// console.log("🚀 ~ file: Database.js:262 ~ dataKhoa:", dataKhoa)
+
+
+
+export default { 
+  dataKhuVuc,
+  dataPhongMay,
+  dataTang,
+  dataThietBi,
+  dataPhanMem,
+  dataMonHoc, 
+  dataNhanVien, 
+  dataGiaoVien, 
+  dataKhoa 
+};

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { history } from "..";
 
-
 // luu data ra local storage
 export const configs = {
   setStore: (name, value) => {
@@ -37,7 +36,7 @@ export const configs = {
    * @param {*} days
    * @param {*} name
    */
-  setCookie: (value, days = 30, name ) => {
+  setCookie: (value, days = 30, name) => {
     var expires = "";
     if (days) {
       var date = new Date();
@@ -62,24 +61,42 @@ export const configs = {
     return null;
   },
   clearCookie: (name) => {
-    setCookie('',-1, name)
+    setCookie("", -1, name);
   },
   clearLocalStorage: (name) => {
     localStorage.removeItem(name);
   },
   /**
-   * Format Date -> String 
-   * dd/mm/yyyy 
+   * Format Date -> String
+   * dd/mm/yyyy
    * @returns String
    */
   formatStringDate: (day = new Date()) => {
     var date = day.getDate();
     var month = day.getMonth() + 1;
     var year = day.getYear();
-    return `${date<10? '0'+date: date}/${month<10? '0'+month: month}/${year + 1900}`;
+    return `${date < 10 ? "0" + date : date}/${
+      month < 10 ? "0" + month : month
+    }/${year + 1900}`;
   },
-  ACCESS_TOKEN: 'accessToken',
-  USER_LOGIN:'userLogin'
+  formatNameByHocVi: (giaoVien) => {
+    let str = "";
+    switch (giaoVien.hocVi) {
+      case "Giáo sư":
+        str += str + "GS. ";
+        break;
+      case "Tiến sĩ":
+        str += str + "TS. ";
+        break;
+
+      default:
+        str += str + "ThS. ";
+        break;
+    }
+    return str + giaoVien.name;
+  },
+  ACCESS_TOKEN: "accessToken",
+  USER_LOGIN: "userLogin",
 };
 
 export const {
@@ -92,35 +109,36 @@ export const {
   clearCookie,
   clearLocalStorage,
   formatStringDate,
+  formatNameByHocVi,
   ACCESS_TOKEN,
   USER_LOGIN,
 } = configs;
 
-
-
-// cấu hình  interceptor (Cau hình cho các  request và response) 
-const TOKEN_CYBERSOFT = 'z123456';
+// cấu hình  interceptor (Cau hình cho các  request và response)
+const TOKEN_CYBERSOFT = "z123456";
 
 export const http = axios.create({
-  baseURL:`https://localhost:8080/api`,
-  timeout:6000// thoi gian duy tri 600s
-})
+  baseURL: `https://localhost:8080/api`,
+  timeout: 6000, // thoi gian duy tri 600s
+});
 
-// cấu hình request 
-http.interceptors.request.use((configs) => {
+// cấu hình request
+http.interceptors.request.use(
+  (configs) => {
+    // cau hinh header  add them  thuoc tinh  Authorization
+    configs.headers = {
+      ...configs.headers,
+      ["Authorization"]: `Bearer ${getStore(ACCESS_TOKEN)}`,
+      ["TokenCybersoft"]: TOKEN_CYBERSOFT,
+    };
 
-  // cau hinh header  add them  thuoc tinh  Authorization
-  configs.headers = {...configs.headers, 
-    ['Authorization'] : `Bearer ${getStore(ACCESS_TOKEN)}`,
-    ['TokenCybersoft'] : TOKEN_CYBERSOFT
+    return configs;
+  },
+  (err) => {
+    // cau hinh err
+    return Promise.reject(err);
   }
-
-  return configs;
-
-}, (err) => {
-  // cau hinh err 
-  return Promise.reject(err);
-})
+);
 
 /*
   statusCode: ma ket qua tra ve do backEnd quy dinh
@@ -133,24 +151,25 @@ http.interceptors.request.use((configs) => {
   500(Error in server) : loi say ra tren server (Nguyeen nhan do fontend hoac backEnd tuy tinh huong) 
 */
 
-http.interceptors.response.use((response) => {
-  // console.log("🚀 ~ file: config.js:120 ~ http.interceptors.response.use ~ response:", response)
+http.interceptors.response.use(
+  (response) => {
+    // console.log("🚀 ~ file: config.js:120 ~ http.interceptors.response.use ~ response:", response)
 
-  return response;
-},err => {
-  let statusCode = err.response.status;
-  console.log(statusCode);
-  
-  // console.log(err);
-  if (statusCode === 400 || statusCode === 404) {
-     
-    history.push('/')
+    return response;
+  },
+  (err) => {
+    let statusCode = err.response.status;
+    console.log(statusCode);
+
+    // console.log(err);
+    if (statusCode === 400 || statusCode === 404) {
+      history.push("/");
+    }
+    if (statusCode === 401 || statusCode === 403) {
+      alert("Token không hợp lệ! Vui lòng đăng nhập lại!");
+      history.push("/login");
+    }
+
+    return Promise.reject(err);
   }
-  if (statusCode === 401 || statusCode === 403) {
-    alert('Token không hợp lệ! Vui lòng đăng nhập lại!')
-    history.push('/login')
-  }
-
-
-  return Promise.reject(err);
-})
+);
