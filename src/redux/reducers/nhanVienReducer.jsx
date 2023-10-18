@@ -4,6 +4,26 @@ import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 import Database from "../../util/database/Database";
 
+
+// function
+const dataSearch = (arrData, valSearch) => {
+    let search = valSearch.toLowerCase();
+
+    let arrUpdate = arrData.filter(item => {
+        let ngaySinh = new Date(item.ngaySinh);
+        return (
+        item.idCode.toLowerCase().includes(search) ||
+        item.name.toLowerCase().includes(search) ||
+        (ngaySinh.getYear()+"").toLowerCase().includes(search) ||
+        item.sdt.toLowerCase().includes(search) ||
+        item.email.toLowerCase().includes(search) 
+        )
+    })
+
+    return [...arrUpdate];
+    
+}
+
 const initialState = {
   arrNhanVien: [
     {
@@ -28,10 +48,16 @@ const nhanVienReducer = createSlice({
       state.arrNhanVien = action.payload;
       state.arrNhanVienSearch = action.payload;
     },
+    setValueSearchNhanVien: (state, action) =>{
+        state.valueSearch = action.payload
+
+        let{arrNhanVien} = state;
+        state.arrNhanVienSearch = dataSearch(arrNhanVien, action.payload)
+    }
   },
 });
 // exp nay de sử dụng theo cách 2
-export const {setArrNhanVienAction,} = nhanVienReducer.actions;
+export const {setArrNhanVienAction,setValueSearchNhanVien, } = nhanVienReducer.actions;
 export default nhanVienReducer.reducer;
 
 // -------------- Call API ---------------

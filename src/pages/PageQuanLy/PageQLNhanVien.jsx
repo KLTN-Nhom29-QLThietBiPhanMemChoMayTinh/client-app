@@ -9,7 +9,7 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllNhanVienApi } from "../../redux/reducers/nhanVienReducer";
+import { getAllNhanVienApi, setValueSearchNhanVien } from "../../redux/reducers/nhanVienReducer";
 
 export default function PageQLNhanVien() {
   const dispatch = useDispatch();
@@ -21,12 +21,14 @@ export default function PageQLNhanVien() {
   }, []);
 
   //handle
-  const handleChangeSearch = (e) => {};
+  const handleChangeSearch = (e) => {
+    dispatch(setValueSearchNhanVien(e.target.value))
+  };
   //render
   const renderDataNhanVien = () => {
     // let item = {id: 2, idCode: 'NV0002', name: 'Trần Thị Lê', ngaySinh: 'Sun Jan 10 1982 00:00:00 GMT+0700 (GMT+07:00)', sdt: '0951753133',email:"O8tCSZpcx@gmail.com"}
     // let index =1;
-    return arrNhanVienSearch.map((item, index) => {
+    return arrNhanVienSearch?.map((item, index) => {
       let ngaySinh = new Date(item.ngaySinh);
       return (
         <tr key={index}>
