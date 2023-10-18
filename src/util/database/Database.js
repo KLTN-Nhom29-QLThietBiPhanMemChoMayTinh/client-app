@@ -296,16 +296,16 @@ const dataQuyen = [
 const random_quyen = (val) => {
   let a = Math.floor(Math.random()*8)+1;
   if (val === 0) {
-    return dataQuyen[0];
+    return dataQuyen[0].idCode;
   }
   if (a % 3 === 0) {
-    return dataQuyen[3];
+    return dataQuyen[3].idCode;
   }
   else if (a%3 === 1) {
-      return dataQuyen[1];
+      return dataQuyen[1].idCode;
   }
   else if (a%3 === 2) {
-      return dataQuyen[2];
+      return dataQuyen[2].idCode;
   }
 return a
 }
@@ -336,15 +336,15 @@ const random_NV = () => {
 
 //
 const dataTaiKhoan = [
-  {id:1, idCode:'TK0001', userName:random_username(), password:'11111111', mota: random_GV(), quyen: random_quyen(0) },
-  {id:2, idCode:'TK0002', userName:random_username(), password:'11111111', mota: random_NV(), quyen: random_quyen() },
-  {id:3, idCode:'TK0003', userName:random_username(), password:'11111111', mota: random_NV(), quyen: random_quyen() },
-  {id:4, idCode:'TK0004', userName:random_username(), password:'11111111', mota: random_NV(), quyen: random_quyen() },
-  {id:5, idCode:'TK0005', userName:random_username(), password:'11111111', mota: random_GV(), quyen: random_quyen(0) },
-  {id:6, idCode:'TK0006', userName:random_username(), password:'11111111', mota: random_NV(), quyen: random_quyen() },
-  {id:7, idCode:'TK0007', userName:random_username(), password:'11111111', mota: random_GV(), quyen: random_quyen(0) },
-  {id:8, idCode:'TK0008', userName:random_username(), password:'11111111', mota: random_NV(), quyen: random_quyen() },
-  {id:9, idCode:'TK0009', userName:random_username(), password:'11111111', mota: random_GV(), quyen: random_quyen(0) },
+  {id:1, idCode:'TK0001', userName:random_username(), password:'11111111', mota: random_GV(), quyenId: random_quyen(0) },
+  {id:2, idCode:'TK0002', userName:random_username(), password:'11111111', mota: random_NV(), quyenId: random_quyen() },
+  {id:3, idCode:'TK0003', userName:random_username(), password:'11111111', mota: random_NV(), quyenId: random_quyen() },
+  {id:4, idCode:'TK0004', userName:random_username(), password:'11111111', mota: random_NV(), quyenId: random_quyen() },
+  {id:5, idCode:'TK0005', userName:random_username(), password:'11111111', mota: random_GV(), quyenId: random_quyen(0) },
+  {id:6, idCode:'TK0006', userName:random_username(), password:'11111111', mota: random_NV(), quyenId: random_quyen() },
+  {id:7, idCode:'TK0007', userName:random_username(), password:'11111111', mota: random_GV(), quyenId: random_quyen(0) },
+  {id:8, idCode:'TK0008', userName:random_username(), password:'11111111', mota: random_NV(), quyenId: random_quyen() },
+  {id:9, idCode:'TK0009', userName:random_username(), password:'11111111', mota: random_GV(), quyenId: random_quyen(0) },
 ]
 
 
@@ -360,4 +360,5 @@ export default {
   dataGiaoVien, 
   dataKhoa,
   dataTaiKhoan,
+  dataQuyen,
 };

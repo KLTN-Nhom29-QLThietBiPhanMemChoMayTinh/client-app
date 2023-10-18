@@ -9,27 +9,42 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllTaiKhoanApi } from "../../redux/reducers/taiKhoanReducer";
-
+import {
+  getAllQuyenSDApi,
+  getAllTaiKhoanApi,
+  setValueSearchTaiKhoan,
+  setValueSelectTaiKhoan,
+} from "../../redux/reducers/taiKhoanReducer";
 
 export default function PageQLTaiKhoan() {
-
   const dispatch = useDispatch();
 
-  const { arrTaiKhoanSearch } = useSelector((state) => state.taiKhoanReducer);
+  const { arrTaiKhoanSearch, arrQuyen } = useSelector(
+    (state) => state.taiKhoanReducer
+  );
 
   useEffect(() => {
-      dispatch(getAllTaiKhoanApi);
+    dispatch(getAllTaiKhoanApi);
+    dispatch(getAllQuyenSDApi);
   }, []);
 
   //handle
   const handleChangeSearch = (e) => {
-    // dispatch(setValueSearchTaiKhoan(e.target.value))
+    dispatch(setValueSearchTaiKhoan(e.target.value.trim()));
   };
+  const handleChangeSelectQuyen = (e) => {
+    dispatch(setValueSelectTaiKhoan(e.target.value.trim()));
+  };
+
   //render
   const renderDataTaiKhoan = () => {
-
     return arrTaiKhoanSearch?.map((item, index) => {
+      let strNameQuyen = '';
+      arrQuyen.forEach((itemQuyen) => {
+        if (itemQuyen.idCode.includes(item.quyenId)) {
+          strNameQuyen = itemQuyen.mota+"";
+        }
+      })
 
       return (
         <tr key={index}>
@@ -38,7 +53,7 @@ export default function PageQLTaiKhoan() {
           </td>
           <td>{item?.idCode}</td>
           <td>{item.userName}</td>
-          <td>{item.quyen.mota}</td>
+          <td>{strNameQuyen}</td>
           <td>{item.mota.idCode}</td>
           <td>{item.mota.name}</td>
 
@@ -84,10 +99,28 @@ export default function PageQLTaiKhoan() {
       );
     });
   };
+
+  const renderSelectQuyenSD = () => {
+    return (
+      <div className="col-2 mx-2">
+        <select className="form-select " onChange={handleChangeSelectQuyen}>
+          <option selected value="all">
+            Tất cả
+          </option>
+          {arrQuyen.map((item, index) => {
+            return (
+              <option value={item.idCode} key={index}>
+                {item.mota}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+    );
+  };
+
   // Mảng quản lý data navtab
-  let arrLinkNavTab = [
-    { name: "Quản lý tài khoản", link: "" },
-  ];
+  let arrLinkNavTab = [{ name: "Quản lý tài khoản", link: "" }];
   //
 
   return (
@@ -113,11 +146,11 @@ export default function PageQLTaiKhoan() {
             >
               <h2 style={{ margin: "0" }}>Danh sách tài khoản</h2>
               <div></div>
+              <div></div>
 
               {/* select - option */}
-              {/* {renderSelectTrangThai()} */}
-              <div></div>
-              <div></div>
+              {renderSelectQuyenSD()}
+              {/* <div></div> */}
 
               {/* input tim kiem */}
               <div>
@@ -153,8 +186,8 @@ export default function PageQLTaiKhoan() {
                   <tr>
                     <th>STT</th>
                     <th style={{ minWidth: "90px" }}>Mã tài khoản</th>
-                    <th style={{ minWidth: "200px" }}>Tên đăng nhập</th>
-                    <th style={{ minWidth: "100px" }}>Quyền sử dụng</th>
+                    <th style={{ minWidth: "125px" }}>Tên đăng nhập</th>
+                    <th style={{ minWidth: "160px" }}>Quyền sử dụng</th>
                     <th style={{ minWidth: "100px" }}>Mã người dùng</th>
                     <th style={{ minWidth: "110px" }}>Tên người dùng</th>
                     <th style={{ minWidth: "170px" }}>Hành động</th>
@@ -172,5 +205,5 @@ export default function PageQLTaiKhoan() {
         <Footer />
       </div>
     </div>
-  )
+  );
 }
