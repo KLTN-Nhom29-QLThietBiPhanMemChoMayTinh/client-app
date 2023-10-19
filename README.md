@@ -61,6 +61,9 @@
     - PageQLThietBi: Chuc nang CRUD chua co
     - PageQLNhanVien: Chuc nang CRUD chua co
     - PageQLKhoa: Chuc nang CRUD chua co
+    - PageQLTaiKhoan: Chuc nang CRUD chua co
+    - pageHome: phai the hien duoc dang o btn naof
+    - pageHome: su dung phan trang de thay the cho over_flow_auto
     
 ## error
 ![image err](./AnhMinhHoa/img_error.png)
