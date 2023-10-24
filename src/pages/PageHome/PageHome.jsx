@@ -42,7 +42,6 @@ export default function PageHome() {
           style={{ maxHeight: "518px" }}
         >
           <div className="d-flex flex-column ">
-          
             {/* item */}
             <button type="button" className="btn btn-primary  mx-2 mt-2">
               Tầng 1
@@ -74,7 +73,7 @@ export default function PageHome() {
             <button type="button" className="btn btn-primary  mx-2 mt-2">
               Tầng 1
             </button>
-        </div>
+          </div>
 
           {/* btn chuyển page cho Tang */}
           <div className="row m-2">
@@ -101,9 +100,9 @@ export default function PageHome() {
           </div>
         </div>
 
-        <div ></div>
-        <div ></div>
-        <div ></div>
+        <div></div>
+        <div></div>
+        <div></div>
       </div>
 
       {/*1. Col2 phong - CT Phong  */}
@@ -204,9 +203,44 @@ export default function PageHome() {
           style={{ height: "100%" }}
         >
           <div className="">
-            <h3>Thông tin chi tiết</h3>
+            <h3 style={{ fontWeight: 600 }}>Thông tin chi tiết</h3>
           </div>
-          <div className="h-100 mb-2 over_flow_auto"></div>
+          <div className="h-100 mb-2 over_flow_auto">
+            <div className="pt-2">
+              <h5 style={{ fontWeight: 600 }}>Tòa nhà A - Tầng 3 </h5>
+            </div>
+            <div className="pt-2">
+              <span className="h5" style={{ fontWeight: 600 }}>
+                Phòng H3.1
+              </span>
+              <div>
+                <span style={{ fontWeight: 600 }}>- Giáo viên dạy: </span>
+                <span>Trần bảo bình</span>
+              </div>
+              <div>
+                <span style={{ fontWeight: 600 }}>- Môn học: </span>
+                <span>Hệ thống thông tin</span>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <span className="h5" style={{ fontWeight: 600 }}>
+                Máy tính H3.1.1
+              </span>
+              <div>
+                <span style={{ fontWeight: 600 }}>- Thiết bị phần cứng: </span> <br />
+                <li className="ms-3">Hệ thống thông tin</li>
+                <li className="ms-3">Hệ thống thông tin</li>
+                <li className="ms-3">Hệ thống thông tin</li>
+              </div>
+              <div>
+                <span style={{ fontWeight: 600 }}>- Ứng dụng phần mềm: </span> <br />
+                <li className="ms-3">Hệ thống thông tin</li>
+                <li className="ms-3">Hệ thống thông tin</li>
+                <li className="ms-3">Hệ thống thông tin</li>
+              </div>
+            </div>
+          </div>
           <div className="d-flex justify-content-around">
             <button type="button" className="btn btn-primary">
               Chi tiết

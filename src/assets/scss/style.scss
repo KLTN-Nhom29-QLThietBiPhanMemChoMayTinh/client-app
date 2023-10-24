@@ -1,1 +1,109 @@
 // file css
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Arial", "Helvetica",
+    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", "sans-serif";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  //   background-color: aqua;
+  background: url("../img/img_bg1.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.container {
+  background-color: #e3e3e3;
+}
+
+/*  */
+.view_center_vertical {
+  display: "flex";
+  align-items: "center";
+}
+
+/* Hover chuc nang */
+.btn_moune {
+  cursor: pointer;
+}
+td {
+  vertical-align: middle;
+}
+
+tr th {
+  text-align: center;
+}
+/* con lăn */
+.over_flow_auto {
+  overflow: auto;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* color */
+.color_green {
+  background-color: #1c6612;
+}
+.color_green2 {
+  background-color: #13500a;
+}
+
+.color_red {
+  background-color: #910000;
+}
+
+// login
+
+.input_login::placeholder {
+  color: white;
+  opacity: 1;
+}
+.input_login::-ms-input-placeholder { /* Edge 12-18 */
+  color: white;
+}
+// err focus-visible
+.input_login:focus-visible {
+  border-width: 1px;
+  border-color: aqua;
+}
+.input_login {
+  color: white;
+  background-color: rgba(0,0,0,0.2);
+}
+.input_login:focus {
+  color: white;
+  background-color: rgba(0,0,0,0.2);
+}
+
+.opacity_05 {
+  background-color:rgba(0,0,0,0.5);
+}
+
+

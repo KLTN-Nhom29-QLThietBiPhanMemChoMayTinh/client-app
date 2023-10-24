@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./assets/scss/style.scss";
@@ -30,6 +29,7 @@ import PageQLKhoa from "./pages/PageQuanLy/PageQLKhoa";
 import PageQLGiaoVien from "./pages/PageQuanLy/PageQLGiaoVien";
 import PageQLTaiKhoan from "./pages/PageQuanLy/PageQLTaiKhoan";
 import PageHome from "./pages/PageHome/PageHome";
+import PageLogin from "./pages/PageLogin/PageLogin";
 
 export const history = createBrowserHistory();
 
@@ -83,6 +83,8 @@ root.render(
           <Route path="/quan-ly/tai-khoan" element={<PageQLTaiKhoan />}></Route>
           <Route path="*" element={<Page404 />}></Route>
         </Route>
+        <Route path="/login" element={<PageLogin />}></Route>
+
       </Routes>
     {/* </BrowserRouter> */}
     </HistoryRouter>

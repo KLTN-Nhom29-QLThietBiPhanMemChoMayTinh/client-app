@@ -35,6 +35,8 @@
 ### ảnh quản lý tai khoan
 ![QL tai khoan](./AnhMinhHoa/img_QLTaiKhoan.png)
 
+### ảnh Login
+![login](./AnhMinhHoa/img_login.png)
 
 
 
@@ -64,6 +66,8 @@
     - PageQLTaiKhoan: Chuc nang CRUD chua co
     - pageHome: phai the hien duoc dang o btn naof
     - pageHome: su dung phan trang de thay the cho over_flow_auto
+    - pageHome: chua data api local
+    - pageLogin: chua formik - api local
     
 ## error
 ![image err](./AnhMinhHoa/img_error.png)
