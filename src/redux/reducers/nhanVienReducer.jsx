@@ -64,9 +64,9 @@ export default nhanVienReducer.reducer;
 
 export const getAllNhanVienApi = async (dispatch) => {
   try {
-    // const result = await http.get("/nhanvien...");
-    // dispatch(setArrNhanVienAction(result.data.content));
-    dispatch(setArrNhanVienAction(Database.dataNhanVien));
+    const result = await http.get("/DSNhanVien");
+    dispatch(setArrNhanVienAction(result.data));
+    // dispatch(setArrNhanVienAction(Database.dataNhanVien));
   } catch (error) {
     console.log(
       "🚀 ~ file: nhanVienReducer.jsx:38 ~ getAllNhanVienApi ~ error:",

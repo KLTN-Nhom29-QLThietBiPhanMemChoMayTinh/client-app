@@ -118,7 +118,7 @@ export const {
 const TOKEN_CYBERSOFT = "z123456";
 
 export const http = axios.create({
-  baseURL: `https://localhost:8080/api`,
+  baseURL: `http://localhost:8080/api/v1`,
   timeout: 6000, // thoi gian duy tri 600s
 });
 

@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useRef } from "react";
 import { FaComputer } from "react-icons/fa6";
 import { FaRegBuilding } from "react-icons/fa";
 import { FaPencilAlt } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
 import { AiOutlineRight } from "react-icons/ai";
+import {
+  MdOutlineKeyboardDoubleArrowRight,
+  MdKeyboardDoubleArrowLeft,
+  MdKeyboardDoubleArrowDown,
+  MdKeyboardDoubleArrowUp,
+} from "react-icons/md";
 
 export default function PageHome() {
   //   $(document).ready(function() {
@@ -11,6 +17,8 @@ export default function PageHome() {
   //         "scrollX": true
   //     } );
   // } );
+  const numberNextPageTang = useRef(1);
+  const numberNextPagePhong = useRef(1);
 
   return (
     <div
@@ -18,7 +26,7 @@ export default function PageHome() {
       style={{ height: "100vh", margin: "0px" }}
     >
       {/*1. col Toa nha -- Tang */}
-      <div className="col-2  flex-column d-flex px-1">
+      <div className="col-2  flex-column d-flex justify-content-between px-1">
         {/* select toa nha */}
         <div className=" d-flex align-items-center" style={{ height: "100px" }}>
           <select className="form-select form-select-lg">
@@ -29,40 +37,73 @@ export default function PageHome() {
         </div>
         {/* List tang */}
         <div
-          className=" border border-info rounded mt-3 flex-grow-1  d-flex flex-column "
-          style={{ maxHeight: "75vh", minHeight: "auto" }}
+          className=" border border-info rounded mt-3 flex-grow-1  d-flex flex-column justify-content-between "
+          // style={{ maxHeight: "75vh", minHeight: "auto" }}
+          style={{ maxHeight: "518px" }}
         >
-          <button type="button" className="btn btn-primary  mx-2 mt-2">
-            Tầng 1
-          </button>
-          <button type="button" className="btn btn-primary  mx-2 mt-2">
-            Tầng 1
-          </button>
-          <button type="button" className="btn btn-primary  mx-2 mt-2">
-            Tầng 1
-          </button>
-          <button type="button" className="btn btn-primary  mx-2 mt-2">
-            Tầng 1
-          </button>
-          <button type="button" className="btn btn-primary  mx-2 mt-2">
-            Tầng 1
-          </button>
-          <button type="button" className="btn btn-primary  mx-2 mt-2">
-            Tầng 1
-          </button>
-          <button type="button" className="btn btn-primary  mx-2 mt-2">
-            Tầng 1
-          </button>
-          <button type="button" className="btn btn-primary  mx-2 mt-2">
-            Tầng 1
-          </button>
-          <button type="button" className="btn btn-primary  mx-2 mt-2">
-            Tầng 1
-          </button>
-          <button type="button" className="btn btn-primary  mx-2 mt-2">
-            Tầng 1
-          </button>
+          <div className="d-flex flex-column ">
+          
+            {/* item */}
+            <button type="button" className="btn btn-primary  mx-2 mt-2">
+              Tầng 1
+            </button>
+            <button type="button" className="btn btn-primary  mx-2 mt-2">
+              Tầng 1
+            </button>
+            <button type="button" className="btn btn-primary  mx-2 mt-2">
+              Tầng 1
+            </button>
+            <button type="button" className="btn btn-primary  mx-2 mt-2">
+              Tầng 1
+            </button>
+            <button type="button" className="btn btn-primary  mx-2 mt-2">
+              Tầng 1
+            </button>
+            <button type="button" className="btn btn-primary  mx-2 mt-2">
+              Tầng 1
+            </button>
+            <button type="button" className="btn btn-primary  mx-2 mt-2">
+              Tầng 1
+            </button>
+            <button type="button" className="btn btn-primary  mx-2 mt-2">
+              Tầng 1
+            </button>
+            <button type="button" className="btn btn-primary  mx-2 mt-2">
+              Tầng 1
+            </button>
+            <button type="button" className="btn btn-primary  mx-2 mt-2">
+              Tầng 1
+            </button>
         </div>
+
+          {/* btn chuyển page cho Tang */}
+          <div className="row m-2">
+            <button
+              type="button"
+              className="btn btn-primary col p-0 mx-1"
+              onClick={() => {
+                if (numberNextPageTang.current > 1) {
+                  numberNextPageTang.current -= 1;
+                }
+              }}
+            >
+              <MdKeyboardDoubleArrowLeft size={28} />
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary col p-0 mx-1"
+              onClick={() => {
+                numberNextPageTang.current += 1;
+              }}
+            >
+              <MdOutlineKeyboardDoubleArrowRight size={28} />
+            </button>
+          </div>
+        </div>
+
+        <div ></div>
+        <div ></div>
+        <div ></div>
       </div>
 
       {/*1. Col2 phong - CT Phong  */}
@@ -73,28 +114,54 @@ export default function PageHome() {
             className="border border-info rounded  mb-2 text-white over_flow_auto"
             style={{ maxHeight: "20%" }}
           >
-            <div className=" d-flex flex-row">
-              {/* item */}
-              <div
-                className="bg-success rounded   my-2 ms-2 "
-                style={{ height: "90px" }}
-              >
-                <div className="d-flex flex-column">
-                  <span
-                    className=" flex-grow-1 text-center  pt-2 "
-                    style={{ width: "110px" }}
-                  >
-                    Phòng máy H3.1.1
-                  </span>
-                  <button
-                    className="btn btn-success border-top border-0  rounded-0 rounded-bottom border-dark "
-                    style={{ fontSize: "13px", padding: "5px" }}
-                  >
-                    Chi tiết
-                  </button>
+            <div className="d-flex justify-content-between">
+              <div className=" d-flex flex-row">
+                {/* item */}
+
+                <div
+                  className="bg-success rounded   my-2 ms-2 "
+                  style={{ height: "90px" }}
+                >
+                  <div className="d-flex flex-column">
+                    <span
+                      className=" flex-grow-1 text-center  pt-2 "
+                      style={{ width: "110px" }}
+                    >
+                      Phòng máy H3.1.1
+                    </span>
+                    <button
+                      className="btn btn-success border-top border-0  rounded-0 rounded-bottom border-dark "
+                      style={{ fontSize: "13px", padding: "5px" }}
+                    >
+                      Chi tiết
+                    </button>
+                  </div>
                 </div>
+                {/*  */}
               </div>
-              {/*  */}
+              {/* btn chuyển page cho Phong */}
+              <div className="d-flex flex-column justify-content-between m-2 ">
+                <button
+                  type="button"
+                  className="btn btn-primary px-0"
+                  onClick={() => {
+                    numberNextPagePhong.current += 1;
+                  }}
+                >
+                  <MdKeyboardDoubleArrowUp size={28} />
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary px-0"
+                  onClick={() => {
+                    if (numberNextPagePhong.current > 1) {
+                      numberNextPagePhong.current -= 1;
+                    }
+                  }}
+                >
+                  <MdKeyboardDoubleArrowDown size={28} />
+                </button>
+              </div>
             </div>
           </div>
           {/* List Detail Phong */}
@@ -128,15 +195,28 @@ export default function PageHome() {
       </div>
 
       {/*1. Col3 Thongo tin  */}
-      <div className="col-3 border border-info rounded p-2 " style={{height:'100%'}}>
-        <div className="d-flex flex-column justify-content-between" style={{height:'100%'}}>
+      <div
+        className="col-3 border border-info rounded p-2 "
+        style={{ height: "100%" }}
+      >
+        <div
+          className="d-flex flex-column justify-content-between"
+          style={{ height: "100%" }}
+        >
           <div className="">
             <h3>Thông tin chi tiết</h3>
           </div>
+          <div className="h-100 mb-2 over_flow_auto"></div>
           <div className="d-flex justify-content-around">
-            <button type="button" className="btn btn-primary">Chi tiết</button>
-            <button type="button" className="btn btn-primary">Chỉnh sửa</button>
-            <button type="button" className="btn btn-primary">Ghi chú</button>
+            <button type="button" className="btn btn-primary">
+              Chi tiết
+            </button>
+            <button type="button" className="btn btn-primary">
+              Chỉnh sửa
+            </button>
+            <button type="button" className="btn btn-primary">
+              Ghi chú
+            </button>
           </div>
         </div>
       </div>
