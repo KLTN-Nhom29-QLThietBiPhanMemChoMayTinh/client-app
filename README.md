@@ -68,6 +68,7 @@
     - pageHome: su dung phan trang de thay the cho over_flow_auto
     - pageHome: chua data api local
     - pageLogin: chua formik - api local
+    - userReducer - getDangNhapApi() chua co cookie
     
 ## error
 ![image err](./AnhMinhHoa/img_error.png)

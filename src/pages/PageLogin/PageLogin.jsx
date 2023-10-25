@@ -3,6 +3,7 @@ import React from "react";
 import * as Yup from 'yup'
 import { FaRegCopyright } from "react-icons/fa";
 import { useDispatch } from "react-redux";
+import { getDangNhapApi } from "../../redux/reducers/userReducer";
 
 export default function PageLogin() {
 
@@ -28,7 +29,7 @@ export default function PageLogin() {
             
     }),
     onSubmit:(value) => {
-      console.log("🚀 ~ file: PageLogin.jsx:17 ~ PageLogin ~ value:", value)
+      dispatch(getDangNhapApi(value));
       
     }
   })
