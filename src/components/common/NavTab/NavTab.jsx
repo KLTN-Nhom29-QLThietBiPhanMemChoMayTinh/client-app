@@ -16,7 +16,7 @@ function NavTab(props) {
   return (
     <div className="py-3 px-3">
       <div className="d-flex justify-content-start">
-        <NavLink style={{ textDecorationLine: "none" }} to="../../">
+        <NavLink style={{ textDecorationLine: "none" }} to="../../home">
           <AiOutlineHome style={{ marginBottom: "5px", fontSize: "22px" }} />
           Trang chủ
         </NavLink>

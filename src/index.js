@@ -30,6 +30,7 @@ import PageQLGiaoVien from "./pages/PageQuanLy/PageQLGiaoVien";
 import PageQLTaiKhoan from "./pages/PageQuanLy/PageQLTaiKhoan";
 import PageHome from "./pages/PageHome/PageHome";
 import PageLogin from "./pages/PageLogin/PageLogin";
+import PageBrand from "./pages/PageBrand/PageBrand";
 
 export const history = createBrowserHistory();
 
@@ -39,13 +40,15 @@ root.render(
     <HistoryRouter history={history}>
     {/* <BrowserRouter> */}
       <Routes>
+        <Route path="" element={<PageBrand />} ></Route>
         <Route path="" element={<App />}>
           {/* <Route path="/" element={<PageHome2 />}>
             <Route path="/detail-khu-vuc" >
               <Route path=":id" element={<DetailKhuVuc />} ></Route>
             </Route>
           </Route> */}
-          <Route path="/" element={<PageHome />} ></Route>
+          
+          <Route path="/home" element={<PageHome />} ></Route>
           <Route path="/quan-ly" element={<PageQlKhuVuc />}></Route>
           <Route path="/quan-ly/khu-vuc" element={<PageQlKhuVuc />}></Route>
           <Route

@@ -5,6 +5,10 @@ import { ACCESS_TOKEN, USER_LOGIN, getStoreJSON, http, setCookie, setStore, setS
 import { history } from "../..";
 
 const initialState = {
+    // userLogin: {
+  //     email: '',
+  //     accessToken: ''
+  // },
   userLogin: getStoreJSON(USER_LOGIN),
 };
 
@@ -32,18 +36,18 @@ export const getDangNhapApi = (userLogin) => {
     try {
       let result = await http.post("/DangNhap", user);
 
-
       //   setStore(ACCESS_TOKEN, result.data.content.accessToken);
     //   setCookie(result.data.content.accessToken, 30, ACCESS_TOKEN);
 
-    // luu lai username
-    setStoreJSON(USER_LOGIN, result.data);
+    // luu lai username - token
+    let{quyen, tenDangNhap} = result.data
+    setStoreJSON(USER_LOGIN, {quyen, tenDangNhap});
 
     // dua len reducer
     const action = setUserLoginAction(result.data);
     dispatch(action);
 
-    history.push("/");
+    history.push("/home");
     } catch (error) {
       console.log(
         "🚀 ~ file: userReducer.jsx:31 ~ returnasync ~ error:",

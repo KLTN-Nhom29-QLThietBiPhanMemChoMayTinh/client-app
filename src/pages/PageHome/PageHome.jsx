@@ -12,11 +12,10 @@ import {
 } from "react-icons/md";
 
 export default function PageHome() {
-  //   $(document).ready(function() {
-  //     $('#example').dataTable( {
-  //         "scrollX": true
-  //     } );
-  // } );
+
+
+  // let {}
+
   const numberNextPageTang = useRef(1);
   const numberNextPagePhong = useRef(1);
 

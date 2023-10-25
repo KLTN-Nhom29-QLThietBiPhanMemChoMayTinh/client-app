@@ -69,6 +69,8 @@
     - pageHome: chua data api local
     - pageLogin: chua formik - api local
     - userReducer - getDangNhapApi() chua co cookie
+    - userReducer - luu username vs token - chua luu token
+    - pageLogin - dựa username lây thông tin nguoi dung
     
 ## error
 ![image err](./AnhMinhHoa/img_error.png)

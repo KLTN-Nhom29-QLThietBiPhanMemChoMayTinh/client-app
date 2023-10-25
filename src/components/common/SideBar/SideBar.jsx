@@ -88,7 +88,7 @@ const Sidebar = () => {
             <SubMenu
               item={{
                 title: "Đăng Xuất",
-                path: "/logout",
+                path: "/",
                 icon: (
                   <RiIcons.RiLogoutCircleRLine
                     style={{ marginBottom: "6px", fontSize: "25px" }}
