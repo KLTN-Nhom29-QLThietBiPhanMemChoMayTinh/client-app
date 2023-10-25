@@ -8,6 +8,7 @@ import * as RiIcons from "react-icons/ri";
 import { SidebarData } from "./SidebarData";
 import SubMenu from "./SubMenu.jsx";
 import { IconContext } from "react-icons/lib";
+import { useSelector } from "react-redux";
 
 const Nav = styled.div`
   background: #15171c;
@@ -46,7 +47,7 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
   display: ${({ sidebar }) => (sidebar ? "block" : "none")};
   z-index: 10;
 `;
@@ -56,6 +57,11 @@ const SidebarWrap = styled.div`
 `;
 
 const Sidebar = () => {
+  let { userLogin } = useSelector((state) => state.userReducer);
+  let { tenDangNhap, quyen } = userLogin;
+
+  //set user nao su dung, khong co thi day ve trang login
+
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
@@ -72,7 +78,7 @@ const Sidebar = () => {
               className="me-2"
               style={{ fontSize: "30px", color: "black" }}
             />
-            Admin
+            {userLogin.tenDangNhap}
           </div>
         </Nav>
         <Overlay sidebar={sidebar} onClick={showSidebar} />

@@ -69,7 +69,7 @@
     - pageHome: chua data api local
     - pageLogin: chua formik - api local
     - userReducer - getDangNhapApi() chua co cookie
-    - userReducer - luu username vs token - chua luu token
+    - userReducer - luu username vs token - chua luu token - xem quyen de gui di den trang cho GV || QL
     - pageLogin - dựa username lây thông tin nguoi dung
     
 ## error
