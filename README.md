@@ -4,6 +4,8 @@
 ![...](./AnhMinhHoa/img_minhHoa.png)
 ![...](./AnhMinhHoa/img_code.png)
 
+### Page Brand
+![...](./AnhMinhHoa/img_PageBrand.png)
 ### ảnh quản lý phòng
 ![QL Phòng](./AnhMinhHoa/img_QLPhong.png)
 ![QL Phòng](./AnhMinhHoa/img_QLPhong_Form.png)

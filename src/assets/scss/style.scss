@@ -110,5 +110,40 @@ tr th {
 .opacity_05 {
   background-color:rgba(0,0,0,0.5);
 }
+.opacity_bg_white {
+  background-color:rgba(255, 255, 255, 0.8);
+}
+
+//  page branding 
+.link1:hover {
+  border-radius: 10px;
+  background-color: rgba(27, 31, 10, 0.06);
+}
+.mbr-fullscreen {
+  // width: 100vh;
+  height: 100vh;
+}
+.class_home {
+  background: url("../img/img_bg5.png");
+  background-size: cover;
+}
+.borderRadius20 {
+  border-radius: 20px;
+  border-width: 0px;
+}
+.cardTitle1 {
+  font-size: 38px;
+}
+.mbr-text1 {
+  list-style-type: none;
+  font-size: 22px;
+  padding-top: 5px;
+}
+.text-a1 {
+  color: #85eb42;
+}
+.mbr-ul1 {
+  padding-left: 1rem;
+}
 
 
