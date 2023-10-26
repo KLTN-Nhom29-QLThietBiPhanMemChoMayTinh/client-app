@@ -28,7 +28,7 @@ export const configs = {
 
       return content;
     }
-    return null;
+    return {};
   },
   /**
    * luu theo cookie

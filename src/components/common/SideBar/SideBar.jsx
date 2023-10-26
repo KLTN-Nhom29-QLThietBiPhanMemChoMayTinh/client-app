@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import * as BiIcons from "react-icons/bi";
@@ -8,7 +8,13 @@ import * as RiIcons from "react-icons/ri";
 import { SidebarData } from "./SidebarData";
 import SubMenu from "./SubMenu.jsx";
 import { IconContext } from "react-icons/lib";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  USER_LOGIN,
+  formatNameByHocVi,
+  getStoreJSON,
+} from "../../../util/config";
+import { getUserLoginApi } from "../../../redux/reducers/userReducer";
 
 const Nav = styled.div`
   background: #15171c;
@@ -57,8 +63,48 @@ const SidebarWrap = styled.div`
 `;
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   let { userLogin } = useSelector((state) => state.userReducer);
-  let { tenDangNhap, quyen } = userLogin;
+
+  useEffect(() => {
+    // truong hop redux khogn co data
+    if (Object.keys(userLogin).length === 0) {
+      // lay dât ở store
+      let userStore = getStoreJSON(USER_LOGIN);
+
+      // kiem tra data o store
+      if (Object.keys(userStore).length === 0) {
+        // TH Store khong co data
+        navigate("/login");
+      } else {
+        // TH co data thi call theo maTK de tim thong tin nguoi dung
+        dispatch(getUserLoginApi(userStore));
+      }
+    }
+  }, []);
+
+  // render
+  const renderNameLogin = () => {
+    if (Object.keys(userLogin).length === 0) {
+      return "admin";
+    }
+    let { quyen } = userLogin.taiKhoan;
+
+    if (quyen.tenQuyen.toLowerCase().includes("Giáo viên".toLowerCase())) {
+      let gv = {
+        hocVi: userLogin.hocVi,
+        name: userLogin.hoTen,
+      };
+      return formatNameByHocVi(gv);
+    } else {
+      if (userLogin.chucVu.tenCV.toLowerCase().includes(("quản lý").toLowerCase())) {
+        return 'QL. '+ userLogin.tenNV;
+      }
+      return 'NV. '+userLogin.tenNV;
+    }
+  };
 
   //set user nao su dung, khong co thi day ve trang login
 
@@ -78,7 +124,7 @@ const Sidebar = () => {
               className="me-2"
               style={{ fontSize: "30px", color: "black" }}
             />
-            {userLogin.tenDangNhap}
+            <span>{renderNameLogin()}</span>
           </div>
         </Nav>
         <Overlay sidebar={sidebar} onClick={showSidebar} />
@@ -102,6 +148,8 @@ const Sidebar = () => {
                 ),
               }}
               key={"index"}
+
+              
             />
           </SidebarWrap>
         </SidebarNav>

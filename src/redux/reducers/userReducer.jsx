@@ -1,15 +1,24 @@
 //rxslice
 
 import { createSlice } from "@reduxjs/toolkit";
-import { ACCESS_TOKEN, USER_LOGIN, getStoreJSON, http, setCookie, setStore, setStoreJSON } from "../../util/config";
+import {
+  ACCESS_TOKEN,
+  USER_LOGIN,
+  clearLocalStorage,
+  getStoreJSON,
+  http,
+  setCookie,
+  setStore,
+  setStoreJSON,
+} from "../../util/config";
 import { history } from "../..";
 
 const initialState = {
-    // userLogin: {
+  // userLogin: {
   //     email: '',
   //     accessToken: ''
   // },
-  userLogin: getStoreJSON(USER_LOGIN),
+  userLogin: {},
 };
 
 const userReducer = createSlice({
@@ -29,25 +38,37 @@ export const getDangNhapApi = (userLogin) => {
   // userLogin = { username: '', password: '', }
 
   let user = {
-    tenDangNhap:userLogin.username,
-    matKhau:userLogin.password
-  }
+    tenDangNhap: userLogin.username,
+    matKhau: userLogin.password,
+  };
   return async (dispatch) => {
     try {
       let result = await http.post("/DangNhap", user);
 
       //   setStore(ACCESS_TOKEN, result.data.content.accessToken);
-    //   setCookie(result.data.content.accessToken, 30, ACCESS_TOKEN);
+      //   setCookie(result.data.content.accessToken, 30, ACCESS_TOKEN);
 
-    // luu lai username - token
-    let{quyen, tenDangNhap} = result.data
-    setStoreJSON(USER_LOGIN, {quyen, tenDangNhap});
+      // luu lai username - token
 
-    // dua len reducer
-    const action = setUserLoginAction(result.data);
-    dispatch(action);
+      let { maTK, tenDangNhap, quyen } = result.data;
+      let resultUser = {};
+      let userLogin = { maTK, tenDangNhap, quyen };
+      if (quyen.tenQuyen.toLowerCase().includes("Giáo viên".toLowerCase())) {
+        resultUser = await http.get(`/GiaoVien/${maTK}`);
+        userLogin = { ...userLogin, name: resultUser.data.hoTen };
+      } else {
+        resultUser = await http.get(`/NhanVien/${maTK}`);
+        userLogin = { ...userLogin, name: resultUser.data.tenNV };
+      }
 
-    history.push("/home");
+      setStoreJSON(USER_LOGIN, userLogin);
+
+      // dua len reducer
+      const action = setUserLoginAction(resultUser.data);
+      // const action = setUserLoginAction({});
+      dispatch(action);
+
+      history.push("/home");
     } catch (error) {
       console.log(
         "🚀 ~ file: userReducer.jsx:31 ~ returnasync ~ error:",
@@ -59,3 +80,29 @@ export const getDangNhapApi = (userLogin) => {
     }
   };
 };
+
+
+export const getUserLoginApi = (userStore) => {
+  return  async (dispatch) => {
+      let {maTK, quyen} = userStore;
+      let resultUser = {};
+
+      if (quyen.tenQuyen.toLowerCase().includes("Giáo viên".toLowerCase())) {
+        resultUser = await http.get(`/GiaoVien/${maTK}`);
+      } else {
+        resultUser = await http.get(`/NhanVien/${maTK}`);
+      }
+
+      const action = setUserLoginAction(resultUser.data);
+      dispatch(action);
+  }
+
+}
+
+export const eventLogout = () => {
+  return async(dispatch) => {
+    clearLocalStorage(USER_LOGIN);
+
+    dispatch(setUserLoginAction({}));
+  }
+}
