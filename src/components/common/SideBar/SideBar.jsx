@@ -15,6 +15,7 @@ import {
   getStoreJSON,
 } from "../../../util/config";
 import { getUserLoginApi } from "../../../redux/reducers/userReducer";
+import SubMenuLogout from "./SubMenuLogout";
 
 const Nav = styled.div`
   background: #15171c;
@@ -99,10 +100,12 @@ const Sidebar = () => {
       };
       return formatNameByHocVi(gv);
     } else {
-      if (userLogin.chucVu.tenCV.toLowerCase().includes(("quản lý").toLowerCase())) {
-        return 'QL. '+ userLogin.tenNV;
+      if (
+        userLogin.chucVu.tenCV.toLowerCase().includes("quản lý".toLowerCase())
+      ) {
+        return "QL. " + userLogin.tenNV;
       }
-      return 'NV. '+userLogin.tenNV;
+      return "NV. " + userLogin.tenNV;
     }
   };
 
@@ -137,7 +140,7 @@ const Sidebar = () => {
               return <SubMenu item={item} key={index} />;
             })}
 
-            <SubMenu
+            <SubMenuLogout
               item={{
                 title: "Đăng Xuất",
                 path: "/",
@@ -148,8 +151,6 @@ const Sidebar = () => {
                 ),
               }}
               key={"index"}
-
-              
             />
           </SidebarWrap>
         </SidebarNav>
