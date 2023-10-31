@@ -12,7 +12,6 @@ export default function PageLogin() {
   let userStore = getStoreJSON(USER_LOGIN);
 
   let ckbRemeber = useRef(true);
-  console.log("🚀 ~ file: PageLogin.jsx:15 ~ PageLogin ~ ckbRemeber:", ckbRemeber)
 
   const REGEX_PASSWORD = /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z_.\-@]{6,}$/;
 

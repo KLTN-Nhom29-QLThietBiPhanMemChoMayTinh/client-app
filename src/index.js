@@ -31,6 +31,7 @@ import PageQLTaiKhoan from "./pages/PageQuanLy/PageQLTaiKhoan";
 import PageHome from "./pages/PageHome/PageHome";
 import PageLogin from "./pages/PageLogin/PageLogin";
 import PageBrand from "./pages/PageBrand/PageBrand";
+import PageLichTruc from "./pages/PagePhanCongLich/PageLichTruc";
 
 export const history = createBrowserHistory();
 
@@ -84,6 +85,7 @@ root.render(
           <Route path="/quan-ly/khoa" element={<PageQLKhoa />}></Route>
           <Route path="/quan-ly/giao-vien" element={<PageQLGiaoVien />}></Route>
           <Route path="/quan-ly/tai-khoan" element={<PageQLTaiKhoan />}></Route>
+          <Route path="/phan-cong/lich-truc" element={<PageLichTruc />}></Route>
           <Route path="*" element={<Page404 />}></Route>
         </Route>
         <Route path="/login" element={<PageLogin />}></Route>
