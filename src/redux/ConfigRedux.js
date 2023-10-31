@@ -8,9 +8,11 @@ import giaoVienReducer from "./reducers/giaoVienReducer";
 import taiKhoanReducer from "./reducers/taiKhoanReducer";
 import userReducer from "./reducers/userReducer";
 import toaNhaReducer from "./reducers/toaNhaReducer";
+import tangReducer from "./reducers/tangReducer";
 
 export const store = configureStore({
     reducer: {
+      tangReducer:tangReducer,
       toaNhaReducer:toaNhaReducer,
       userReducer:userReducer,
       taiKhoanReducer:taiKhoanReducer,

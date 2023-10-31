@@ -25,16 +25,7 @@ const dataSearch = (arrData, valSearch) => {
 }
 
 const initialState = {
-  arrNhanVien: [
-    {
-      id: 2,
-      idCode: "NV0002",
-      name: "Trần Thị Lê",
-      ngaySinh: "Sun Jan 10 1982 00:00:00 GMT+0700 (GMT+07:00)",
-      sdt: "0951753133",
-      email: "O8tCSZpcx@gmail.com",
-    },
-  ],
+  arrNhanVien: [],
   arrNhanVienSearch: [],
   detailNhanVien: {},
   valueSearch: "",

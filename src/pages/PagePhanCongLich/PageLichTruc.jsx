@@ -143,10 +143,7 @@ export default function PageLichTruc() {
               <div style={{ display: "flex", alignItems: "center" }}>
                 {/* Btn them */}
                 <NavLink
-                  // to="/quan-ly/giao-vien/add"
-                  onClick={() => {
-                    alert(`tạo mới -- dang cập nhật!`);
-                  }}
+                  to="/phan-cong/lich-truc/add"
                   type="button"
                   className="btn btn-success ms-4 view_center_vertical"
                 >

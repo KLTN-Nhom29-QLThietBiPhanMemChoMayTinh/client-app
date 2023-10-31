@@ -42,6 +42,7 @@
 
 ### ảnh lich Truc
 ![login](./AnhMinhHoa/img_pcLichTruc.png)
+![login](./AnhMinhHoa/img_pcLichTruc_form.png)
 
 
 
@@ -77,6 +78,8 @@
     - userReducer - luu username vs token - chua luu token - xem quyen de gui di den trang cho GV || QL
     - pageLogin - dựa username lây thông tin nguoi dung
     - PageLichTruc: data api chua co - handleSearch chua co - select theo thang nam - update - del
+    - FormAddLichTruc: del select Tgian truc
+
     
 ## error
 ![image err](./AnhMinhHoa/img_error.png)
