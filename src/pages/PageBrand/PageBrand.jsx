@@ -8,9 +8,42 @@ import {
   FaFacebook,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { USER_LOGIN, getStoreJSON } from "../../util/config";
+import { formatNameByQuyen } from "../../util/formatString";
 
 export default function PageBrand() {
   const navigate = useNavigate();
+
+  // render
+
+  const renderBtnStart = () => {
+    let userStore = getStoreJSON(USER_LOGIN);
+
+     if (Object.keys(userStore).length === 0) {
+        // TH Store khong co data
+        return (
+          <a
+            className=" btn btn-light p-4 fs-3 px-5 fw-bold "
+            href={"/login"}
+            style={{ borderRadius: "30px" }}
+          >
+            Bắt đầu!
+          </a>
+        );
+      } else {
+        return (
+          <a
+            className=" btn btn-light p-4 fs-3 px-5 fw-bold "
+            href={"/home"}
+            style={{ borderRadius: "30px" }}
+          >
+            Bắt đầu - {formatNameByQuyen({name : userStore.name, tenQuyen: userStore.quyen.tenQuyen})}
+          </a>
+          );
+      }
+    
+  };
+
   return (
     <div>
       <div>
@@ -28,7 +61,10 @@ export default function PageBrand() {
                 />
               </a>
             </span>
-            <a className="navbar-brand h5 fw-bolder m-0 me-3" href="#header10-1m">
+            <a
+              className="navbar-brand h5 fw-bolder m-0 me-3"
+              href="#header10-1m"
+            >
               Application
             </a>
             <button
@@ -48,7 +84,11 @@ export default function PageBrand() {
                   className="nav-item px-2 link1"
                   style={{ fontWeight: "600" }}
                 >
-                  <a className="nav-link active" href="#header10-1m" aria-current="page">
+                  <a
+                    className="nav-link active"
+                    href="#header10-1m"
+                    aria-current="page"
+                  >
                     Home <span className="visually-hidden">(current)</span>
                   </a>
                 </li>
@@ -74,10 +114,10 @@ export default function PageBrand() {
                   className="btn btn-success my-2 my-sm-0"
                   type="button"
                   onClick={() => {
-                    navigate("/home");
+                    navigate("/login");
                   }}
                 >
-                  Start Now!
+                  Đăng nhập
                 </button>
               </div>
             </div>
@@ -107,15 +147,7 @@ export default function PageBrand() {
                   Hê thống giúp người dùng quản lý phòng máy và phân công giảng
                   dạy cho giáo viên
                 </p>
-                <div className="mbr-section-btn">
-                  <a
-                    className=" btn btn-light p-4 fs-3 px-5 fw-bold "
-                    href="/home"
-                    style={{ borderRadius: "30px" }}
-                  >
-                    Start Now!
-                  </a>
-                </div>
+                <div className="mbr-section-btn">{renderBtnStart()}</div>
               </div>
             </div>
           </div>

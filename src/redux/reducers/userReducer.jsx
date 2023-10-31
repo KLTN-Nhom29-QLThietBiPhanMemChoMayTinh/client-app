@@ -81,10 +81,10 @@ export const getDangNhapApi = (userLogin) => {
   };
 };
 
-
 export const getUserLoginApi = (userStore) => {
-  return  async (dispatch) => {
-      let {maTK, quyen} = userStore;
+  return async (dispatch) => {
+    try {
+      let { maTK, quyen } = userStore;
       let resultUser = {};
 
       if (quyen.tenQuyen.toLowerCase().includes("Giáo viên".toLowerCase())) {
@@ -95,14 +95,20 @@ export const getUserLoginApi = (userStore) => {
 
       const action = setUserLoginAction(resultUser.data);
       dispatch(action);
-  }
+    } catch (error) {
+      console.log("🚀 ~ file: userReducer.jsx:99 ~ return ~ error:", error);
 
-}
+      alert("Đăng nhập không thành công, vui lòng thử lại!");
+
+      history.push("/login");
+    }
+  };
+};
 
 export const eventLogout = () => {
-  return async(dispatch) => {
+  return async (dispatch) => {
     clearLocalStorage(USER_LOGIN);
 
     dispatch(setUserLoginAction({}));
-  }
-}
+  };
+};
