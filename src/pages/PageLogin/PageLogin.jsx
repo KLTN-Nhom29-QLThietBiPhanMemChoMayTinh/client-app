@@ -1,38 +1,52 @@
 import { useFormik } from "formik";
-import React from "react";
-import * as Yup from 'yup'
+import React, { useRef } from "react";
+import * as Yup from "yup";
 import { FaRegCopyright } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { getDangNhapApi } from "../../redux/reducers/userReducer";
+import { USER_LOGIN, getStoreJSON } from "../../util/config";
 
 export default function PageLogin() {
-
-
   const dispatch = useDispatch();
-  const REGEX_PASSWORD= /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z_.\-@]{6,}$/;
+
+  let userStore = getStoreJSON(USER_LOGIN);
+
+  let ckbRemeber = useRef(true);
+  console.log("🚀 ~ file: PageLogin.jsx:15 ~ PageLogin ~ ckbRemeber:", ckbRemeber)
+
+  const REGEX_PASSWORD = /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z_.\-@]{6,}$/;
 
   const formik = useFormik({
     initialValues: {
-      username: '',
-      password: '',
+      username: Object.keys(userStore).length === 0 ? "" : userStore.tenDangNhap,
+      password: "",
     },
     validationSchema: Yup.object().shape({
-      username: Yup.string().trim().ensure()
-              .required("Tài khoản không được bỏ trống!")
-              .min(3,"Tài khoản trên 3 ký tự!")
-              .matches(/^[a-z0-9_-]{3,16}$/, "Tài khoản không có ký tự đặc biệt!"),
-              
-      password: Yup.string().required("Mật khẩu không được bỏ trống!")
-            .min(6, 'Mật khẩu từ 6 - 32 ký tự !')
-            .max(32,'Mật khẩu từ 6 - 32 ký tự !')
-            .matches(REGEX_PASSWORD, 'Mật khẩu có ít nhất một chữ số và một chữ cái!')
-            
+      username: Yup.string()
+        .trim()
+        .ensure()
+        .required("Tài khoản không được bỏ trống!")
+        .min(3, "Tài khoản trên 3 ký tự!")
+        .matches(/^[a-z0-9_-]{3,16}$/, "Tài khoản không có ký tự đặc biệt!"),
+
+      password: Yup.string()
+        .required("Mật khẩu không được bỏ trống!")
+        .min(6, "Mật khẩu từ 6 - 32 ký tự !")
+        .max(32, "Mật khẩu từ 6 - 32 ký tự !")
+        .matches(
+          REGEX_PASSWORD,
+          "Mật khẩu có ít nhất một chữ số và một chữ cái!"
+        ),
     }),
-    onSubmit:(value) => {
-      dispatch(getDangNhapApi(value));
-      
-    }
-  })
+    onSubmit: (value) => {
+      dispatch(getDangNhapApi(value, ckbRemeber.current));
+    },
+  });
+
+  // handle 
+  const handleChangeCheckbox = (e) => {
+    ckbRemeber.current = e.target.checked;
+  }
 
   return (
     <div
@@ -50,10 +64,13 @@ export default function PageLogin() {
         <h2 className="my-4 ">Đăng nhập</h2>
 
         <div className="mb-3 w-75 form-group">
-          <label htmlFor="username" className="form-label ms-2 mb-0" >
+          <label htmlFor="username" className="form-label ms-2 mb-0">
             Tài khoản
-            <small id="errUsername" className="form-text text_color_yellow ms-2">
-              {formik.errors.username? formik.errors.username:'' }
+            <small
+              id="errUsername"
+              className="form-text text_color_yellow ms-2"
+            >
+              {formik.errors.username ? formik.errors.username : ""}
             </small>
           </label>
           <input
@@ -63,14 +80,21 @@ export default function PageLogin() {
             id="username"
             aria-describedby="errUsername"
             placeholder="Nhập tài khoản..."
-              // onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+            // onBlur={formik.handleBlur}
+            // defaultValue={
+            //   
+            // }
+            value={formik.values.username}
+            onChange={formik.handleChange}
           />
         </div>
         <div className="mb-3 w-75 form-group">
           <label htmlFor="password" className="form-label ms-2 mb-0">
             Mật khẩu
-            <small id="errPassword" className="form-text text_color_yellow ms-2" >
+            <small
+              id="errPassword"
+              className="form-text text_color_yellow ms-2"
+            >
               {formik.errors.password ? formik.errors.password : ""}
             </small>
           </label>
@@ -81,13 +105,14 @@ export default function PageLogin() {
             id="password"
             aria-describedby="errPassword"
             placeholder="Nhập mật khẩu..."
+            value={formik.values.password}
             onChange={formik.handleChange}
             // onBlur={formik.handleBlur}
           />
         </div>
 
         <div className="w-75  mb-3 ">
-          <input type="checkbox" id="brand1" defaultValue />
+          <input type="checkbox" id="brand1" checked onChange={handleChangeCheckbox} />
           <label htmlFor="brand1" className="ms-2">
             Ghi nhớ tài khoản
           </label>

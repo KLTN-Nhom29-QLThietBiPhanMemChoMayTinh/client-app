@@ -34,7 +34,7 @@ const userReducer = createSlice({
 export const { setUserLoginAction } = userReducer.actions;
 export default userReducer.reducer;
 
-export const getDangNhapApi = (userLogin) => {
+export const getDangNhapApi = (userLogin, ckbRemeber) => {
   // userLogin = { username: '', password: '', }
 
   let user = {
@@ -61,7 +61,9 @@ export const getDangNhapApi = (userLogin) => {
         userLogin = { ...userLogin, name: resultUser.data.tenNV };
       }
 
-      setStoreJSON(USER_LOGIN, userLogin);
+      if (ckbRemeber) {
+        setStoreJSON(USER_LOGIN, userLogin);
+      }
 
       // dua len reducer
       const action = setUserLoginAction(resultUser.data);
@@ -76,7 +78,7 @@ export const getDangNhapApi = (userLogin) => {
       );
 
       alert("Đăng nhập không thành công. Sai thông tin");
-      history.push("/login");
+      // history.push("/login");
     }
   };
 };
