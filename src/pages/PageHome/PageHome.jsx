@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaComputer } from "react-icons/fa6";
 import { FaRegBuilding } from "react-icons/fa";
 import { FaPencilAlt } from "react-icons/fa";
@@ -10,15 +10,35 @@ import {
   MdKeyboardDoubleArrowDown,
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 
 export default function PageHome() {
+  const dispatch = useDispatch();
 
+  let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
 
-  // let {}
+  useEffect(() => {
+    dispatch(getAllToaNhaApi);
+  }, []);
 
   const numberNextPageTang = useRef(1);
   const numberNextPagePhong = useRef(1);
 
+  // handle
+  const handleChangeToaNha = (e) => {
+    console.log("🚀 ~ file: PageHome.jsx:33 ~ handleChangeToaNha ~ e:", e);
+  };
+  // render
+  const renderToaNha = () => {
+    return arrToaNha?.map((item, index) => {
+      return (
+        <option key={index} value={item.maToaNha}>
+          {item.tenToaNha}
+        </option>
+      );
+    });
+  };
   return (
     <div
       className="row p-2 d-flex justify-content-between bg-light  w-100"
@@ -28,10 +48,14 @@ export default function PageHome() {
       <div className="col-2  flex-column d-flex justify-content-between px-1">
         {/* select toa nha */}
         <div className=" d-flex align-items-center" style={{ height: "100px" }}>
-          <select className="form-select form-select-lg">
-            <option selected>Tòa nhà A</option>
+          <select
+            onChange={handleChangeToaNha}
+            className="form-select form-select-lg"
+          >
+            {renderToaNha()}
+            {/* <option selected>Tòa nhà A</option>
             <option value>Tòa nhà B</option>
-            <option value>Tòa nhà C</option>
+            <option value>Tòa nhà C</option> */}
           </select>
         </div>
         {/* List tang */}
@@ -227,13 +251,15 @@ export default function PageHome() {
                 Máy tính H3.1.1
               </span>
               <div>
-                <span style={{ fontWeight: 600 }}>- Thiết bị phần cứng: </span> <br />
+                <span style={{ fontWeight: 600 }}>- Thiết bị phần cứng: </span>{" "}
+                <br />
                 <li className="ms-3">Hệ thống thông tin</li>
                 <li className="ms-3">Hệ thống thông tin</li>
                 <li className="ms-3">Hệ thống thông tin</li>
               </div>
               <div>
-                <span style={{ fontWeight: 600 }}>- Ứng dụng phần mềm: </span> <br />
+                <span style={{ fontWeight: 600 }}>- Ứng dụng phần mềm: </span>{" "}
+                <br />
                 <li className="ms-3">Hệ thống thông tin</li>
                 <li className="ms-3">Hệ thống thông tin</li>
                 <li className="ms-3">Hệ thống thông tin</li>
