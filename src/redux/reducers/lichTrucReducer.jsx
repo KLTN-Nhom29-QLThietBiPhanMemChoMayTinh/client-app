@@ -4,9 +4,33 @@ import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 import Database from "../../util/database/Database";
 import { history } from "../..";
+import { formatDate_MM_YYYY } from "../../util/formatString";
+
+const dataSearch = (arrData, valSearch) => {
+  let search = valSearch.toLowerCase();
+
+  let arrUpdate = arrData.filter((item) => {
+    let strCaTruc = `${item.thoiGianBatDau}h - ${item.thoiGianKetThuc}h`;
+
+    return (
+      (item.maLich + "").toLowerCase().includes(search) ||
+      formatDate_MM_YYYY(item.tgian).toLowerCase().includes(search) ||
+      strCaTruc.toLowerCase().includes(search) ||
+      `${item.thoiGianBatDau}h`.toLowerCase().includes(search) ||
+      `${item.thoiGianKetThuc}h`.toLowerCase().includes(search) ||
+      (item.soNgayNghi + "").toLowerCase().includes(search) ||
+      item.nhanVien.tenNV.toLowerCase().includes(search) ||
+      item.nhanVien.sDT.toLowerCase().includes(search) ||
+      item.tang.tenTang.toLowerCase().includes(search) ||
+      item.tang.toaNha.tenToaNha.toLowerCase().includes(search)
+    );
+  });
+  return [...arrUpdate];
+};
 
 const initialState = {
   arrLichTruc: [],
+  arrLichTrucSearch: [],
 };
 
 const lichTrucReducer = createSlice({
@@ -15,6 +39,10 @@ const lichTrucReducer = createSlice({
   reducers: {
     setArrLichTrucAction: (state, action) => {
       state.arrLichTruc = action.payload;
+      state.arrLichTrucSearch = action.payload;
+    },
+    setArrLichTrucSearchAction: (state, action) => {
+      state.arrLichTrucSearch = dataSearch(state.arrLichTruc, action.payload);
     },
     insertLichTrucAction: (state, action) => {
       let item = action.payload;
@@ -23,17 +51,18 @@ const lichTrucReducer = createSlice({
     updateLichTrucAction: (state, action) => {
       let itemEdit = action.payload;
       // rowToChange - vi tri item co cung id
-      let rowToChange = state.arrLichTruc.findIndex(
-        (item) => { return item.maLich === itemEdit.maLich}
-      );
+      let rowToChange = state.arrLichTruc.findIndex((item) => {
+        return item.maLich === itemEdit.maLich;
+      });
 
-      state.arrLichTruc[rowToChange] = itemEdit
+      state.arrLichTruc[rowToChange] = itemEdit;
     },
   },
 });
 // exp nay de sử dụng theo cách 2
 export const {
   setArrLichTrucAction,
+  setArrLichTrucSearchAction,
   insertLichTrucAction,
   updateLichTrucAction,
 } = lichTrucReducer.actions;
@@ -98,7 +127,7 @@ export const updateLichTrucApi = (lichTruc) => {
       //
       dispatch(updateLichTrucAction(lichTruc));
 
-      history.push("../../phan-cong/lich-truc")
+      history.push("../../phan-cong/lich-truc");
     } catch (error) {
       console.log("🚀 ~ file: lichTrucReducer.jsx:88 ~ return ~ error:", error);
     }

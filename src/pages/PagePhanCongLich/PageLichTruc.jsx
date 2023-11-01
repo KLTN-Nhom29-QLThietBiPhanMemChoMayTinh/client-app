@@ -9,22 +9,26 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllLichTruc } from "../../redux/reducers/lichTrucReducer";
+import { getAllLichTruc, setArrLichTrucSearchAction } from "../../redux/reducers/lichTrucReducer";
 
 export default function PageLichTruc(props) {
   const dispatch = useDispatch();
 
-  const { arrLichTruc } = useSelector((state) => state.lichTrucReducer);
+  const { arrLichTruc,arrLichTrucSearch } = useSelector((state) => state.lichTrucReducer);
 
   useEffect(() => {
     if (arrLichTruc.length === 0) {
       dispatch(getAllLichTruc);
     }
   }, []);
+  // handle 
+  const handleChangeSearch = (e) => {
+    dispatch(setArrLichTrucSearchAction(e.target.value.trim()))
+  }
   //render
   const renderDataLichTruc = () => {
     //  ===============
-    return arrLichTruc.map((item, index) => {
+    return arrLichTrucSearch?.map((item, index) => {
       let tgian = new Date(item.tgian);
 
       let strTgian = `${tgian.getMonth() + 1} - ${tgian.getFullYear()}`;
@@ -120,7 +124,7 @@ export default function PageLichTruc(props) {
                   type="text"
                   className="form-control"
                   placeholder="tìm kiếm..."
-                  // onChange={handleChangeSearch}
+                  onChange={handleChangeSearch}
                 />
               </div>
 
