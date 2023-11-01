@@ -16,10 +16,15 @@ const lichTrucReducer = createSlice({
     setArrLichTrucAction: (state, action) => {
       state.arrLichTruc = action.payload;
     },
+    insertLichTrucAction: (state, action) => {
+      let item = action.payload;
+      state.arrLichTruc = [...state.arrLichTruc, item];
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
-export const { setArrLichTrucAction } = lichTrucReducer.actions;
+export const { setArrLichTrucAction, insertLichTrucAction } =
+  lichTrucReducer.actions;
 export default lichTrucReducer.reducer;
 
 // CALL APi ==================================
@@ -54,4 +59,22 @@ export const getLichTrucbyId = (id) => {
   }
 
   return item;
+};
+
+// add
+export const insertLichTrucApi = (lichTruc) => {
+  return async (dispatch) => {
+    try {
+      let result = await http.post("/LuuLichTruc", lichTruc);
+      console.log("api OK nhung data chua okay", result);
+
+      //
+      // dispatch(insertLichTrucAction(result.data));
+      dispatch(insertLichTrucAction(lichTruc));
+      history.push("../../phan-cong/lich-truc")
+    } catch (error) {
+      console.log("🚀 ~ file: lichTrucReducer.jsx:65 ~ return ~ error:", error);
+      
+    }
+  };
 };

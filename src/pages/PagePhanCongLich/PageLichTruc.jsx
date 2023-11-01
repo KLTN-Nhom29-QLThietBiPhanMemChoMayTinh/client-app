@@ -117,7 +117,6 @@ export default function PageLichTruc(props) {
                 <input
                   type="text"
                   className="form-control"
-                  id
                   placeholder="tìm kiếm..."
                   // onChange={handleChangeSearch}
                 />

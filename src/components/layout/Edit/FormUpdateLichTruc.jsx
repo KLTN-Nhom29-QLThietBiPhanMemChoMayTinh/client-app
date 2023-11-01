@@ -380,18 +380,11 @@ export default function FormUpdateLichTruc() {
                   <button
                     type="reset"
                     onClick={() => {
-                      setLichTruc({
-                        tgian: strDate,
-                        thoiGianBatDau: 6,
-                        thoiGianKetThuc: 14,
-                        soNgayNghi: 0,
-                        nhanVien: {},
-                        tang: {},
-                      });
+                      setLichTruc(itemOld);
                     }}
                     className="btn btn-danger mx-3"
                   >
-                    Quay lại
+                    làm mới
                   </button>
                 </div>
               </form>

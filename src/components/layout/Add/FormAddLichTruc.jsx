@@ -11,6 +11,7 @@ import {
   getAllToaNhaApi,
   getAllToaNhaByLichTruc,
 } from "../../../redux/reducers/toaNhaReducer";
+import { insertLichTrucApi } from "../../../redux/reducers/lichTrucReducer";
 
 let day_now = new Date();
 let strDate = `${day_now.getFullYear()}-${day_now.getMonth() + 1}-01`;
@@ -68,6 +69,7 @@ export default function FormAddLichTruc() {
 
     if (checkData()) {
       console.log(lichTruc);
+      dispatch(insertLichTrucApi(lichTruc))
     }
   };
   //
@@ -303,7 +305,7 @@ export default function FormAddLichTruc() {
                       tang: {},
                     });
                   }} className="btn btn-danger mx-3">
-                    Quay lại
+                  Làm mới 
                   </button>
                 </div>
               </form>
