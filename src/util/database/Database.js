@@ -347,6 +347,51 @@ const dataTaiKhoan = [
   {id:9, idCode:'TK0009', userName:random_username(), password:'11111111', mota: random_GV(), quyenId: random_quyen(0) },
 ]
 
+const datalichTruc = [
+  {
+    maLich: 1,
+    tgian: "2023-10-30T17:00:00.000+00:00",
+    thoiGianBatDau: 6,
+    thoiGianKetThuc: 14,
+    soNgayNghi: 0,
+    nhanVien: {
+      maNV: "NV003",
+      tenNV: "Nhân văn Viên 3",
+      email: "email3@example.com",
+      sDT: "0951753002",
+      chucVu: {
+        maCV: 2,
+        tenCV: "Nhân viên hỗ trợ",
+      },
+    },
+    tang: {
+      maTang: 2,
+      tenTang: "Tầng 2",
+    },
+  },
+  {
+    maLich: 2,
+    tgian: "2023-10-30T17:00:00.000+00:00",
+    thoiGianBatDau: 14,
+    thoiGianKetThuc: 22,
+    soNgayNghi: 5,
+    nhanVien: {
+      maNV: "NV004",
+      tenNV: "Nhân văn Viên 4",
+      email: "email4@example.com",
+      sDT: "0951753004",
+      chucVu: {
+        maCV: 2,
+        tenCV: "Nhân viên hỗ trợ",
+      },
+    },
+    tang: {
+      maTang: 3,
+      tenTang: "Tầng 1",
+    },
+  },
+];
+
 
 
 
@@ -363,4 +408,5 @@ export default {
   dataKhoa,
   dataTaiKhoan,
   dataQuyen,
+  datalichTruc,
 };

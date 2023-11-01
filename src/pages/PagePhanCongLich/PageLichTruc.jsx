@@ -8,78 +8,61 @@ import { BiSolidDetail } from "react-icons/bi";
 import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllLichTruc } from "../../redux/reducers/lichTrucReducer";
 
 export default function PageLichTruc() {
-  //render 
+  const dispatch = useDispatch();
+
+  const { arrLichTruc } = useSelector((state) => state.lichTrucReducer);
+
+  useEffect(() => {
+    if (arrLichTruc.length === 0) {
+      dispatch(getAllLichTruc);
+    }
+  }, []);
+  //render
   const renderDataGiaoVien = () => {
-    const item = {
-      maLich: 1,
-      tgian: "2023-10-30T17:00:00.000+00:00",
-      thoiGianBatDau: 6,
-      thoiGianKetThuc: 14,
-      soNgayNghi: 0,
-      nhanVien: {
-        maNV: "NV003",
-        tenNV: "Nhân văn Viên 3",
-        email: "email3@example.com",
-        sDT: "0951753002",
-        chucVu: {
-          maCV: 2,
-          tenCV: "Nhân viên hỗ trợ",
-        },
-      },
-      tang: {
-        maTang: 2,
-        tenTang: "Tầng 2",
-      },
-    };
-    let index =1 ;
     //  ===============
+    return arrLichTruc.map((item, index) => {
+      let tgian = new Date(item.tgian);
 
-    let tgian  = new Date(item.tgian)
+      let strTgian = `${tgian.getMonth() + 1} - ${tgian.getFullYear()}`;
+      let strCaTruc = `${item.thoiGianBatDau}h - ${item.thoiGianKetThuc}h`;
+      return (
+        <>
+          <tr key={index}>
+            <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
+              {index < 9 ? `0${index + 1}` : index + 1}
+            </td>
+            <td>{item?.tang.tenTang}</td>
+            <td>{item.nhanVien.tenNV}</td>
+            <td>{item.nhanVien.sDT}</td>
+            <td>{strTgian}</td>
+            <td>{strCaTruc}</td>
+            <td>{item.soNgayNghi}</td>
 
-    let strTgian = `${tgian.getMonth()+1} - ${tgian.getFullYear()}`
-    let strCaTruc = `${item.thoiGianBatDau}h - ${item.thoiGianKetThuc}h`;
-    return (
-      <>
-        <tr key={index}>
-          <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
-            {index < 9 ? `0${index + 1}` : index + 1}
-          </td>
-          <td>{item?.tang.tenTang}</td>
-          <td>{item.nhanVien.tenNV}</td>
-          <td>{item.nhanVien.sDT}</td>
-          <td>{strTgian}</td>
-          <td>{strCaTruc}</td>
-          <td>{item.soNgayNghi}</td>
-
-          <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink
-              // to={"/quan-ly/giao-vien/update"}
-              onClick={() => {
-                alert(`Update -- ${item.id} -- dang cập nhật!`);
-                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-              }}
-            >
+            <td style={{ display: "flex", justifyContent: "space-evenly" }}>
+              <NavLink to={`/phan-cong/lich-truc/update/${item.maLich}`}>
+                <button
+                  type="button"
+                  className="btn btn-primary mx-2 px-2"
+                  style={{ padding: "2px" }}
+                >
+                  <FaPencilAlt color="white" size={16} />
+                </button>
+              </NavLink>
               <button
+                onClick={() => {
+                  alert(`Del -- ${item.id} -- dang cập nhật!`);
+                }}
                 type="button"
-                className="btn btn-primary mx-2 px-2"
+                className="btn btn-danger mx-2 px-2"
                 style={{ padding: "2px" }}
               >
-                <FaPencilAlt color="white" size={16} />
+                <ImBin2 color="white" size={16} />
               </button>
-            </NavLink>
-            <button
-              onClick={() => {
-                alert(`Del -- ${item.id} -- dang cập nhật!`);
-              }}
-              type="button"
-              className="btn btn-danger mx-2 px-2"
-              style={{ padding: "2px" }}
-            >
-              <ImBin2 color="white" size={16} />
-            </button>
-            {/* <NavLink
+              {/* <NavLink
               // to={`../quan-ly/phong`}
               onClick={() => {
                 alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
@@ -90,11 +73,12 @@ export default function PageLichTruc() {
             >
               <BiSolidDetail color="white" size={16} />
             </NavLink> */}
-          </td>
-        </tr>
-      </>
-    )
-  }
+            </td>
+          </tr>
+        </>
+      );
+    });
+  };
 
   // Mảng quản lý data navtab
   let arrLinkNavTab = [{ name: "Phân công lịch trực", link: "" }];
@@ -170,9 +154,7 @@ export default function PageLichTruc() {
                     <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
                 </thead>
-                <tbody className="over_flow_auto">
-                  {renderDataGiaoVien()}
-                </tbody>
+                <tbody className="over_flow_auto">{renderDataGiaoVien()}</tbody>
               </table>
             </div>
           </div>
@@ -183,25 +165,3 @@ export default function PageLichTruc() {
     </div>
   );
 }
-
-const lichTruc1 = {
-  maLich: 1,
-  tgian: 10,
-  thoiGianBatDau: 6,
-  thoiGianKetThuc: 14,
-  soNgayNghi: 0,
-  nhanVien: {
-    maNV: "NV003",
-    tenNV: "Nhân văn Viên 3",
-    email: "email3@example.com",
-    sDT: "0951753002",
-    chucVu: {
-      maCV: 2,
-      tenCV: "Nhân viên hỗ trợ",
-    },
-  },
-  tang: {
-    maTang: 2,
-    tenTang: "Tầng 2",
-  },
-};

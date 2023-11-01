@@ -9,9 +9,11 @@ import taiKhoanReducer from "./reducers/taiKhoanReducer";
 import userReducer from "./reducers/userReducer";
 import toaNhaReducer from "./reducers/toaNhaReducer";
 import tangReducer from "./reducers/tangReducer";
+import lichTrucReducer from "./reducers/lichTrucReducer";
 
 export const store = configureStore({
     reducer: {
+      lichTrucReducer:lichTrucReducer,
       tangReducer:tangReducer,
       toaNhaReducer:toaNhaReducer,
       userReducer:userReducer,

@@ -34,6 +34,7 @@ import PageBrand from "./pages/PageBrand/PageBrand";
 import PageLichTruc from "./pages/PagePhanCongLich/PageLichTruc";
 import FormAddKhuVuc from "./components/layout/FormAddKhuVuc";
 import FormAddLichTruc from "./components/layout/Add/FormAddLichTruc";
+import FormUpdateLichTruc from "./components/layout/Edit/FormUpdateLichTruc";
 
 export const history = createBrowserHistory();
 
@@ -89,6 +90,7 @@ root.render(
           <Route path="/quan-ly/tai-khoan" element={<PageQLTaiKhoan />}></Route>
           <Route path="/phan-cong/lich-truc" element={<PageLichTruc />}></Route>
           <Route path="/phan-cong/lich-truc/add" element={<FormAddLichTruc />}></Route>
+          <Route path="/phan-cong/lich-truc/update/:id" element={<FormUpdateLichTruc />}></Route>
           <Route path="*" element={<Page404 />}></Route>
         </Route>
         <Route path="/login" element={<PageLogin />}></Route>
