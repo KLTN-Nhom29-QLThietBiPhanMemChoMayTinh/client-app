@@ -20,11 +20,23 @@ const lichTrucReducer = createSlice({
       let item = action.payload;
       state.arrLichTruc = [...state.arrLichTruc, item];
     },
+    updateLichTrucAction: (state, action) => {
+      let itemEdit = action.payload;
+      // rowToChange - vi tri item co cung id
+      let rowToChange = state.arrLichTruc.findIndex(
+        (item) => { return item.maLich === itemEdit.maLich}
+      );
+
+      state.arrLichTruc[rowToChange] = itemEdit
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
-export const { setArrLichTrucAction, insertLichTrucAction } =
-  lichTrucReducer.actions;
+export const {
+  setArrLichTrucAction,
+  insertLichTrucAction,
+  updateLichTrucAction,
+} = lichTrucReducer.actions;
 export default lichTrucReducer.reducer;
 
 // CALL APi ==================================
@@ -71,10 +83,24 @@ export const insertLichTrucApi = (lichTruc) => {
       //
       // dispatch(insertLichTrucAction(result.data));
       dispatch(insertLichTrucAction(lichTruc));
-      history.push("../../phan-cong/lich-truc")
+      history.push("../../phan-cong/lich-truc");
     } catch (error) {
       console.log("🚀 ~ file: lichTrucReducer.jsx:65 ~ return ~ error:", error);
-      
+    }
+  };
+};
+
+// update
+export const updateLichTrucApi = (lichTruc) => {
+  return async (dispatch) => {
+    try {
+      // let result = await http.put("/SuaLichTruc", lichTruc);
+      //
+      dispatch(updateLichTrucAction(lichTruc));
+
+      history.push("../../phan-cong/lich-truc")
+    } catch (error) {
+      console.log("🚀 ~ file: lichTrucReducer.jsx:88 ~ return ~ error:", error);
     }
   };
 };

@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom";
 import {
   getAllLichTruc,
   getLichTrucbyId,
+  updateLichTrucApi,
 } from "../../../redux/reducers/lichTrucReducer";
 
 let day_now = new Date();
@@ -85,6 +86,7 @@ export default function FormUpdateLichTruc() {
 
     if (checkData()) {
       console.log(lichTruc);
+      dispatch(updateLichTrucApi(lichTruc));
     }
   };
   //

@@ -17,7 +17,9 @@ export default function PageLichTruc(props) {
   const { arrLichTruc } = useSelector((state) => state.lichTrucReducer);
 
   useEffect(() => {
-    dispatch(getAllLichTruc);
+    if (arrLichTruc.length === 0) {
+      dispatch(getAllLichTruc);
+    }
   }, []);
   //render
   const renderDataLichTruc = () => {
