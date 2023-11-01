@@ -367,6 +367,11 @@ const datalichTruc = [
     tang: {
       maTang: 2,
       tenTang: "Tầng 2",
+      toaNha: {
+        maToaNha: 1,
+        tenToaNha: "Toà nhà A",
+        soTang: 10
+        }
     },
   },
   {
@@ -388,6 +393,11 @@ const datalichTruc = [
     tang: {
       maTang: 3,
       tenTang: "Tầng 1",
+      toaNha: {
+        maToaNha: 2,
+        tenToaNha: "Toà nhà B",
+        soTang: 10
+        }
     },
   },
 ];

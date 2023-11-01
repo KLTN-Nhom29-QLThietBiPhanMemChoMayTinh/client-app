@@ -11,18 +11,16 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllLichTruc } from "../../redux/reducers/lichTrucReducer";
 
-export default function PageLichTruc() {
+export default function PageLichTruc(props) {
   const dispatch = useDispatch();
 
   const { arrLichTruc } = useSelector((state) => state.lichTrucReducer);
 
   useEffect(() => {
-    if (arrLichTruc.length === 0) {
-      dispatch(getAllLichTruc);
-    }
+    dispatch(getAllLichTruc);
   }, []);
   //render
-  const renderDataGiaoVien = () => {
+  const renderDataLichTruc = () => {
     //  ===============
     return arrLichTruc.map((item, index) => {
       let tgian = new Date(item.tgian);
@@ -35,7 +33,8 @@ export default function PageLichTruc() {
             <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
               {index < 9 ? `0${index + 1}` : index + 1}
             </td>
-            <td>{item?.tang.tenTang}</td>
+            <td>{item.tang.tenTang}</td>
+            <td>{item.tang.toaNha.tenToaNha}</td>
             <td>{item.nhanVien.tenNV}</td>
             <td>{item.nhanVien.sDT}</td>
             <td>{strTgian}</td>
@@ -144,17 +143,18 @@ export default function PageLichTruc() {
                   <tr>
                     <th>STT</th>
                     <th style={{ minWidth: "100px" }}>Tầng trực</th>
+                    <th style={{ minWidth: "100px" }}>Tòa nhà</th>
                     <th style={{ minWidth: "180px" }}>Tên nhân viên</th>
                     <th style={{ minWidth: "80px" }}>Số liên lạc </th>
                     <th style={{ minWidth: "120px" }}>
-                      Thời gian trực( tháng )
+                      Thời gian trực (tháng)
                     </th>
                     <th style={{ minWidth: "120px" }}>Ca trực(giờ)</th>
-                    <th style={{ minWidth: "180px" }}>Số ngày nghỉ</th>
+                    <th style={{ minWidth: "120px" }}>Số ngày nghỉ</th>
                     <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
                 </thead>
-                <tbody className="over_flow_auto">{renderDataGiaoVien()}</tbody>
+                <tbody className="over_flow_auto">{renderDataLichTruc()}</tbody>
               </table>
             </div>
           </div>

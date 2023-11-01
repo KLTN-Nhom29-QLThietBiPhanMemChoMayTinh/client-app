@@ -138,7 +138,7 @@ export default function FormAddLichTruc() {
               }}
             />
             {/* Form */}
-            <div className=" bg-white p-4">
+            <div className=" bg-white rounded p-4">
               <form onSubmit={handleSubmit} action="/quan-ly/khu-vuc">
                 <div className="row">
                   <div className="col-md-6">
@@ -291,7 +291,7 @@ export default function FormAddLichTruc() {
 
                 <div className="mt-4">
                   <button type="submit" className="btn btn-success">
-                    Submit
+                    Tạo mới
                   </button>
                   <button type="reset" onClick={() => {
                     setLichTruc({
@@ -303,7 +303,7 @@ export default function FormAddLichTruc() {
                       tang: {},
                     });
                   }} className="btn btn-danger mx-3">
-                    Reset
+                    Quay lại
                   </button>
                 </div>
               </form>

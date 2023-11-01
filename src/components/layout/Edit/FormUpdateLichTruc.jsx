@@ -12,10 +12,18 @@ import {
   getAllToaNhaByLichTruc,
 } from "../../../redux/reducers/toaNhaReducer";
 import { useParams } from "react-router-dom";
-import { getAllLichTruc } from "../../../redux/reducers/lichTrucReducer";
+import {
+  getAllLichTruc,
+  getLichTrucbyId,
+} from "../../../redux/reducers/lichTrucReducer";
 
 let day_now = new Date();
 let strDate = `${day_now.getFullYear()}-${day_now.getMonth() + 1}-01`;
+/**
+ * giá trị lưu chữ data được chuyển tới để chỉnh sử
+ */
+let itemOld = {};
+
 
 export default function FormUpdateLichTruc() {
   const dispatch = useDispatch();
@@ -35,8 +43,12 @@ export default function FormUpdateLichTruc() {
   });
 
   useEffect(() => {
+    
     if (arrLichTruc.length === 0) {
-      dispatch(getAllLichTruc);
+      itemOld = getLichTrucbyId(params.id);
+    } else {
+      let arritemLT = arrLichTruc.filter((item) => item.maLich == params.id);
+      itemOld = arritemLT[0];
     }
 
     if (arrNhanVien.length === 0) {
@@ -45,18 +57,11 @@ export default function FormUpdateLichTruc() {
     if (arrToaNhaLichTruc.length === 0) {
       dispatch(getAllToaNhaByLichTruc);
     }
+    // if (arrTangByLichTruc.length === 0) {
+      dispatch(getAllTangbyIdToaNha(itemOld.tang.toaNha.maToaNha));
+    // }
 
-
-    console.log(arrLichTruc);
-    
-    setLichTruc({
-      tgian: strDate,
-      thoiGianBatDau: 6,
-      thoiGianKetThuc: 14,
-      soNgayNghi: 0,
-      nhanVien: {},
-      tang: {},
-    });
+    setLichTruc({ ...itemOld });
   }, []);
 
   //
@@ -130,7 +135,110 @@ export default function FormUpdateLichTruc() {
     const val = e.target.value;
     setLichTruc({ ...lichTruc, tgian: val });
   };
+
   // render
+  const renderSelectNhanVien = () => {
+    if (Object.keys(lichTruc).length === 0) {
+      return <></>;
+    }
+    let { nhanVien } = lichTruc;
+    // if (Object.keys(lichTruc).length === 0) {
+    //   return arrNhanVien.map((item, index) => {
+    //     return (
+    //       <option key={index} value={item.maNV}>
+    //         {item.tenNV}
+    //       </option>
+    //     );
+    //   });
+    // }
+
+    return arrNhanVien.map((item, index) => {
+      if (item.maNV == nhanVien.maNV) {
+        return (
+          <option key={index} value={item.maNV} selected>
+            {item.tenNV}
+          </option>
+        );
+      }
+      return (
+        <option key={index} value={item.maNV}>
+          {item.tenNV}
+        </option>
+      );
+    });
+  };
+  //
+  const renderArrToaNha = () => {
+    if (Object.keys(lichTruc).length === 0) {
+      return <></>;
+    }
+    let { toaNha } = lichTruc.tang;
+    return arrToaNhaLichTruc.map((item, index) => {
+      if (item.maToaNha == toaNha.maToaNha) {
+        return (
+          <option key={index} selected value={item.maToaNha}>
+            {item.tenToaNha}
+          </option>
+        );
+      }
+      return (
+        <option key={index} value={item.maToaNha}>
+          {item.tenToaNha}
+        </option>
+      );
+    });
+  };
+  //
+  const renderArrTang = () => {
+    if (Object.keys(lichTruc).length === 0) {
+      return <></>;
+    }
+    let { tang } = lichTruc;
+    return arrTangByLichTruc.map((item, index) => {
+      if (item.maTang == tang.maTang) {
+        return (
+          <option key={index} selected value={item.maTang}>
+            {item.tenTang}
+          </option>
+        );
+      }
+      return (
+        <option key={index} value={item.maTang}>
+          {item.tenTang}
+        </option>
+      );
+    });
+  };
+  //
+  const renderSelectCaTruc = () => {
+    let { thoiGianBatDau } = lichTruc;
+    if (thoiGianBatDau === 6) {
+      return (
+        <>
+          <option value={1} selected>
+            6h-14h
+          </option>
+          <option value={2}>14h-22h</option>
+        </>
+      );
+    }
+    return (
+      <>
+        <option value={1}>6h-14h</option>
+        <option value={2} selected>
+          14h-22h
+        </option>
+      </>
+    );
+  };
+  // 
+  const renderTgian = () => {
+    let myday = new Date(lichTruc.tgian);
+
+    let str = ` tháng ${myday.getMonth() + 1} năm ${myday.getFullYear()}`
+
+    return <>{str}</>
+  }
 
   // Mảng quản lý data navtab
   let arrLinkNavTab = [
@@ -150,7 +258,7 @@ export default function FormUpdateLichTruc() {
               }}
             />
             {/* Form */}
-            <div className=" bg-white p-4">
+            <div className=" bg-white rounded p-4">
               <form onSubmit={handleSubmit} action="/quan-ly/khu-vuc">
                 <div className="row">
                   <div className="col-md-6">
@@ -174,38 +282,11 @@ export default function FormUpdateLichTruc() {
                           onChange={handleChangeSelectNhanVien}
                         >
                           <option value={-1}>Chọn nhân viên</option>
-                          {arrNhanVien.map((item, index) => {
-                            return (
-                              <option key={index} value={item.maNV}>
-                                {item.tenNV}
-                              </option>
-                            );
-                          })}
+                          {renderSelectNhanVien()}
                         </select>
                       </div>
                     </div>
-                    {/*  */}
-                    <div className="mb-3 px-3">
-                      <label htmlFor="id1" className="form-label">
-                        Thời gian trực sau phai bo
-                        <small
-                          id="helpId1"
-                          className="form-text text-danger mx-1"
-                        >
-                          *
-                        </small>
-                      </label>
-                      <div className="col-10">
-                        <input
-                          type="date"
-                          className="form-control"
-                          name="id1"
-                          id="id1"
-                          aria-describedby="helpId1"
-                          onChange={handleChangeDate}
-                        />
-                      </div>
-                    </div>
+                    
                     {/*  */}
                     <div class="mb-3 px-3">
                       <label for="selectCaTruc" class="form-label">
@@ -225,10 +306,17 @@ export default function FormUpdateLichTruc() {
                           aria-describedby="errCaTruc"
                           onChange={handleChangeSelectCaTruc}
                         >
-                          <option value={1}>6h-14h</option>
-                          <option value={2}>14h-22h</option>
+                          {renderSelectCaTruc()}
                         </select>
                       </div>
+                    </div>
+                    {/*  */}
+                    <div className="mb-3 px-3">
+                      <label htmlFor="id1" className="form-label">
+                        Thời gian trực: {renderTgian()}
+                        
+                      </label>
+                      
                     </div>
                   </div>
                   <div className="col-md-6">
@@ -251,16 +339,8 @@ export default function FormUpdateLichTruc() {
                           aria-describedby="errToaNha"
                           onChange={handleChangeSelectToaNha}
                         >
-                          <option selected value={-1}>
-                            Chọn tòa nhà
-                          </option>
-                          {arrToaNhaLichTruc.map((item, index) => {
-                            return (
-                              <option key={index} value={item.maToaNha}>
-                                {item.tenToaNha}
-                              </option>
-                            );
-                          })}
+                          <option value={-1}>Chọn tòa nhà</option>
+                          {renderArrToaNha()}
                         </select>
                       </div>
                     </div>
@@ -285,16 +365,8 @@ export default function FormUpdateLichTruc() {
                           aria-describedby="errTang"
                           onChange={handleChangeSelectTang}
                         >
-                          <option selected value={-1}>
-                            Chọn tầng
-                          </option>
-                          {arrTangByLichTruc.map((item, index) => {
-                            return (
-                              <option key={index} value={item.maTang}>
-                                {item.tenTang}
-                              </option>
-                            );
-                          })}
+                          <option value={-1}>Chọn tầng</option>
+                          {renderArrTang()}
                         </select>
                       </div>
                     </div>
@@ -303,7 +375,7 @@ export default function FormUpdateLichTruc() {
 
                 <div className="mt-4">
                   <button type="submit" className="btn btn-success">
-                    Submit
+                    Chỉnh sửa
                   </button>
                   <button
                     type="reset"
@@ -319,7 +391,7 @@ export default function FormUpdateLichTruc() {
                     }}
                     className="btn btn-danger mx-3"
                   >
-                    Reset
+                    Quay lại
                   </button>
                 </div>
               </form>
