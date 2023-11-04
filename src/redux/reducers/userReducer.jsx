@@ -77,9 +77,9 @@ export const getDangNhapApi = (userLogin, ckbRemeber) => {
         error
       );
 
-      alert(error.request.responseText)
+      console.log(error.request.responseText)
 
-      // alert("Đăng nhập không thành công. Sai thông tin");
+      alert("Đăng nhập không thành công. Sai thông tin");
       history.push("/login");
     }
   };

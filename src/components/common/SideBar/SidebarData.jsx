@@ -17,7 +17,7 @@ import { FaUserFriends, FaUsers, FaMapMarkedAlt } from "react-icons/fa";
 export const SidebarData = [
   {
     title: "Trang chủ",
-    path: "/detail-khu-vuc/1",
+    path: "/home",
     icon: <AiTwotoneHome style={{ marginBottom: "6px", fontSize: "25px" }} />,
   },
   {

@@ -62,13 +62,10 @@ export default function PageHome() {
         <div
           className=" border border-info rounded mt-3 flex-grow-1  d-flex flex-column justify-content-between "
           // style={{ maxHeight: "75vh", minHeight: "auto" }}
-          style={{ maxHeight: "518px" }}
+          style={{ maxHeight: "460px" }}
         >
           <div className="d-flex flex-column ">
             {/* item */}
-            <button type="button" className="btn btn-primary  mx-2 mt-2">
-              Tầng 1
-            </button>
             <button type="button" className="btn btn-primary  mx-2 mt-2">
               Tầng 1
             </button>
@@ -152,7 +149,7 @@ export default function PageHome() {
                       Phòng máy H3.1.1
                     </span>
                     <button
-                      className="btn btn-success border-top border-0  rounded-0 rounded-bottom border-dark "
+                      className="btn btn-success border-top border-0  rounded-0 rounded-bottom border-dark m-0 "
                       style={{ fontSize: "13px", padding: "5px" }}
                     >
                       Chi tiết

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import * as BiIcons from "react-icons/bi";
@@ -123,11 +123,13 @@ const Sidebar = () => {
             <FaIcons.FaBars onClick={showSidebar} />
           </NavIcon>
           <div className="col-10 pe-4" style={{ textAlign: "right" }}>
-            <BiIcons.BiUserCircle
-              className="me-2"
-              style={{ fontSize: "30px", color: "black" }}
-            />
-            <span>{renderNameLogin()}</span>
+            <NavLink className="text-decoration-none" to="/account" >
+              <BiIcons.BiUserCircle
+                className="me-2"
+                style={{ fontSize: "30px", color: "black" }}
+              />
+              <span className="text-white ">{renderNameLogin()}</span>
+            </NavLink>
           </div>
         </Nav>
         <Overlay sidebar={sidebar} onClick={showSidebar} />
