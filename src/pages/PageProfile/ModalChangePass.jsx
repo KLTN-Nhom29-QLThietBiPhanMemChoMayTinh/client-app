@@ -1,72 +1,134 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
 const REGEX_PASSWORD = /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z_.\-@]{6,}$/;
 
 export default function ModalChangePass(props) {
-
   let [password, setPassword] = useState({
-    pass_old: '',
-    pass_new: '',
-    pass_new2: ''
-  })
+    pass_old: "",
+    pass_new: "",
+    pass_new2: "",
+  });
   let [errPass, setErrorPass] = useState({
-    pass_old: '',
-    pass_new: '',
-    pass_new2: ''
-  })
+    pass_old: "",
+    pass_new: "",
+    pass_new2: "",
+  });
 
   // handle
   const handleChangePass = (e) => {
     const regex = new RegExp(REGEX_PASSWORD);
-    let {id,value} = e.target;
+    let { id, value } = e.target;
 
-    setPassword({...password, [id] : value})
+    setPassword({ ...password, [id]: value });
 
-
-    if ([id] == 'pass_new2') {
-      if (value !== password.pass_new && value.length >=6 ) {
-        setErrorPass({...errPass, pass_new2:'Hai mật khẩu mới phải giống nhau!'})
+    if ([id] == "pass_new2") {
+      if (value !== password.pass_new && value.length >= 6) {
+        setErrorPass({
+          ...errPass,
+          pass_new2: "Hai mật khẩu mới phải giống nhau!",
+        });
+      } else if (value === password.pass_new) {
+        setErrorPass({ ...errPass, pass_new2: "" });
       }
-      else if(value === password.pass_new)
-      {
-        setErrorPass({...errPass, pass_new2:''})
-      }
-    }
-    else{
+    } else {
       let booleanRegex = regex.test(value);
-      if(!booleanRegex && value.length >=6 )
-      {
-          setErrorPass({...errPass, [id]:'Mật khẩu trên 6 ký tự có ít nhất một chữ cái hoắc chữ số!'})
-      }
-      else if(booleanRegex)
-      {
-        setErrorPass({...errPass, [id]:''})
-      }
-    }
-    if ([id] == 'pass_new') {
-      if (value === password.pass_new2 && value.length >=6 ) 
-      {
-        setErrorPass({...errPass, pass_new2:''})
-      }
-      else if(value !== password.pass_new2 && password.pass_new2.length >=6){
-        setErrorPass({...errPass, pass_new2:'Hai mật khẩu mới phải giống nhau!'})
+      if (!booleanRegex && value.length >= 6) {
+        setErrorPass({
+          ...errPass,
+          [id]: "Mật khẩu trên 6 ký tự có ít nhất một chữ cái hoắc chữ số!",
+        });
+      } else if (booleanRegex) {
+        setErrorPass({ ...errPass, [id]: "" });
       }
     }
-  }
+    if ([id] == "pass_new") {
+      if (value === password.pass_new2 && value.length >= 6) {
+        setErrorPass({ ...errPass, pass_new2: "" });
+      } else if (
+        value !== password.pass_new2 &&
+        password.pass_new2.length >= 6
+      ) {
+        setErrorPass({
+          ...errPass,
+          pass_new2: "Hai mật khẩu mới phải giống nhau!",
+        });
+      }
+    }
+  };
   //
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(password);
-    if(checkData()) {
-      // true
-    }
-    // false
-  }
-  // 
-  const checkData = () => {
-    const regex = new RegExp(REGEX_PASSWORD);
-    // let booleanRegex = regex.test(value);
 
+    console.log(password);
+    console.log(checkData());
+    // if (checkData()) {
+    //   // true
+    // }
+    // false
+  };
+  //
+  const checkData = () => {
+    let result = true;
+    const regex = new RegExp(REGEX_PASSWORD);
+    let booleanRegex = false;
+    let dataCheck;
+    let txt_pass_old;
+    let txt_pass_new;
+    let txt_pass_new2;
+
+    // pass_old
+    dataCheck = password.pass_old;
+
+    if (dataCheck.length === 0) {
+      txt_pass_old = "Hãy nhập dữ liệu!"
+      result = false;
+    } else {
+      booleanRegex = regex.test(dataCheck);
+      if (!booleanRegex) {
+        txt_pass_old ="Mật khẩu trên 6 ký tự có ít nhất một chữ cái hoắc chữ số!"
+        result = false;
+      } else {
+        txt_pass_old = "";
+      }
+    }
+    // pass_new
+    dataCheck = password.pass_new;
+
+    if (dataCheck.length === 0) {
+      txt_pass_new = "Hãy nhập dữ liệu!";
+      result = false;
+    } else {
+      booleanRegex = regex.test(dataCheck);
+      if (!booleanRegex) {
+        txt_pass_new ="Mật khẩu trên 6 ký tự có ít nhất một chữ cái hoắc chữ số!";
+        result = false;
+      } else {
+        txt_pass_new = "";
+      }
+    }
+
+    // pass_new2
+    dataCheck = password.pass_new2;
+
+    if (dataCheck.length === 0) {
+      txt_pass_new2 = "Hãy nhập dữ liệu!"
+      result = false;
+    }
+    else {
+      if(dataCheck === password.pass_new){
+        txt_pass_new2 = "";
+      }else{
+        txt_pass_new2 = "Hai mật khẩu mới phải giống nhau!";
+        result = false;
+      }
+    }
+
+    setErrorPass({
+      pass_new: txt_pass_new,
+      pass_new2: txt_pass_new2,
+      pass_old: txt_pass_old
+    })
+   
     /**
      * duyet obj 
      - so sanh vs regex
@@ -75,8 +137,8 @@ export default function ModalChangePass(props) {
      - gui data redux
      - cal Api
      */
-    return true;
-  }
+    return result;
+  };
 
   return (
     <>
@@ -102,14 +164,14 @@ export default function ModalChangePass(props) {
                 aria-label="Close"
                 onClick={() => {
                   setErrorPass({
-                    pass_old: '',
-                    pass_new: '',
-                    pass_new2: ''
+                    pass_old: "",
+                    pass_new: "",
+                    pass_new2: "",
                   });
                   setPassword({
-                    pass_old: '',
-                    pass_new: '',
-                    pass_new2: ''
+                    pass_old: "",
+                    pass_new: "",
+                    pass_new2: "",
                   });
                 }}
               />
@@ -118,28 +180,68 @@ export default function ModalChangePass(props) {
               <div className="mb-3">
                 <label htmlFor="pass_old" className="form-label">
                   Mật khẩu cũ
-                  <small id="helpPass_old" className="mx-2 form-text text-danger">*{errPass.pass_old}</small>
+                  <small
+                    id="helpPass_old"
+                    className="mx-2 form-text text-danger"
+                  >
+                    *{errPass.pass_old}
+                  </small>
                 </label>
-                <input onChange={handleChangePass} value={password.pass_old} type="password" className="form-control" name="pass_old" id="pass_old" aria-describedby="helpPass_old" placeholder="Mật khẩu cũ" />
+                <input
+                  onChange={handleChangePass}
+                  value={password.pass_old}
+                  type="password"
+                  className="form-control"
+                  name="pass_old"
+                  id="pass_old"
+                  aria-describedby="helpPass_old"
+                  placeholder="Mật khẩu cũ"
+                />
               </div>
-              
+
               <div className="mb-3">
                 <label htmlFor="pass_new" className="form-label">
                   Mật khẩu mới
-                  <small id="helpPass_new" className="mx-2 form-text text-danger">*{errPass.pass_new}</small>
+                  <small
+                    id="helpPass_new"
+                    className="mx-2 form-text text-danger"
+                  >
+                    *{errPass.pass_new}
+                  </small>
                 </label>
-                <input  onChange={handleChangePass} value={password.pass_new}  type="password" className="form-control" name="pass_new" id="pass_new" aria-describedby="helpPass_new" placeholder="Mật khẩu mới" />
+                <input
+                  onChange={handleChangePass}
+                  value={password.pass_new}
+                  type="password"
+                  className="form-control"
+                  name="pass_new"
+                  id="pass_new"
+                  aria-describedby="helpPass_new"
+                  placeholder="Mật khẩu mới"
+                />
               </div>
-              
+
               <div className="mb-3">
                 <label htmlFor="pass_new2" className="form-label">
                   Nhập lại mật khẩu
-                  <small id="helpPass_new2" className="mx-2 form-text text-danger">*{errPass.pass_new2}</small>
+                  <small
+                    id="helpPass_new2"
+                    className="mx-2 form-text text-danger"
+                  >
+                    *{errPass.pass_new2}
+                  </small>
                 </label>
-                <input  onChange={handleChangePass} value={password.pass_new2}  type="password" className="form-control" name="pass_new2" id="pass_new2" aria-describedby="helpPass_new2" placeholder="Mật khẩu mới" />
+                <input
+                  onChange={handleChangePass}
+                  value={password.pass_new2}
+                  type="password"
+                  className="form-control"
+                  name="pass_new2"
+                  id="pass_new2"
+                  aria-describedby="helpPass_new2"
+                  placeholder="Mật khẩu mới"
+                />
               </div>
-
-
             </div>
             <div className="modal-footer">
               <button
@@ -147,22 +249,24 @@ export default function ModalChangePass(props) {
                 className="btn btn-secondary"
                 onClick={() => {
                   setErrorPass({
-                    pass_old: '',
-                    pass_new: '',
-                    pass_new2: ''
+                    pass_old: "",
+                    pass_new: "",
+                    pass_new2: "",
                   });
                   setPassword({
-                    pass_old: '',
-                    pass_new: '',
-                    pass_new2: ''
+                    pass_old: "",
+                    pass_new: "",
+                    pass_new2: "",
                   });
                 }}
               >
                 Làm mới
               </button>
-              <button 
+              <button
                 onClick={handleSubmit}
-                type="submit" className="btn btn-primary">
+                type="submit"
+                className="btn btn-primary"
+              >
                 Chỉnh sửa
               </button>
             </div>
@@ -170,5 +274,5 @@ export default function ModalChangePass(props) {
         </div>
       </form>
     </>
-  )
+  );
 }
