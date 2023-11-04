@@ -58,12 +58,28 @@ export default function ModalChangePass(props) {
   //
   const handleSubmit = (e) => {
     e.preventDefault();
+/**
+     * duyet obj 
+     - so sanh vs regex
+     - xxuat loi
+     - check data cu vs data moi 
+     - gui data redux
+     - cal Api
+     */
+    if (checkData()) {
+      // true
+      if (password.pass_new === password.pass_old) {
+        alert("Mật khẩu mới trùng với mật khẩu cũ!")
+        setPassword({
+          ...password, 
+          pass_new: '',
+          pass_new2: ''
+        })
+        return ;
+      }
 
-    console.log(password);
-    console.log(checkData());
-    // if (checkData()) {
-    //   // true
-    // }
+
+    }
     // false
   };
   //
@@ -129,14 +145,7 @@ export default function ModalChangePass(props) {
       pass_old: txt_pass_old
     })
    
-    /**
-     * duyet obj 
-     - so sanh vs regex
-     - xxuat loi
-     - check data cu vs data moi 
-     - gui data redux
-     - cal Api
-     */
+    
     return result;
   };
 

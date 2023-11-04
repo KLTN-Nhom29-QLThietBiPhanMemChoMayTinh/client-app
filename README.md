@@ -82,6 +82,7 @@
     - pageLogin - dựa username lây thông tin nguoi dung
     - PageLichTruc: data api chua co - handleSearch chua co - select theo thang nam - update - del
     - FormAddLichTruc: del select Tgian truc
+    - ModalChangePass: gui data redux -- Call Api
 
     
 ## error
