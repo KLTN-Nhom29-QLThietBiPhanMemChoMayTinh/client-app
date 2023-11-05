@@ -92,6 +92,7 @@ export default function ModalChangePass(props) {
           ...password, 
           pass_old: '',
         })
+        return ;
       }
 
       dispatch(updateTaiKhoan({...taiKhoan, matKhau: password.pass_new}) );
@@ -222,6 +223,7 @@ export default function ModalChangePass(props) {
                 <input
                   onChange={handleChangePass}
                   value={password.pass_old}
+                  autoComplete="current-password"
                   type="password"
                   className="form-control"
                   name="pass_old"
@@ -244,6 +246,7 @@ export default function ModalChangePass(props) {
                 <input
                   onChange={handleChangePass}
                   value={password.pass_new}
+                  autoComplete="new-password"
                   type="password"
                   className="form-control"
                   name="pass_new"
@@ -267,6 +270,7 @@ export default function ModalChangePass(props) {
                   onChange={handleChangePass}
                   value={password.pass_new2}
                   type="password"
+                  autoComplete="off"
                   className="form-control"
                   name="pass_new2"
                   id="pass_new2"

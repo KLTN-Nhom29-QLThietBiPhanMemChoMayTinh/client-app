@@ -35,11 +35,11 @@ export default function PageQLNhanVien() {
           <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
             {index < 9 ? `0${index + 1}` : index + 1}
           </td>
-          <td>{item?.idCode}</td>
-          <td>{item?.name}</td>
-          <td>{ngaySinh.getYear() + 1900}</td>
-          <td>{item?.sdt}</td>
+          <td>{item?.maNV}</td>
+          <td>{item?.tenNV}</td>
+          <td>{item?.sDT}</td>
           <td>{item?.email}</td>
+          <td>{item.chucVu.tenCV}</td>
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
@@ -121,7 +121,6 @@ export default function PageQLNhanVien() {
                 <input
                   type="text"
                   className="form-control"
-                  id
                   placeholder="tìm kiếm..."
                   onChange={handleChangeSearch}
                 />
@@ -151,9 +150,10 @@ export default function PageQLNhanVien() {
                     <th>STT</th>
                     <th style={{ minWidth: "90px" }}>Mã nhân viên</th>
                     <th style={{ minWidth: "150px" }}>Tên nhân viên</th>
-                    <th>Năm sinh</th>
+                    {/* <th>Năm sinh</th> */}
                     <th style={{ minWidth: "90px" }}>Số điện thoại</th>
                     <th style={{ minWidth: "120px" }}>Email</th>
+                    <th style={{ minWidth: "90px" }}>Chức vụ</th>
                     <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
                 </thead>

@@ -79,6 +79,7 @@ export default function PageLogin() {
             id="username"
             aria-describedby="errUsername"
             placeholder="Nhập tài khoản..."
+            autoComplete="username"
             // onBlur={formik.handleBlur}
             // defaultValue={
             //   
@@ -102,6 +103,7 @@ export default function PageLogin() {
             className="form-control border-info input_login py-2"
             name="password"
             id="password"
+            autoComplete="current-password"
             aria-describedby="errPassword"
             placeholder="Nhập mật khẩu..."
             value={formik.values.password}
