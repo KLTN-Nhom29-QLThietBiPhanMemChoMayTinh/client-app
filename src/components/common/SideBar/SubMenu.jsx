@@ -45,7 +45,7 @@ const DropdownLink = styled(Link)`
   }
 `;
 
-const SubMenu = ({ item }) => {
+const SubMenu = ({ item, note }) => {
   const [subnav, setSubnav] = useState(false);
 
   const showSubnav = () => setSubnav(!subnav);
@@ -68,6 +68,12 @@ const SubMenu = ({ item }) => {
       </SidebarLink>
       {subnav &&
         item.subNav.map((item, index) => {
+          if (note) {
+            if(item.valQuyen === 3)
+            {
+              return <></>;
+            }
+          }
           return (
             <DropdownLink to={item.path} key={index}>
               {item.icon}

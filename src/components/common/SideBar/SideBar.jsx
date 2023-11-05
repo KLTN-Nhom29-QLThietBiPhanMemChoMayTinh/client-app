@@ -115,6 +115,32 @@ const Sidebar = () => {
 
   const showSidebar = () => setSidebar(!sidebar);
 
+  // render
+  const renderMenu = () => {
+    if (Object.keys(userLogin).length === 0) {
+      return <></>;
+    }
+
+    return SidebarData.map((item, index) => {
+
+      let tenQuyen = userLogin?.taiKhoan.quyen.tenQuyen.toLowerCase();
+
+      if (tenQuyen.includes("Người quản lý".toLowerCase())) {
+        return <SubMenu item={item} key={index} note={0}/>;
+      }
+
+      if (
+        tenQuyen.includes("Nhân viên".toLowerCase()) &&
+        (item.valQuyen === 1 || item.valQuyen === 2)
+      ) {
+        return <SubMenu item={item} key={index} note={1} />;
+      }
+
+      if (tenQuyen.includes("Giáo viên".toLowerCase()) && item.valQuyen === 1) {
+        return <SubMenu item={item} key={index} note={0} />;
+      }
+    });
+  };
   return (
     <>
       <IconContext.Provider value={{ color: "#fff" }}>
@@ -123,7 +149,7 @@ const Sidebar = () => {
             <FaIcons.FaBars onClick={showSidebar} />
           </NavIcon>
           <div className="col-10 pe-4" style={{ textAlign: "right" }}>
-            <NavLink className="text-decoration-none" to="/account" >
+            <NavLink className="text-decoration-none" to="/account">
               <BiIcons.BiUserCircle
                 className="me-2"
                 style={{ fontSize: "30px", color: "black" }}
@@ -138,9 +164,7 @@ const Sidebar = () => {
             <NavIcon to="#">
               <AiIcons.AiOutlineClose onClick={showSidebar} />
             </NavIcon>
-            {SidebarData.map((item, index) => {
-              return <SubMenu item={item} key={index} />;
-            })}
+            {renderMenu()}
 
             <SubMenuLogout
               item={{
@@ -152,7 +176,6 @@ const Sidebar = () => {
                   />
                 ),
               }}
-              key={"index"}
             />
           </SidebarWrap>
         </SidebarNav>

@@ -59,6 +59,7 @@
     - FormAddPhong - chua bat su kien cua checkbox - z
     - thêm phong phải them dược cac so may - so thiet bị - so phan mem -z
     - chưa sử lý tgian hết hạn sử dụng của Tbi - PM (dang them +1 vao thang) - y
+    - ModalChangePass: gui data redux -- Call Api - z
 
     - tìm kiếm -  detailKhuVuc chưa có gì
     - PageQLPhongMay - can 1 search theo status
@@ -82,7 +83,6 @@
     - pageLogin - dựa username lây thông tin nguoi dung
     - PageLichTruc: data api chua co - handleSearch chua co - select theo thang nam - update - del
     - FormAddLichTruc: del select Tgian truc
-    - ModalChangePass: gui data redux -- Call Api
 
     
 ## error
