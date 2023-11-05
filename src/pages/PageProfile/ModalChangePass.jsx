@@ -97,6 +97,11 @@ export default function ModalChangePass(props) {
       dispatch(updateTaiKhoan({...taiKhoan, matKhau: password.pass_new}) );
       alert('Đổi mật khẩu thành công.');
 
+      setPassword({
+        pass_old: "",
+        pass_new: "",
+        pass_new2: "",
+      });
     }
     // false
   };

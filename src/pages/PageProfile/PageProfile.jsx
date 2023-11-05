@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import ModalChangePass from "./ModalChangePass";
 
+//
+import {MdOutlineCached} from 'react-icons/md'
+
 export default function PageProfile() {
   let { userLogin } = useSelector((state) => state.userReducer);
+
+  //
+  let [btnReloadImg, setBtnReloadImg] = useState(true);
 
   //Render
   const renderThongTin = () => {
@@ -178,20 +184,27 @@ export default function PageProfile() {
 
             {/*  */}
             <div className="bg-white rounded p-3" style={{ height: "82vh" }}>
-              <div className="row px-4 py-3">
-                <div className="col-sm-4 ">
+              <div className="row px-5 py-3">
+                <div className="col-sm-4 d-flex justify-content-center" >
                   {/* image */}
-                  <div style={{ maxWidth: "250px", paddingTop: "50px" }}>
+                  <div style={{ maxWidth: "250px", paddingTop: "50px", position:'relative' }}>
                     {/* https://media.giphy.com/media/Q5KSkuAJtAPAGrfE0o/giphy.gif */}
                     <img
-                      src="https://media.giphy.com/media/MXuv4E0gstVysWzBOq/giphy.gif"
+                      src={btnReloadImg?"https://media.giphy.com/media/MXuv4E0gstVysWzBOq/giphy.gif":"https://media.giphy.com/media/Q5KSkuAJtAPAGrfE0o/giphy.gif"}
                       alt="..."
                       width={"100%"}
-                    />
+                    >
+                    </img>
+                    {/*  */}
+                      <MdOutlineCached 
+                      onClick={() => {setBtnReloadImg(!btnReloadImg)}} 
+                      style={{position:'absolute', top:55, left:0, cursor:'pointer'}} 
+                      size={26} 
+                       />
                   </div>
                 </div>
                 {/*  */}
-                <div className="col-sm-8 p-2">
+                <div className="col-sm-8 p-2 ps-4">
                   <h2 className="text-center mb-3">Thông tin người dùng</h2>
                   {renderThongTin()}
                 </div>
