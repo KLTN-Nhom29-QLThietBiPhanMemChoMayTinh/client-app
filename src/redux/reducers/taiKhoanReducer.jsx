@@ -110,3 +110,18 @@ export const getAllQuyenSDApi = async (dispatch) => {
     );
   }
 };
+
+// update taiKhoan
+
+export const updateTaiKhoan = (taiKhoan) => {
+  return async (dispatch) => {
+    try {
+      let result = await http.put('/tai_khoan', taiKhoan);
+      console.log("reducer - updateTaiKhoan() - " + result.status);      
+      
+    } catch (error) {
+      console.log("🚀 ~ file: taiKhoanReducer.jsx:121 ~ return ~ error:", error)
+      
+    }
+  }
+}

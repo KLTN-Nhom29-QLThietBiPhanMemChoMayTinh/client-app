@@ -1,8 +1,15 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateTaiKhoan } from "../../redux/reducers/taiKhoanReducer";
 
 const REGEX_PASSWORD = /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z_.\-@]{6,}$/;
 
 export default function ModalChangePass(props) {
+
+  let dispatch = useDispatch();
+  // /
+  let {taiKhoan} = useSelector(state => state.userReducer.userLogin)
+  //
   let [password, setPassword] = useState({
     pass_old: "",
     pass_new: "",
@@ -77,7 +84,18 @@ export default function ModalChangePass(props) {
         })
         return ;
       }
+      
+      if(password.pass_old !== taiKhoan.matKhau)
+      {
+        alert("Sai mật khẩu cũ!")
+        setPassword({
+          ...password, 
+          pass_old: '',
+        })
+      }
 
+      dispatch(updateTaiKhoan({...taiKhoan, matKhau: password.pass_new}) );
+      alert('Đổi mật khẩu thành công.');
 
     }
     // false
@@ -164,7 +182,7 @@ export default function ModalChangePass(props) {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="modalTitleId">
-                Thay đổi mật khẩu
+                Thay đổi mật khẩu - {taiKhoan?.tenDangNhap}
               </h5>
               <button
                 type="button"
