@@ -18,6 +18,12 @@ export default function ComponentDetailPhong() {
   //render
   const renderArrMayTinh = () => {
     return arrMayTinhH?.map((item, index) => {
+      const renderIconByTrangThai = () => {
+        if (item.trangThai.toLowerCase().includes( ("Đang hoạt động").toLowerCase())) {
+          return <FaComputer size={50} />
+        }
+        return <FaComputer color="red" size={50} /> 
+      }
       return (
         <div
           key={index}
@@ -25,7 +31,7 @@ export default function ComponentDetailPhong() {
           style={{ width: "170px", height: "170px" }}
         >
           <div className="card-body text-center p-2">
-            <FaComputer size={50} />
+            {renderIconByTrangThai() }
             <h4
               className="pt-2 px-4"
               style={{ fontSize: "20px", fontWeight: "600" }}
