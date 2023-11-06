@@ -44,6 +44,12 @@ const homeReducer = createSlice({
       state.arrPhongH = arrPhongH;
       state.arrMayTinhH = arrMayTinh;
     },
+    setObjThongTinByPhongAction: (state, action) => {
+      let { objThongTin, arrMayTinh } = action.payload;
+
+      state.objThongTin = objThongTin;
+      state.arrMayTinhH = arrMayTinh;
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -53,8 +59,45 @@ export const {
   setArrTangHomeAction,
   setObjThongTinByToaNhaAction,
   setObjThongTinByTangAction,
+  setObjThongTinByPhongAction,
 } = homeReducer.actions;
 export default homeReducer.reducer;
+
+/**
+ * thay doi data trang home khi click ở btn PhongMay
+ * */
+export const setObjThongTinByPhongMay = (valPhong) => {
+  // valPhong = {}  data phong duoc chon
+  return async (dispatch) => {
+    let { maPhong, tenPhong, moTa, tang, mayTinhs } = valPhong;
+    // phong: { maPhong,tenPhong,moTa},
+    let objThongTin = {
+      phong: { maPhong,tenPhong,moTa, soMay:mayTinhs.length},
+      tang,
+      mayTinh: {},
+      arrPhanMem: [],
+      giaoVien: {},
+      nhanVien: {},
+      monHoc: {},
+    };
+
+    let arrMayTinh = [];
+    // arr may Tinh
+    if (mayTinhs.length !== 0) {
+      // gan ds may tinh vao arr
+      // ds may tinh nay pha thuoc ma phong duoc chon
+      arrMayTinh = mayTinhs;
+    }
+
+    //
+    dispatch(
+      setObjThongTinByPhongAction({
+        objThongTin,
+        arrMayTinh,
+      })
+    );
+  }
+}
 
 /**
  * thay doi data trang home khi click ở btn Tang
@@ -90,7 +133,7 @@ export const setObjThongTinByTang = (valTang) => {
       // gans gtri phong dau tien vao obj gtri chon
       objThongTin = {
         ...objThongTin,
-        phong: { maPhong, tenPhong, moTa },
+        phong: { maPhong, tenPhong, moTa, soMay:mayTinhs.length },
       };
       // arr may Tinh
       if (mayTinhs.length !== 0) {
@@ -154,7 +197,7 @@ export const setObjThongTinByToaNha = (idSelect) => {
         // gans gtri phong dau tien vao obj gtri chon
         objThongTin = {
           ...objThongTin,
-          phong: { maPhong, tenPhong, moTa },
+          phong: { maPhong, tenPhong, moTa, soMay:mayTinhs.length },
         };
         // arr may Tinh
         if (mayTinhs.length !== 0) {
@@ -187,7 +230,7 @@ export const getPhongByFirst = async (dispatch) => {
 
     //
     let objThongTin = {
-      phong: { maPhong, tenPhong, moTa },
+      phong: { maPhong, tenPhong, moTa, soMay:mayTinhs.length },
       tang,
       mayTinh: {},
       arrPhanMem: [],

@@ -4,12 +4,22 @@ import {
   MdKeyboardDoubleArrowDown,
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setObjThongTinByPhongMay } from "../../redux/reducers/homeReducer";
 
 export default function ComponentListPhong() {
+
+  const dispatch = useDispatch();
+
+  //
   let { objThongTin, arrPhongH } = useSelector((state) => state.homeReducer);
 
   const numberNextPagePhong = useRef(1);
+
+  //handle
+  const handleBtnPhongMay = (valPhong) => {
+    dispatch(setObjThongTinByPhongMay(valPhong))
+  } 
 
   // render
   const renderArrPhongHome = () => {
@@ -42,6 +52,7 @@ export default function ComponentListPhong() {
             <button
               className="btn btn-success border-top border-0  rounded-0 rounded-bottom border-dark m-0 "
               style={{ fontSize: "13px", padding: "5px" }}
+              onClick={() => {handleBtnPhongMay(item)}}
             >
               Chi tiết
               {renderBtnClickPhong()}
