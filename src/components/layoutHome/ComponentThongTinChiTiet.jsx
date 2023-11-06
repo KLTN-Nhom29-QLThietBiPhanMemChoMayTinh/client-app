@@ -56,8 +56,12 @@ export default function ComponentThongTinChiTiet() {
     return <>
     <div className="pt-2">
         <span className="h5" style={{ fontWeight: 600 }}>
-          Máy tính H3.1.1
+          {mayTinh.moTa}
         </span>
+        <div>
+            <span style={{ fontWeight: 600 }}>- Trạng thái: </span>
+            <span>{mayTinh.trangThai}</span>
+          </div>
         <div>
           <span style={{ fontWeight: 600 }}>- Thiết bị phần cứng: </span> <br />
           <li className="ms-3">Hệ thống thông tin</li>

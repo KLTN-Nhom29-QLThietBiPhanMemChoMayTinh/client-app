@@ -1,12 +1,21 @@
 import React from "react";
 import { FaComputer } from "react-icons/fa6";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { setObjThongTinByMay } from "../../redux/reducers/homeReducer";
 
 export default function ComponentDetailPhong() {
-  let { arrMayTinhH } = useSelector((state) => state.homeReducer);
+
+  const dispatch = useDispatch();
 
   //
+  let { arrMayTinhH } = useSelector((state) => state.homeReducer);
+
+  // handle
+  const handleBtnChiTietMay = (valMay) => {
+    
+    dispatch(setObjThongTinByMay(valMay));
+  };
+  //render
   const renderArrMayTinh = () => {
     return arrMayTinhH?.map((item, index) => {
       return (
@@ -23,7 +32,14 @@ export default function ComponentDetailPhong() {
             >
               {item.moTa}
             </h4>
-            <button className="btn btn-success w-100">Chi tiết</button>
+            <button
+              onClick={() => {
+                handleBtnChiTietMay(item);
+              }}
+              className="btn btn-success w-100"
+            >
+              Chi tiết
+            </button>
           </div>
         </div>
       );

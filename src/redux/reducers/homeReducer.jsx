@@ -50,6 +50,12 @@ const homeReducer = createSlice({
       state.objThongTin = objThongTin;
       state.arrMayTinhH = arrMayTinh;
     },
+    setObjThongTinByMayAction: (state, action) => {
+      let objUpdate = state.objThongTin;
+
+      state.objThongTin =  {...objUpdate, mayTinh: action.payload};
+      
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -60,8 +66,18 @@ export const {
   setObjThongTinByToaNhaAction,
   setObjThongTinByTangAction,
   setObjThongTinByPhongAction,
+  setObjThongTinByMayAction,
 } = homeReducer.actions;
 export default homeReducer.reducer;
+
+/**
+ * thay doi data trang home khi click ở btn detail May
+ * */
+export const setObjThongTinByMay = (valMay) => {
+  return async(dispatch) => {
+    dispatch(setObjThongTinByMayAction(valMay))
+  }
+} 
 
 /**
  * thay doi data trang home khi click ở btn PhongMay
