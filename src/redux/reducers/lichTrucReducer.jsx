@@ -47,6 +47,7 @@ const lichTrucReducer = createSlice({
     insertLichTrucAction: (state, action) => {
       let item = action.payload;
       state.arrLichTruc = [...state.arrLichTruc, item];
+      state.arrLichTrucSearch = [...state.arrLichTruc];
     },
     updateLichTrucAction: (state, action) => {
       let itemEdit = action.payload;
@@ -56,6 +57,7 @@ const lichTrucReducer = createSlice({
       });
 
       state.arrLichTruc[rowToChange] = itemEdit;
+      state.arrLichTrucSearch = [...state.arrLichTruc];
     },
   },
 });
@@ -104,6 +106,8 @@ export const getLichTrucbyId = (id) => {
 
 // add
 export const insertLichTrucApi = (lichTruc) => {
+  let idRandom = Math.floor(Math.random() * 10000) + 1000;
+  lichTruc = {...lichTruc, maLich:idRandom}
   return async (dispatch) => {
     try {
       let result = await http.post("/LuuLichTruc", lichTruc);
@@ -127,7 +131,7 @@ export const updateLichTrucApi = (lichTruc) => {
       //
       dispatch(updateLichTrucAction(lichTruc));
 
-      history.push("../../phan-cong/lich-truc");
+      history.push("../");
     } catch (error) {
       console.log("🚀 ~ file: lichTrucReducer.jsx:88 ~ return ~ error:", error);
     }

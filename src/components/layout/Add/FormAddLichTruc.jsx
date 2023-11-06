@@ -68,7 +68,6 @@ export default function FormAddLichTruc() {
     e.preventDefault();
 
     if (checkData()) {
-      console.log(lichTruc);
       dispatch(insertLichTrucApi(lichTruc))
     }
   };

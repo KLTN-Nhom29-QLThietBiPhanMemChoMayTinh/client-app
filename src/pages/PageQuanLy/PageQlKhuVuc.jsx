@@ -8,77 +8,56 @@ import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink, useNavigate } from "react-router-dom";
 import Footer from "../../components/common/Footer/Footer";
 import Database from "../../util/database/Database";
-
-
-/**
- * giả đỉnh data tren server chua lấy về
- */
-const dataServer = Database.dataKhuVuc; 
-/**
- *lưu trữ data get tu API
- */
-let dataLocal = [];
-
-const getAllKhuVucApi = () => {
-  dataLocal = [...dataServer];
-};
+import { useDispatch, useSelector } from "react-redux";
+import { getAllToaNhaApi, setArrToaNhaByValSearchAction } from "../../redux/reducers/toaNhaReducer";
+import { getAllTangApi } from "../../redux/reducers/tangReducer";
 
 const PageQlKhuVuc = (props) => {
-
   /**
    * navigate chuyển trang(component)
    */
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  //
+  let { arrToaNha, arrToaNhaSearch } = useSelector(
+    (state) => state.toaNhaReducer
+  );
 
-  let [arrKhuVuc, setArrKhuVuc] = useState([]);
-  let [txtSearch, setTxtSearch] = useState("");
 
   useEffect(() => {
-    if (dataLocal.length === 0) {
-      getAllKhuVucApi();
+    if (arrToaNha.length === 0) {
+      dispatch(getAllToaNhaApi);
     }
 
-
-    filterData();
-  }, [txtSearch]);
+  }, []);
 
   //search
   const handleSearchChange = (event) => {
-    setTxtSearch(event.target.value);
+    dispatch(setArrToaNhaByValSearchAction(event.target.value));
   };
-  // Hàm tìm kiếm dựa trên giá trị của searchText
-  const filterData = () => {
-    const arrNew = dataLocal.filter((item) => {
-      const search = txtSearch.toLowerCase();
-      return (
-        (item.id + "").toLowerCase().includes(search) ||
-        item.name.toLowerCase().includes(search) ||
-        (item.soTang + "").toLowerCase().includes(search)
-      );
-    });
-    setArrKhuVuc([...arrNew]);
-  };
+
   //
   const renderDataKhuVuc = () => {
-    return arrKhuVuc.map((item, index) => {
+    return arrToaNhaSearch.map((item, index) => {
       return (
-        <tr class="" key={index}>
-          <td scope="row" style={{ fontWeight: 600, justifyItems: "center" }}>
-            {item.id}
+        <tr key={index}>
+          <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
+            {index < 9 ? `0${index + 1}` : index + 1}
           </td>
-          <td>{item.name}</td>
+          <td>{item.maToaNha}</td>
+          <td>{item.tenToaNha}</td>
           <td>{item.soTang}</td>
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-              <button
-                type="button"
-                className="btn btn-primary mx-2 px-2"
-                style={{ padding: "2px" }}
-                onClick={() => {
-                  navigate(`/quan-ly/khu-vuc/update/${item.id}`)
+            <button
+              type="button"
+              className="btn btn-primary mx-2 px-2"
+              style={{ padding: "2px" }}
+              onClick={() => {
+                navigate(`/quan-ly/khu-vuc/update/${item.id}`);
               }}
-              >
-                <FaPencilAlt color="white" size={16} />
-              </button>
+            >
+              <FaPencilAlt color="white" size={16} />
+            </button>
             <button
               onClick={() => {
                 alert(`Del -- ${item.id}`);
@@ -89,13 +68,13 @@ const PageQlKhuVuc = (props) => {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            <NavLink
+            {/* <NavLink
               to={`../quan-ly/tang`}
               className="btn bg-info mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink>
+            </NavLink> */}
           </td>
         </tr>
       );
@@ -112,9 +91,10 @@ const PageQlKhuVuc = (props) => {
         <div style={{ height: "100vh" }}>
           {/*  */}
           <div style={{ height: "8vh" }}>
-          <NavTab
-            itemLink={{ arrLinkNavTab: arrLinkNavTab, chucNang: "Danh sách" }}
-          /></div>
+            <NavTab
+              itemLink={{ arrLinkNavTab: arrLinkNavTab, chucNang: "Danh sách" }}
+            />
+          </div>
           {/* table data */}
           <div className="bg-white rounded p-3 " style={{ height: "82vh" }}>
             {/* Phần top với tiêu đề và thanh tìm kiếm - btn thêm */}
@@ -134,10 +114,7 @@ const PageQlKhuVuc = (props) => {
                   <input
                     type="text"
                     className="form-control"
-                    name
-                    id
                     placeholder="tìm kiếm..."
-                    value={txtSearch}
                     onChange={handleSearchChange}
                   />
                 </div>
@@ -155,17 +132,20 @@ const PageQlKhuVuc = (props) => {
             </div>
 
             {/* Bảng danh sách data */}
-            <div class="table-responsive" style={{ height: "69vh" }}>
+            <div className="table-responsive" style={{ height: "69vh" }}>
               <table
-                class="table bg-white table-hover table-striped table-bordered 
+                className="table bg-white table-hover table-striped table-bordered 
           "
               >
                 <thead>
                   <tr>
+                    <th scope="col">STT</th>
                     <th scope="col">Mã tòa nhà</th>
                     <th scope="col">Tên tòa nhà</th>
                     <th scope="col">Số tầng</th>
-                    <th scope="col" style={{width:'220px'}} >Hành động</th>
+                    <th scope="col" style={{ width: "220px" }}>
+                      Hành động
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="over_flow_auto">

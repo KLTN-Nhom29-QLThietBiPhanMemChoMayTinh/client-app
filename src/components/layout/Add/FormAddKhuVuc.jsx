@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import NavTab from "../common/NavTab/NavTab";
-import Footer from "../common/Footer/Footer";
+import NavTab from "../../common/NavTab/NavTab";
+import Footer from "../../common/Footer/Footer";
 
 function FormAddKhuVuc() {
   let [txtText, setTxtText] = useState("");
@@ -65,10 +65,10 @@ function FormAddKhuVuc() {
             </div>
 
             <button type="submit" className="btn btn-success">
-              Submit
+              Tạo mới
             </button>
             <button type="reset" className="btn btn-danger mx-3">
-              Reset
+              Khôi phục
             </button>
           </form>
         </div>
