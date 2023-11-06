@@ -18,9 +18,9 @@ const homeReducer = createSlice({
   reducers: {
     setObjPhongFirstAction: (state, action) => {
       // state.objPhongFirst = action.payload;
-      let { objPhongFirst, arrTangH, arrPhongH, mayTinhs } = action.payload;
+      let { objPhongFirst, arrTangH, arrPhongH, mayTinhs, objThongTin } = action.payload;
       state.objPhongFirst = objPhongFirst;
-      state.objThongTin = objPhongFirst;
+      state.objThongTin = objThongTin;
       state.arrTangH = arrTangH;
       state.arrPhongH = arrPhongH;
       state.arrMayTinhH = mayTinhs;
@@ -56,7 +56,6 @@ export const getPhongByFirst = async (dispatch) => {
       phong: { maPhong,tenPhong,moTa},
       tang,
       mayTinh: {},
-      arrThietBi:[],
       arrPhanMem:[],
       giaoVien:{},
       nhanVien:{},
@@ -81,7 +80,8 @@ export const getPhongByFirst = async (dispatch) => {
         objPhongFirst,
         arrTangH,
         arrPhongH,
-        mayTinhs
+        mayTinhs,
+        objThongTin
       })
     );
     // dispatch(setArrTangHomeAction(resultTang.data));
