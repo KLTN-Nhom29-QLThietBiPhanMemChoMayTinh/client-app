@@ -5,8 +5,12 @@ import {
   MdKeyboardDoubleArrowLeft,
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { setObjThongTinByToaNha } from "../../redux/reducers/homeReducer";
 
 export default function ComponentToaNhaAndTang() {
+
+    let dispatch = useDispatch();
+
   let {
     objThongTin,
     arrToaNhaH,
@@ -17,16 +21,25 @@ export default function ComponentToaNhaAndTang() {
 
   // handle
   const handleChangeToaNha = (e) => {
-    console.log("🚀 ~ file: PageHome.jsx:33 ~ handleChangeToaNha ~ e:", e);
+    dispatch(setObjThongTinByToaNha(e.target.value));
   };
 
   // render
   const renderToaNha = () => {
-    if(Object.keys(objThongTin).length === 0) {
+    if(Object.keys(objThongTin).length === 0   ) {
         return <option selected value='a1'>
         All
       </option>
       }
+    if(Object.keys(objThongTin.tang).length === 0){
+      return arrToaNhaH?.map((item, index) => {
+        return (
+          <option key={index} value={item.maToaNha}>
+            {item.tenToaNha}
+          </option>
+        );
+      });
+    }
     return arrToaNhaH?.map((item, index) => {
       if (item.maToaNha === objThongTin?.tang.toaNha.maToaNha) {
         return (

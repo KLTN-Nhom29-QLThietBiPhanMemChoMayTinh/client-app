@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 export default function ComponentThongTinChiTiet() {
   let { objThongTin } = useSelector((state) => state.homeReducer);
-  if(Object.keys(objThongTin).length === 0) {
+  if(Object.keys(objThongTin).length === 0 || Object.keys(objThongTin.tang).length === 0) {
     return <></>
   }
 

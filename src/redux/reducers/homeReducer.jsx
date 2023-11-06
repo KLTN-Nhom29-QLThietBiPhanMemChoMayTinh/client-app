@@ -4,12 +4,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 
 const initialState = {
-  objPhongFirst: {},
-  objThongTin: {},
-  arrToaNhaH: [],
-  arrTangH: [],
-  arrPhongH: [],
-  arrMayTinhH: [],
+  objThongTin: {}, // luu data nguoi dung chon
+  arrToaNhaH: [], //toan bo ds Toa nha trong db
+  arrTangH: [], // ds tang ma co ma Toa nha = maToaNha trong objThongTin
+  arrPhongH: [], // ds Phong thuoc tang co trong objThongTin
+  arrMayTinhH: [], // ds may tinh thuoc phong co trong objThongTin
 };
 
 const homeReducer = createSlice({
@@ -18,19 +17,29 @@ const homeReducer = createSlice({
   reducers: {
     setObjPhongFirstAction: (state, action) => {
       // state.objPhongFirst = action.payload;
-      let { objPhongFirst, arrTangH, arrPhongH, mayTinhs, objThongTin } = action.payload;
-      state.objPhongFirst = objPhongFirst;
+      let { arrTangH, arrPhongH, mayTinhs, objThongTin } = action.payload;
       state.objThongTin = objThongTin;
       state.arrTangH = arrTangH;
       state.arrPhongH = arrPhongH;
       state.arrMayTinhH = mayTinhs;
-
     },
     setArrToaNhaHomeAction: (state, action) => {
       state.arrToaNhaH = action.payload;
     },
     setArrTangHomeAction: (state, action) => {
       state.arrTangH = action.payload;
+    },
+    setObjThongTinAction: (state, action) => {
+      let { 
+        arrTangH,
+        objThongTin,
+        arrPhongH,
+        arrMayTinh } = action.payload;
+
+      state.objThongTin = objThongTin;
+      state.arrTangH = arrTangH;
+      state.arrPhongH = arrPhongH;
+      state.arrMayTinhH = arrMayTinh;
     },
   },
 });
@@ -39,9 +48,77 @@ export const {
   setObjPhongFirstAction,
   setArrToaNhaHomeAction,
   setArrTangHomeAction,
+  setObjThongTinAction,
 } = homeReducer.actions;
 export default homeReducer.reducer;
 
+/**
+ *
+ * */
+
+export const setObjThongTinByToaNha = (idSelect) => {
+  // idSelect == maToaNha
+  return async (dispatch) => {
+    // phong: { maPhong,tenPhong,moTa},
+    let objThongTin = {
+      phong: {},
+      tang: {},
+      mayTinh: {},
+      arrPhanMem: [],
+      giaoVien: {},
+      nhanVien: {},
+      monHoc: {},
+    };
+    //
+    let arrTangH = [];
+    let arrPhongH = [];
+    let arrMayTinh = [];
+    ///
+    let resultArrTang = await http.get(`/TangTheoToaNha/${idSelect}`);
+    arrTangH = resultArrTang.data;
+    ///
+
+    if (arrTangH.length !== 0) {
+      objThongTin = { ...objThongTin, tang: arrTangH[0] };
+
+      //
+      console.log("Chua co api lay list Phong theo maTang");
+      let resultArrPhong = await http.get("/DSPhongMay");
+
+      // duyet tim phong trong ds co maTang dang chonj
+      arrPhongH = resultArrPhong.data.filter((item) => {
+        return item.tang.maTang === objThongTin.tang.maTang;
+      });
+
+      if (arrPhongH.length !== 0) {
+        let { maPhong, tenPhong, moTa, mayTinhs } = arrPhongH[0];
+        // gans gtri phong dau tien vao obj gtri chon
+        objThongTin = { 
+          ...objThongTin, 
+          phong: { maPhong, tenPhong, moTa },
+        };
+        // arr may Tinh
+        if(mayTinhs.length !== 0)
+        {
+          // gan ds may tinh vao arr
+          // ds may tinh nay pha thuoc ma phong duoc chon
+          arrMayTinh = mayTinhs ;
+        }
+      }
+
+    }
+    //
+    //
+    dispatch(
+      setObjThongTinAction({
+        arrTangH,
+        objThongTin,
+        arrPhongH,
+        arrMayTinh
+      })
+    );
+  };
+};
 /**
  * Tìm phong đầu tiên trong Data
  *  */
@@ -49,25 +126,25 @@ export const getPhongByFirst = async (dispatch) => {
   try {
     let result = await http.get("/PhongMay/2");
     let objPhongFirst = result.data;
-    let { maPhong,tenPhong,moTa, tang, mayTinhs } = objPhongFirst;
+    let { maPhong, tenPhong, moTa, tang, mayTinhs } = objPhongFirst;
 
     //
     let objThongTin = {
-      phong: { maPhong,tenPhong,moTa},
+      phong: { maPhong, tenPhong, moTa },
       tang,
       mayTinh: {},
-      arrPhanMem:[],
-      giaoVien:{},
-      nhanVien:{},
-      monHoc:{}
-    }
-    // 
+      arrPhanMem: [],
+      giaoVien: {},
+      nhanVien: {},
+      monHoc: {},
+    };
+    //
     let resultArrTang = await http.get(
       `/TangTheoToaNha/${tang.toaNha.maToaNha}`
     );
     let arrTangH = resultArrTang.data;
 
-    // 
+    //
     console.log("Chua co api lay list Phong theo maTang");
     let resultArrPhong = await http.get("/DSPhongMay");
 
@@ -77,11 +154,10 @@ export const getPhongByFirst = async (dispatch) => {
 
     dispatch(
       setObjPhongFirstAction({
-        objPhongFirst,
         arrTangH,
         arrPhongH,
         mayTinhs,
-        objThongTin
+        objThongTin,
       })
     );
     // dispatch(setArrTangHomeAction(resultTang.data));
