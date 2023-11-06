@@ -5,7 +5,7 @@ import {
   MdKeyboardDoubleArrowLeft,
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { setObjThongTinByToaNha } from "../../redux/reducers/homeReducer";
+import { setObjThongTinByTang, setObjThongTinByToaNha } from "../../redux/reducers/homeReducer";
 
 export default function ComponentToaNhaAndTang() {
 
@@ -23,6 +23,9 @@ export default function ComponentToaNhaAndTang() {
   const handleChangeToaNha = (e) => {
     dispatch(setObjThongTinByToaNha(e.target.value));
   };
+  const handleBtnTang = (val) => {
+    dispatch(setObjThongTinByTang(val));
+  }
 
   // render
   const renderToaNha = () => {
@@ -64,6 +67,7 @@ export default function ComponentToaNhaAndTang() {
             type="button"
             key={index}
             className="btn btn-primary  mx-2 mt-2"
+            onClick={() => handleBtnTang(item)}
           >
             {item.tenTang}
             <FaHandPointRight className="ms-2" size={15} />
@@ -76,6 +80,7 @@ export default function ComponentToaNhaAndTang() {
           type="button"
           key={index}
           className="btn btn-primary  mx-2 mt-2"
+          onClick={() => {handleBtnTang(item)}}
         >
           {item.tenTang}
         </button>

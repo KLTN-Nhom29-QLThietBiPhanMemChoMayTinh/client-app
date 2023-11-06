@@ -29,15 +29,18 @@ const homeReducer = createSlice({
     setArrTangHomeAction: (state, action) => {
       state.arrTangH = action.payload;
     },
-    setObjThongTinAction: (state, action) => {
-      let { 
-        arrTangH,
-        objThongTin,
-        arrPhongH,
-        arrMayTinh } = action.payload;
+    setObjThongTinByToaNhaAction: (state, action) => {
+      let { arrTangH, objThongTin, arrPhongH, arrMayTinh } = action.payload;
 
       state.objThongTin = objThongTin;
       state.arrTangH = arrTangH;
+      state.arrPhongH = arrPhongH;
+      state.arrMayTinhH = arrMayTinh;
+    },
+    setObjThongTinByTangAction: (state, action) => {
+      let { objThongTin, arrPhongH, arrMayTinh } = action.payload;
+
+      state.objThongTin = objThongTin;
       state.arrPhongH = arrPhongH;
       state.arrMayTinhH = arrMayTinh;
     },
@@ -48,14 +51,70 @@ export const {
   setObjPhongFirstAction,
   setArrToaNhaHomeAction,
   setArrTangHomeAction,
-  setObjThongTinAction,
+  setObjThongTinByToaNhaAction,
+  setObjThongTinByTangAction,
 } = homeReducer.actions;
 export default homeReducer.reducer;
 
 /**
- *
+ * thay doi data trang home khi click ở btn Tang
  * */
+export const setObjThongTinByTang = (valTang) => {
+  // valTang = {} tang duoc chon
+  return async (dispatch) => {
+    // phong: { maPhong,tenPhong,moTa},
+    let objThongTin = {
+      phong: {},
+      tang: valTang,
+      mayTinh: {},
+      arrPhanMem: [],
+      giaoVien: {},
+      nhanVien: {},
+      monHoc: {},
+    };
+    //
+    let arrPhongH = [];
+    let arrMayTinh = [];
 
+    //
+    console.log("Chua co api lay list Phong theo maTang");
+    let resultArrPhong = await http.get("/DSPhongMay");
+
+    // duyet tim phong trong ds co maTang dang chonj
+    arrPhongH = resultArrPhong.data.filter((item) => {
+      return item.tang.maTang === objThongTin.tang.maTang;
+    });
+
+    if (arrPhongH.length !== 0) {
+      let { maPhong, tenPhong, moTa, mayTinhs } = arrPhongH[0];
+      // gans gtri phong dau tien vao obj gtri chon
+      objThongTin = {
+        ...objThongTin,
+        phong: { maPhong, tenPhong, moTa },
+      };
+      // arr may Tinh
+      if (mayTinhs.length !== 0) {
+        // gan ds may tinh vao arr
+        // ds may tinh nay pha thuoc ma phong duoc chon
+        arrMayTinh = mayTinhs;
+      }
+    }
+
+    //
+    //
+    dispatch(
+      setObjThongTinByTangAction({
+        objThongTin,
+        arrPhongH,
+        arrMayTinh,
+      })
+    );
+  };
+};
+
+/**
+ * thay doi data trang home khi click ở select Toa nha
+ * */
 export const setObjThongTinByToaNha = (idSelect) => {
   // idSelect == maToaNha
   return async (dispatch) => {
@@ -93,28 +152,26 @@ export const setObjThongTinByToaNha = (idSelect) => {
       if (arrPhongH.length !== 0) {
         let { maPhong, tenPhong, moTa, mayTinhs } = arrPhongH[0];
         // gans gtri phong dau tien vao obj gtri chon
-        objThongTin = { 
-          ...objThongTin, 
+        objThongTin = {
+          ...objThongTin,
           phong: { maPhong, tenPhong, moTa },
         };
         // arr may Tinh
-        if(mayTinhs.length !== 0)
-        {
+        if (mayTinhs.length !== 0) {
           // gan ds may tinh vao arr
           // ds may tinh nay pha thuoc ma phong duoc chon
-          arrMayTinh = mayTinhs ;
+          arrMayTinh = mayTinhs;
         }
       }
-
     }
     //
     //
     dispatch(
-      setObjThongTinAction({
+      setObjThongTinByToaNhaAction({
         arrTangH,
         objThongTin,
         arrPhongH,
-        arrMayTinh
+        arrMayTinh,
       })
     );
   };
