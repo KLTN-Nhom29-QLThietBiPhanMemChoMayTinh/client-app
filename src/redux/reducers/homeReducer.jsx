@@ -5,8 +5,11 @@ import { http } from "../../util/config";
 
 const initialState = {
   objPhongFirst: {},
+  objThongTin: {},
   arrToaNhaH: [],
   arrTangH: [],
+  arrPhongH: [],
+  arrMayTinhH: [],
 };
 
 const homeReducer = createSlice({
@@ -15,9 +18,13 @@ const homeReducer = createSlice({
   reducers: {
     setObjPhongFirstAction: (state, action) => {
       // state.objPhongFirst = action.payload;
-      let { objPhongFirst, arrTangH } = action.payload;
+      let { objPhongFirst, arrTangH, arrPhongH, mayTinhs } = action.payload;
       state.objPhongFirst = objPhongFirst;
+      state.objThongTin = objPhongFirst;
       state.arrTangH = arrTangH;
+      state.arrPhongH = arrPhongH;
+      state.arrMayTinhH = mayTinhs;
+
     },
     setArrToaNhaHomeAction: (state, action) => {
       state.arrToaNhaH = action.payload;
@@ -40,28 +47,45 @@ export default homeReducer.reducer;
  *  */
 export const getPhongByFirst = async (dispatch) => {
   try {
-    let result = await http.get("/PhongMay/5");
+    let result = await http.get("/PhongMay/2");
     let objPhongFirst = result.data;
-    let { tang, mayTinhs } = objPhongFirst;
+    let { maPhong,tenPhong,moTa, tang, mayTinhs } = objPhongFirst;
 
+    //
+    let objThongTin = {
+      phong: { maPhong,tenPhong,moTa},
+      tang,
+      mayTinh: {},
+      arrThietBi:[],
+      arrPhanMem:[],
+      giaoVien:{},
+      nhanVien:{},
+      monHoc:{}
+    }
+    // 
     let resultArrTang = await http.get(
       `/TangTheoToaNha/${tang.toaNha.maToaNha}`
     );
     let arrTangH = resultArrTang.data;
 
+    // 
+    console.log("Chua co api lay list Phong theo maTang");
+    let resultArrPhong = await http.get("/DSPhongMay");
+
+    let arrPhongH = resultArrPhong.data.filter((item) => {
+      return item.tang.maTang === tang.maTang;
+    });
+
     dispatch(
       setObjPhongFirstAction({
         objPhongFirst,
         arrTangH,
+        arrPhongH,
+        mayTinhs
       })
     );
     // dispatch(setArrTangHomeAction(resultTang.data));
-  } catch (error) {
-    console.log(
-      "🚀 ~ file: homeReducer.jsx:31 ~ getPhongByFirst ~ error:",
-      error
-    );
-  }
+  } catch (error) {}
 };
 /**
  * Lấy toàn bộ tòa nhà - api
@@ -70,10 +94,5 @@ export const getAllToaNhaHomeApi = async (dispatch) => {
   try {
     let result = await http.get("/DSToaNha");
     dispatch(setArrToaNhaHomeAction(result.data));
-  } catch (error) {
-    console.log(
-      "🚀 ~ file: homeReducer.jsx:51 ~ getAllToaNhaHomeApi ~ error:",
-      error
-    );
-  }
+  } catch (error) {}
 };

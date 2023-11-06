@@ -20,12 +20,10 @@ import {
 export default function PageHome() {
   const dispatch = useDispatch();
 
-  let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
-  let { objPhongFirst, arrToaNhaH, arrTangH } = useSelector(
-    (state) => state.homeReducer
-  );
+  let { objThongTin, objPhongFirst, arrToaNhaH, arrTangH, arrPhongH, arrMayTinhH } =
+    useSelector((state) => state.homeReducer);
 
-  let { tang, mayTinhs } = objPhongFirst;
+  let { tang } = objThongTin;
 
   useEffect(() => {
     //
@@ -86,7 +84,69 @@ export default function PageHome() {
       );
     });
   };
+  //
+  const renderArrPhongHome = () => {
+    return arrPhongH?.map((item, index) => {
+      const renderBtnClickPhong = () => {
+        if (item.maPhong === objThongTin.maPhong) {
+          return <FaHandPointRight className="ms-2" size={15} />;
+        }
+        return <></>;
+      };
+      return (
+        <div
+          key={index}
+          className="bg-success rounded   my-2 ms-2 "
+          style={{ height: "89px" }}
+        >
+          <div className="d-flex flex-column justify-content-between h-100">
+            <span
+              className=" flex-grow-1 text-center  pt-2 "
+              style={{ width: "110px", height: "80%" }}
+            >
+              {item.tenPhong}
+            </span>
+            {/* Khiểm soát trang thái lớp có đang học hay không  */}
+            <span className="text-center p-1" style={{ fontSize: "12px" }}>
+              {item.trangThai ? "Đang Học" : ""}
+            </span>
+            <button
+              className="btn btn-success border-top border-0  rounded-0 rounded-bottom border-dark m-0 "
+              style={{ fontSize: "13px", padding: "5px" }}
+            >
+              Chi tiết
+              {renderBtnClickPhong()}
+            </button>
+          </div>
+        </div>
+      );
+    });
+  };
+  //
+  const renderArrMayTinh = () => {
+    return arrMayTinhH?.map((item, index) => {
+      return (
+        <div
+          key={index}
+          className=" card  align-items-center my-2 ms-2 "
+          style={{ width: "170px", height: "170px" }}
+        >
+          <div className="card-body text-center p-2">
+            <FaComputer size={50} />
+            <h4
+              className="pt-2 px-4"
+              style={{ fontSize: "20px", fontWeight: "600" }}
+            >
+              {item.moTa}
+            </h4>
+            <button className="btn btn-success w-100">Chi tiết</button>
+          </div>
+        </div>
+      );
+    });
+  };
 
+  //
   return (
     <div
       className="row p-2 d-flex justify-content-between bg-light  w-100"
@@ -163,25 +223,7 @@ export default function PageHome() {
               <div className=" d-flex flex-row">
                 {/* item */}
 
-                <div
-                  className="bg-success rounded   my-2 ms-2 "
-                  style={{ height: "89px" }}
-                >
-                  <div className="d-flex flex-column">
-                    <span
-                      className=" flex-grow-1 text-center  pt-2 "
-                      style={{ width: "110px" }}
-                    >
-                      Phòng máy H3.1.1
-                    </span>
-                    <button
-                      className="btn btn-success border-top border-0  rounded-0 rounded-bottom border-dark m-0 "
-                      style={{ fontSize: "13px", padding: "5px" }}
-                    >
-                      Chi tiết
-                    </button>
-                  </div>
-                </div>
+                {renderArrPhongHome()}
                 {/*  */}
               </div>
               {/* btn chuyển page cho Phong */}
@@ -217,21 +259,8 @@ export default function PageHome() {
             <div className="   over_flow_auto " style={{ height: "100%" }}>
               <div className="d-flex align-content-start flex-wrap">
                 {/* item */}
-                <div
-                  className=" card  align-items-center my-2 ms-2 "
-                  style={{ width: "170px", height: "170px" }}
-                >
-                  <div className="card-body text-center p-2">
-                    <FaComputer size={50} />
-                    <h4
-                      className="pt-2 px-3"
-                      style={{ fontSize: "20px", fontWeight: "600" }}
-                    >
-                      May tính H3.1.1
-                    </h4>
-                    <button className="btn btn-success w-100">Chi tiết</button>
-                  </div>
-                </div>
+
+                {renderArrMayTinh()}
                 {/*  */}
               </div>
             </div>
