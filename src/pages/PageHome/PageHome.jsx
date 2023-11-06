@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { FaComputer } from "react-icons/fa6";
 import { FaRegBuilding } from "react-icons/fa";
-import { FaPencilAlt } from "react-icons/fa";
+import { FaPencilAlt, FaHandPointRight } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
 import { AiOutlineRight } from "react-icons/ai";
 import {
@@ -12,14 +12,27 @@ import {
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
+import {
+  getAllToaNhaHomeApi,
+  getPhongByFirst,
+} from "../../redux/reducers/homeReducer";
 
 export default function PageHome() {
   const dispatch = useDispatch();
 
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
+  let { objPhongFirst, arrToaNhaH, arrTangH } = useSelector(
+    (state) => state.homeReducer
+  );
+
+  let { tang, mayTinhs } = objPhongFirst;
 
   useEffect(() => {
-    dispatch(getAllToaNhaApi);
+    //
+    dispatch(getPhongByFirst);
+    //
+    dispatch(getAllToaNhaHomeApi);
+    // call Tang
   }, []);
 
   const numberNextPageTang = useRef(1);
@@ -31,7 +44,14 @@ export default function PageHome() {
   };
   // render
   const renderToaNha = () => {
-    return arrToaNha?.map((item, index) => {
+    return arrToaNhaH?.map((item, index) => {
+      if (item.maToaNha === tang?.toaNha.maToaNha) {
+        return (
+          <option key={index} selected value={item.maToaNha}>
+            {item.tenToaNha}
+          </option>
+        );
+      }
       return (
         <option key={index} value={item.maToaNha}>
           {item.tenToaNha}
@@ -39,6 +59,34 @@ export default function PageHome() {
       );
     });
   };
+  //
+  const renderArrTangH = () => {
+    return arrTangH?.map((item, index) => {
+      if (item.maTang === tang.maTang) {
+        return (
+          <button
+            type="button"
+            key={index}
+            className="btn btn-primary  mx-2 mt-2"
+          >
+            {item.tenTang}
+            <FaHandPointRight className="ms-2" size={15} />
+          </button>
+        );
+      }
+
+      return (
+        <button
+          type="button"
+          key={index}
+          className="btn btn-primary  mx-2 mt-2"
+        >
+          {item.tenTang}
+        </button>
+      );
+    });
+  };
+
   return (
     <div
       className="row p-2 d-flex justify-content-between bg-light  w-100"
@@ -47,7 +95,10 @@ export default function PageHome() {
       {/*1. col Toa nha -- Tang */}
       <div className="col-2  flex-column d-flex justify-content-between px-1">
         {/* select toa nha */}
-        <div className=" d-flex align-items-center" style={{ height: "100px" }}>
+        <div
+          className=" d-flex align-items-center"
+          style={{ minHeight: "100px" }}
+        >
           <select
             onChange={handleChangeToaNha}
             className="form-select form-select-lg"
@@ -62,37 +113,12 @@ export default function PageHome() {
         <div
           className=" border border-info rounded mt-3 flex-grow-1  d-flex flex-column justify-content-between "
           // style={{ maxHeight: "75vh", minHeight: "auto" }}
-          style={{ maxHeight: "460px" }}
+          style={{ maxHeight: "460px", minHeight: "auto" }}
         >
           <div className="d-flex flex-column ">
             {/* item */}
-            <button type="button" className="btn btn-primary  mx-2 mt-2">
-              Tầng 1
-            </button>
-            <button type="button" className="btn btn-primary  mx-2 mt-2">
-              Tầng 1
-            </button>
-            <button type="button" className="btn btn-primary  mx-2 mt-2">
-              Tầng 1
-            </button>
-            <button type="button" className="btn btn-primary  mx-2 mt-2">
-              Tầng 1
-            </button>
-            <button type="button" className="btn btn-primary  mx-2 mt-2">
-              Tầng 1
-            </button>
-            <button type="button" className="btn btn-primary  mx-2 mt-2">
-              Tầng 1
-            </button>
-            <button type="button" className="btn btn-primary  mx-2 mt-2">
-              Tầng 1
-            </button>
-            <button type="button" className="btn btn-primary  mx-2 mt-2">
-              Tầng 1
-            </button>
-            <button type="button" className="btn btn-primary  mx-2 mt-2">
-              Tầng 1
-            </button>
+
+            {renderArrTangH()}
           </div>
 
           {/* btn chuyển page cho Tang */}
@@ -139,7 +165,7 @@ export default function PageHome() {
 
                 <div
                   className="bg-success rounded   my-2 ms-2 "
-                  style={{ height: "90px" }}
+                  style={{ height: "89px" }}
                 >
                   <div className="d-flex flex-column">
                     <span
