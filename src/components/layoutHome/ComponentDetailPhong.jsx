@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setObjThongTinByMay } from "../../redux/reducers/homeReducer";
 
 export default function ComponentDetailPhong() {
-
   const dispatch = useDispatch();
 
   //
@@ -12,42 +11,38 @@ export default function ComponentDetailPhong() {
 
   // handle
   const handleBtnChiTietMay = (valMay) => {
-    
     dispatch(setObjThongTinByMay(valMay));
   };
   //render
   const renderArrMayTinh = () => {
     return arrMayTinhH?.map((item, index) => {
-      const renderIconByTrangThai = () => {
-        if (item.trangThai.toLowerCase().includes( ("Đang hoạt động").toLowerCase())) {
-          return <FaComputer size={50} />
+      let colorText = "black";
+       if (
+          !item.trangThai.toLowerCase().includes("Đang hoạt động".toLowerCase())
+        ){
+          colorText = "red";
         }
-        return <FaComputer color="red" size={50} /> 
-      }
+      
+        //
       return (
-        <div
+        <button
+          onClick={() => {
+            handleBtnChiTietMay(item);
+          }}
           key={index}
-          className=" card  align-items-center my-2 ms-2 "
-          style={{ width: "170px", height: "170px" }}
+          className=" card  align-items-center my-3 ms-4 "
+          style={{ width: "150px", height: "150px" }}
         >
           <div className="card-body text-center p-2">
-            {renderIconByTrangThai() }
+            <FaComputer size={50} />
             <h4
-              className="pt-2 px-4"
-              style={{ fontSize: "20px", fontWeight: "600" }}
+              className="pt-3 px-4"
+              style={{ fontSize: "20px", color: `${colorText}`, fontWeight: "600" }}
             >
               {item.moTa}
             </h4>
-            <button
-              onClick={() => {
-                handleBtnChiTietMay(item);
-              }}
-              className="btn btn-success w-100"
-            >
-              Chi tiết
-            </button>
           </div>
-        </div>
+        </button>
       );
     });
   };
