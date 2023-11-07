@@ -86,15 +86,6 @@ export const setObjThongTinByPhongMay = (valPhong) => {
   return async (dispatch) => {
     let { maPhong, tenPhong, moTa, tang, mayTinhs } = valPhong;
     // phong: { maPhong,tenPhong,moTa},
-    let objThongTin = {
-      phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
-      tang,
-      mayTinh: {},
-      arrPhanMem: [],
-      giaoVien: {},
-      nhanVien: {},
-      monHoc: {},
-    };
 
     let arrMayTinh = [];
     // arr may Tinh
@@ -104,6 +95,27 @@ export const setObjThongTinByPhongMay = (valPhong) => {
       arrMayTinh = mayTinhs;
     }
 
+    // Api lay arr phanMem
+    let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+    console.log(resultPM.data);
+    let arrPhanMem = [];
+    if(resultPM.data.length !== 0)
+    {
+      arrPhanMem = resultPM.data.map(item => {
+        return item.phanMem
+      })
+    }
+    
+    //
+    let objThongTin = {
+      phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
+      tang,
+      mayTinh: {},
+      arrPhanMem,
+      giaoVien: {},
+      nhanVien: {},
+      monHoc: {},
+    };
     //
     dispatch(
       setObjThongTinByPhongAction({

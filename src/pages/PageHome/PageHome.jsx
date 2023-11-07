@@ -14,25 +14,26 @@ import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 export default function PageHome() {
   const dispatch = useDispatch();
 
-  let {objThongTin, arrToaNhaH,arrPhongH}  = useSelector(state => state.homeReducer)
+  let { objThongTin, arrToaNhaH, arrPhongH } = useSelector(
+    (state) => state.homeReducer
+  );
 
   // 3.
-  let {arrPhongMay} = useSelector(state => state.phongMayReducer)
+  let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
 
   useEffect(() => {
     //
-    if(Object.keys(objThongTin).length === 0){
+    if (Object.keys(objThongTin).length === 0) {
       dispatch(getPhongByFirst);
     }
     //
-    if(arrToaNhaH.length === 0){
+    if (arrToaNhaH.length === 0) {
       dispatch(getAllToaNhaHomeApi);
-
     }
     // call Tang
 
     // 3.del
-    if(arrPhongMay.length === 0){
+    if (arrPhongMay.length === 0) {
       dispatch(getAllPhongMayApi);
     }
   }, []);

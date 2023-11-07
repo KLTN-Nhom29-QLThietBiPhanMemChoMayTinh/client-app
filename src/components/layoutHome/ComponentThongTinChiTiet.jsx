@@ -18,6 +18,13 @@ export default function ComponentThongTinChiTiet() {
     if (Object.keys(phong).length === 0) {
       return <></>;
     }
+    // render 
+    const renderArrPhanMem = () => {
+      return arrPhanMem.map((item, index) => {
+        return <li key={index} className="ms-3">{item.tenPhanMem}</li>
+      })
+    }
+    //
     return (
       <>
         <div className="pt-2">
@@ -39,9 +46,8 @@ export default function ComponentThongTinChiTiet() {
           <div>
             <span style={{ fontWeight: 600 }}>- Ứng dụng phần mềm: </span>{" "}
             <br />
-            <li className="ms-3">Đang cập nhật!</li>
-            <li className="ms-3">Đang cập nhật!</li>
-            <li className="ms-3">Đang cập nhật!</li>
+            {renderArrPhanMem()}
+            
           </div>
         </div>
       </>

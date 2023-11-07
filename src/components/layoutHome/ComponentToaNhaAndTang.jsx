@@ -5,20 +5,20 @@ import {
   MdKeyboardDoubleArrowLeft,
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { setObjThongTinByTang, setObjThongTinByToaNha } from "../../redux/reducers/homeReducer";
+import {
+  setObjThongTinByTang,
+  setObjThongTinByToaNha,
+} from "../../redux/reducers/homeReducer";
 
 export default function ComponentToaNhaAndTang() {
+  let dispatch = useDispatch();
 
-    let dispatch = useDispatch();
-
-  let {
-    objThongTin,
-    arrToaNhaH,
-    arrTangH,
-  } = useSelector((state) => state.homeReducer);
+  let { objThongTin, arrToaNhaH, arrTangH } = useSelector(
+    (state) => state.homeReducer
+  );
 
   // 3.del
-let {arrPhongMay} = useSelector(state => state.phongMayReducer)
+  let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
 
   const numberNextPageTang = useRef(1);
 
@@ -30,18 +30,20 @@ let {arrPhongMay} = useSelector(state => state.phongMayReducer)
   };
   const handleBtnTang = (val) => {
     // 3.del
-    dispatch(setObjThongTinByTang(val,arrPhongMay));
+    dispatch(setObjThongTinByTang(val, arrPhongMay));
     // dispatch(setObjThongTinByTang(val));
-  }
+  };
 
   // render
   const renderToaNha = () => {
-    if(Object.keys(objThongTin).length === 0   ) {
-        return <option selected value='a1'>
-        All
-      </option>
-      }
-    if(Object.keys(objThongTin.tang).length === 0){
+    if (Object.keys(objThongTin).length === 0) {
+      return (
+        <option selected value="a1">
+          All
+        </option>
+      );
+    }
+    if (Object.keys(objThongTin.tang).length === 0) {
       return arrToaNhaH?.map((item, index) => {
         return (
           <option key={index} value={item.maToaNha}>
@@ -87,7 +89,9 @@ let {arrPhongMay} = useSelector(state => state.phongMayReducer)
           type="button"
           key={index}
           className="btn btn-primary  mx-2 mt-2"
-          onClick={() => {handleBtnTang(item)}}
+          onClick={() => {
+            handleBtnTang(item);
+          }}
         >
           {item.tenTang}
         </button>
