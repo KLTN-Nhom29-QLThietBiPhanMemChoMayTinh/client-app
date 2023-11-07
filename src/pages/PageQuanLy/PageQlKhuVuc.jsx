@@ -9,7 +9,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Footer from "../../components/common/Footer/Footer";
 import Database from "../../util/database/Database";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllToaNhaApi, setArrToaNhaByValSearchAction } from "../../redux/reducers/toaNhaReducer";
+import { deleteToaNha, getAllToaNhaApi, setArrToaNhaByValSearchAction } from "../../redux/reducers/toaNhaReducer";
 import { getAllTangApi } from "../../redux/reducers/tangReducer";
 
 const PageQlKhuVuc = (props) => {
@@ -53,14 +53,16 @@ const PageQlKhuVuc = (props) => {
               className="btn btn-primary mx-2 px-2"
               style={{ padding: "2px" }}
               onClick={() => {
-                navigate(`/quan-ly/khu-vuc/update/${item.id}`);
+                navigate(`/quan-ly/khu-vuc/update/${item.maToaNha}`);
               }}
             >
               <FaPencilAlt color="white" size={16} />
             </button>
             <button
               onClick={() => {
-                alert(`Del -- ${item.id}`);
+                if(window.confirm("Bấm vào nút OK để xóa " + item.tenToaNha)){
+                  dispatch(deleteToaNha(item.maToaNha));
+                }
               }}
               type="button"
               className="btn btn-danger mx-2 px-2"

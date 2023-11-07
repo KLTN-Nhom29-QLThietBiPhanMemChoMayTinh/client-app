@@ -78,7 +78,7 @@ export const setObjThongTinByMay = (valMay) => {
   };
 };
 
-// api arr PhanMem theo maPhong
+// api arr PhanMem theo maPhong == Không hiệu quả
 const getArrPhanmemByMaPhong = async (maPhong) => {
   let arrPhanMem = [];
 

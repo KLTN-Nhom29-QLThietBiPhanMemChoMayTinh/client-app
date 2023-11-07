@@ -84,7 +84,8 @@
     - PageLichTruc: data api chua co - handleSearch chua co - select theo thang nam - update - del
     - FormAddLichTruc: del select Tgian truc
     - PageQlKhuVuc: Chua co CRUD vs APi
-    -useLocation() : chuyển component A -> b kem theo giá tri
+    - useLocation() : chuyển component A -> b kem theo giá tri
+    - Insert : 
 
     
 ## error

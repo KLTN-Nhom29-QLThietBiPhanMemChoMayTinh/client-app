@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import NavTab from "../../common/NavTab/NavTab";
 import Footer from "../../common/Footer/Footer";
+import { useDispatch } from "react-redux";
+import { insertToaNha } from "../../../redux/reducers/toaNhaReducer";
 
 function FormAddKhuVuc() {
+
+  let dispatch = useDispatch();
+  //
   let [txtText, setTxtText] = useState("");
   let [txtErr, setTxtErr] = useState("*");
 
@@ -23,13 +28,13 @@ function FormAddKhuVuc() {
       setTxtErr("Hãy nhập dữ liệu !!!")
       return
     }
-    alert(txtText);
+    dispatch(insertToaNha(txtText))
   };
 
     
   // Mảng quản lý data navtab
   let arrLinkNavTab = [
-    { name: "Quản lý khu vực", link: "../quan-ly/khu-vuc" }
+    { name: "Quản lý tòa nhà", link: "../quan-ly/khu-vuc" }
     
   ];
   //

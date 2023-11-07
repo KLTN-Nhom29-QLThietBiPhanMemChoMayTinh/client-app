@@ -2,6 +2,8 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
+import { formatNumber } from "../../util/formatString";
+import { history } from "../..";
 
 const initialState = {
   arrToaNha: [],
@@ -28,6 +30,21 @@ const toaNhaReducer = createSlice({
 
       state.arrToaNhaSearch = dataSearch(arrToaNha, action.payload);
     },
+    insertToaNhaAction: (state, action) => {
+      let toaNha = action.payload;
+      let arrUpdate = state.arrToaNha;
+      arrUpdate.push(toaNha);
+      state.arrToaNha = [...arrUpdate]
+      state.arrToaNhaSearch = [...arrUpdate]
+    },
+    deleteToaNhaAction: (state, action) => {
+      let idXoa = action.payload; 
+      let arrUpdate = state.arrToaNha.filter(item => {
+        return item.maToaNha !== idXoa
+      });
+      state.arrToaNha = [...arrUpdate]
+      state.arrToaNhaSearch = [...arrUpdate]
+    },
   },
 });
 //
@@ -50,11 +67,60 @@ export const {
   setArrToaNhaAction,
   serArrToaNhaLichTrucAction,
   setArrToaNhaByValSearchAction,
+  insertToaNhaAction,
+  deleteToaNhaAction,
 } = toaNhaReducer.actions;
 export default toaNhaReducer.reducer;
 
 // Call APi ======================================
+/**
+ * xoa 1 toa nha theo id
+ * @param {long} idXoa 
+ * @returns 
+ */
+export const deleteToaNha = (idXoa) => {
+  return async (dispatch) => {
+    try {
+      await http.delete(`/XoaToaNha/${idXoa}`);
 
+      //
+      dispatch(deleteToaNhaAction(idXoa))
+      
+    } catch (error) {
+      console.log("🚀 ~ file: toaNhaReducer.jsx:73 ~ return ~ error:", error)
+      
+    }
+  }
+}
+
+/**
+ * insert 1 toa nha
+ * @param {text} tenToaNha 
+ * @returns 
+ */
+export const insertToaNha = (tenToaNha) => {
+  let toaNhaNew = {
+    maToaNha:formatNumber(),
+    tenToaNha
+  }
+  return async (dispatch) => {
+    try {
+      let result = await http.post('/LuuToaNha', toaNhaNew)
+      let toaNha = result.data;
+      dispatch(insertToaNhaAction(toaNha));
+      
+      history.push("/quan-ly/khu-vuc");
+    } catch (error) {
+      console.log("🚀 ~ file: toaNhaReducer.jsx:70 ~ return ~ error:", error)
+      
+    }
+  }
+}
+
+/**
+ * api Call ALL ToaNha
+ * @param {*} dispatch 
+ */
 export const getAllToaNhaApi = async (dispatch) => {
   try {
     const result = await http.get("/DSToaNha");

@@ -78,13 +78,19 @@ export default function PageHome() {
           </div>
           <ComponentThongTinChiTiet />
           <div className="d-flex justify-content-around">
-            <button type="button" className="btn btn-primary">
+            <button onClick={() => {
+              alert("Đang cập nhật...")
+            }} type="button" className="btn btn-primary">
               Chi tiết
             </button>
-            <button type="button" className="btn btn-primary">
+            <button onClick={() => {
+              alert("Đang cập nhật...")
+            }} type="button" className="btn btn-primary">
               Chỉnh sửa
             </button>
-            <button type="button" className="btn btn-primary">
+            <button onClick={() => {
+              alert("Đang cập nhật...")
+            }} type="button" className="btn btn-primary">
               Ghi chú
             </button>
           </div>
