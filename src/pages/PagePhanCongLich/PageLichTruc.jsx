@@ -45,7 +45,7 @@ export default function PageLichTruc(props) {
             <td>{item.nhanVien.sDT}</td>
             <td>{strTgian}</td>
             <td>{strCaTruc}</td>
-            <td>{item.soNgayNghi}</td>
+            {/* <td>{item.soNgayNghi}</td> */}
 
             <td style={{ display: "flex", justifyContent: "space-evenly" }}>
               <NavLink to={`/phan-cong/lich-truc/update/${item.maLich}`}>
@@ -155,7 +155,7 @@ export default function PageLichTruc(props) {
                       Thời gian trực (tháng)
                     </th>
                     <th style={{ minWidth: "120px" }}>Ca trực(giờ)</th>
-                    <th style={{ minWidth: "120px" }}>Số ngày nghỉ</th>
+                    {/* <th style={{ minWidth: "120px" }}>Số ngày nghỉ</th> */}
                     <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
                 </thead>

@@ -78,6 +78,26 @@ export const setObjThongTinByMay = (valMay) => {
   };
 };
 
+// api arr PhanMem theo maPhong
+const getArrPhanmemByMaPhong = async (maPhong) => {
+  let arrPhanMem = [];
+
+  try {
+    // Api lay arr phanMem
+    let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+    if (resultPM.data.length !== 0) {
+      arrPhanMem = resultPM.data.map((item) => {
+        return item.phanMem;
+      });
+    }
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: homeReducer.jsx:89 ~ getArrPhanmem ~ error:",
+      error
+    );
+  }
+  return arrPhanMem;
+};
 /**
  * thay doi data trang home khi click ở btn PhongMay
  * */
@@ -94,18 +114,29 @@ export const setObjThongTinByPhongMay = (valPhong) => {
       // ds may tinh nay pha thuoc ma phong duoc chon
       arrMayTinh = mayTinhs;
     }
+    
+    // Api lay arr phanMem
+    // let arrPhanMem = [];
+    // khongo hiệu quả.....
+    // await getArrPhanmemByMaPhong(maPhong).then(
+    //   data => {
+    //     console.log(data); 
+    //     arrPhanMem = [...data]
+    //     console.log("🚀 ~ file: homeReducer.jsx:125 ~ return ~ arrPhanMem:", arrPhanMem)
+    //   }
+    // ).catch(err => console.log(err))
+    //  console.log("🚀 ~ file: homeReducer.jsx:125 ~ return ~ arrPhanMem:", arrPhanMem)
+    
 
     // Api lay arr phanMem
-    let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
-    console.log(resultPM.data);
     let arrPhanMem = [];
-    if(resultPM.data.length !== 0)
-    {
-      arrPhanMem = resultPM.data.map(item => {
-        return item.phanMem
-      })
+    let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+    if (resultPM.data.length !== 0) {
+      arrPhanMem = resultPM.data.map((item) => {
+        return item.phanMem;
+      });
     }
-    
+
     //
     let objThongTin = {
       phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
@@ -257,16 +288,6 @@ export const getPhongByFirst = async (dispatch) => {
     let { maPhong, tenPhong, moTa, tang, mayTinhs } = objPhongFirst;
 
     //
-    let objThongTin = {
-      phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
-      tang,
-      mayTinh: {},
-      arrPhanMem: [],
-      giaoVien: {},
-      nhanVien: {},
-      monHoc: {},
-    };
-    //
     let resultArrTang = await http.get(
       `/TangTheoToaNha/${tang.toaNha.maToaNha}`
     );
@@ -279,6 +300,25 @@ export const getPhongByFirst = async (dispatch) => {
     let arrPhongH = resultArrPhong.data.filter((item) => {
       return item.tang.maTang === tang.maTang;
     });
+        // Api lay arr phanMem
+    let arrPhanMem = [];
+    let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+    if (resultPM.data.length !== 0) {
+      arrPhanMem = resultPM.data.map((item) => {
+        return item.phanMem;
+      });
+    }
+    
+    //
+    let objThongTin = {
+      phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
+      tang,
+      mayTinh: {},
+      arrPhanMem,
+      giaoVien: {},
+      nhanVien: {},
+      monHoc: {},
+    };
 
     dispatch(
       setObjPhongFirstAction({

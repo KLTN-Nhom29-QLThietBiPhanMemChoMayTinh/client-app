@@ -20,7 +20,10 @@ export default function ComponentThongTinChiTiet() {
     }
     // render 
     const renderArrPhanMem = () => {
-      return arrPhanMem.map((item, index) => {
+      if(arrPhanMem.length === 0) {
+        return <li className="ms-3">Không có.</li>
+      }
+      return arrPhanMem?.map((item, index) => {
         return <li key={index} className="ms-3">{item.tenPhanMem}</li>
       })
     }

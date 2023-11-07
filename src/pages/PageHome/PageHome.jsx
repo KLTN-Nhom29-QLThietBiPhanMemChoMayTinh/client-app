@@ -14,7 +14,7 @@ import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 export default function PageHome() {
   const dispatch = useDispatch();
 
-  let { objThongTin, arrToaNhaH, arrPhongH } = useSelector(
+  let { objThongTin, arrToaNhaH } = useSelector(
     (state) => state.homeReducer
   );
 
