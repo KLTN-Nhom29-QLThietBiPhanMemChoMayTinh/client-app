@@ -1,18 +1,37 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavTab from "../common/NavTab/NavTab";
 import Footer from "../common/Footer/Footer";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+let objToaNha = {};
 
 const FormKhuVucUpdate = (props) => {
   
   // sd useParams de nhan data truyen toi theo router
   const params = useParams();
-  console.log("DetailKhuVuc - id : ", params.id);
   
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search);
+  const objParam = Object.fromEntries(searchParams);
+  //
+  let {arrToaNha} = useSelector(state => state.toaNhaReducer);
   // khai bao
   let [txtText, setTxtText] = useState("");
   let [txtErr, setTxtErr] = useState("*");
+
+  useEffect(() => {
+    if(arrToaNha.length === 0)
+    {
+      console.log("Can api tim Toa Nha theo ID");
+    }else{
+      let arrTN = arrToaNha.filter(item => item.maToaNha == objParam.id)
+      objToaNha = arrTN[0]
+    }
+
+    setTxtText(objToaNha.tenToaNha)
+  }, [])
 
   // lay gia trị của text name
   const handleChangeText = (event) => {
@@ -60,6 +79,7 @@ const FormKhuVucUpdate = (props) => {
                   type="text"
                   className="form-control"
                   id="txtnameKV"
+                  value={txtText}
                   aria-describedby="txtnameKV"
                   placeholder="Tòa nhà a..."
                   onChange={handleChangeText}

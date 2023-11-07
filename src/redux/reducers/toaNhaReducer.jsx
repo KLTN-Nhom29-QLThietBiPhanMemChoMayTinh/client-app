@@ -33,7 +33,7 @@ const toaNhaReducer = createSlice({
     insertToaNhaAction: (state, action) => {
       let toaNha = action.payload;
       let arrUpdate = state.arrToaNha;
-      arrUpdate.push(toaNha);
+      arrUpdate.push({...toaNha, soTang:0});
       state.arrToaNha = [...arrUpdate]
       state.arrToaNhaSearch = [...arrUpdate]
     },
@@ -100,7 +100,6 @@ export const deleteToaNha = (idXoa) => {
  */
 export const insertToaNha = (tenToaNha) => {
   let toaNhaNew = {
-    maToaNha:formatNumber(),
     tenToaNha
   }
   return async (dispatch) => {

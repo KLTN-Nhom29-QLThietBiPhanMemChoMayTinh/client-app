@@ -43,44 +43,46 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <HistoryRouter history={history}>
-    {/* <BrowserRouter> */}
+      {/* <BrowserRouter> */}
       <Routes>
-        <Route path="" element={<PageBrand />} ></Route>
+        <Route path="" element={<PageBrand />}></Route>
         <Route path="" element={<App />}>
           {/* <Route path="/" element={<PageHome2 />}>
             <Route path="/detail-khu-vuc" >
               <Route path=":id" element={<DetailKhuVuc />} ></Route>
             </Route>
           </Route> */}
-          
-          <Route path="/home" element={<PageHome />} ></Route>
+
+          <Route path="/home" element={<PageHome />}></Route>
           <Route path="/quan-ly" element={<PageQlKhuVuc />}></Route>
           <Route path="/quan-ly/khu-vuc" element={<PageQlKhuVuc />}></Route>
           <Route
             path="/quan-ly/khu-vuc/add"
             element={<FromAddKhuVuc />}
           ></Route>
-          <Route path="/quan-ly/khu-vuc/update">
+          {/* <Route path="/quan-ly/khu-vuc/update">
             <Route path=":id"  element={<FormKhuVucUpdate />} ></Route>
+          </Route> */}
+          <Route path="/quan-ly/khu-vuc/update" element={<FormKhuVucUpdate />}>
           </Route>
-          <Route path="/quan-ly/khu-vuc/detail" >
-            <Route path=":id" element={<DetailKhuVuc />} ></Route>
+          <Route path="/quan-ly/khu-vuc/detail">
+            <Route path=":id" element={<DetailKhuVuc />}></Route>
           </Route>
           <Route path="/quan-ly/tang" element={<PageQLTang />}>
-            <Route path=":id" element={<PageQLTang />} ></Route>  
+            <Route path=":id" element={<PageQLTang />}></Route>
           </Route>
+          <Route path="/quan-ly/tang/add" element={<FormAddTang />}></Route>
           <Route
-            path="/quan-ly/tang/add"
-            element={<FormAddTang />}
+            path="/quan-ly/tang/update"
+            element={<FormUpdateTang />}
           ></Route>
-          <Route path="/quan-ly/tang/update" element={<FormUpdateTang />}></Route>
-          <Route path="/quan-ly/tang/detail" >
-            <Route path=":id" element={<DetailKhuVuc />} ></Route>
+          <Route path="/quan-ly/tang/detail">
+            <Route path=":id" element={<DetailKhuVuc />}></Route>
           </Route>
           <Route path="/quan-ly/phong" element={<PageQLPhongMay />}></Route>
           <Route path="/quan-ly/phong/add" element={<FormAddPhong />}></Route>
-          <Route path="/quan-ly/phong/update" >
-            <Route path=":id" element={<FormUpdatePhong />} ></Route>
+          <Route path="/quan-ly/phong/update">
+            <Route path=":id" element={<FormUpdatePhong />}></Route>
           </Route>
           <Route path="/quan-ly/phan-mem" element={<PageQLPhanMem />}></Route>
           <Route path="/quan-ly/mon" element={<PageQlMonHoc />}></Route>
@@ -90,15 +92,20 @@ root.render(
           <Route path="/quan-ly/giao-vien" element={<PageQLGiaoVien />}></Route>
           <Route path="/quan-ly/tai-khoan" element={<PageQLTaiKhoan />}></Route>
           <Route path="/phan-cong/lich-truc" element={<PageLichTruc />}></Route>
-          <Route path="/phan-cong/lich-truc/add" element={<FormAddLichTruc />}></Route>
-          <Route path="/phan-cong/lich-truc/update/:id" element={<FormUpdateLichTruc />}></Route>
+          <Route
+            path="/phan-cong/lich-truc/add"
+            element={<FormAddLichTruc />}
+          ></Route>
+          <Route
+            path="/phan-cong/lich-truc/update/:id"
+            element={<FormUpdateLichTruc />}
+          ></Route>
           <Route path="/account" element={<PageProfile />}></Route>
           <Route path="*" element={<Page404 />}></Route>
         </Route>
         <Route path="/login" element={<PageLogin />}></Route>
-
       </Routes>
-    {/* </BrowserRouter> */}
+      {/* </BrowserRouter> */}
     </HistoryRouter>
   </Provider>
 );

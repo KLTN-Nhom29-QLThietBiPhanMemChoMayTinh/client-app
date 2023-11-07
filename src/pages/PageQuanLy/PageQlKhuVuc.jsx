@@ -53,7 +53,7 @@ const PageQlKhuVuc = (props) => {
               className="btn btn-primary mx-2 px-2"
               style={{ padding: "2px" }}
               onClick={() => {
-                navigate(`/quan-ly/khu-vuc/update/${item.maToaNha}`);
+                navigate(`/quan-ly/khu-vuc/update?id=${item.maToaNha}`);
               }}
             >
               <FaPencilAlt color="white" size={16} />

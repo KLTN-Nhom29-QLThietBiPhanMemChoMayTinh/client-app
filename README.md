@@ -83,9 +83,14 @@
     - pageLogin - dựa username lây thông tin nguoi dung
     - PageLichTruc: data api chua co - handleSearch chua co - select theo thang nam - update - del
     - FormAddLichTruc: del select Tgian truc
-    - PageQlKhuVuc: Chua co CRUD vs APi
+    - PageQlKhuVuc: Chua co Update vs APi
     - useLocation() : chuyển component A -> b kem theo giá tri
-    - Insert : 
+    
+
+## Tài liệu
+
+* useLocation() - [link](https://medium.com/@stheodorejohn/exploring-react-router-dom-understanding-the-uselocation-hook-f67742e71c0c)
+* Lấy giá trị tham số từ chuối truy vấn? [link](https://www.javascripttutorial.net/es-next/javascript-object-fromentries/)
 
     
 ## error
