@@ -17,14 +17,21 @@ export default function ComponentToaNhaAndTang() {
     arrTangH,
   } = useSelector((state) => state.homeReducer);
 
+  // 3.del
+let {arrPhongMay} = useSelector(state => state.phongMayReducer)
+
   const numberNextPageTang = useRef(1);
 
   // handle
   const handleChangeToaNha = (e) => {
-    dispatch(setObjThongTinByToaNha(e.target.value));
+    // 3.del
+    dispatch(setObjThongTinByToaNha(e.target.value, arrPhongMay));
+    // dispatch(setObjThongTinByToaNha(e.target.value));
   };
   const handleBtnTang = (val) => {
-    dispatch(setObjThongTinByTang(val));
+    // 3.del
+    dispatch(setObjThongTinByTang(val,arrPhongMay));
+    // dispatch(setObjThongTinByTang(val));
   }
 
   // render

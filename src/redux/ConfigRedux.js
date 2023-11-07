@@ -11,6 +11,7 @@ import toaNhaReducer from "./reducers/toaNhaReducer";
 import tangReducer from "./reducers/tangReducer";
 import lichTrucReducer from "./reducers/lichTrucReducer";
 import homeReducer from "./reducers/homeReducer";
+import phongMayReducer from "./reducers/phongMayReducer";
 
 export const store = configureStore({
     reducer: {
@@ -26,5 +27,6 @@ export const store = configureStore({
       number: numberReducer,
       monHocReducer: monHocReducer,
       thietBiReducer:thietBiReducer,
+      phongMayReducer:phongMayReducer,
     },
   });

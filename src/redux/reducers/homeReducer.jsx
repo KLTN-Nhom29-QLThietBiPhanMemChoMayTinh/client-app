@@ -53,8 +53,7 @@ const homeReducer = createSlice({
     setObjThongTinByMayAction: (state, action) => {
       let objUpdate = state.objThongTin;
 
-      state.objThongTin =  {...objUpdate, mayTinh: action.payload};
-      
+      state.objThongTin = { ...objUpdate, mayTinh: action.payload };
     },
   },
 });
@@ -74,10 +73,10 @@ export default homeReducer.reducer;
  * thay doi data trang home khi click ở btn detail May
  * */
 export const setObjThongTinByMay = (valMay) => {
-  return async(dispatch) => {
-    dispatch(setObjThongTinByMayAction(valMay))
-  }
-} 
+  return async (dispatch) => {
+    dispatch(setObjThongTinByMayAction(valMay));
+  };
+};
 
 /**
  * thay doi data trang home khi click ở btn PhongMay
@@ -88,7 +87,7 @@ export const setObjThongTinByPhongMay = (valPhong) => {
     let { maPhong, tenPhong, moTa, tang, mayTinhs } = valPhong;
     // phong: { maPhong,tenPhong,moTa},
     let objThongTin = {
-      phong: { maPhong,tenPhong,moTa, soMay:mayTinhs.length},
+      phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
       tang,
       mayTinh: {},
       arrPhanMem: [],
@@ -112,13 +111,13 @@ export const setObjThongTinByPhongMay = (valPhong) => {
         arrMayTinh,
       })
     );
-  }
-}
+  };
+};
 
 /**
  * thay doi data trang home khi click ở btn Tang
  * */
-export const setObjThongTinByTang = (valTang) => {
+export const setObjThongTinByTang = (valTang, arrPhongMay) => {
   // valTang = {} tang duoc chon
   return async (dispatch) => {
     // phong: { maPhong,tenPhong,moTa},
@@ -137,10 +136,11 @@ export const setObjThongTinByTang = (valTang) => {
 
     //
     console.log("Chua co api lay list Phong theo maTang");
-    let resultArrPhong = await http.get("/DSPhongMay");
+    // let resultArrPhong = await http.get("/DSPhongMay");
 
     // duyet tim phong trong ds co maTang dang chonj
-    arrPhongH = resultArrPhong.data.filter((item) => {
+    // arrPhongH = resultArrPhong.data.filter((item) => {
+    arrPhongH = arrPhongMay.filter((item) => {
       return item.tang.maTang === objThongTin.tang.maTang;
     });
 
@@ -149,7 +149,7 @@ export const setObjThongTinByTang = (valTang) => {
       // gans gtri phong dau tien vao obj gtri chon
       objThongTin = {
         ...objThongTin,
-        phong: { maPhong, tenPhong, moTa, soMay:mayTinhs.length },
+        phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
       };
       // arr may Tinh
       if (mayTinhs.length !== 0) {
@@ -174,7 +174,7 @@ export const setObjThongTinByTang = (valTang) => {
 /**
  * thay doi data trang home khi click ở select Toa nha
  * */
-export const setObjThongTinByToaNha = (idSelect) => {
+export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
   // idSelect == maToaNha
   return async (dispatch) => {
     // phong: { maPhong,tenPhong,moTa},
@@ -201,10 +201,10 @@ export const setObjThongTinByToaNha = (idSelect) => {
 
       //
       console.log("Chua co api lay list Phong theo maTang");
-      let resultArrPhong = await http.get("/DSPhongMay");
+      // let resultArrPhong = await http.get("/DSPhongMay");
 
       // duyet tim phong trong ds co maTang dang chonj
-      arrPhongH = resultArrPhong.data.filter((item) => {
+      arrPhongH = arrPhongMay.filter((item) => {
         return item.tang.maTang === objThongTin.tang.maTang;
       });
 
@@ -213,7 +213,7 @@ export const setObjThongTinByToaNha = (idSelect) => {
         // gans gtri phong dau tien vao obj gtri chon
         objThongTin = {
           ...objThongTin,
-          phong: { maPhong, tenPhong, moTa, soMay:mayTinhs.length },
+          phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
         };
         // arr may Tinh
         if (mayTinhs.length !== 0) {
@@ -246,7 +246,7 @@ export const getPhongByFirst = async (dispatch) => {
 
     //
     let objThongTin = {
-      phong: { maPhong, tenPhong, moTa, soMay:mayTinhs.length },
+      phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
       tang,
       mayTinh: {},
       arrPhanMem: [],
