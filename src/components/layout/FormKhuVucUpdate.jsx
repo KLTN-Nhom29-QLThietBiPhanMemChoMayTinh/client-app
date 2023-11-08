@@ -3,14 +3,17 @@ import React, { useEffect, useState } from "react";
 import NavTab from "../common/NavTab/NavTab";
 import Footer from "../common/Footer/Footer";
 import { useLocation, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateToaNha } from "../../redux/reducers/toaNhaReducer";
 
 let objToaNha = {};
+let soTang = 0;
 
 const FormKhuVucUpdate = (props) => {
   
   // sd useParams de nhan data truyen toi theo router
   const params = useParams();
+  const dispatch = useDispatch();
   
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search);
@@ -27,9 +30,10 @@ const FormKhuVucUpdate = (props) => {
       console.log("Can api tim Toa Nha theo ID");
     }else{
       let arrTN = arrToaNha.filter(item => item.maToaNha == objParam.id)
-      objToaNha = arrTN[0]
+      objToaNha = arrTN[0];
+      
     }
-
+    soTang = objToaNha.soTang;
     setTxtText(objToaNha.tenToaNha)
   }, [])
 
@@ -49,7 +53,14 @@ const FormKhuVucUpdate = (props) => {
       setTxtErr("Hãy nhập dữ liệu !!!");
       return;
     }
-    alert(txtText);
+    let toaNha = {
+      maToaNha:objParam.id,
+      tenToaNha:txtText,
+      soTang
+    }
+
+    dispatch(updateToaNha(toaNha));
+  
   };
 
   // Mảng quản lý data navtab
@@ -87,10 +98,12 @@ const FormKhuVucUpdate = (props) => {
               </div>
 
               <button type="submit" className="btn btn-success">
-                Submit
+                Cập nhật
               </button>
-              <button type="reset" className="btn btn-danger mx-3">
-                Reset
+              <button type="reset" onClick={() => {
+                setTxtText(objToaNha.tenToaNha)
+              }} className="btn btn-danger mx-3">
+                Làm mới
               </button>
             </form>
           </div>

@@ -2,7 +2,6 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
-import { formatNumber } from "../../util/formatString";
 import { history } from "../..";
 
 const initialState = {
@@ -33,17 +32,25 @@ const toaNhaReducer = createSlice({
     insertToaNhaAction: (state, action) => {
       let toaNha = action.payload;
       let arrUpdate = state.arrToaNha;
-      arrUpdate.push({...toaNha, soTang:0});
-      state.arrToaNha = [...arrUpdate]
-      state.arrToaNhaSearch = [...arrUpdate]
+      arrUpdate.push({ ...toaNha, soTang: 0 });
+      state.arrToaNha = [...arrUpdate];
+      state.arrToaNhaSearch = [...arrUpdate];
     },
     deleteToaNhaAction: (state, action) => {
-      let idXoa = action.payload; 
-      let arrUpdate = state.arrToaNha.filter(item => {
-        return item.maToaNha !== idXoa
+      let idXoa = action.payload;
+      let arrUpdate = state.arrToaNha.filter((item) => {
+        return item.maToaNha !== idXoa;
       });
-      state.arrToaNha = [...arrUpdate]
-      state.arrToaNhaSearch = [...arrUpdate]
+      state.arrToaNha = [...arrUpdate];
+      state.arrToaNhaSearch = [...arrUpdate];
+    },
+    updateToaNhaAction: (state, action) => {
+      let itemEdit = action.payload;
+      let rowToChange = state.arrToaNha.findIndex((item) => {
+        return item.maToaNha == itemEdit.maToaNha;
+      });
+      state.arrToaNha[rowToChange] = itemEdit;
+      state.arrToaNhaSearch = [...state.arrToaNha];
     },
   },
 });
@@ -69,14 +76,26 @@ export const {
   setArrToaNhaByValSearchAction,
   insertToaNhaAction,
   deleteToaNhaAction,
+  updateToaNhaAction,
 } = toaNhaReducer.actions;
 export default toaNhaReducer.reducer;
 
 // Call APi ======================================
+
+export const updateToaNha = (toaNha) => {
+  return async (dispatch) => {
+    // let result = await http.put("/toaNha", toaNha)
+    console.log("chua co api update ToaNha");
+
+    dispatch(updateToaNhaAction(toaNha));
+    history.push('../')
+  };
+};
+
 /**
  * xoa 1 toa nha theo id
- * @param {long} idXoa 
- * @returns 
+ * @param {long} idXoa
+ * @returns
  */
 export const deleteToaNha = (idXoa) => {
   return async (dispatch) => {
@@ -84,41 +103,38 @@ export const deleteToaNha = (idXoa) => {
       await http.delete(`/XoaToaNha/${idXoa}`);
 
       //
-      dispatch(deleteToaNhaAction(idXoa))
-      
+      dispatch(deleteToaNhaAction(idXoa));
     } catch (error) {
-      console.log("🚀 ~ file: toaNhaReducer.jsx:73 ~ return ~ error:", error)
-      
+      console.log("🚀 ~ file: toaNhaReducer.jsx:73 ~ return ~ error:", error);
     }
-  }
-}
+  };
+};
 
 /**
  * insert 1 toa nha
- * @param {text} tenToaNha 
- * @returns 
+ * @param {text} tenToaNha
+ * @returns
  */
 export const insertToaNha = (tenToaNha) => {
   let toaNhaNew = {
-    tenToaNha
-  }
+    tenToaNha,
+  };
   return async (dispatch) => {
     try {
-      let result = await http.post('/LuuToaNha', toaNhaNew)
+      let result = await http.post("/LuuToaNha", toaNhaNew);
       let toaNha = result.data;
       dispatch(insertToaNhaAction(toaNha));
-      
+
       history.push("/quan-ly/khu-vuc");
     } catch (error) {
-      console.log("🚀 ~ file: toaNhaReducer.jsx:70 ~ return ~ error:", error)
-      
+      console.log("🚀 ~ file: toaNhaReducer.jsx:70 ~ return ~ error:", error);
     }
-  }
-}
+  };
+};
 
 /**
  * api Call ALL ToaNha
- * @param {*} dispatch 
+ * @param {*} dispatch
  */
 export const getAllToaNhaApi = async (dispatch) => {
   try {
