@@ -16,7 +16,7 @@ import FormKhuVucUpdate from "./components/layout/FormKhuVucUpdate";
 import { Provider } from "react-redux";
 import { store } from "./redux/ConfigRedux";
 import PageQLTang from "./pages/PageQuanLy/PageQLTang";
-import FormAddTang from "./components/layout/FormAddTang";
+import FormAddTang from "./components/layout/Add/FormAddTang";
 import FormUpdateTang from "./components/layout/FormUpdateTang";
 import DetailKhuVuc from "./components/layout/Detail/DetailKhuVuc";
 import FormAddPhong from "./components/layout/FormAddPhong";

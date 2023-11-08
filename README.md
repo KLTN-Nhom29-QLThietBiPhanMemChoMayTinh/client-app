@@ -18,6 +18,7 @@
 
 ### ảnh quản lý tầng
 ![QL tầng](./AnhMinhHoa/img_QLTang.png)
+![QL tầng](./AnhMinhHoa/img_QLTang_form.png)
 
 ### ảnh quản lý môn học
 ![QL môn](./AnhMinhHoa/img_QLMon.png)
