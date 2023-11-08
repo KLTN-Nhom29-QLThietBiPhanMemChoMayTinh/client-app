@@ -9,6 +9,14 @@ import { FaPencilAlt } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
 import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllTangApi,
+  setValueSearchTangAction,
+  setValueSelectTangAction,
+} from "../../redux/reducers/tangReducer";
+import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
+import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 
 /**
  * giả đỉnh data tren server chua lấy về
@@ -20,94 +28,55 @@ const dataKhuVuc = Database.dataKhuVuc;
  */
 let dataLocal = [];
 let dataLocalKV = [];
-/**
- *lưu trữ 1 obj khu duoc goi den theo router
- */
-let objKhuVuc = {};
-
-const getAllTangApi = () => {
-  dataLocal = [...dataServer];
-};
-const getAllKhuVucApi = () => {
-  dataLocalKV = [...dataKhuVuc];
-};
-
-// fun getbyid_KhuVuc - APi
-const getKhuVucbyId = (idTim) => {
-  // tim khu vuc
-  objKhuVuc = dataLocalKV.find((item) => item.id == idTim);
-};
 
 const PageQLTang = (props) => {
   // 2. navigate -- dung de chuyeenr trang(component)
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // sd useParams de nhan data truyen toi theo router
-  const params = useParams();
+  let { arrTangSearch } = useSelector((state) => state.tangReducer);
+  let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
+  let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
 
-  let [arrTang, setArrTang] = useState([]); // lưu trữ data sẽ thay đổi theo txtsearch
   let [txtSearch, setTxtSearch] = useState("");
 
   useEffect(() => {
-    if (dataLocal.length === 0 && dataLocalKV.length === 0) {
-      getAllTangApi();
-      getAllKhuVucApi();
-      if (params.id) {
-        // kiem tra ng dung mở trang này bằng all hay theo một id .
-        // so sanh neu nguoi dung vao theo 1 router id thi se lay obj khu vuc tu list Khuvuc
-        console.log(
-          "🚀 ~ file: PageQLTang.jsx:61 ~ useEffect ~ params.id:",
-          params.id
-        );
-        getKhuVucbyId(params.id); // tim vaf gan vao objKhuVuc
-      }
+    if (arrTangSearch.length === 0) {
+      dispatch(getAllTangApi);
     }
 
-    filterData();
-  }, [txtSearch]);
+    if (arrToaNha.length === 0) {
+      dispatch(getAllToaNhaApi);
+    }
 
-  //search
-  const handleSearchChange = (event) => {
-    setTxtSearch(event.target.value);
-  };
-  // Hàm tìm kiếm dựa trên giá trị của searchText
-  const filterData = () => {
-    const arrNew = dataLocal.filter((item) => {
-      const search = txtSearch.toLowerCase();
-      return (
-        (item.id + "").toLowerCase().includes(search) ||
-        item.name.toLowerCase().includes(search) ||
-        (item.soPhong + "").toLowerCase().includes(search)
-      );
-    });
-    setArrTang([...arrNew]);
-  };
+    if (arrPhongMay.length === 0) {
+      dispatch(getAllPhongMayApi);
+    }
+  }, []);
 
   //handle
-  //
+  //search
+  const handleSearchChange = (e) => {
+    dispatch(setValueSearchTangAction(e.target.value));
+  };
   const handleChangeSelect = (e) => {
     let { value } = e.target; // value == name cua obj khuvuc
-    if (value === "khuvuc_all") {
-      navigate(`../quan-ly/tang`);
-      return;
-    }
+    dispatch(setValueSelectTangAction(value))
 
-    let itemKhuVuc = dataLocalKV.find((item) => {
-      return item.name === value;
-    });
-
-    navigate(`../quan-ly/tang/${itemKhuVuc.id}`);
   };
 
   //
   const renderDataTang = () => {
-    return arrTang.map((item, index) => {
+    return arrTangSearch.map((item, index) => {
       return (
         <tr key={index}>
-          <td scope="row" style={{ fontWeight: 600, justifyItems: "center" }}>
-            {item.id}
+          <td scope="row" style={{ fontWeight: 600 }}>
+            <div className="d-flex justify-content-center">
+              {index < 9 ? `0${index + 1}` : index + 1}
+            </div>
           </td>
-          <td>{item.name}</td>
+          <td>{item.maTang}</td>
+          <td>{item.tenTang}</td>
           <td>{item.soPhong}</td>
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
@@ -149,45 +118,20 @@ const PageQLTang = (props) => {
     });
   };
   //
-  const renderSelectTheoRouterKhuVuc = () => {
-    if (Object.keys(objKhuVuc).length === 0) {
-      // TH router all
-      return (
-        <div className="col-3 m-2">
-          <select
-            className="form-select"
-            aria-label="Default select example"
-            onChange={handleChangeSelect}
-            id="nameKV"
-          >
-            <option selected>tất cả</option>
-            {dataLocalKV.map((item, index) => {
-              return (
-                <option key={index} value={item.name}>
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-      );
-    }
+  const renderSelectTheoKhuVuc = () => {
     return (
-      <div className="col-3 m-2">
+      <div className="col-2 m-2">
         <select
           className="form-select"
-          aria-label="Default select example"
           onChange={handleChangeSelect}
-          id="nameKV"
         >
-          <option selected>{objKhuVuc.name}</option>
-          <option value="khuvuc_all"> tất cả </option>
-          {dataLocalKV.map((item, index) => {
-            return item.name === objKhuVuc.name ? (
-              <></>
-            ) : (
-              <option key={index} value={item.name}>
-                {item.name}
+          <option value="-1" selected>
+            tất cả
+          </option>
+          {arrToaNha?.map((item, index) => {
+            return (
+              <option key={index} value={item.maToaNha}>
+                {item.tenToaNha}
               </option>
             );
           })}
@@ -226,18 +170,14 @@ const PageQLTang = (props) => {
               }}
             >
               <h2 style={{ margin: "0" }}>Danh sách tầng</h2>
+              {renderSelectTheoKhuVuc()}
               {/* input tim kiem */}
               <div style={{ display: "flex", alignItems: "center" }}>
-                {renderSelectTheoRouterKhuVuc()}
-
                 <div>
                   <input
                     type="text"
                     className="form-control"
-                    name
-                    id
                     placeholder="tìm kiếm..."
-                    value={txtSearch}
                     onChange={handleSearchChange}
                   />
                 </div>
@@ -259,6 +199,7 @@ const PageQLTang = (props) => {
               <table className="table bg-white table-hover table-striped table-bordered ">
                 <thead>
                   <tr>
+                    <th>STT</th>
                     <th scope="col">Mã tầng</th>
                     <th scope="col">Tên tầng</th>
                     <th scope="col">Số phòng</th>

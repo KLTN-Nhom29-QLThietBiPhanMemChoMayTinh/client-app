@@ -4,8 +4,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 
 const initialState = {
-  arrTang:[],
-  arrTangByLichTruc:[],//arrTang dung ở form LichTruc
+  arrTang: [],
+  arrTangSearch: [],
+  arrTangByLichTruc: [], //arrTang dung ở form LichTruc
+  valueSearch: "",
+  valueSelect: "",
 };
 
 const tangReducer = createSlice({
@@ -14,54 +17,104 @@ const tangReducer = createSlice({
   reducers: {
     setArrTangAction: (state, action) => {
       state.arrTang = action.payload;
+      state.arrTangSearch = action.payload;
     },
     setArrTangByLichTruc: (state, action) => {
       state.arrTangByLichTruc = action.payload;
     },
+    setValueSearchTangAction: (state, action) => {
+      state.valueSearch = action.payload;
+
+      let { arrTang, valueSelect } = state;
+
+      state.arrTangSearch = dataSearch(arrTang, action.payload, valueSelect);
+    },
+    setValueSelectTangAction: (state, action) => {
+      state.valueSelect = action.payload;
+
+      let { arrTang, valueSearch } = state;
+
+      state.arrTangSearch = dataSearch(arrTang, valueSearch, action.payload);
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
-export const { 
+export const {
   setArrTangAction,
   setArrTangByLichTruc,
- } = tangReducer.actions;
+  setValueSearchTangAction,
+  setValueSelectTangAction,
+} = tangReducer.actions;
 export default tangReducer.reducer;
+
+const dataSearch = (arrData, valSearch, valSelect) => {
+  let search = valSearch.toLowerCase();
+  let arrUpdate = arrData.filter((item) => {
+    if (valSelect == -1 || valSelect.length === 0) {
+      return (
+        (item.maTang + "").toLowerCase().includes(search) ||
+        item.tenTang.toLowerCase().includes(search) ||
+        (item.soPhong + "").toLowerCase().includes(search)
+      );
+    }
+    return (
+      ((item.maTang + "").toLowerCase().includes(search) ||
+        item.tenTang.toLowerCase().includes(search) ||
+        (item.soPhong + "").toLowerCase().includes(search)) &&
+      item.toaNha.maToaNha == valSelect
+    );
+  });
+
+  return [...arrUpdate];
+};
 
 // Call Api ========================================
 
 export const getAllTangApi = async (dispatch) => {
   try {
     const result = await http.get("/DSTang");
+    let resultPhong = await http.get("/DSPhongMay");
 
-    dispatch(setArrTangAction(result.data));
-    
+    let dataUpdate = result.data.map((item, index) => {
+      let soPhong = 0;
+      resultPhong.data.forEach((itemPhong) => {
+        if (itemPhong.tang.maTang === item.maTang) {
+          soPhong++;
+        }
+      });
+      return { ...item, soPhong };
+    });
+
+    dispatch(setArrTangAction(dataUpdate));
   } catch (error) {
-    console.log("🚀 ~ file: tangReducer.jsx:30 ~ getAllTangApi ~ error:", error)
-    
+    console.log(
+      "🚀 ~ file: tangReducer.jsx:30 ~ getAllTangApi ~ error:",
+      error
+    );
   }
-} 
+};
 
 //
 export const getAllTangbyIdToaNha = (idToaNha) => {
-  
-  return async(dispatch) => {
+  return async (dispatch) => {
     try {
-      console.log('can api tang theo ma toa nha owr day');
+      console.log("can api tang theo ma toa nha owr day");
       const result = await http.get("/DSTang");
 
       // dispatch(setArrTangByLichTruc(result.data));
-      // 
-      
-      // 
-      const arrTang = result.data.filter(item => {
+      //
+
+      //
+      const arrTang = result.data.filter((item) => {
         return item.toaNha.maToaNha == idToaNha;
-      })
+      });
 
       dispatch(setArrTangByLichTruc([...arrTang]));
-      
     } catch (error) {
-      console.log("🚀 ~ file: tangReducer.jsx:44 ~ returnasync ~ error:", error)
-      
+      console.log(
+        "🚀 ~ file: tangReducer.jsx:44 ~ returnasync ~ error:",
+        error
+      );
     }
-  }
-}
+  };
+};
