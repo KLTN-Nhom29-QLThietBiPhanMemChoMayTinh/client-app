@@ -2,6 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
+import { history } from "../..";
 
 const initialState = {
   arrTang: [],
@@ -36,6 +37,15 @@ const tangReducer = createSlice({
 
       state.arrTangSearch = dataSearch(arrTang, valueSearch, action.payload);
     },
+    insertTangAction:  (state, action) => {
+      let objTang = action.payload
+
+      let arrUpdate = state.arrTang;
+      arrUpdate.push({...objTang, soPhong:0});
+      state.arrTang = [...arrUpdate]
+      state.arrTangSearch = [...arrUpdate]
+      state.arrTangByLichTruc = [...arrUpdate]
+    }
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -44,9 +54,11 @@ export const {
   setArrTangByLichTruc,
   setValueSearchTangAction,
   setValueSelectTangAction,
+  insertTangAction,
 } = tangReducer.actions;
 export default tangReducer.reducer;
 
+// function
 const dataSearch = (arrData, valSearch, valSelect) => {
   let search = valSearch.toLowerCase();
   let arrUpdate = arrData.filter((item) => {
@@ -70,6 +82,21 @@ const dataSearch = (arrData, valSearch, valSelect) => {
 
 // Call Api ========================================
 
+export const insertTangApi = (objTang) => {
+  return async(dispatch) => {
+    try {
+      const result = await http.post("/LuuTang", objTang)
+
+      dispatch(insertTangAction(result.data));
+
+      history.push("../")
+    } catch (error) {
+      console.log("🚀 ~ file: tangReducer.jsx:79 ~ returnasync ~ error:", error)
+      
+    }
+  }
+}
+//
 export const getAllTangApi = async (dispatch) => {
   try {
     const result = await http.get("/DSTang");

@@ -3,6 +3,7 @@ import NavTab from "../../common/NavTab/NavTab";
 import Footer from "../../common/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllToaNhaApi } from "../../../redux/reducers/toaNhaReducer";
+import { insertTangApi } from "../../../redux/reducers/tangReducer";
 
 function FormAddTang() {
   const dispatch = useDispatch();
@@ -62,11 +63,10 @@ function FormAddTang() {
     event.preventDefault();
     if (!checkData()) {
       // false
-      console.log('false');
       return;
     }
     // true
-    console.log(objTang);
+    dispatch(insertTangApi(objTang));
   };
   //
   const checkData = () => {

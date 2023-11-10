@@ -12,6 +12,7 @@ import { BiSolidDetail } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllTangApi,
+  setArrTangAction,
   setValueSearchTangAction,
   setValueSelectTangAction,
 } from "../../redux/reducers/tangReducer";
@@ -31,14 +32,12 @@ let dataLocalKV = [];
 
 const PageQLTang = (props) => {
   // 2. navigate -- dung de chuyeenr trang(component)
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  let { arrTangSearch } = useSelector((state) => state.tangReducer);
+  let { arrTang, arrTangSearch } = useSelector((state) => state.tangReducer);
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
 
-  let [txtSearch, setTxtSearch] = useState("");
 
   useEffect(() => {
     if (arrTangSearch.length === 0) {
@@ -186,6 +185,9 @@ const PageQLTang = (props) => {
                 <NavLink
                   to="/quan-ly/tang/add"
                   type="button"
+                  onClick={() => {
+                    dispatch(setArrTangAction(arrTang))
+                  }}
                   className="btn btn-success ms-5 view_center_vertical"
                 >
                   <MdAdd color="white" size={25} />

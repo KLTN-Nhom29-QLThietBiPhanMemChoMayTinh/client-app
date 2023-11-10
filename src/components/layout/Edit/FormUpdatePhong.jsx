@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import NavTab from "../common/NavTab/NavTab";
-import Footer from "../common/Footer/Footer";
-import Database from "../../util/database/Database";
+import NavTab from "../../common/NavTab/NavTab";
+import Footer from "../../common/Footer/Footer";
+import Database from "../../../util/database/Database";
 
 import { IoReloadOutline } from "react-icons/io5";
 import { useParams } from "react-router-dom";
