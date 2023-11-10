@@ -12,12 +12,12 @@ import PageHome2 from "./pages/PageHome/PageHome2";
 import PageQlKhuVuc from "./pages/PageQuanLy/PageQlKhuVuc";
 import PageQLPhongMay from "./pages/PageQuanLy/PageQLPhongMay";
 import FromAddKhuVuc from "./components/layout/Add/FormAddKhuVuc";
-import FormKhuVucUpdate from "./components/layout/FormKhuVucUpdate";
+import FormKhuVucUpdate from "./components/layout/Edit/FormKhuVucUpdate";
 import { Provider } from "react-redux";
 import { store } from "./redux/ConfigRedux";
 import PageQLTang from "./pages/PageQuanLy/PageQLTang";
 import FormAddTang from "./components/layout/Add/FormAddTang";
-import FormUpdateTang from "./components/layout/FormUpdateTang";
+import FormUpdateTang from "./components/layout/Edit/FormUpdateTang";
 import DetailKhuVuc from "./components/layout/Detail/DetailKhuVuc";
 import FormAddPhong from "./components/layout/FormAddPhong";
 import FormUpdatePhong from "./components/layout/Edit/FormUpdatePhong";
@@ -68,9 +68,7 @@ root.render(
           <Route path="/quan-ly/khu-vuc/detail">
             <Route path=":id" element={<DetailKhuVuc />}></Route>
           </Route>
-          <Route path="/quan-ly/tang" element={<PageQLTang />}>
-            <Route path=":id" element={<PageQLTang />}></Route>
-          </Route>
+          <Route path="/quan-ly/tang" element={<PageQLTang />}></Route>
           <Route path="/quan-ly/tang/add" element={<FormAddTang />}></Route>
           <Route
             path="/quan-ly/tang/update"

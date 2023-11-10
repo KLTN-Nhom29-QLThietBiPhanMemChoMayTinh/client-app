@@ -4,7 +4,7 @@ import Footer from "../../common/Footer/Footer";
 import Database from "../../../util/database/Database";
 
 import { IoReloadOutline } from "react-icons/io5";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 /**
  * VD data ở server chưa lấy lên
@@ -40,7 +40,12 @@ const getPhongById = () => {
     phanCung: itemThietBi,
   };
 };
-
+ //   const itemPhongRef = useRef({
+  //     name: "",
+  //     soLuongMay: 1,
+  //     phanMem: [],
+  //     phanCung: [],
+  //   });
 /**
  * 3.	Phòng máy(mã phòng, tên phòng, số máy , sothietbi, soPhanMem,trạng thái)
  *
@@ -48,8 +53,10 @@ const getPhongById = () => {
 export default function FormUpdatePhong() {
   // sd useParams de nhan data truyen toi theo router
   const params = useParams();
-//   console.log("DetailKhuVuc - id : ", params.id);
-
+  // nhan data gui theo uri
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const objParam = Object.fromEntries(searchParams);
   //
   let [btnReload, setBtnReload] = useState(1);
   // phong err
@@ -67,12 +74,7 @@ export default function FormUpdatePhong() {
     phanCung: [],
   });
 
-//   const itemPhongRef = useRef({
-//     name: "",
-//     soLuongMay: 1,
-//     phanMem: [],
-//     phanCung: [],
-//   });
+ 
 
   useEffect(() => {
     if (datalocal_PM.length === 0 && datalocal_TBi.length === 0) {
@@ -89,10 +91,15 @@ export default function FormUpdatePhong() {
     if (checked) {
       updateList.push(dataServer_TBi.find((item) => item.idCode === value));
     } else {
-      updateList.splice(updateList.indexOf(dataServer_TBi.find((item) => item.idCode === value)), 1);
+      updateList.splice(
+        updateList.indexOf(
+          dataServer_TBi.find((item) => item.idCode === value)
+        ),
+        1
+      );
     }
-        let updateValue = {phanCung: updateList}
-        setItemPhong((itemPhong) => ({...itemPhong, ...updateValue}))
+    let updateValue = { phanCung: updateList };
+    setItemPhong((itemPhong) => ({ ...itemPhong, ...updateValue }));
   };
   const handleCheckPM = (e) => {
     let { checked, value } = e.target;
@@ -100,13 +107,15 @@ export default function FormUpdatePhong() {
     if (checked) {
       updateList.push(dataServer_PM.find((item) => item.idCode === value));
     } else {
-        console.log();
-      updateList.splice(updateList.indexOf(dataServer_PM.find((item) => item.idCode === value)), 1);
+      console.log();
+      updateList.splice(
+        updateList.indexOf(dataServer_PM.find((item) => item.idCode === value)),
+        1
+      );
     }
 
     let updateValue = { phanMem: updateList };
     setItemPhong((itemPhong) => ({ ...itemPhong, ...updateValue }));
-    
   };
   const handleChangeText = (e) => {
     let { id, value } = e.target;
@@ -406,8 +415,7 @@ export default function FormUpdatePhong() {
               </button>
               <button
                 onClick={() => {
-                    setItemPhong(getPhongById(params.id));
-                 
+                  setItemPhong(getPhongById(params.id));
                 }}
                 type="reset"
                 className="btn btn-danger mx-3"

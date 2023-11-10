@@ -19,19 +19,8 @@ import {
 import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 
-/**
- * giả đỉnh data tren server chua lấy về
- */
-const dataServer = Database.dataTang;
-const dataKhuVuc = Database.dataKhuVuc;
-/**
- *lưu trữ data get tu API
- */
-let dataLocal = [];
-let dataLocalKV = [];
 
-const PageQLTang = (props) => {
-  // 2. navigate -- dung de chuyeenr trang(component)
+const PageQLTang = () => {
   const dispatch = useDispatch();
 
   let { arrTang, arrTangSearch } = useSelector((state) => state.tangReducer);
@@ -79,11 +68,7 @@ const PageQLTang = (props) => {
           <td>{item.soPhong}</td>
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
-              to={"/quan-ly/tang/update"}
-              onClick={() => {
-                alert(`Update -- ${item.id}`);
-                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-              }}
+              to={`/quan-ly/tang/update?id=${item.maTang}`}
             >
               <button
                 type="button"
@@ -103,14 +88,14 @@ const PageQLTang = (props) => {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            <NavLink
+            {/* <NavLink
               to={`../quan-ly/phong`}
               type="button"
               className="btn btn-info mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink>
+            </NavLink> */}
           </td>
         </tr>
       );
@@ -185,9 +170,6 @@ const PageQLTang = (props) => {
                 <NavLink
                   to="/quan-ly/tang/add"
                   type="button"
-                  onClick={() => {
-                    dispatch(setArrTangAction(arrTang))
-                  }}
                   className="btn btn-success ms-5 view_center_vertical"
                 >
                   <MdAdd color="white" size={25} />

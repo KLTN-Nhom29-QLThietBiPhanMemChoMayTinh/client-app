@@ -37,15 +37,30 @@ const tangReducer = createSlice({
 
       state.arrTangSearch = dataSearch(arrTang, valueSearch, action.payload);
     },
-    insertTangAction:  (state, action) => {
-      let objTang = action.payload
+    insertTangAction: (state, action) => {
+      let objTang = action.payload;
 
       let arrUpdate = state.arrTang;
-      arrUpdate.push({...objTang, soPhong:0});
-      state.arrTang = [...arrUpdate]
-      state.arrTangSearch = [...arrUpdate]
-      state.arrTangByLichTruc = [...arrUpdate]
-    }
+      arrUpdate.push({ ...objTang, soPhong: 0 });
+      state.arrTang = [...arrUpdate];
+      state.arrTangSearch = [...arrUpdate];
+      state.arrTangByLichTruc = [...arrUpdate];
+    },
+    updateTangApiAction: (state, action) => {
+      let objTangNew = action.payload;
+
+      let rowToChange1 = state.arrTang.findIndex((item) => {
+        return item.maTang == objTangNew.maTang;
+      });
+
+      let rowToChange2 = state.arrTangSearch.findIndex((item) => {
+        return item.maTang == objTangNew.maTang;
+      });
+
+      state.arrTang[rowToChange1] = objTangNew;
+      state.arrTangSearch[rowToChange2] = objTangNew;
+      state.arrTangByLichTruc = [...state.arrTang];
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -55,6 +70,7 @@ export const {
   setValueSearchTangAction,
   setValueSelectTangAction,
   insertTangAction,
+  updateTangApiAction,
 } = tangReducer.actions;
 export default tangReducer.reducer;
 
@@ -82,20 +98,43 @@ const dataSearch = (arrData, valSearch, valSelect) => {
 
 // Call Api ========================================
 
-export const insertTangApi = (objTang) => {
-  return async(dispatch) => {
+export const updateTangApi = (objTang) => {
+  return async (dispatch) => {
     try {
-      const result = await http.post("/LuuTang", objTang)
+      console.log("Chua co Api Update");
+
+      dispatch(updateTangApiAction(objTang));
+      history.push("/quan-ly/tang");
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: tangReducer.jsx:90 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
+
+/**
+ * insert 1 Tang
+ * @param {} objTang
+ * @returns
+ */
+export const insertTangApi = (objTang) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.post("/LuuTang", objTang);
 
       dispatch(insertTangAction(result.data));
 
-      history.push("../")
+      history.push("/quan-ly/tang");
     } catch (error) {
-      console.log("🚀 ~ file: tangReducer.jsx:79 ~ returnasync ~ error:", error)
-      
+      console.log(
+        "🚀 ~ file: tangReducer.jsx:79 ~ returnasync ~ error:",
+        error
+      );
     }
-  }
-}
+  };
+};
 //
 export const getAllTangApi = async (dispatch) => {
   try {

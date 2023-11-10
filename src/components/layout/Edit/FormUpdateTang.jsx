@@ -1,42 +1,50 @@
 import React, { useEffect, useState } from "react";
 import NavTab from "../../common/NavTab/NavTab";
 import Footer from "../../common/Footer/Footer";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllToaNhaApi } from "../../../redux/reducers/toaNhaReducer";
-import {
-  getAllTangApi,
-  insertTangApi,
-} from "../../../redux/reducers/tangReducer";
+import { updateTangApi } from "../../../redux/reducers/tangReducer";
 
-function FormAddTang() {
+let obj_old = {};
+
+const FormUpdateTang = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  // nhan data gui theo uri
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const objParam = Object.fromEntries(searchParams);
+  
   //
   let { arrTang } = useSelector((state) => state.tangReducer);
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
+
   //
   /**
    * { tenTang: "", toaNha: [], }
    */
   let [objTang, setObjTang] = useState({ tenTang: "", toaNha: [] });
-
   let [txtErr, setTxtErr] = useState({
     tenTang: "",
     toaNha: "",
   });
-
   //
   useEffect(() => {
-    if (arrTang.length === 0) {
-      dispatch(getAllTangApi);
+    if (objParam.id == null) {
+      navigate("/quan-ly/tang");
     }
-    if (arrToaNha.length === 0) {
-      dispatch(getAllToaNhaApi);
-    } else {
-      setObjTang({
-        tenTang: "",
-        toaNha: arrToaNha[0],
-      });
+    if(arrTang.length === 0)
+    {
+      navigate("/quan-ly/tang");
     }
+
+    let data = arrTang.filter((item) => {
+      return item.maTang == objParam.id;
+    });
+    obj_old = data[0]
+    setObjTang(obj_old);
+
+    
   }, []);
 
   // lay gia trị của text name
@@ -66,21 +74,26 @@ function FormAddTang() {
   };
 
   // su ly du kien submit
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!checkData()) {
       // false
       return;
     }
     // true
-    dispatch(insertTangApi(objTang));
+
+    if (obj_old === objTang) {
+      alert('Thông tin không có gì thay đổi!');
+      return
+    }
+    dispatch(updateTangApi(objTang));
   };
   //
   const checkData = () => {
     let result = true;
     let tenTang = "";
     let toaNha = "";
-    // let {tenTang, toaNha} = objTang;
+
     if (objTang.tenTang.length === 0) {
       tenTang = "Hãy nhập dữ liệu!";
       result = false;
@@ -96,31 +109,11 @@ function FormAddTang() {
     return result;
   };
 
-  // Mảng quản lý data navtab
-  let arrLinkNavTab = [
-    { name: "Quản lý tòa nhà", link: "../quan-ly/khu-vuc" },
-    { name: "Quản lý tầng", link: "/quan-ly/tang" },
-  ];
-  //
-
   //render
   const renderSelectToaNha = () => {
-    if (Object.keys(objTang.toaNha).length === 0) {
-      return (
-        <>
-          <option value={-1}>Chọn tòa nhà</option>
-          {arrToaNha?.map((item, index) => {
-            // <option selected>Select one</option>
-            return (
-              <option key={index} value={item.maToaNha}>
-                {item.tenToaNha}
-              </option>
-            );
-          })}
-        </>
-      );
+    if (Object.keys(objTang).length === 0) {
+      return <></>;
     }
-
     return arrToaNha?.map((item, index) => {
       // <option selected>Select one</option>
       if (item.maToaNha == objTang.toaNha.maToaNha) {
@@ -138,6 +131,11 @@ function FormAddTang() {
     });
   };
 
+  // Mảng quản lý data navtab
+  let arrLinkNavTab = [
+    { name: "Quản lý tòa nhà", link: "../quan-ly/khu-vuc" },
+    { name: "Quản lý tầng", link: "/quan-ly/tang" },
+  ];
   //
   return (
     <div className="container " style={{ height: "100vh" }}>
@@ -147,7 +145,7 @@ function FormAddTang() {
           <NavTab
             itemLink={{
               arrLinkNavTab,
-              chucNang: "Tạo mới",
+              chucNang: "Chỉnh sửa",
             }}
           />
           {/* Form */}
@@ -205,6 +203,6 @@ function FormAddTang() {
       </div>
     </div>
   );
-}
+};
 
-export default FormAddTang;
+export default FormUpdateTang;

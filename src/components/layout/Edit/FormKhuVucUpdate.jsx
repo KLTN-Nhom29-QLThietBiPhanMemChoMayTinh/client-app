@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import NavTab from "../common/NavTab/NavTab";
-import Footer from "../common/Footer/Footer";
+import NavTab from "../../common/NavTab/NavTab";
+import Footer from "../../common/Footer/Footer";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { updateToaNha } from "../../redux/reducers/toaNhaReducer";
+import { getAllToaNhaApi, updateToaNha } from "../../../redux/reducers/toaNhaReducer";
 
 let objToaNha = {};
 let soTang = 0;
@@ -15,6 +15,7 @@ const FormKhuVucUpdate = (props) => {
   const params = useParams();
   const dispatch = useDispatch();
   
+  // nhan data gui theo uri
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search);
   const objParam = Object.fromEntries(searchParams);
@@ -27,6 +28,7 @@ const FormKhuVucUpdate = (props) => {
   useEffect(() => {
     if(arrToaNha.length === 0)
     {
+      dispatch(getAllToaNhaApi)
       console.log("Can api tim Toa Nha theo ID");
     }else{
       let arrTN = arrToaNha.filter(item => item.maToaNha == objParam.id)
