@@ -61,6 +61,16 @@ const tangReducer = createSlice({
       state.arrTangSearch[rowToChange2] = objTangNew;
       state.arrTangByLichTruc = [...state.arrTang];
     },
+    deleteTangAction: (state, action) => {
+      let maXoa = action.payload;
+
+      let arrUpdate = state.arrTang.filter(item => {
+        return item.maTang !== maXoa;
+      });
+      state.arrTang = [...arrUpdate];
+      state.arrTangSearch = [...arrUpdate];
+      state.arrTangByLichTruc = [...arrUpdate];
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -71,6 +81,7 @@ export const {
   setValueSelectTangAction,
   insertTangAction,
   updateTangApiAction,
+  deleteTangAction,
 } = tangReducer.actions;
 export default tangReducer.reducer;
 
@@ -98,6 +109,30 @@ const dataSearch = (arrData, valSearch, valSelect) => {
 
 // Call Api ========================================
 
+/**
+ * xoa tnag theo id - maXoa
+ * @param {*} maXoa 
+ * @returns 
+ */
+export const deleteTangApi = (maXoa) => {
+  return async(dispatch) => {
+    try {
+      await http.delete(`/XoaTang/${maXoa}`)
+      
+      dispatch(deleteTangAction(maXoa))
+
+      history.push("/quan-ly/tang");
+    } catch (error) {
+      console.log("🚀 ~ file: tangReducer.jsx:106 ~ returnasync ~ error:", error)
+    }
+  }
+}
+
+/**
+ * update Tang theo Api
+ * @param {} objTang 
+ * @returns 
+ */
 export const updateTangApi = (objTang) => {
   return async (dispatch) => {
     try {

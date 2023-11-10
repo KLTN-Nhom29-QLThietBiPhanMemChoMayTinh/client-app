@@ -86,6 +86,7 @@
     - FormAddLichTruc: del select Tgian truc
     - PageQlKhuVuc: Chua co Update vs APi
     - useLocation() : chuyển component A -> b kem theo giá tri
+    - QL Tang: chua co API update
     
 
 ## Tài liệu

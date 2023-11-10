@@ -41,7 +41,7 @@ const FormUpdateTang = () => {
     let data = arrTang.filter((item) => {
       return item.maTang == objParam.id;
     });
-    obj_old = data[0]
+    obj_old = {...data[0]}
     setObjTang(obj_old);
 
     
@@ -49,7 +49,7 @@ const FormUpdateTang = () => {
 
   // lay gia trị của text name
   const handleChangeText = (e) => {
-    let str = e.target.value.trim();
+    let str = e.target.value;
     if (str === "") {
       setTxtErr({ ...txtErr, tenTang: "Hãy nhập dữ liệu!" });
     } else {
@@ -190,10 +190,14 @@ const FormUpdateTang = () => {
                 </div>
               </div>
               <button type="submit" className="btn btn-success">
-                Submit
+                Chỉnh sửa
               </button>
-              <button type="reset" className="btn btn-danger mx-3">
-                Reset
+              <button type="reset"
+               onClick={() =>{
+                setObjTang({ tenTang: "", toaNha: arrToaNha[0] })
+               }}
+              className="btn btn-danger mx-3">
+                Khôi phục
               </button>
             </form>
           </div>

@@ -11,6 +11,7 @@ import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteTangApi,
   getAllTangApi,
   setArrTangAction,
   setValueSearchTangAction,
@@ -63,8 +64,8 @@ const PageQLTang = () => {
               {index < 9 ? `0${index + 1}` : index + 1}
             </div>
           </td>
-          <td>{item.maTang}</td>
           <td>{item.tenTang}</td>
+          <td>{item.toaNha.tenToaNha}</td>
           <td>{item.soPhong}</td>
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
@@ -79,9 +80,11 @@ const PageQLTang = () => {
               </button>
             </NavLink>
             <button
-              onClick={() => {
-                alert(`Del -- ${item.id}`);
-              }}
+             onClick={() => {
+              if(window.confirm("Bấm vào nút OK để xóa " + item.tenTang)){
+                dispatch(deleteTangApi(item.maTang));
+              }
+            }}
               type="button"
               className="btn btn-danger mx-2 px-2"
               style={{ padding: "2px" }}
@@ -184,8 +187,8 @@ const PageQLTang = () => {
                 <thead>
                   <tr>
                     <th>STT</th>
-                    <th scope="col">Mã tầng</th>
                     <th scope="col">Tên tầng</th>
+                    <th scope="col">Tên tòa nhà</th>
                     <th scope="col">Số phòng</th>
                     <th scope="col" style={{ width: "220px" }}>
                       Hành động

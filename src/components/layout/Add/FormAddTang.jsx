@@ -41,7 +41,7 @@ function FormAddTang() {
 
   // lay gia trị của text name
   const handleChangeText = (e) => {
-    let str = e.target.value.trim();
+    let str = e.target.value;
     if (str === "") {
       setTxtErr({ ...txtErr, tenTang: "Hãy nhập dữ liệu!" });
     } else {
