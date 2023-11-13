@@ -65,16 +65,7 @@ const searchData = (arrData, valSearch, valSelect) => {
 const initialState = {
   valueTxtSearch: "",
   valueSelect: "",
-  arrThietBi: [
-    {
-      id: 1,
-      idCode: "TBi001",
-      name: "chuột HP",
-      status: 1,
-      ngaySuDung: "Sun Aug 22 2021 00:00:00 GMT+0700 (GMT+07:00)",
-      tuoiTho: 36,
-    },
-  ],
+  arrThietBi: [],
   arrThietBiSearch: [],
   detailValue: {},
 };
@@ -123,10 +114,10 @@ export default thietBiReducer.reducer;
 
 export const getAllThietBiApi = async (dispatch) => {
   try {
-    // let result = await http.get('/thietbi...');
-    // const action = setArrThietBiAction(result.data.content);
+    let result = await http.get('/DSThietBiMay');
+    const action = setArrThietBiAction(result.data);
 
-    const action = setArrThietBiAction(Database.dataThietBi);
+    // const action = setArrThietBiAction(Database.dataThietBi);
     dispatch(action);
   } catch (error) {
     console.log(
