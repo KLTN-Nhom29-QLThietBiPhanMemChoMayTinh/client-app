@@ -14,29 +14,82 @@ import {
   getAllPhongMayApi,
   getAllPhongMayApi2,
   setValueSearchPhongMayAction,
+  setvalueSelectTangPhongMayAction,
+  setvalueSelectToaNhaPhongMayAction,
 } from "../../redux/reducers/phongMayReducer";
-
-
+import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
+import { getAllTangApi } from "../../redux/reducers/tangReducer";
 
 function PageQLPhongMay() {
   //
   const dispatch = useDispatch();
   //
-  let {arrPhongMay, arrPhongMaySearch } = useSelector((state) => state.phongMayReducer);
+  let { arrPhongMay, arrPhongMaySearch, valueSelectToaNha,arrTangbyToaNha } = useSelector(
+    (state) => state.phongMayReducer
+  );
+  let { arrTang } = useSelector((state) => state.tangReducer);
+  let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
   //
 
   useEffect(() => {
     if (arrPhongMay.length === 0) {
       dispatch(getAllPhongMayApi);
     }
+    if (arrToaNha.length === 0) {
+      dispatch(getAllToaNhaApi);
+    }
+    if (arrTang.length === 0) {
+      dispatch(getAllTangApi);
+    }
   }, []);
 
   //search
   const handleSearchChange = (event) => {
-    
-    dispatch(setValueSearchPhongMayAction(event.target.value))
+    dispatch(setValueSearchPhongMayAction(event.target.value));
   };
-  
+  //
+  const handleChangeSelectToaNha = e => {
+    let valSelect = e.target.value
+    dispatch(setvalueSelectToaNhaPhongMayAction({valSelect, arrTang}))
+  }
+  //
+  const handleChangeSelectTang = e => {
+    let valSelect = e.target.value
+    dispatch(setvalueSelectTangPhongMayAction({valSelect}))
+  }
+
+  // RENDER
+  const renderToaNha = () => {
+    return arrToaNha?.map((item, index) => {
+      return (
+        <option key={index} value={item.maToaNha}>
+          {item.tenToaNha}
+        </option>
+      );
+    })
+  };
+  //
+  const renderTang = () => {
+    if(valueSelectToaNha == -1) {
+      return arrTang?.map((item, index) => {
+        return (
+          <option key={index} value={item.maTang}>
+            {item.tenTang}
+          </option>
+        );
+      })
+    }
+    else{
+      return arrTangbyToaNha?.map((item, index) => {
+        return (
+          <option key={index} value={item.maTang}>
+            {item.tenTang}
+          </option>
+        );
+      })
+    }
+    
+  };
   //
   const renderDataPhongMay = () => {
     return arrPhongMaySearch.map((item, index) => {
@@ -121,21 +174,23 @@ function PageQLPhongMay() {
             >
               <h2 style={{ margin: "0" }}>Danh sách phòng học</h2>
 
-              
+              {/* select ToaNha */}
               <div className="col-2 m-2">
-                <select className="form-select" >
+                <select className="form-select" onChange={handleChangeSelectToaNha}>
                   <option value="-1" selected>
                     tất cả
                   </option>
-                  
+                  {renderToaNha()}
                 </select>
               </div>
+
+              {/* select Tang */}
               <div className="col-2 m-2">
-                <select className="form-select" >
+                <select className="form-select" onChange={handleChangeSelectTang}>
                   <option value="-1" selected>
                     tất cả
                   </option>
-                  
+                  {renderTang()}
                 </select>
               </div>
 
