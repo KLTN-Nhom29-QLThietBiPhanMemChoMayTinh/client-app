@@ -19,7 +19,7 @@ import PageQLTang from "./pages/PageQuanLy/PageQLTang";
 import FormAddTang from "./components/layout/Add/FormAddTang";
 import FormUpdateTang from "./components/layout/Edit/FormUpdateTang";
 import DetailKhuVuc from "./components/layout/Detail/DetailKhuVuc";
-import FormAddPhong from "./components/layout/FormAddPhong";
+import FormAddPhong from "./components/layout/Add/FormAddPhong";
 import FormUpdatePhong from "./components/layout/Edit/FormUpdatePhong";
 import PageQLPhanMem from "./pages/PageQuanLy/PageQLPhanMem";
 import PageQlMonHoc from "./pages/PageQuanLy/PageQlMonHoc";

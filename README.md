@@ -89,6 +89,7 @@
     - QL Tang: chua co API update
     - QL phong may nen có người trực ở đó 
     - QL phong may tao co the tạo kèm theo may tính
+    - QL Phong khi them 1 phong chon so luong máy tính(VD 5 cai) có thế mặc định add 5 cái may tinh không? 
 
 ## Tài liệu
 

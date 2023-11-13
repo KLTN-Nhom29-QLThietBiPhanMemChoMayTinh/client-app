@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import NavTab from "../common/NavTab/NavTab";
-import Footer from "../common/Footer/Footer";
-import Database from "../../util/database/Database";
+import NavTab from "../../common/NavTab/NavTab";
+import Footer from "../../common/Footer/Footer";
+import Database from "../../../util/database/Database";
 
 import { IoReloadOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPhanMemApi } from "../../../redux/reducers/phanMemReducer";
 
 /**
  * VD data ở server chưa lấy lên
@@ -25,6 +27,10 @@ const getApiData_PM_TBi = () => {
  *
  */
 export default function FormAddPhong() {
+  const dispatch = useDispatch();
+  //
+  let { arrPhanMem } = useSelector((state) => state.phanMemReducer);
+
   //
   let [btnReload, setBtnReload] = useState(1);
   // phong err
@@ -43,6 +49,10 @@ export default function FormAddPhong() {
   });
 
   useEffect(() => {
+    if (arrPhanMem.length === 0) {
+      dispatch(getAllPhanMemApi);
+    }
+
     if (datalocal_PM.length === 0 && datalocal_TBi.length === 0) {
       getApiData_PM_TBi();
     }
@@ -51,54 +61,44 @@ export default function FormAddPhong() {
   // handle
   //
   const handleCheckTbi = (e) => {
-    let {checked,value} = e.target;
+    let { checked, value } = e.target;
     var updateList = [...itemPhongRef.current.phanCung];
     if (checked) {
-      updateList.push(
-        dataServer_TBi.find((item) => item.idCode === value)
-      );
+      updateList.push(dataServer_TBi.find((item) => item.idCode === value));
     } else {
-      updateList.splice(
-        dataServer_TBi.indexOf(value),  1
-      );
+      updateList.splice(dataServer_TBi.indexOf(value), 1);
     }
 
     itemPhongRef.current.phanCung = [...updateList];
   };
   const handleCheckPM = (e) => {
-    let {checked,value} = e.target;
+    let { checked, value } = e.target;
     var updateList = [...itemPhongRef.current.phanMem];
     if (checked) {
-      updateList.push(
-        dataServer_PM.find((item) => item.idCode === value)
-      );
+      updateList.push(dataServer_PM.find((item) => item.idCode === value));
     } else {
-      updateList.splice(
-        dataServer_PM.indexOf(value), 1
-      );
+      updateList.splice(dataServer_PM.indexOf(value), 1);
     }
 
     itemPhongRef.current.phanMem = updateList;
-    
   };
   const handleChangeText = (e) => {
     let { id, value } = e.target;
 
     itemPhongRef.current[id] = value;
-    
   };
   //
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (checkDataInput()) {
       //true - di tiep
-      alert('Run - ' + itemPhongRef.current.name);
+      alert("Run - " + itemPhongRef.current.name);
     }
   };
   // check data
   const checkDataInput = () => {
-    let { name,  phanMem, phanCung } = itemPhongRef.current;
+    let { name, phanMem, phanCung } = itemPhongRef.current;
 
     let errName = "";
     let errPhanMem = "";
@@ -114,7 +114,7 @@ export default function FormAddPhong() {
       // so sanh khac cua name
     }
     //
-    
+
     if (phanMem.length === 0) {
       errPhanMem = " Hãy nhập dữ liệu!!";
       check = 0;
@@ -139,9 +139,7 @@ export default function FormAddPhong() {
     });
 
     return check;
-
-
-  }
+  };
 
   // Render
   const renderCheckBox_TBi = () => {
@@ -168,18 +166,18 @@ export default function FormAddPhong() {
   };
 
   const renderCheckBox_PM = () => {
-    return datalocal_PM.map((item, index) => {
+    return arrPhanMem.map((item, index) => {
       return (
         <div key={index} className="form-check">
           <input
             className="form-check-input"
             type="checkbox"
-            value={item.idCode}
-            id={item.idCode}
+            value={item.maPhanMem}
+            id={item.maPhanMem}
             onChange={handleCheckPM}
           />
-          <label className="form-check-label" htmlFor={item.idCode}>
-            {item.name}
+          <label className="form-check-label" htmlFor={item.maPhanMem}>
+            {item.tenPhanMem}
           </label>
         </div>
       );
@@ -196,14 +194,19 @@ export default function FormAddPhong() {
     }
     if (phanCung.length > 0) {
       strTbi = "-- thiết bị: ";
-      phanCung.forEach(item => strTbi += `${item.name}, `)
+      phanCung.forEach((item) => (strTbi += `${item.name}, `));
     }
     if (phanMem.length > 0) {
       strPM = "-- phần mềm: ";
-      phanMem.forEach(item => strPM += `${item.name}, `)
+      phanMem.forEach((item) => (strPM += `${item.name}, `));
     }
     let str = "" + strName + strTbi + strPM;
-    return <div className=""><span className='fw-bold'>Thông tin phòng mới: </span>{str}</div>;
+    return (
+      <div className="">
+        <span className="fw-bold">Thông tin phòng mới: </span>
+        {str}
+      </div>
+    );
   };
 
   //
@@ -280,32 +283,6 @@ export default function FormAddPhong() {
 
               {/* input check PM - Tbi*/}
               <div className="row">
-                {/* checkbox - Tbi */}
-                <div className=" col">
-                  <label htmlFor="soLuongMay" className="form-label">
-                    Chọn thiết bị phần cứng cho máy tính
-                    <small
-                      id="errSoLuongMay"
-                      className="form-text mx-2 text-danger"
-                    >
-                      *{errPhong.phanCung}
-                    </small>
-                  </label>
-                  <div
-                    className="over_flow_auto"
-                    style={{
-                      height: "250px",
-                      paddingLeft: "10px",
-                      paddingBottom: "15px",
-                    }}
-                  >
-                    {/* item */}
-                    
-
-                    {renderCheckBox_TBi()}
-                  </div>
-                </div>
-
                 {/* checkbox - PM */}
                 <div className="col">
                   <label htmlFor="soLuongMay" className="form-label">
@@ -328,19 +305,47 @@ export default function FormAddPhong() {
                     {renderCheckBox_PM()}
                   </div>
                 </div>
-              </div>
 
+                {/* checkbox - Tbi */}
+                <div className=" col">
+                  <label htmlFor="soLuongMay" className="form-label">
+                    Chọn thiết bị phần cứng cho máy tính
+                    <small
+                      id="errSoLuongMay"
+                      className="form-text mx-2 text-danger"
+                    >
+                      *{errPhong.phanCung}
+                    </small>
+                  </label>
+                  <div
+                    className="over_flow_auto"
+                    style={{
+                      height: "250px",
+                      paddingLeft: "10px",
+                      paddingBottom: "15px",
+                    }}
+                  >
+                    {/* item */}
+
+                    {renderCheckBox_TBi()}
+                  </div>
+                </div>
+              </div>
               {/*  */}
               <button type="submit" className="btn btn-success">
                 Submit
               </button>
-              <button onClick={() => {
-                itemPhongRef.current.name = "";
-                itemPhongRef.current.soLuongMay = 1;
-                itemPhongRef.current.phanMem = [];
-                itemPhongRef.current.phanCung = [];
-                setBtnReload(btnReload + 1);
-              }} type="reset" className="btn btn-danger mx-3">
+              <button
+                onClick={() => {
+                  itemPhongRef.current.name = "";
+                  itemPhongRef.current.soLuongMay = 1;
+                  itemPhongRef.current.phanMem = [];
+                  itemPhongRef.current.phanCung = [];
+                  setBtnReload(btnReload + 1);
+                }}
+                type="reset"
+                className="btn btn-danger mx-3"
+              >
                 Reset
               </button>
             </form>
@@ -349,7 +354,8 @@ export default function FormAddPhong() {
           <div className=" bg-white px-4 py-2 pt-3 rounded text-dark mt-2 d-flex justify-content-between ">
             {renderFooterData()}
             <IoReloadOutline
-              className="btn_moune " style={{width:'20px'}}
+              className="btn_moune "
+              style={{ width: "20px" }}
               onClick={() => {
                 setBtnReload(btnReload + 1);
               }}

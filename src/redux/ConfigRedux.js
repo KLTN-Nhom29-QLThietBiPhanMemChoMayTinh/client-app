@@ -12,9 +12,12 @@ import tangReducer from "./reducers/tangReducer";
 import lichTrucReducer from "./reducers/lichTrucReducer";
 import homeReducer from "./reducers/homeReducer";
 import phongMayReducer from "./reducers/phongMayReducer";
+import phanMemReducer from "./reducers/phanMemReducer";
 
 export const store = configureStore({
     reducer: {
+      phanMemReducer:phanMemReducer,
+      phongMayReducer:phongMayReducer,
       homeReducer:homeReducer,
       lichTrucReducer:lichTrucReducer,
       tangReducer:tangReducer,
@@ -27,6 +30,5 @@ export const store = configureStore({
       number: numberReducer,
       monHocReducer: monHocReducer,
       thietBiReducer:thietBiReducer,
-      phongMayReducer:phongMayReducer,
     },
   });
