@@ -87,7 +87,8 @@
     - PageQlKhuVuc: Chua co Update vs APi
     - useLocation() : chuyển component A -> b kem theo giá tri
     - QL Tang: chua co API update
-    
+    - QL phong may nen có người trực ở đó 
+    - QL phong may tao co the tạo kèm theo may tính
 
 ## Tài liệu
 

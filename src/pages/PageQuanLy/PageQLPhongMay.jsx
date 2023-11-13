@@ -9,75 +9,53 @@ import { FaPencilAlt } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
 import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllPhongMayApi,
+  getAllPhongMayApi2,
+  setValueSearchPhongMayAction,
+} from "../../redux/reducers/phongMayReducer";
 
-
-
-/**
- * giả đỉnh data tren server chua lấy về
- */
-const dataServer = Database.dataPhongMay; 
-/**
- *lưu trữ data get tu API
- */
-let dataLocal = [];
-
-const getAllPhongMayApi = () => {
-  dataLocal = [...dataServer];
-};
 
 
 function PageQLPhongMay() {
-
-  
-  let [arrPhongMay, setArrPhongMay] = useState([]); // lưu trữ data sẽ thay đổi theo txtsearch
-  let [txtSearch, setTxtSearch] = useState("");
+  //
+  const dispatch = useDispatch();
+  //
+  let {arrPhongMay, arrPhongMaySearch } = useSelector((state) => state.phongMayReducer);
+  //
 
   useEffect(() => {
-    if (dataLocal.length === 0) {
-      getAllPhongMayApi();
+    if (arrPhongMay.length === 0) {
+      dispatch(getAllPhongMayApi);
     }
-    filterData();
-  }, [txtSearch]);
+  }, []);
 
   //search
   const handleSearchChange = (event) => {
-    console.log('numberOfMachines -44 ()');
-    setTxtSearch(event.target.value);
+    
+    dispatch(setValueSearchPhongMayAction(event.target.value))
   };
-  // Hàm tìm kiếm dựa trên giá trị của searchText
-  const filterData = () => {
-    console.log('filterData -49()');
-
-    const arrNew = dataLocal.filter((item) => {
-      const search = txtSearch.toLowerCase();
-      return (
-        item.roomCode.toLowerCase().includes(search) ||
-        (item.numberOfMachines + "").toLowerCase().includes(search) ||
-        item.description.toLowerCase().includes(search) 
-      );
-    });
-    setArrPhongMay([...arrNew]);
-  };
+  
   //
   const renderDataPhongMay = () => {
-    return arrPhongMay.map((item, index) => {
+    return arrPhongMaySearch.map((item, index) => {
       return (
-        <tr class="" key={index}>
-          <td scope="row" style={{ fontWeight: 600, justifyItems: "center" }}>
-            {item.roomCode}
+        <tr key={index}>
+          <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
+            {index < 9 ? `0${index + 1}` : index + 1}
           </td>
-          <td>{item.description}</td>
-          <td>{item.numberOfMachines}</td>
-          <td>{item.soThietBi}</td>
-          <td>{item.soPhanMem}</td>
-          {item.status===1 ? <td className="bg-success">Đang sử dụng</td> : item.status===0 ? <td>Phòng trống</td> : <td className="bg-danger">Đang bảo trì</td>}
+          <td>{item.tenPhong}</td>
+          <td>{item.moTa}</td>
+          <td className="text-end">{item.mayTinhs.length}</td>
+          <td className="text-end">{item.phanMems.length}</td>
+          {/* {item.status===1 ? <td className="bg-success">Đang sử dụng</td> : item.status===0 ? <td>Phòng trống</td> : <td className="bg-danger">Đang bảo trì</td>} */}
+          <td>{item.trangThai}</td>
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink
-              to={`/quan-ly/phong/update/${item.id}`}
-            >
+            <NavLink to={`/quan-ly/phong/update/${item.id}`}>
               <button
                 type="button"
-                class="btn btn-primary mx-2 px-2"
+                className="btn btn-primary mx-2 px-2"
                 style={{ padding: "2px" }}
               >
                 <FaPencilAlt color="white" size={16} />
@@ -138,10 +116,29 @@ function PageQLPhongMay() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 marginBottom: "20px",
-                height: "6vh"
+                height: "6vh",
               }}
             >
               <h2 style={{ margin: "0" }}>Danh sách phòng học</h2>
+
+              
+              <div className="col-2 m-2">
+                <select className="form-select" >
+                  <option value="-1" selected>
+                    tất cả
+                  </option>
+                  
+                </select>
+              </div>
+              <div className="col-2 m-2">
+                <select className="form-select" >
+                  <option value="-1" selected>
+                    tất cả
+                  </option>
+                  
+                </select>
+              </div>
+
               {/* input tim kiem */}
               <div style={{ display: "flex", alignItems: "center" }}>
                 <div>
@@ -151,7 +148,6 @@ function PageQLPhongMay() {
                     name
                     id
                     placeholder="tìm kiếm..."
-                    value={txtSearch}
                     onChange={handleSearchChange}
                   />
                 </div>
@@ -160,7 +156,7 @@ function PageQLPhongMay() {
                 <NavLink
                   to="/quan-ly/phong/add"
                   type="button"
-                  className="btn btn-success ms-5 view_center_vertical"
+                  className="btn btn-success ms-3 view_center_vertical"
                 >
                   <MdAdd color="white" size={25} />
                   Tạo mới
@@ -169,17 +165,17 @@ function PageQLPhongMay() {
             </div>
 
             {/* Bảng danh sách data */}
-            <div class="table-responsive" style={{ height: "69vh" }} >
-              <table class="table bg-white table-hover table-striped table-bordered ">
+            <div className="table-responsive" style={{ height: "69vh" }}>
+              <table className="table bg-white table-hover table-striped table-bordered ">
                 <thead>
                   <tr>
-                    <th scope="col">Mã phòng</th>
-                    <th scope="col">Tên phòng</th>
-                    <th scope="col">Số máy</th>
-                    <th scope="col">Số thiết bị</th>
-                    <th scope="col">Số ứng dụng PM</th>
-                    <th scope="col">Trạng thái</th>
-                    <th scope="col" style={{width:'220px'}}>Hành động</th>
+                    <th>STT</th>
+                    <th style={{ minWidth: "120px" }}>Tên phòng</th>
+                    <th style={{ minWidth: "150px" }}>Mô tả</th>
+                    <th style={{ minWidth: "80px" }}>Số máy</th>
+                    <th style={{ minWidth: "150px" }}>Số ứng dụng PM</th>
+                    <th style={{ minWidth: "150px" }}>Trạng thái</th>
+                    <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
                 </thead>
                 <tbody className="over_flow_auto">
@@ -194,7 +190,7 @@ function PageQLPhongMay() {
         <Footer />
       </div>
     </div>
-  )
+  );
 }
 
-export default PageQLPhongMay
+export default PageQLPhongMay;
