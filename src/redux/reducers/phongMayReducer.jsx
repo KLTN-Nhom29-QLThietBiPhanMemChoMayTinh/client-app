@@ -39,11 +39,9 @@ const phongMayReducer = createSlice({
       state.valueSelectToaNha = valSelect;
       state.valueSelectTang = "-1";
 
-      // if (valSelect != -1) {
       state.arrTangbyToaNha = arrTang.filter(
         (item) => item.toaNha.maToaNha == valSelect
       );
-      // }
 
       let { arrPhongMay, valueSearch, valueSelectToaNha, valueSelectTang } =
         state;
@@ -69,6 +67,9 @@ const phongMayReducer = createSlice({
         valSelect
       );
     },
+    insertPhongMayAction: (state, action) => {
+
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -77,6 +78,7 @@ export const {
   setValueSearchPhongMayAction,
   setvalueSelectToaNhaPhongMayAction,
   setvalueSelectTangPhongMayAction,
+  insertPhongMayAction,
 } = phongMayReducer.actions;
 export default phongMayReducer.reducer;
 

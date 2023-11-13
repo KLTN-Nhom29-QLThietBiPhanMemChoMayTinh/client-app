@@ -7,6 +7,8 @@ import { IoReloadOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPhanMemApi } from "../../../redux/reducers/phanMemReducer";
 import { getAllThietBiApi } from "../../../redux/reducers/thietBiReducer";
+import { getAllToaNhaApi } from "../../../redux/reducers/toaNhaReducer";
+import { getAllTangApi } from "../../../redux/reducers/tangReducer";
 
 /**
  * 3.	Phòng máy(mã phòng, tên phòng, số máy , sothietbi, soPhanMem,trạng thái)
@@ -16,8 +18,9 @@ export default function FormAddPhong() {
   const dispatch = useDispatch();
   //
   let { arrPhanMem } = useSelector((state) => state.phanMemReducer);
-
   let { arrThietBi } = useSelector((state) => state.thietBiReducer);
+  let { arrTang } = useSelector((state) => state.tangReducer);
+  let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
 
   //
   let [btnReload, setBtnReload] = useState(1);
@@ -27,6 +30,8 @@ export default function FormAddPhong() {
     soLuongMay: "",
     phanMem: "",
     phanCung: "",
+    toaNha:'',
+    tang:'',
   });
   // phong moi
   const itemPhongRef = useRef({
@@ -34,6 +39,8 @@ export default function FormAddPhong() {
     soLuongMay: 1,
     phanMem: [],
     phanCung: [],
+    objToaNha: {},
+    objTang: {},
   });
 
   useEffect(() => {
@@ -43,6 +50,21 @@ export default function FormAddPhong() {
     if (arrThietBi.length === 0) {
       dispatch(getAllThietBiApi);
     }
+    if (arrToaNha.length === 0) {
+      dispatch(getAllToaNhaApi);
+    }
+    if (arrTang.length === 0) {
+      dispatch(getAllTangApi);
+    }
+    let objTangFrist = arrTang[0];
+    itemPhongRef.current = {
+      tenPhong: "",
+      soLuongMay: 1,
+      phanMem: [],
+      phanCung: [],
+      objToaNha: objTangFrist?.toaNha,
+      objTang: objTangFrist,
+    };
   }, []);
 
   // handle
@@ -103,13 +125,45 @@ export default function FormAddPhong() {
     }
   };
   //
+  const handleChangeSelectToaNha = (e) => {
+    // itemPhongRef.current.objToaNha =
+    let maToaNha = e.target.value;
+
+    let objToaNha = arrToaNha.find((item) => (item.maToaNha == maToaNha));
+
+    let objTang = arrTang.find(item => item.toaNha.maToaNha == maToaNha)
+    
+    itemPhongRef.current = { ...itemPhongRef.current,
+      objToaNha, objTang 
+    }
+
+    if(objTang == null )
+    {
+      setErrPhong({...errPhong, 
+        toaNha:'Hãy chọn tòa nhà khác!'
+      })
+    }
+    else {
+      setErrPhong({...errPhong, toaNha:''})
+    }
+    
+  };
+  //
+  const handleChangeSelectTang = (e) => {
+    let maTang = e.target.value;
+    let objTang = arrTang.find(item => item.maTang == maTang)
+
+    itemPhongRef.current = { ...itemPhongRef.current,
+       objTang 
+    }
+  };
+  //
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(itemPhongRef.current);
 
     if (checkDataInput()) {
       //true - di tiep
-      alert("Run - " + itemPhongRef.current.tenPhong);
     }
   };
   // check data
@@ -122,7 +176,7 @@ export default function FormAddPhong() {
 
     let check = 1;
 
-    if (tenPhong.trim().length === 0) {
+    if (tenPhong?.trim().length === 0) {
       errName = " Hãy nhập dữ liệu!!";
       check = 0;
       //
@@ -224,6 +278,34 @@ export default function FormAddPhong() {
       </div>
     );
   };
+  //
+  // RENDER
+  const renderToaNha = () => {
+    return arrToaNha?.map((item, index) => {
+      return (
+        <option key={index} value={item.maToaNha}>
+          {item.tenToaNha}
+        </option>
+      );
+    });
+  };
+  //
+  const renderTang = () => {
+    if (Object.keys(itemPhongRef.current.objToaNha).length === 0) {
+      return <></>;
+    } else {
+      let objToaNha = itemPhongRef.current.objToaNha;
+      return arrTang?.map((item, index) => {
+        if (item.toaNha.maToaNha === objToaNha.maToaNha) {
+          return (
+            <option key={index} value={item.maTang}>
+              {item.tenTang}
+            </option>
+          );
+        } else return <></>;
+      });
+    }
+  };
 
   //
   // Mảng quản lý data navtab
@@ -251,15 +333,14 @@ export default function FormAddPhong() {
           <div className=" bg-white p-4 rounded ">
             <form onSubmit={handleSubmit}>
               {/* input name - soluong may */}
-              <div className="row">
-                <div className="mb-3 col">
+              <div className="row mb-2">
+                <div className=" col-md-3">
                   <label htmlFor="tenPhong" className="form-label">
                     Tên phòng{" "}
                     <small
-                      id="errTenPhong"
                       className="form-text  text-danger mx-2"
                     >
-                      *{errPhong.tenPhong}
+                      *
                     </small>
                   </label>
                   <input
@@ -271,15 +352,19 @@ export default function FormAddPhong() {
                     placeholder="Phòng máy..."
                     onChange={handleChangeText}
                   />
+                  <small
+                      className="form-text py-2  text-danger mx-2"
+                    >
+                      {errPhong.tenPhong}
+                    </small>
                 </div>
-                <div className="mb-3 col">
+                <div className="col-md-3">
                   <label htmlFor="soLuongMay" className="form-label">
                     Số lượng máy tính
                     <small
-                      id="errSoLuongMay"
                       className="form-text mx-2 text-danger"
                     >
-                      *{errPhong.soLuongMay}
+                      *
                     </small>
                   </label>
                   <input
@@ -294,6 +379,41 @@ export default function FormAddPhong() {
                     defaultValue={1}
                     onChange={handleChangeText}
                   />
+                  <small
+                      className="form-text py-2 mx-2 text-danger"
+                    >
+                      {errPhong.soLuongMay}
+                    </small>
+                </div>
+
+                {/* select ToaNha */}
+                <div className="col-md-3 ">
+                  <label className="form-label">
+                    Chọn tòa nhà
+                    <small className="form-text  text-danger mx-2">*</small>
+                  </label>
+                  <select
+                    className="form-select"
+                    onChange={handleChangeSelectToaNha}
+                  >
+                    {renderToaNha()}
+                  </select>
+                  <small className="form-text py-2  text-danger mx-2">{errPhong.toaNha}</small>
+                </div>
+
+                {/* select Tang */}
+                <div className="col-md-3 ">
+                  <label className="form-label">
+                    Chọn tầng
+                    <small className="form-text  text-danger mx-2">*</small>
+                  </label>
+                  <select
+                    className="form-select"
+                    onChange={handleChangeSelectTang}
+                  >
+                    {renderTang()}
+                  </select>
+                  <small className="form-text py-2 text-danger mx-2">{errPhong.tang}</small>
                 </div>
               </div>
 
@@ -313,7 +433,7 @@ export default function FormAddPhong() {
                   <div
                     className="over_flow_auto"
                     style={{
-                      height: "250px",
+                      height: "225px",
                       paddingLeft: "10px",
                       paddingBottom: "15px",
                     }}
@@ -336,7 +456,7 @@ export default function FormAddPhong() {
                   <div
                     className="over_flow_auto"
                     style={{
-                      height: "250px",
+                      height: "225px",
                       paddingLeft: "10px",
                       paddingBottom: "15px",
                     }}
