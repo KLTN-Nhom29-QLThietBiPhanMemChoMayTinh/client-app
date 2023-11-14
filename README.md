@@ -94,6 +94,7 @@
     - QL Phong khi them 1 phong chon so luong máy tính(VD 5 cai) có thế mặc định add 5 cái may tinh không? 
     - FormAddPhong: api chua duoc
     - PageQLKhoa - update: chua biet tat model
+    -- FormAddGiaoVien: api add TaiKhoan Thanh cong -- api Add GV errr 500 -- update theeo server mới thử- good look
 
 ## Tài liệu
 

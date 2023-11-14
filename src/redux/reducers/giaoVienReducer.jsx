@@ -3,6 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { formatNameByHocVi, http } from "../../util/config";
 import Database from "../../util/database/Database";
+import { history } from "../..";
 
 // function
 const dataSearch = (arrData, valSearch, valSelect) => {
@@ -73,15 +74,52 @@ const giaoVienReducer = createSlice({
         action.payload
       );
     },
+    insertGiaoVienAction: (state, action) =>{
+      let giaoVien = action.payload;
+      console.log("🚀 ~ file: giaoVienReducer.jsx:79 ~ giaoVien:", giaoVien)
+
+      state.arrGiaoVien.push(giaoVien);
+
+      let{arrGiaoVien, valueSearch, valueSelect} = state;
+      state.arrGiaoVienSearch = dataSearch(arrGiaoVien, valueSearch, valueSelect)
+
+    }
   },
 });
 // exp nay de sử dụng theo cách 2
-export const { setArrGiaoVienAction, setValueSelectGiaoVien, setValueSearchGiaoVien } =
+export const { setArrGiaoVienAction, setValueSelectGiaoVien, setValueSearchGiaoVien,
+insertGiaoVienAction,
+ } =
   giaoVienReducer.actions;
 export default giaoVienReducer.reducer;
 
 // -------------- Call API ---------------
 
+/**
+ * add 1 Giao Vien
+ */
+export const insertGiaoVienApi = (giaoVien) => {
+  console.log("🚀 ~ file: giaoVienReducer.jsx:102 ~ insertGiaoVienApi ~ giaoVien:", giaoVien)
+  return async(dispatch) => {
+    try {
+
+      let result = await http.post('/LuuGiaoVien', giaoVien);
+      console.log("🚀 ~ file: giaoVienReducer.jsx:106 ~ returnasync ~ result.data:", result.data)
+
+      dispatch(insertGiaoVienAction(result.data))
+
+      history('/quan-ly/giao-vien')
+    } catch (error) {
+      console.log("🚀 ~ file: giaoVienReducer.jsx:93 ~ returnasync ~ error:", error)
+      
+    }
+  }
+}
+
+/**
+ * Get all Api
+ * @param {*} dispatch 
+ */
 export const getAllGiaoVienApi = async (dispatch) => {
   try {
     const result = await http.get("/DSGiaoVien");

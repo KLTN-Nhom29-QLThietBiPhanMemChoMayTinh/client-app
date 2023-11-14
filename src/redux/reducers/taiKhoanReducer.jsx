@@ -69,6 +69,19 @@ const taiKhoanReducer = createSlice({
         action.payload
       );
     },
+    insertTaiKhoanAction: (state, action) => {
+      let taiKhoan = action.payload;
+
+      state.arrTaiKhoan.push(taiKhoan);
+
+      // let { arrTaiKhoan, valueSearch, valueSelect } = state;
+
+      // state.arrTaiKhoanSearch = dataSearch(
+      //   arrTaiKhoan,
+      //   valueSearch,
+      //   valueSelect
+      // );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -77,16 +90,31 @@ export const {
   setValueSearchTaiKhoan,
   serArrQuyenAction,
   setValueSelectTaiKhoan,
+  insertTaiKhoanAction,
 } = taiKhoanReducer.actions;
 export default taiKhoanReducer.reducer;
 
 // -------------- Call API ---------------
+export const insertTaiKhoanApi = (taiKhoan) => {
+  return async (dispatch) => {
+    try {
+      let result = await http.post("/tai_khoan", taiKhoan);
 
+      dispatch(insertTaiKhoanAction(result.data));
+    } catch (error) {
+      console.log("🚀 ~ file: taiKhoanReducer.jsx:89 ~ return ~ error:", error);
+    }
+  };
+};
+/**
+ * get All api
+ *
+ * @param {*} dispatch
+ */
 export const getAllTaiKhoanApi = async (dispatch) => {
   try {
-    // const result = await http.get("/TaiKhoan...");
-    // dispatch(setArrTaiKhoanAction(result.data.content));
-    dispatch(setArrTaiKhoanAction(Database.dataTaiKhoan));
+    const result = await http.get("/DSTaiKhoan");
+    dispatch(setArrTaiKhoanAction(result.data));
   } catch (error) {
     console.log(
       "🚀 ~ file: taiKhoanReducer.jsx:38 ~ getAllTaiKhoanApi ~ error:",
@@ -116,12 +144,13 @@ export const getAllQuyenSDApi = async (dispatch) => {
 export const updateTaiKhoan = (taiKhoan) => {
   return async (dispatch) => {
     try {
-      let result = await http.put('/tai_khoan', taiKhoan);
-      console.log("reducer - updateTaiKhoan() - " + result.status);      
-      
+      let result = await http.put("/tai_khoan", taiKhoan);
+      console.log("reducer - updateTaiKhoan() - " + result.status);
     } catch (error) {
-      console.log("🚀 ~ file: taiKhoanReducer.jsx:121 ~ return ~ error:", error)
-      
+      console.log(
+        "🚀 ~ file: taiKhoanReducer.jsx:121 ~ return ~ error:",
+        error
+      );
     }
-  }
-}
+  };
+};

@@ -3,19 +3,25 @@ import Footer from "../../common/Footer/Footer";
 import NavTab from "../../common/NavTab/NavTab";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllKhoaApi } from "../../../redux/reducers/khoaReducer";
+import {
+  getAllGiaoVienApi,
+  insertGiaoVienApi,
+} from "../../../redux/reducers/giaoVienReducer";
+import { getAllTaiKhoanApi, insertTaiKhoanApi } from "../../../redux/reducers/taiKhoanReducer";
 
 export default function FormAddGiaoVien() {
   const dispatch = useDispatch();
   //
+  let { arrTaiKhoan } = useSelector((state) => state.taiKhoanReducer);
   let { arrKhoa } = useSelector((state) => state.khoaReducer);
-
+  const { arrGiaoVien } = useSelector((state) => state.giaoVienReducer);
   //
   let objGiaoVien = useRef({
     hoTen: "",
     soDienThoai: "",
     email: "",
     hocVi: "Thạc sĩ",
-    taiKhoan: {},
+    txtTaiKhoan: "",
     khoa: {},
   });
   let [errGiaoVien, setErrGiaoVien] = useState({
@@ -23,6 +29,7 @@ export default function FormAddGiaoVien() {
     soDienThoai: "",
     email: "",
     khoa: "",
+    taiKhoan: "",
   });
 
   //
@@ -35,9 +42,15 @@ export default function FormAddGiaoVien() {
         soDienThoai: "",
         email: "",
         hocVi: "Thạc sĩ",
-        taiKhoan: {},
+        txtTaiKhoan: '',
         khoa: arrKhoa[0],
       };
+    }
+    if (arrGiaoVien.length === 0) {
+      dispatch(getAllGiaoVienApi);
+    }
+    if (arrTaiKhoan.length === 0) {
+      dispatch(getAllTaiKhoanApi);
     }
   }, []);
 
@@ -64,13 +77,53 @@ export default function FormAddGiaoVien() {
     let arrdata = arrKhoa.filter((item) => item.maKhoa == idKhoa);
 
     objGiaoVien.current.khoa = arrdata[0];
+
+    setErrGiaoVien({ ...errGiaoVien, khoa: "" });
+  };
+  //
+  const handleChangeTextTaiKhoan = (e) => {
+    let { id, value } = e.target;
+
+    objGiaoVien.current[id] = value;
+
+    if (value.trim().length === 0) {
+      setErrGiaoVien({ ...errGiaoVien, taiKhoan: "Hãy nhập thông tin!" });
+    } else {
+      setErrGiaoVien({ ...errGiaoVien, taiKhoan: "" });
+    }
   };
   //
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(objGiaoVien.current);
     if (checkData()) {
       // true
+      // check trung Tai khoan
+      let objTaiKhoan = arrTaiKhoan.find(item => item.tenDangNhap == objGiaoVien.current.txtTaiKhoan )
+
+      if(objTaiKhoan != null){
+        alert('Trùng tài khoản!')
+        return;
+      }
+      //
+      let maGiaoVien = getRandomMaGV(arrGiaoVien);
+
+      
+      let {txtTaiKhoan} = objGiaoVien.current 
+
+      let taiKhoan =  {
+        maTK: maGiaoVien,
+        tenDangNhap: txtTaiKhoan,
+        matKhau:'123456A',
+        quyen: {
+          maQuyen:2,
+          tenQuyen: "Giáo viên",
+        }
+      }
+      objGiaoVien.current = { ...objGiaoVien.current, maGiaoVien, taiKhoan }
+
+      //
+      dispatch(insertTaiKhoanApi(taiKhoan));
+      dispatch(insertGiaoVienApi(objGiaoVien.current));
     }
     // false
   };
@@ -83,37 +136,62 @@ export default function FormAddGiaoVien() {
     let errsoDienThoai = "";
     let erremail = "";
     let errkhoa = "";
+    let errTaiKhoan = '';
 
     let regexEmail = new RegExp(
-      "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$"
+      /^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$/
     );
-    let regexPhone = new RegExp(
-      "\d{9,12}"
-    );
+    let regexPhone = new RegExp(/^\d{9,12}$/);
 
-    let { hoTen, soDienThoai, email, khoa } = objGiaoVien.current;
-
-    console.log(regexPhone.test(soDienThoai));
+    let { hoTen, soDienThoai, email, khoa, txtTaiKhoan } = objGiaoVien.current;
 
     if (hoTen.trim().length === 0) {
       errhoTen = "Hãy nhập thông tin!";
+      result = false;
     }
+    //
     if (soDienThoai.trim().length === 0) {
       errsoDienThoai = "Hãy nhập thông tin!";
-    } else if (soDienThoai.trim().length < 9 || soDienThoai.trim().length > 15) {
+      result = false;
+    } else if (
+      soDienThoai.trim().length < 9 ||
+      soDienThoai.trim().length > 15
+    ) {
       errsoDienThoai = "Số điện thoại có trên 9 số và nhỏ hơn 15 số!";
+      result = false;
+    } else if (!regexPhone.test(soDienThoai)) {
+      errsoDienThoai = "Hãy nhập các ký tự số!";
+      result = false;
+    }
+    //
+    if (email.trim().length === 0) {
+      result = false;
+      erremail = "Hãy nhập thông tin!";
+    } else if (!regexEmail.test(email)) {
+      erremail = "Hãy nhập đúng định danh của email!";
+      result = false;
+    }
+    //
+    if (khoa == null || Object.keys(khoa).length === 0) {
+      errkhoa = "Hãy chọn một khoa!";
+      result = false;
+    }
+    //
+    
+    if(txtTaiKhoan.trim().length === 0){
+      errTaiKhoan = "Hãy nhập thông tin!"
+      result = false;
     }
     
-    
-    // if(regexPhone.test(soDienThoai)) {
-    // }
 
+//
     setErrGiaoVien({
       hoTen: errhoTen,
       soDienThoai: errsoDienThoai,
       email: erremail,
       khoa: errkhoa,
-    })
+      taiKhoan:errTaiKhoan,
+    });
 
     return result;
   };
@@ -284,6 +362,31 @@ export default function FormAddGiaoVien() {
                           {renderSelectKhoa()}
                         </select>
                       </div>
+
+                      {/* input Tai khoan GV */}
+                      <div className="mb-3 col-md-9">
+                        <label
+                          htmlFor="txtTaiKhoan"
+                          className="form-label ms-2"
+                        >
+                          Tài khoản
+                          <small
+                            id="errTaiKhoan"
+                            className="form-text text-danger mx-2"
+                          >
+                            *{errGiaoVien.taiKhoan}
+                          </small>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control p-2"
+                          name="txtTaiKhoan"
+                          id="txtTaiKhoan"
+                          aria-describedby="errTaiKhoan"
+                          placeholder="giaovien1"
+                          onChange={handleChangeTextTaiKhoan}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -305,3 +408,21 @@ export default function FormAddGiaoVien() {
     </>
   );
 }
+
+const getRandomMaGV = (arrData) => {
+  let idNext = "";
+  let objDataLast = arrData[arrData.length - 1];
+
+  let strId = objDataLast.maGiaoVien.slice(2);
+
+  let intId = parseInt(strId) + 1;
+
+  if (intId < 10) {
+    idNext = "GV00" + intId;
+  } else if (intId < 100) {
+    idNext = "GV0" + intId;
+  } else {
+    idNext = "GV" + intId;
+  }
+  return idNext;
+};
