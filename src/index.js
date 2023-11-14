@@ -36,6 +36,7 @@ import FormAddKhuVuc from "./components/layout/Add/FormAddKhuVuc";
 import FormAddLichTruc from "./components/layout/Add/FormAddLichTruc";
 import FormUpdateLichTruc from "./components/layout/Edit/FormUpdateLichTruc";
 import PageProfile from "./pages/PageProfile/PageProfile";
+import FormAddGiaoVien from "./components/layout/Add/FormAddGiaoVien";
 
 export const history = createBrowserHistory();
 
@@ -88,6 +89,7 @@ root.render(
           <Route path="/quan-ly/nhan-vien" element={<PageQLNhanVien />}></Route>
           <Route path="/quan-ly/khoa" element={<PageQLKhoa />}></Route>
           <Route path="/quan-ly/giao-vien" element={<PageQLGiaoVien />}></Route>
+          <Route path="/quan-ly/giao-vien/add" element={<FormAddGiaoVien />}></Route>
           <Route path="/quan-ly/tai-khoan" element={<PageQLTaiKhoan />}></Route>
           <Route path="/phan-cong/lich-truc" element={<PageLichTruc />}></Route>
           <Route

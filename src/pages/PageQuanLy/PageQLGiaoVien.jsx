@@ -9,41 +9,53 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllGiaoVienApi, setValueSearchGiaoVien } from "../../redux/reducers/giaoVienReducer";
+import {
+  getAllGiaoVienApi,
+  setValueSearchGiaoVien,
+  setValueSelectGiaoVien,
+} from "../../redux/reducers/giaoVienReducer";
 import { formatNameByHocVi } from "../../util/config";
+import { getAllKhoaApi } from "../../redux/reducers/khoaReducer";
 
 export default function PageQLGiaoVien() {
-
   const dispatch = useDispatch();
 
-  const { arrGiaoVienSearch } = useSelector((state) => state.giaoVienReducer);
+  const { arrGiaoVien, arrGiaoVienSearch } = useSelector(
+    (state) => state.giaoVienReducer
+  );
+  let { arrKhoa } = useSelector((state) => state.khoaReducer);
 
   useEffect(() => {
-    const action = getAllGiaoVienApi;
+    if (arrGiaoVien.length === 0) {
+      const action = getAllGiaoVienApi;
       dispatch(action);
+    }
+    if (arrKhoa.length === 0) {
+      dispatch(getAllKhoaApi);
+    }
   }, []);
 
   //handle
   const handleChangeSearch = (e) => {
-    dispatch(setValueSearchGiaoVien(e.target.value))
+    dispatch(setValueSearchGiaoVien(e.target.value));
   };
+  const handleChangeSelectKhoa = (e) => {
+    dispatch(setValueSelectGiaoVien(e.target.value))
+  }
   //render
   const renderDataGiaoVien = () => {
-
     return arrGiaoVienSearch?.map((item, index) => {
-      let ngaySinh = new Date(item.ngaySinh);
       return (
         <tr key={index}>
           <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
             {index < 9 ? `0${index + 1}` : index + 1}
           </td>
-          <td>{item?.idCode}</td>
-          <td>{formatNameByHocVi(item)}</td>
-          <td>{ngaySinh.getYear() + 1900}</td>
-          <td>{item?.sdt}</td>
+          <td>{item?.maGiaoVien}</td>
+          <td>{formatNameByHocVi({ hocVi: item.hocVi, name: item.hoTen })}</td>
+          <td>{item?.soDienThoai}</td>
           <td>{item?.email}</td>
-          <td>{item?.tenKhoa}</td>
-          <td>{item?.chucVu}</td>
+          <td>{item?.taiKhoan.tenDangNhap}</td>
+          <td>{item?.khoa.tenKhoa}</td>
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
@@ -87,6 +99,17 @@ export default function PageQLGiaoVien() {
       );
     });
   };
+  //
+  const renderSelectKhoa = () => {
+    return arrKhoa?.map((item, index) => {
+      return (
+        <option key={index} value={item.maKhoa}>
+          {item.tenKhoa}
+        </option>
+      );
+    })
+  };
+  //
   // Mảng quản lý data navtab
   let arrLinkNavTab = [
     { name: "Quản lý khoa", link: "../quan-ly/khoa" },
@@ -118,10 +141,17 @@ export default function PageQLGiaoVien() {
               <h2 style={{ margin: "0" }}>Danh sách giáo viên</h2>
               <div></div>
 
+              <div></div>
+              <div></div>
               {/* select - option */}
-              {/* {renderSelectTrangThai()} */}
-              <div></div>
-              <div></div>
+              <div className="col-2 m-2">
+                <select className="form-select" onChange={handleChangeSelectKhoa}>
+                  <option value="-1" selected>
+                    tất cả
+                  </option>
+                  {renderSelectKhoa()}
+                </select>
+              </div>
 
               {/* input tim kiem */}
               <div>
@@ -137,10 +167,7 @@ export default function PageQLGiaoVien() {
               <div style={{ display: "flex", alignItems: "center" }}>
                 {/* Btn them */}
                 <NavLink
-                  // to="/quan-ly/giao-vien/add"
-                  onClick={() => {
-                    alert(`tạo mới -- dang cập nhật!`);
-                  }}
+                  to="/quan-ly/giao-vien/add"
                   type="button"
                   className="btn btn-success ms-4 view_center_vertical"
                 >
@@ -158,11 +185,10 @@ export default function PageQLGiaoVien() {
                     <th>STT</th>
                     <th style={{ minWidth: "90px" }}>Mã giáo viên</th>
                     <th style={{ minWidth: "200px" }}>Tên giáo viên</th>
-                    <th style={{ minWidth: "80px" }}>Năm sinh</th>
                     <th style={{ minWidth: "110px" }}>Số điện thoại</th>
                     <th style={{ minWidth: "120px" }}>Email</th>
+                    <th style={{ minWidth: "120px" }}>Tài khoản</th>
                     <th style={{ minWidth: "180px" }}>Tên khoa</th>
-                    <th style={{ minWidth: "120px" }}>Chức vụ</th>
                     <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
                 </thead>
@@ -178,5 +204,5 @@ export default function PageQLGiaoVien() {
         <Footer />
       </div>
     </div>
-  )
+  );
 }
