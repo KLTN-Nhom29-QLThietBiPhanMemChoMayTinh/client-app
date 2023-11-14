@@ -31,6 +31,7 @@
 
 ### ảnh quản lý Khoa
 ![QL Khoa](./AnhMinhHoa/img_QLKhoa.png)
+![QL Khoa](./AnhMinhHoa/img_QLKhoa_form.png)
 
 ### ảnh quản lý Giáo viên
 ![QL Giáo viên](./AnhMinhHoa/img_QLGiaoVien.png)

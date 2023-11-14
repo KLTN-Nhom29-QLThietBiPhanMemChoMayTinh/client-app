@@ -40,14 +40,39 @@ const khoaReducer = createSlice({
       let { arrKhoa } = state;
       state.arrKhoaSearch = dataSearch(arrKhoa, action.payload);
     },
+    insertKhoaAction: (state, action) =>{
+        let khoa = action.payload;
+        let soGiaoVien = 0;
+
+        state.arrKhoa.push({...khoa, soGiaoVien})
+        let { arrKhoa, valueSearch } = state;
+
+        state.arrKhoaSearch =dataSearch( arrKhoa, valueSearch)
+    }
   },
 });
 // exp nay de sử dụng theo cách 2
-export const { setArrKhoaAction, setValueSearchKhoa } = khoaReducer.actions;
+export const { setArrKhoaAction, setValueSearchKhoa,insertKhoaAction, } = khoaReducer.actions;
 export default khoaReducer.reducer;
 
 // -------------- Call Api -------------------
 
+export const insertKhoaApi = (khoa) => {
+  return async (dispatch) => {
+    try {
+        let result = await http.post('/LuuKhoa', khoa)
+
+        dispatch(insertKhoaAction(result.data))
+        } catch (error) {
+      console.log("🚀 ~ file: khoaReducer.jsx:56 ~ return ~ error:", error);
+    }
+  };
+};
+
+/**
+ * get all Khoa
+ * @param {*} dispatch
+ */
 export const getAllKhoaApi = async (dispatch) => {
   try {
     let result = await http.get("/DSKhoa");
@@ -67,7 +92,7 @@ export const getAllKhoaApi = async (dispatch) => {
     // dispatch(setArrKhoaAction(Database.dataKhoa));
   } catch (error) {
     console.log(
-      "🚀 ~ file: khoaReducer.jsx:37 ~ getAllKhoaApi ~ error:",
+      "🚀 ~ file: khoaReducer.jsx:]7 ~ getAllKhoaApi ~ error:",
       error
     );
   }

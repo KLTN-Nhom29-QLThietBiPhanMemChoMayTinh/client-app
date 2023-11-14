@@ -14,6 +14,7 @@ import {
   setValueSearchKhoa,
 } from "../../redux/reducers/khoaReducer";
 import { formatNameByHocVi } from "../../util/config";
+import FormAddKhoaModal from "../../components/layout/Add/FormAddKhoaModal";
 
 export default function PageQLKhoa() {
   const dispatch = useDispatch();
@@ -90,6 +91,9 @@ export default function PageQLKhoa() {
   //
   return (
     <div className="container " style={{ height: "100vh" }}>
+      {/* Modal */}
+      <FormAddKhoaModal />
+
       <div
         className="d-flex flex-column justify-content-between "
         style={{ height: "100vh" }}
@@ -131,11 +135,10 @@ export default function PageQLKhoa() {
                 {/* Btn them */}
                 <NavLink
                   // to="/quan-ly/khoa/add"
-                  onClick={() => {
-                    alert(`tạo mới -- dang cập nhật!`);
-                  }}
+                  
                   type="button"
                   className="btn btn-success ms-4 view_center_vertical"
+                  data-bs-toggle="modal" data-bs-target="#modalAddKhoa"
                 >
                   <MdAdd color="white" size={25} />
                   Tạo mới
