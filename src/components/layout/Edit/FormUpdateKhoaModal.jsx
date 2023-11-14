@@ -1,13 +1,11 @@
-import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { insertKhoaApi } from "../../../redux/reducers/khoaReducer";
+import React, { useEffect, useRef, useState } from "react";
+import { FaPencilAlt } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { insertKhoaApi, updateKhoaApi } from "../../../redux/reducers/khoaReducer";
 
-export default function FormAddKhoaModal({arrKhoa}) {
+export default function FormUpdateKhoaModal({ arrKhoa, objKhoa, keyModal }) {
   const dispatch = useDispatch();
-  const itemKhoaRef = useRef({
-    tenKhoa: "",
-    soGiaoVien: 0,
-  });
+  const itemKhoaRef = useRef({ ...objKhoa });
   const [errKhoa, setErrKhoa] = useState({
     errName: "",
   });
@@ -19,25 +17,25 @@ export default function FormAddKhoaModal({arrKhoa}) {
       setErrKhoa({ ...errKhoa, errName: "Hãy nhập dữ liệu!" });
       return;
     }
-    //
-    let a = true;
-    for (let i = 0; i < arrKhoa.length; i++) {
-      const element = arrKhoa[i];
 
-      if (
-        itemKhoaRef.current.tenKhoa.toLowerCase() ==
-        element.tenKhoa.toLowerCase()
-      ) {
-        a = false;
-        alert("Trùng tên khoa!");
-        break;
-      }
+    // let a = true;
+    // arrKhoa.forEach((item) => {
+    //   console.log("🚀 ~ file: FormUpdateKhoaModal.jsx:22 ~ arrKhoa.forEach ~ item:", item)
+    //   if (itemKhoaRef.current.tenKhoa.includes(item.tenKhoa)) {
+    //     alert("Trùng tên khoa!");
+    //     return;
+    //   }
+    // });
+
+    if (
+      itemKhoaRef.current.tenKhoa.toLowerCase() == objKhoa.tenKhoa.toLowerCase()
+    ) {
+      alert("Trùng tên khoa!");
+      return;
     }
-    if (!a) return;
-
     setErrKhoa({ ...errKhoa, errName: "" });
 
-    dispatch(insertKhoaApi(itemKhoaRef.current));
+    dispatch(updateKhoaApi(itemKhoaRef.current));
   };
   //
   const handleChangeTenKhoa = (e) => {
@@ -52,10 +50,19 @@ export default function FormAddKhoaModal({arrKhoa}) {
 
   return (
     <>
+      <button
+        type="button"
+        className="btn btn-primary mx-2 px-2"
+        style={{ padding: "2px" }}
+        data-bs-toggle="modal"
+        data-bs-target={`#${keyModal}`}
+      >
+        <FaPencilAlt color="white" size={16} />
+      </button>
       {/* Modal */}
       <form
         className="modal fade"
-        id="modalAddKhoa"
+        id={keyModal}
         tabIndex={-1}
         role="dialog"
         aria-labelledby="modalTitleId"
@@ -70,7 +77,7 @@ export default function FormAddKhoaModal({arrKhoa}) {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="modalTitleId">
-                Thêm khoa mới
+                Chỉnh sửa {objKhoa.tenKhoa}
               </h5>
               <button
                 type="button"
@@ -92,6 +99,7 @@ export default function FormAddKhoaModal({arrKhoa}) {
                   className="form-control form-control-sm p-2"
                   name="tenKhoa"
                   id="tenKhoa"
+                  value={itemKhoaRef.current.tenKhoa}
                   aria-describedby="helpErrTen"
                   placeholder="Khoa công nghệ..."
                   onChange={handleChangeTenKhoa}
@@ -103,7 +111,7 @@ export default function FormAddKhoaModal({arrKhoa}) {
                 Khôi phục
               </button>
               <button type="submit" className="btn btn-primary">
-                Tạo mới
+                Chỉnh sửa
               </button>
             </div>
           </div>

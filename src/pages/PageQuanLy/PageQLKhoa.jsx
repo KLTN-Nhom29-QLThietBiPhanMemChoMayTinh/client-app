@@ -11,10 +11,12 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllKhoaApi,
+  setObjUpdateKhoaAction,
   setValueSearchKhoa,
 } from "../../redux/reducers/khoaReducer";
 import { formatNameByHocVi } from "../../util/config";
 import FormAddKhoaModal from "../../components/layout/Add/FormAddKhoaModal";
+import FormUpdateKhoaModal from "../../components/layout/Edit/FormUpdateKhoaModal";
 
 export default function PageQLKhoa() {
   const dispatch = useDispatch();
@@ -44,21 +46,13 @@ export default function PageQLKhoa() {
           <td>{item?.soGiaoVien}</td>
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink
-              // to={"/quan-ly/phan-mem/update"}
-              onClick={() => {
-                alert(`Update -- ${item.id} -- dang cập nhật!`);
-                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-              }}
-            >
-              <button
-                type="button"
-                className="btn btn-primary mx-2 px-2"
-                style={{ padding: "2px" }}
-              >
-                <FaPencilAlt color="white" size={16} />
-              </button>
-            </NavLink>
+            {/* btnUpdate */}
+            <FormUpdateKhoaModal
+              arrKhoa={arrKhoa}
+              objKhoa={item}
+              keyModal={`khoaModal_${item.maKhoa}`}
+            />
+
             <button
               onClick={() => {
                 alert(`Del -- ${item.id} -- dang cập nhật!`);
@@ -92,7 +86,7 @@ export default function PageQLKhoa() {
   return (
     <div className="container " style={{ height: "100vh" }}>
       {/* Modal */}
-      <FormAddKhoaModal />
+      <FormAddKhoaModal arrKhoa={arrKhoa} />
 
       <div
         className="d-flex flex-column justify-content-between "
@@ -135,10 +129,11 @@ export default function PageQLKhoa() {
                 {/* Btn them */}
                 <NavLink
                   // to="/quan-ly/khoa/add"
-                  
+
                   type="button"
                   className="btn btn-success ms-4 view_center_vertical"
-                  data-bs-toggle="modal" data-bs-target="#modalAddKhoa"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalAddKhoa"
                 >
                   <MdAdd color="white" size={25} />
                   Tạo mới

@@ -93,6 +93,7 @@
     - QL phong may tao co the tạo kèm theo may tính
     - QL Phong khi them 1 phong chon so luong máy tính(VD 5 cai) có thế mặc định add 5 cái may tinh không? 
     - FormAddPhong: api chua duoc
+    - PageQLKhoa - update: chua biet tat model
 
 ## Tài liệu
 

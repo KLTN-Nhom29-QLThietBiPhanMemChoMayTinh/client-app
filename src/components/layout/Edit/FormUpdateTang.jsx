@@ -42,7 +42,7 @@ const FormUpdateTang = () => {
       return item.maTang == objParam.id;
     });
     obj_old = {...data[0]}
-    setObjTang();
+    setObjTang(obj_old);
 
     
   }, []);
@@ -165,7 +165,7 @@ const FormUpdateTang = () => {
                       className="form-control px-3 py-2"
                       id="txtnameTang"
                       aria-describedby="txtnameTang"
-                      value={objTang.tenTang}
+                      value={objTang?.tenTang}
                       placeholder="Tầng 1..."
                       onChange={handleChangeText}
                     />
