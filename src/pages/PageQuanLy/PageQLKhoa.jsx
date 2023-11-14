@@ -9,21 +9,26 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllKhoaApi, setValueSearchKhoa } from "../../redux/reducers/khoaReducer";
+import {
+  getAllKhoaApi,
+  setValueSearchKhoa,
+} from "../../redux/reducers/khoaReducer";
 import { formatNameByHocVi } from "../../util/config";
 
 export default function PageQLKhoa() {
   const dispatch = useDispatch();
 
-  let { arrKhoaSearch } = useSelector((state) => state.khoaReducer);
-  
+  let { arrKhoa, arrKhoaSearch } = useSelector((state) => state.khoaReducer);
+
   useEffect(() => {
-    dispatch(getAllKhoaApi);
+    if (arrKhoa.length === 0) {
+      dispatch(getAllKhoaApi);
+    }
   }, []);
 
   //handle
   const handleChangeSearch = (e) => {
-    dispatch(setValueSearchKhoa(e.target.value))
+    dispatch(setValueSearchKhoa(e.target.value));
   };
   //render
   const renderDataNhanVien = () => {
@@ -33,15 +38,9 @@ export default function PageQLKhoa() {
           <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
             {index < 9 ? `0${index + 1}` : index + 1}
           </td>
-          <td>{item?.idCode}</td>
-          <td>{item?.name}</td>
+          <td>{item?.maKhoa}</td>
+          <td>{item?.tenKhoa}</td>
           <td>{item?.soGiaoVien}</td>
-          <td>{formatNameByHocVi(item?.truongKhoa)}</td>
-
-          {/* <td>{formatStringDate(ngaySD)}</td>
-          <td>{item?.tuoiTho}</td>
-          <td>{formatStringDate(ngayKT)}</td>
-          {renderTrangThai()} */}
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
@@ -153,7 +152,6 @@ export default function PageQLKhoa() {
                     <th style={{ minWidth: "90px" }}>Mã khoa</th>
                     <th style={{ minWidth: "180px" }}>Tên khoa</th>
                     <th style={{ minWidth: "90px" }}>Số giáo viên</th>
-                    <th style={{ minWidth: "180px" }}>Trưởng khoa</th>
                     <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
                 </thead>
