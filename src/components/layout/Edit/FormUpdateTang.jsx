@@ -42,7 +42,7 @@ const FormUpdateTang = () => {
       return item.maTang == objParam.id;
     });
     obj_old = {...data[0]}
-    setObjTang(obj_old);
+    setObjTang();
 
     
   }, []);

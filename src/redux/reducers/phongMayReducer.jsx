@@ -149,6 +149,53 @@ const dataSearch = (arrData, valSearch, valSelectTN, valSelectTG) => {
 
 // CAll APi++++++++++++++++++++++++++++++++++++++
 
+export const insertPhongMayApi = (phongMay) => {
+  let {tenPhong, soLuongMay, phanMem, phanCung, objToaNha, objTang, mota } = phongMay
+  
+  let arrMayTinh = []
+  let day = new Date();
+
+  for (let i = 0; i < soLuongMay; i++) {
+    let x = i+1;
+    let mayTinh = {
+      moTa:`Máy tính ${x<10?'0'+x:x}`,
+      ngayLapDat: day,
+      thietBis:phanCung
+    };
+    arrMayTinh.push(mayTinh)
+    
+  }
+
+
+  let phanMems = [...phanMem]
+  let objPhong = {
+    tenPhong,
+    soMay:soLuongMay,
+    moTa:mota,
+    tang:objTang,
+    mayTinhs:arrMayTinh
+  };
+  console.log("🚀 ~ file: phongMayReducer.jsx:177 ~ insertPhongMayApi ~ objPhong:", objPhong) 
+  console.log("🚀 ~ file: phongMayReducer.jsx:177 ~ insertPhongMayApi ~ objPhong:", phanMems)
+  return async(dispatch) => {
+    try {
+      
+      let result = await http.post(`/LuuPhongMay/`,objPhong);
+
+      console.log("🚀 ~ file: phongMayReducer.jsx:185 ~ returnasync ~ result:", result)
+
+      // dispatch(insertPhongMayAction())
+    } catch (error) {
+      console.log("🚀 ~ file: phongMayReducer.jsx:157 ~ returnasync ~ error:", error)
+      
+    }
+  }
+}
+
+/**
+ * call All 
+ * @param {*} dispatch 
+ */
 export const getAllPhongMayApi = async (dispatch) => {
   try {
     let result = await http.get("/DSPhongMay2");
