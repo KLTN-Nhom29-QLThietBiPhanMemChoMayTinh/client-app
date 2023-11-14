@@ -61,6 +61,18 @@ const khoaReducer = createSlice({
       let { arrKhoa, valueSearch } = state;
       state.arrKhoaSearch = dataSearch(arrKhoa, valueSearch);
     },
+    deleteKhoaAction: (state, action) => {
+      let maXoa = action.payload;
+
+      let arrUpdate = state.arrKhoa.filter((item) => {
+        return item.maKhoa !== maXoa;
+      });
+
+      state.arrKhoa = [...arrUpdate];
+
+      let { arrKhoa, valueSearch } = state;
+      state.arrKhoaSearch = dataSearch(arrKhoa, valueSearch);
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -69,10 +81,26 @@ export const {
   setValueSearchKhoa,
   insertKhoaAction,
   updateKhoaAction,
+  deleteKhoaAction,
 } = khoaReducer.actions;
 export default khoaReducer.reducer;
 
 // -------------- Call Api -------------------
+
+/**
+ * delete KhoaApi by id
+ */
+export const deleteKhoaApi = (maXoa) => {
+  return async (dispatch) => {
+    try {
+      await http.delete(`/XoaKhoa/${maXoa}`)
+
+      dispatch(deleteKhoaAction(maXoa));
+    } catch (error) {
+      console.log("🚀 ~ file: khoaReducer.jsx:85 ~ return ~ error:", error);
+    }
+  };
+};
 
 /**
  * edit 1 Khoa

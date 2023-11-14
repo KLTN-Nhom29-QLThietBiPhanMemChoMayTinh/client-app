@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { insertKhoaApi, updateKhoaApi } from "../../../redux/reducers/khoaReducer";
+import {
+  insertKhoaApi,
+  updateKhoaApi,
+} from "../../../redux/reducers/khoaReducer";
 
 export default function FormUpdateKhoaModal({ arrKhoa, objKhoa, keyModal }) {
   const dispatch = useDispatch();
@@ -17,22 +20,23 @@ export default function FormUpdateKhoaModal({ arrKhoa, objKhoa, keyModal }) {
       setErrKhoa({ ...errKhoa, errName: "Hãy nhập dữ liệu!" });
       return;
     }
+    //
+    let a = true;
+    for (let i = 0; i < arrKhoa.length; i++) {
+      const element = arrKhoa[i];
 
-    // let a = true;
-    // arrKhoa.forEach((item) => {
-    //   console.log("🚀 ~ file: FormUpdateKhoaModal.jsx:22 ~ arrKhoa.forEach ~ item:", item)
-    //   if (itemKhoaRef.current.tenKhoa.includes(item.tenKhoa)) {
-    //     alert("Trùng tên khoa!");
-    //     return;
-    //   }
-    // });
-
-    if (
-      itemKhoaRef.current.tenKhoa.toLowerCase() == objKhoa.tenKhoa.toLowerCase()
-    ) {
-      alert("Trùng tên khoa!");
-      return;
+      if (
+        itemKhoaRef.current.tenKhoa.toLowerCase() ==
+        element.tenKhoa.toLowerCase()
+      ) {
+        a = false;
+        alert("Trùng tên khoa!");
+        break;
+      }
     }
+    if (!a) return;
+    //
+
     setErrKhoa({ ...errKhoa, errName: "" });
 
     dispatch(updateKhoaApi(itemKhoaRef.current));
@@ -40,7 +44,7 @@ export default function FormUpdateKhoaModal({ arrKhoa, objKhoa, keyModal }) {
   //
   const handleChangeTenKhoa = (e) => {
     let { id, value } = e.target;
-    itemKhoaRef.current[id] = value;
+    itemKhoaRef.current.tenKhoa = value;
     if (value.trim().length === 0) {
       setErrKhoa({ ...errKhoa, errName: "Hãy nhập dữ liệu!" });
     } else {

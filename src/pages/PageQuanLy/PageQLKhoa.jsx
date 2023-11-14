@@ -10,6 +10,7 @@ import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteKhoaApi,
   getAllKhoaApi,
   setObjUpdateKhoaAction,
   setValueSearchKhoa,
@@ -55,7 +56,9 @@ export default function PageQLKhoa() {
 
             <button
               onClick={() => {
-                alert(`Del -- ${item.id} -- dang cập nhật!`);
+                if(window.confirm("Bấm vào nút OK để xóa " + item.tenKhoa)){
+                  dispatch(deleteKhoaApi(item.maKhoa));
+                }
               }}
               type="button"
               className="btn btn-danger mx-2 px-2"
