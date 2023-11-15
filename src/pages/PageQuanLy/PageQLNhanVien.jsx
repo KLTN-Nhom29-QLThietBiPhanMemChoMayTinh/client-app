@@ -43,10 +43,7 @@ export default function PageQLNhanVien() {
   };
   //render
   const renderDataNhanVien = () => {
-    // let item = {id: 2, idCode: 'NV0002', name: 'Trần Thị Lê', ngaySinh: 'Sun Jan 10 1982 00:00:00 GMT+0700 (GMT+07:00)', sdt: '0951753133',email:"O8tCSZpcx@gmail.com"}
-    // let index =1;
     return arrNhanVienSearch?.map((item, index) => {
-      let ngaySinh = new Date(item.ngaySinh);
       return (
         <tr key={index}>
           <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
@@ -60,7 +57,7 @@ export default function PageQLNhanVien() {
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
-              to={"/quan-ly/nhan-vien/update"}
+              to={`/quan-ly/nhan-vien/update?id=${item.maNV}`}
             >
               <button
                 type="button"

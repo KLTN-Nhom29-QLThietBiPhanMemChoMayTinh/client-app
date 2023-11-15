@@ -2,12 +2,25 @@ import React, { useEffect, useRef, useState } from "react";
 import Footer from "../../common/Footer/Footer";
 import NavTab from "../../common/NavTab/NavTab";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllNhanVienApi, insertNhanVienApi } from "../../../redux/reducers/nhanVienReducer";
+import {
+  getAllNhanVienApi,
+  insertNhanVienApi,
+  updateNhanVienApi,
+} from "../../../redux/reducers/nhanVienReducer";
 import { getAllTaiKhoanApi } from "../../../redux/reducers/taiKhoanReducer";
 import { getAllChucVuApi } from "../../../redux/reducers/chucVuReducer";
+import { useLocation, useNavigate } from "react-router-dom";
+
+let objData_old = {};
 
 export default function FormUpdateNhanVien() {
+  //
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // nhan data gui theo uri
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const objParam = Object.fromEntries(searchParams);
   //
   let { arrTaiKhoan } = useSelector((state) => state.taiKhoanReducer);
   let { arrChucVu } = useSelector((state) => state.chucVuReducer);
@@ -29,22 +42,26 @@ export default function FormUpdateNhanVien() {
   });
 
   useEffect(() => {
+    if (objParam.id == null) {
+      navigate("/quan-ly/nhan-vien");
+    }
     if (arrNhanVien.length === 0) {
-      dispatch(getAllNhanVienApi);
+      navigate("/quan-ly/nhan-vien");
+    } else {
+      objData_old = arrNhanVien.find((item) => item.maNV == objParam.id);
+
+      objData_old = {
+        ...objData_old,
+        txtTaiKhoan: objData_old.taiKhoan.tenDangNhap,
+      };
+      objNhanVien.current = {
+        ...objData_old,
+      };
+
+      setErrNhanVien({ ...errNhanVien });
     }
     if (arrTaiKhoan.length === 0) {
       dispatch(getAllTaiKhoanApi);
-    }
-    if (arrChucVu.length === 0) {
-      dispatch(getAllChucVuApi);
-    } else {
-      objNhanVien.current = {
-        tenNV: "",
-        sDT: "",
-        email: "",
-        txtTaiKhoan: "",
-        chucVu: arrChucVu[0],
-      };
     }
   }, []);
 
@@ -63,8 +80,8 @@ export default function FormUpdateNhanVien() {
 
     let { tenNV, sDT, email, txtTaiKhoan, chucVu } = objNhanVien.current;
 
-    if(txtTaiKhoan.trim().length === 0){
-      err_taiKhoan = "Hãy nhập thông tin!"
+    if (txtTaiKhoan.trim().length === 0) {
+      err_taiKhoan = "Hãy nhập thông tin!";
       result = false;
     }
     //
@@ -84,10 +101,7 @@ export default function FormUpdateNhanVien() {
     if (sDT.trim().length === 0) {
       err_sDT = "Hãy nhập thông tin!";
       result = false;
-    } else if (
-      sDT.trim().length < 9 ||
-      sDT.trim().length > 15
-    ) {
+    } else if (sDT.trim().length < 9 || sDT.trim().length > 15) {
       err_sDT = "Số điện thoại có trên 9 số và nhỏ hơn 15 số!";
       result = false;
     } else if (!regexPhone.test(sDT)) {
@@ -100,14 +114,13 @@ export default function FormUpdateNhanVien() {
       result = false;
     }
 
-
     setErrNhanVien({
       tenNV: err_tenNV,
       sDT: err_sDT,
       email: err_email,
       chucVu: err_chucVu,
       taiKhoan: err_taiKhoan,
-    })
+    });
 
     return result;
   };
@@ -120,44 +133,32 @@ export default function FormUpdateNhanVien() {
       return;
     }
     //true
-    // check trung Tai khoan
-    let objTaiKhoan = arrTaiKhoan.find(item => item.tenDangNhap == objNhanVien.current.txtTaiKhoan )
 
-    if(objTaiKhoan != null){
-      alert('Trùng tài khoản!')
-      return;
-    }
     //
-    let maNhanVien = getRandomMaNV(arrNhanVien);
-    //
-    let {txtTaiKhoan, chucVu} = objNhanVien.current 
+    let { chucVu, taiKhoan } = objNhanVien.current;
 
-    let quyen = {} ;
+    let quyen = {};
 
-    if(chucVu.tenCV.includes('Nhân viên quản lý')) {
+    if (chucVu.tenCV.includes("Nhân viên quản lý")) {
       quyen = {
         maQuyen: 1,
-        tenQuyen: "Người quản lý"
-        }
-    }
-    else {
+        tenQuyen: "Người quản lý",
+      };
+    } else {
       quyen = {
         maQuyen: 3,
-        tenQuyen: "Nhân viên"
-        }
+        tenQuyen: "Nhân viên",
+      };
     }
 
-    let taiKhoan =  {
-      maTK: maNhanVien,
-      tenDangNhap: txtTaiKhoan,
-      matKhau:'123456A',
-      quyen
-    }
+    let taiKhoanNew = {
+      ...taiKhoan,
+      quyen,
+    };
 
-    objNhanVien.current = {...objNhanVien.current, maNhanVien,taiKhoan}
+    objNhanVien.current = { ...objNhanVien.current, taiKhoanNew };
 
-    dispatch(insertNhanVienApi(objNhanVien.current))
-    
+    dispatch(updateNhanVienApi(objNhanVien.current));
   };
   //
   const handleChangeText = (e) => {
@@ -197,23 +198,16 @@ export default function FormUpdateNhanVien() {
 
   //render
   const renderSelectChucVu = () => {
-    if (Object.keys(objNhanVien.current.chucVu).length === 0) {
-      return (
-        <>
-          <option value={-1} selected>
-            Tất cả
-          </option>
-          {arrChucVu.map((item, index) => {
-            return (
-              <option key={index} value={item.maCV}>
-                {item.tenCV}
-              </option>
-            );
-          })}
-        </>
-      );
-    }
+    let { chucVu } = objNhanVien.current;
+
     return arrChucVu.map((item, index) => {
+      if (chucVu.maCV == item.maCV) {
+        return (
+          <option key={index} selected value={item.maCV}>
+            {item.tenCV}
+          </option>
+        );
+      }
       return (
         <option key={index} value={item.maCV}>
           {item.tenCV}
@@ -268,6 +262,7 @@ export default function FormUpdateNhanVien() {
                           className="form-control p-2"
                           name="tenNV"
                           id="tenNV"
+                          value={objNhanVien.current.tenNV}
                           aria-describedby="errTenNV"
                           placeholder="Nguyễn Văn A..."
                           onChange={handleChangeText}
@@ -290,6 +285,7 @@ export default function FormUpdateNhanVien() {
                           className="form-control p-2"
                           name="email"
                           id="email"
+                          value={objNhanVien.current.email}
                           aria-describedby="errEmail"
                           placeholder="AVan@gmail.com"
                           onChange={handleChangeText}
@@ -312,6 +308,7 @@ export default function FormUpdateNhanVien() {
                           className="form-control p-2"
                           name="sDT"
                           id="sDT"
+                          value={objNhanVien.current.sDT}
                           aria-describedby="errSoDT"
                           placeholder="0951753001"
                           onChange={handleChangeText}
@@ -357,9 +354,11 @@ export default function FormUpdateNhanVien() {
                           className="form-control p-2"
                           name="txtTaiKhoan"
                           id="txtTaiKhoan"
+                          value={objNhanVien.current.txtTaiKhoan}
                           aria-describedby="errTaiKhoan"
                           placeholder="nhanvien1..."
-                          onChange={handleChangeTextTaiKhoan}
+                          // onChange={handleChangeTextTaiKhoan}
+                          disabled
                         />
                       </div>
                     </div>
@@ -368,7 +367,23 @@ export default function FormUpdateNhanVien() {
 
                 {/* footer - form */}
                 <div className="">
-                  <button type="reset" className="btn btn-danger mx-3">
+                  <button
+                    type="reset"
+                    onClick={() => {
+                      objNhanVien.current = {
+                        ...objData_old,
+                      };
+
+                      setErrNhanVien({
+                        tenNV: "",
+                        sDT: "",
+                        email: "",
+                        chucVu: "",
+                        taiKhoan: "",
+                      });
+                    }}
+                    className="btn btn-danger mx-3"
+                  >
                     Khôi phục
                   </button>
                   <button type="submit" className="btn btn-success mx-3">
@@ -385,21 +400,3 @@ export default function FormUpdateNhanVien() {
     </>
   );
 }
-
-const getRandomMaNV = (arrData) => {
-  let idNext = "";
-  let objDataLast = arrData[arrData.length - 1];
-
-  let strId = objDataLast.maNV.slice(2);
-
-  let intId = parseInt(strId) + 1;
-
-  if (intId < 10) {
-    idNext = "NV00" + intId;
-  } else if (intId < 100) {
-    idNext = "NV0" + intId;
-  } else {
-    idNext = "NV" + intId;
-  }
-  return idNext;
-};

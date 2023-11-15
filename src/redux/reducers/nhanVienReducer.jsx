@@ -97,7 +97,7 @@ const nhanVienReducer = createSlice({
         valueSelect
       );
     },
-    updateNhanVienAction: (state, action) => {
+    deleteNhanVienAction: (state, action) => {
       let maXoa = action.payload;
 
       let arrUpdate = state.arrNhanVien.filter(item => {
@@ -121,11 +121,38 @@ export const {
   setValueSelectNhanVienAction,
   setValueSearchNhanVien,
   insertNhanVienAction,
+  updateNhanVienAction,
+  deleteNhanVienAction
 } = nhanVienReducer.actions;
 export default nhanVienReducer.reducer;
 
 // -------------- Call API ---------------
+/**
+ * UPdate nhan vien 
+ * @param {*} nhanVien 
+ * @returns 
+ */
+export const updateNhanVienApi = (nhanVien) => {
+  return async(dispatch) => {
+    try {
+      let result = await http.post("/LuuNhanVien", nhanVien);
+      console.log(' dang dung api add - chua co api cho update');
 
+      dispatch(updateNhanVienAction(result.data));
+
+      history.push('/quan-ly/nhan-vien');
+    } catch (error) {
+      console.log("🚀 ~ file: nhanVienReducer.jsx:136 ~ returnasync ~ error:", error)
+      
+    }
+  }
+}
+
+/**
+ * add 1 Nhan vien
+ * @param {*} nhanVien 
+ * @returns 
+ */
 export const insertNhanVienApi = (nhanVien) => {
   return async (dispatch) => {
     try {
