@@ -60,11 +60,7 @@ export default function PageQLNhanVien() {
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
-              // to={"/quan-ly/phan-mem/update"}
-              onClick={() => {
-                alert(`Update -- ${item.id} -- dang cập nhật!`);
-                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-              }}
+              to={"/quan-ly/nhan-vien/update"}
             >
               <button
                 type="button"
@@ -84,7 +80,7 @@ export default function PageQLNhanVien() {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            <NavLink
+            {/* <NavLink
               // to={`../quan-ly/phong`}
               onClick={() => {
                 alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
@@ -94,7 +90,7 @@ export default function PageQLNhanVien() {
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink>
+            </NavLink> */}
           </td>
         </tr>
       );

@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import * as Yup from "yup";
 import { FaRegCopyright } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -11,13 +11,14 @@ export default function PageLogin() {
 
   let userStore = getStoreJSON(USER_LOGIN);
 
-  let ckbRemeber = useRef(true);
+  let [ckbRemeber, setCkbRemeber] = useState(true);
 
   const REGEX_PASSWORD = /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z_.\-@]{6,}$/;
 
   const formik = useFormik({
     initialValues: {
-      username: Object.keys(userStore).length === 0 ? "" : userStore.tenDangNhap,
+      username:
+        Object.keys(userStore).length === 0 ? "" : userStore.tenDangNhap,
       password: "",
     },
     validationSchema: Yup.object().shape({
@@ -38,14 +39,14 @@ export default function PageLogin() {
         ),
     }),
     onSubmit: (value) => {
-      dispatch(getDangNhapApi(value, ckbRemeber.current));
+      dispatch(getDangNhapApi(value, ckbRemeber));
     },
   });
 
-  // handle 
+  // handle
   const handleChangeCheckbox = (e) => {
-    ckbRemeber.current = e.target.checked;
-  }
+    setCkbRemeber(e.target.checked);
+  };
 
   return (
     <div
@@ -82,7 +83,7 @@ export default function PageLogin() {
             autoComplete="username"
             // onBlur={formik.handleBlur}
             // defaultValue={
-            //   
+            //
             // }
             value={formik.values.username}
             onChange={formik.handleChange}
@@ -113,7 +114,12 @@ export default function PageLogin() {
         </div>
 
         <div className="w-75  mb-3 ">
-          <input type="checkbox" id="brand1" checked onChange={handleChangeCheckbox} />
+          <input
+            type="checkbox"
+            id="brand1"
+            checked={ckbRemeber}
+            onChange={handleChangeCheckbox}
+          />
           <label htmlFor="brand1" className="ms-2">
             Ghi nhớ tài khoản
           </label>

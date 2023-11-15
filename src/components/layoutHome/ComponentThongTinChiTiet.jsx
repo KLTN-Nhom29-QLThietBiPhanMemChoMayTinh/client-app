@@ -61,10 +61,9 @@ export default function ComponentThongTinChiTiet() {
     if (Object.keys(mayTinh).length === 0) {
       return <></>;
     }
-
     // render
     const renderThietBi = () => {
-      if(mayTinh.thietBis.length === 0)
+      if(mayTinh.thietBis?.length === 0)
         return <><li className="ms-3">
         Không có.
       </li></>

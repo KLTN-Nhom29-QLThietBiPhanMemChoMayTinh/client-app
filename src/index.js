@@ -39,6 +39,7 @@ import PageProfile from "./pages/PageProfile/PageProfile";
 import FormAddGiaoVien from "./components/layout/Add/FormAddGiaoVien";
 import FormUpdateGiaoVien from "./components/layout/Edit/FormUpdateGiaoVien";
 import FormAddNhanVien from "./components/layout/Add/FormAddNhanVien";
+import FormUpdateNhanVien from "./components/layout/Edit/FormUpdateNhanVien";
 
 export const history = createBrowserHistory();
 
@@ -90,6 +91,7 @@ root.render(
           <Route path="/quan-ly/thiet-bi" element={<PageQLThietBi />}></Route>
           <Route path="/quan-ly/nhan-vien" element={<PageQLNhanVien />}></Route>
           <Route path="/quan-ly/nhan-vien/add" element={<FormAddNhanVien />}></Route>
+          <Route path="/quan-ly/nhan-vien/update" element={<FormUpdateNhanVien />}></Route>
           <Route path="/quan-ly/khoa" element={<PageQLKhoa />}></Route>
           <Route path="/quan-ly/giao-vien" element={<PageQLGiaoVien />}></Route>
           <Route path="/quan-ly/giao-vien/add" element={<FormAddGiaoVien />}></Route>
