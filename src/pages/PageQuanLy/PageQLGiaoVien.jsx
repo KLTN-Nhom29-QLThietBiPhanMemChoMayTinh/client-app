@@ -7,7 +7,7 @@ import { BiSolidDetail } from "react-icons/bi";
 //
 import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllGiaoVienApi,
@@ -18,6 +18,7 @@ import { formatNameByHocVi } from "../../util/config";
 import { getAllKhoaApi } from "../../redux/reducers/khoaReducer";
 
 export default function PageQLGiaoVien() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { arrGiaoVien, arrGiaoVienSearch, valueSelect, valueSearch } =
@@ -57,21 +58,16 @@ export default function PageQLGiaoVien() {
           <td>{item?.khoa.tenKhoa}</td>
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink
-              // to={"/quan-ly/giao-vien/update"}
+            <button
+              type="button"
+              className="btn btn-primary mx-2 px-2"
+              style={{ padding: "2px" }}
               onClick={() => {
-                alert(`Update -- ${item.id} -- dang cập nhật!`);
-                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
+                navigate(`/quan-ly/giao-vien/update?id=${item.maGiaoVien}`);
               }}
             >
-              <button
-                type="button"
-                className="btn btn-primary mx-2 px-2"
-                style={{ padding: "2px" }}
-              >
-                <FaPencilAlt color="white" size={16} />
-              </button>
-            </NavLink>
+              <FaPencilAlt color="white" size={16} />
+            </button>
             <button
               onClick={() => {
                 alert(`Del -- ${item.id} -- dang cập nhật!`);
