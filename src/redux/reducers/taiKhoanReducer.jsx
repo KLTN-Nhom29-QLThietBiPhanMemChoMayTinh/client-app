@@ -2,6 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
+import { history } from "../..";
 
 // function
 const dataSearch = (arrData, valSearch, valSelect) => {
@@ -90,9 +91,27 @@ const taiKhoanReducer = createSlice({
       //   valueSelect
       // );
     },
-    setObjUserAction: (state,action) => {
-      state.objUser = action.payload
-    }
+    setObjUserAction: (state, action) => {
+      state.objUser = action.payload;
+    },
+    updateTaiKhoanAction: (state, action) => {
+      let objTaiKhoan = action.payload;
+
+      let rowToChange = state.arrTaiKhoan.findIndex((item) => {
+        return item.maTK === objTaiKhoan.maTK;
+      });
+
+      state.arrTaiKhoan[rowToChange] = objTaiKhoan;
+      state.objUser = {...state.objUser, taiKhoan:objTaiKhoan}
+      //
+      let { arrTaiKhoan, valueSearch, valueSelect } = state;
+
+      state.arrTaiKhoanSearch = dataSearch(
+        arrTaiKhoan,
+        valueSearch,
+        valueSelect
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -103,37 +122,62 @@ export const {
   setValueSelectTaiKhoan,
   insertTaiKhoanAction,
   setObjUserAction,
+  updateTaiKhoanAction,
 } = taiKhoanReducer.actions;
 export default taiKhoanReducer.reducer;
 
 // -------------- Call API ---------------
+
+/**
+ * update taiKhoan
+ * @param {*} taiKhoan
+ * @returns
+ */
+
+export const updateTaiKhoan2 = (taiKhoan) => {
+  return async (dispatch) => {
+    try {
+      let result = await http.post("/them_tai_khoan", taiKhoan);
+      console.log('Chua co api update taikhoan -- dang dung themTaiKhoan');
+      dispatch(updateTaiKhoanAction(taiKhoan));
+
+      alert('Thay đổi thành công!')
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: taiKhoanReducer.jsx:121 ~ return ~ error:",
+        error
+      );
+      alert('Thay đổi thất bại thành công!')
+      history('/quan-ly/tai-khoan')
+    }
+  };
+};
+
 /**
  * get 1 user theo id
  */
 export const getUserbyIdApi = (taiKhoan) => {
-  let {maTK, quyen} = taiKhoan;
-  return async(dispatch) => {
+  let { maTK, quyen } = taiKhoan;
+  return async (dispatch) => {
     try {
       let resultUser = {};
-      if(quyen.tenQuyen.toLowerCase().includes("Giáo viên".toLowerCase())){
+      if (quyen.tenQuyen.toLowerCase().includes("Giáo viên".toLowerCase())) {
         resultUser = await http.get(`/GiaoVien/${maTK}`);
-      }
-      else {
+      } else {
         resultUser = await http.get(`/NhanVien/${maTK}`);
       }
 
-      dispatch(setObjUserAction(resultUser.data))
-      
+      dispatch(setObjUserAction(resultUser.data));
     } catch (error) {
       console.log(error);
     }
-  }
-}
+  };
+};
 
 /**
  * add 1 tai khoan
- * @param {*} taiKhoan 
- * @returns 
+ * @param {*} taiKhoan
+ * @returns
  */
 export const insertTaiKhoanApi = (taiKhoan) => {
   return async (dispatch) => {
