@@ -97,6 +97,7 @@ export const configs = {
   },
   ACCESS_TOKEN: "accessToken",
   USER_LOGIN: "userLogin",
+  REGEX_PASSWORD : /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z_.\-@]{6,}$/,
 };
 
 export const {
@@ -112,6 +113,7 @@ export const {
   formatNameByHocVi,
   ACCESS_TOKEN,
   USER_LOGIN,
+  REGEX_PASSWORD
 } = configs;
 
 // cấu hình  interceptor (Cau hình cho các  request và response)

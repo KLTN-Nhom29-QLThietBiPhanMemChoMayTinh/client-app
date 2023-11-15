@@ -1,27 +1,31 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTaiKhoan2 } from "../../../../redux/reducers/taiKhoanReducer";
+import { REGEX_PASSWORD } from "../../../../util/config";
 
 export default function ModalDetailTaiKhoan() {
-
   //
   const dispatch = useDispatch();
   //
-  const { objUser,arrTaiKhoan } = useSelector((state) => state.taiKhoanReducer);
-  let {taiKhoan} = objUser;
+  const { objUser, arrTaiKhoan } = useSelector(
+    (state) => state.taiKhoanReducer
+  );
+  let { taiKhoan } = objUser;
 
-  let [taiKhoanNew, setTaiKhoanNew ] =useState ({
-    taiKhoan:{
-      userName:'',
-      pass1:'',
-      pass2:''
+  let [taiKhoanNew, setTaiKhoanNew] = useState({
+    taiKhoan: {
+      userName: "",
+      pass0: "",
+      pass1: "",
+      pass2: "",
     },
     err: {
-      userName:'',
-      pass1:'',
-      pass2:''
-    }
-  })
+      userName: "",
+      pass0: "",
+      pass1: "",
+      pass2: "",
+    },
+  });
   //
   /**
    * 0 - Gia tri ban dau
@@ -29,53 +33,148 @@ export default function ModalDetailTaiKhoan() {
    * -1 - update pass
    */
   let [status, setStatus] = useState(0);
-  //handle 
-  const handleSubmitChangeTaiKhoan = (e) =>{
+  //handle
+  const handleSubmitChangeTaiKhoan = (e) => {
     e.preventDefault();
-    console.log(taiKhoanNew);
     let userNameNew = taiKhoanNew.taiKhoan.userName;
-    
-// 
+
+    //
     if (userNameNew === taiKhoan.tenDangNhap) {
-      alert('Trùng tài khoản!')
-      return 
+      alert("Trùng tài khoản!");
+      return;
     }
     //
     let z1 = false;
-    arrTaiKhoan.forEach(e => {
-      if(e.tenDangNhap === userNameNew) {
+    arrTaiKhoan.forEach((e) => {
+      if (e.tenDangNhap === userNameNew) {
         z1 = true;
-        return 
+        return;
       }
     });
-    
-    if(z1) {
-      alert(`Tài khoản ${userNameNew} đã được sử dụng!`)
-      return 
+
+    if (z1) {
+      alert(`Tài khoản ${userNameNew} đã được sử dụng!`);
+      return;
     }
-// 
-    let taiKhoanZ ={...taiKhoan, tenDangNhap: userNameNew}
-    
-    console.log("🚀 ~ file: ModalDetailTaiKhoan.jsx:51 ~ handleSubmitChangeTaiKhoan ~ taiKhoanZ:", taiKhoanZ)
-    
-    dispatch(updateTaiKhoan2(taiKhoanZ))
+    //
+    let taiKhoanZ = { ...taiKhoan, tenDangNhap: userNameNew };
+
+    dispatch(updateTaiKhoan2(taiKhoanZ));
     setStatus(0);
-  }
+  };
+  //
+  const handleSubmitChangePass = (e) => {
+    e.preventDefault();
+     // 
+      if (!checkPass()) {
+      //false
+      return;
+    }
+    //
+    let { pass0, pass1 } = taiKhoanNew.taiKhoan;
+
+    if(pass0 === pass1){
+      alert("Mật khẩu mới trùng với mật khẩu cũ!")
+      setTaiKhoanNew({ ...taiKhoanNew, taiKhoan: {
+        pass1: "",
+        pass2: "",
+      } });
+    }
+    //
+    console.log('Chua kieem tra duoc co dung mk cũ khog');
+    
+    //
+    let taiKhoanZ = { ...taiKhoan, matKhau: pass1 };
+    dispatch(updateTaiKhoan2(taiKhoanZ));
+    setStatus(0);
+  };
+  //
+  const checkPass = () => {
+    const regex = new RegExp(REGEX_PASSWORD);
+    let result = true;
+    let booleanRegex = false;
+    let err_pass0 = "";
+    let err_pass1 = "";
+    let err_pass2 = "";
+
+    let { pass0, pass1, pass2 } = taiKhoanNew.taiKhoan;
+
+    if (pass0.length === 0) {
+      err_pass0 = "Hãy nhập dữ liệu!";
+      result = false;
+    } else {
+      booleanRegex = regex.test(pass0);
+      if (!booleanRegex) {
+        err_pass0 = "Mật khẩu trên 6 ký tự có ít nhất một chữ cái hoắc chữ số!";
+        result = false;
+      } else {
+        err_pass0 = "";
+      }
+    }
+    //
+    if (pass1.length === 0) {
+      err_pass1 = "Hãy nhập dữ liệu!";
+      result = false;
+    } else {
+      booleanRegex = regex.test(pass1);
+      if (!booleanRegex) {
+        err_pass1 = "Mật khẩu trên 6 ký tự có ít nhất một chữ cái hoắc chữ số!";
+        result = false;
+      } else {
+        err_pass1 = "";
+      }
+    }
+    //
+    if (pass2.length === 0) {
+      err_pass2 = "Hãy nhập dữ liệu!";
+      result = false;
+    } else {
+      if (pass2 === pass1) {
+        err_pass2 = "";
+      } else {
+        err_pass2 = "Hai mật khẩu mới phải giống nhau!";
+        result = false;
+      }
+    }
+
+    //
+
+    let err = {
+      ...taiKhoanNew.err,
+      pass0: err_pass0,
+      pass1: err_pass1,
+      pass2: err_pass2,
+    };
+
+    setTaiKhoanNew({ ...taiKhoanNew, err });
+
+    return result;
+  };
   //
   const handleChangeTaiKhoan = (e) => {
     let value = e.target.value;
-    let {taiKhoan, err} = taiKhoanNew;
-    taiKhoan = {...taiKhoan, userName:value}
-    if(value.trim().length === 0){
-      err = {...err, userName:'Hãy nhập giá trị!'}
+    let { taiKhoan, err } = taiKhoanNew;
+    taiKhoan = { ...taiKhoan, userName: value };
+    if (value.trim().length === 0) {
+      err = { ...err, userName: "Hãy nhập giá trị!" };
+    } else {
+      err = { ...err, userName: "" };
     }
-    else {
-      err = {...err, userName:''}
-    }
-    setTaiKhoanNew({taiKhoan, err})
+    setTaiKhoanNew({ taiKhoan, err });
+  };
+  const handleChangePass = (e) => {
+    let { id, value } = e.target;
+    let { taiKhoan, err } = taiKhoanNew;
+    taiKhoan = { ...taiKhoan, [id]: value };
 
-  }
-  
+    if (value.trim().length === 0) {
+      err = { ...err, [id]: "Hãy nhập giá trị!" };
+    } else {
+      err = { ...err, [id]: "" };
+    }
+    setTaiKhoanNew({ taiKhoan, err });
+  };
+
   //
   const renderUserModal = () => {
     if (Object.keys(objUser).length === 0)
@@ -203,10 +302,9 @@ export default function ModalDetailTaiKhoan() {
             {/*  */}
             <h3 className="text-center">Thay đổi tài khoản</h3>
             <form>
-            <div className="mb-3">
+              <div className="mb-3">
                 <label htmlFor="txtTaiKhoan1" className="form-label">
                   Tài khoản cũ
-                  
                 </label>
                 <input
                   type="text"
@@ -217,14 +315,16 @@ export default function ModalDetailTaiKhoan() {
                   placeholder="username..."
                   disabled
                 />
-                
               </div>
               <div className="mb-3">
                 <label htmlFor="txtTaiKhoan" className="form-label">
                   Tài khoản mới
-                  <small id="errTaiKhoan" className="form-text  mx-2 text-danger">
-                  *{taiKhoanNew.err.userName}
-                </small>
+                  <small
+                    id="errTaiKhoan"
+                    className="form-text  mx-2 text-danger"
+                  >
+                    *{taiKhoanNew.err.userName}
+                  </small>
                 </label>
                 <input
                   type="text"
@@ -235,7 +335,6 @@ export default function ModalDetailTaiKhoan() {
                   placeholder="username..."
                   onChange={handleChangeTaiKhoan}
                 />
-                
               </div>
             </form>
 
@@ -269,7 +368,68 @@ export default function ModalDetailTaiKhoan() {
         <div className="modal-content">
           <div className="modal-body">
             {/*  */}
-            <>pass</>
+            <h3 className="text-center">Thay đổi tài khoản</h3>
+            <form>
+              <div className="mb-3">
+                <label htmlFor="pass0" className="form-label">
+                  Mật khẩu cũ
+                  <small
+                    id="errTaiKhoan"
+                    className="form-text  mx-2 text-danger"
+                  >
+                    *{taiKhoanNew.err.pass0}
+                  </small>
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="pass0"
+                  id="pass0"
+                  placeholder={"password"}
+                  onChange={handleChangePass}
+                />
+              </div>
+              {/* pass new */}
+              <div className="mb-3">
+                <label htmlFor="pass1" className="form-label">
+                  Mật khẩu mới
+                  <small
+                    id="errTaiKhoan"
+                    className="form-text  mx-2 text-danger"
+                  >
+                    *{taiKhoanNew.err.pass1}
+                  </small>
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="pass1"
+                  id="pass1"
+                  onChange={handleChangePass}
+                  placeholder={"password"}
+                />
+              </div>
+              {/* pass new  2*/}
+              <div className="mb-3">
+                <label htmlFor="pass2" className="form-label">
+                  Nhập lại mật khẩu
+                  <small
+                    id="errTaiKhoan"
+                    className="form-text  mx-2 text-danger"
+                  >
+                    *{taiKhoanNew.err.pass2}
+                  </small>
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="pass2"
+                  id="pass2"
+                  onChange={handleChangePass}
+                  placeholder={"password"}
+                />
+              </div>
+            </form>
 
             {/*  */}
           </div>
@@ -282,6 +442,13 @@ export default function ModalDetailTaiKhoan() {
               }}
             >
               Quay lại
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={handleSubmitChangePass}
+            >
+              Thay đổi
             </button>
           </div>
         </div>

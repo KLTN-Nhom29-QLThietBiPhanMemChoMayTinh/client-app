@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTaiKhoan } from "../../redux/reducers/taiKhoanReducer";
 import { setUserLoginAction } from "../../redux/reducers/userReducer";
+import { REGEX_PASSWORD } from "../../util/config";
 
-const REGEX_PASSWORD = /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z_.\-@]{6,}$/;
+
 
 export default function ModalChangePass(props) {
 
@@ -87,6 +88,7 @@ export default function ModalChangePass(props) {
         return ;
       }
       
+      console.log('Chua kieem tra duoc co dung mk cũ khog');
       if(password.pass_old !== taiKhoan.matKhau)
       {
         alert("Sai mật khẩu cũ!")

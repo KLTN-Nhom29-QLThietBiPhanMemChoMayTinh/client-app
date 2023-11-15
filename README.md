@@ -96,6 +96,7 @@
     - FormAddPhong: api chua duoc
     - PageQLKhoa - update: chua biet tat model
     - gans valueSearch vaf valueSelect
+    - taiKhoanReducer: chua co api update
 
 
 ## Tài liệu
