@@ -105,6 +105,23 @@ const giaoVienReducer = createSlice({
         valueSelect
       );
     },
+    deleteGiaoVienAction: (state, action) => {
+      let maXoa = action.payload;
+
+      let arrUpdate = state.arrGiaoVien.filter((item) => {
+        return item.maGiaoVien !== maXoa;
+      });
+
+      state.arrGiaoVien = [...arrUpdate];
+      
+      //
+      let { arrGiaoVien, valueSearch, valueSelect } = state;
+      state.arrGiaoVienSearch = dataSearch(
+        arrGiaoVien,
+        valueSearch,
+        valueSelect
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -114,10 +131,31 @@ export const {
   setValueSearchGiaoVien,
   insertGiaoVienAction,
   updateGiaoVienAction,
+  deleteGiaoVienAction,
 } = giaoVienReducer.actions;
 export default giaoVienReducer.reducer;
 
 // -------------- Call API ---------------
+/**
+ * Del 1 giao vien theo id
+ * @param {*} giaoVien
+ * @returns
+ */
+export const deleteGiaoVienApi = (maXoa) => {
+  return async (dispatch) => {
+    try {
+      await http.delete(`/XoaGiaoVien/${maXoa}`);
+
+      dispatch(deleteGiaoVienAction(maXoa));
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: giaoVienReducer.jsx:131 ~ return ~ error:",
+        error
+      );
+    }
+  };
+};
+
 /**
  * update 1 Giao vien
  */
@@ -129,7 +167,7 @@ export const updateGiaoVienApi = (giaoVien) => {
 
       dispatch(updateGiaoVienAction(result.data));
 
-      history.push('/quan-ly/giao-vien')
+      history.push("/quan-ly/giao-vien");
     } catch (error) {
       console.log(
         "🚀 ~ file: giaoVienReducer.jsx:106 ~ returnasync ~ error:",

@@ -10,6 +10,7 @@ import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteGiaoVienApi,
   getAllGiaoVienApi,
   setValueSearchGiaoVien,
   setValueSelectGiaoVien,
@@ -69,8 +70,10 @@ export default function PageQLGiaoVien() {
               <FaPencilAlt color="white" size={16} />
             </button>
             <button
-              onClick={() => {
-                alert(`Del -- ${item.id} -- dang cập nhật!`);
+               onClick={() => {
+                if(window.confirm("Bấm vào nút OK để xóa " + item.hoTen)){
+                  dispatch(deleteGiaoVienApi(item.maGiaoVien));
+                }
               }}
               type="button"
               className="btn btn-danger mx-2 px-2"
