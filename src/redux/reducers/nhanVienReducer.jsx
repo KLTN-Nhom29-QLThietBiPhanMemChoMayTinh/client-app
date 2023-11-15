@@ -127,6 +127,19 @@ export const {
 export default nhanVienReducer.reducer;
 
 // -------------- Call API ---------------
+
+export const deleteNhanVienApi = (maXoa) => {
+  return async(dispatch) =>{
+    try {
+      await http.delete(`/XoaNhanVien/${maXoa}`);
+
+      dispatch(deleteNhanVienAction(maXoa));
+    } catch (error) {
+      console.log("🚀 ~ file: nhanVienReducer.jsx:136 ~ returnasync ~ error:", error)
+      
+    }
+  }
+}
 /**
  * UPdate nhan vien 
  * @param {*} nhanVien 

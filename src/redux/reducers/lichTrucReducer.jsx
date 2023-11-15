@@ -59,6 +59,19 @@ const lichTrucReducer = createSlice({
       state.arrLichTruc[rowToChange] = itemEdit;
       state.arrLichTrucSearch = [...state.arrLichTruc];
     },
+    deleteLichTrucAction: (state, action) => {
+      let maXoa = action.payload;
+
+      let arrUpdate = state.arrLichTruc.filter((item) => {
+        return item.maLich !== maXoa;
+      });
+
+      state.arrLichTruc = [...arrLichTruc]
+      //
+      let {arrLichTruc, valSearch} = state
+
+      state.arrLichTrucSearch = dataSearch(arrLichTruc, valSearch)
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -67,10 +80,26 @@ export const {
   setArrLichTrucSearchAction,
   insertLichTrucAction,
   updateLichTrucAction,
+  deleteLichTrucAction,
 } = lichTrucReducer.actions;
 export default lichTrucReducer.reducer;
 
 // CALL APi ==================================
+
+export const deleteLichTrucApi = (maXoa) => {
+  return async (dispatch) => {
+    try {
+      await http.delete(`/XoaNhanVien/${maXoa}`);
+
+      dispatch(deleteLichTrucAction(maXoa))
+    } catch (error) {
+      console.log("🚀 ~ file: lichTrucReducer.jsx:93 ~ return ~ error:", error)
+      
+    }
+  }
+}
+
+//get All
 export const getAllLichTruc = async (dispatch) => {
   try {
     // let result = await http.get("DSlichTruc");
@@ -107,7 +136,7 @@ export const getLichTrucbyId = (id) => {
 // add
 export const insertLichTrucApi = (lichTruc) => {
   let idRandom = Math.floor(Math.random() * 10000) + 1000;
-  lichTruc = {...lichTruc, maLich:idRandom}
+  lichTruc = { ...lichTruc, maLich: idRandom };
   return async (dispatch) => {
     try {
       let result = await http.post("/LuuLichTruc", lichTruc);

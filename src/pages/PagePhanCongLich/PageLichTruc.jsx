@@ -9,7 +9,7 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllLichTruc, setArrLichTrucSearchAction } from "../../redux/reducers/lichTrucReducer";
+import { deleteLichTrucApi, getAllLichTruc, setArrLichTrucSearchAction } from "../../redux/reducers/lichTrucReducer";
 
 export default function PageLichTruc(props) {
   const dispatch = useDispatch();
@@ -59,7 +59,9 @@ export default function PageLichTruc(props) {
               </NavLink>
               <button
                 onClick={() => {
-                  alert(`Del -- ${item.id} -- dang cập nhật!`);
+                  if (window.confirm(`Bấm vào nút OK để xóa lịch trực ${item.nhanVien.tenNV} - ${item.tang.tenTang}, ${item.tang.toaNha.tenToaNha} -- Thời gian:  ${strTgian}. `)) {
+                    dispatch(deleteLichTrucApi(item.maLich));
+                  }
                 }}
                 type="button"
                 className="btn btn-danger mx-2 px-2"

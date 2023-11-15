@@ -98,6 +98,8 @@
     -- gans valueSearch vaf valueSelect
     - taiKhoanReducer: chua co api update
     --  error - select value: mối khi reset lại
+    - PageQLNhanVien: xoa NV có lịch trực bị lỗi 500
+    - PageLichTruc: xóa 1 lich truc cung bi lỗi 500
 
 
 ## Tài liệu
