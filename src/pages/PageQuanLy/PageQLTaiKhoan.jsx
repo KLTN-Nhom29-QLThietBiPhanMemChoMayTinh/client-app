@@ -19,13 +19,18 @@ import {
 export default function PageQLTaiKhoan() {
   const dispatch = useDispatch();
 
-  const { arrTaiKhoanSearch, arrQuyen } = useSelector(
+  const { arrTaiKhoan, arrTaiKhoanSearch, arrQuyen } = useSelector(
     (state) => state.taiKhoanReducer
   );
 
   useEffect(() => {
-    dispatch(getAllTaiKhoanApi);
-    dispatch(getAllQuyenSDApi);
+    if (arrTaiKhoan.length === 0) {
+      dispatch(getAllTaiKhoanApi);
+    }
+
+    if (arrQuyen.length === 0) {
+      dispatch(getAllQuyenSDApi);
+    }
   }, []);
 
   //handle
@@ -39,23 +44,17 @@ export default function PageQLTaiKhoan() {
   //render
   const renderDataTaiKhoan = () => {
     return arrTaiKhoanSearch?.map((item, index) => {
-      let strNameQuyen = '';
-      arrQuyen.forEach((itemQuyen) => {
-        if (itemQuyen.idCode.includes(item.quyenId)) {
-          strNameQuyen = itemQuyen.mota+"";
-        }
-      })
-
       return (
         <tr key={index}>
           <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
             {index < 9 ? `0${index + 1}` : index + 1}
           </td>
-          <td>{item?.idCode}</td>
-          <td>{item.userName}</td>
-          <td>{strNameQuyen}</td>
+          <td>{item?.maTK}</td>
+          <td>{item.tenDangNhap}</td>
+          <td>{item.quyen.tenQuyen}</td>
+          {/* <td>{strNameQuyen}</td>
           <td>{item.mota.idCode}</td>
-          <td>{item.mota.name}</td>
+          <td>{item.mota.name}</td> */}
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
@@ -83,17 +82,15 @@ export default function PageQLTaiKhoan() {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            <NavLink
-              // to={`../quan-ly/phong`}
-              onClick={() => {
-                alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
-              }}
+            <button
               type="button"
               className="btn btn-info mx-2 px-2"
               style={{ padding: "2px" }}
+              data-bs-toggle="modal"
+              data-bs-target="#modalDetail"
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink>
+            </button>
           </td>
         </tr>
       );
@@ -104,13 +101,13 @@ export default function PageQLTaiKhoan() {
     return (
       <div className="col-2 mx-2">
         <select className="form-select " onChange={handleChangeSelectQuyen}>
-          <option selected value="all">
+          <option selected value="-1">
             Tất cả
           </option>
           {arrQuyen.map((item, index) => {
             return (
-              <option value={item.idCode} key={index}>
-                {item.mota}
+              <option value={item.maQuyen} key={index}>
+                {item.tenQuyen}
               </option>
             );
           })}
@@ -125,6 +122,50 @@ export default function PageQLTaiKhoan() {
 
   return (
     <div className="container " style={{ height: "100vh" }}>
+      {/*  */}
+
+      {/* Modal */}
+      <div
+        className="modal fade "
+        id="modalDetail"
+        tabIndex={-1}
+        role="dialog"
+        aria-labelledby="modalTitleId"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="modalTitleId">
+                Modal title
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">
+              <div className="container-fluid">Add rows here</div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" className="btn btn-primary">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/*  */}
       <div
         className="d-flex flex-column justify-content-between "
         style={{ height: "100vh" }}
@@ -163,8 +204,7 @@ export default function PageQLTaiKhoan() {
                 />
               </div>
 
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {/* Btn them */}
+              {/* <div style={{ display: "flex", alignItems: "center" }}>
                 <NavLink
                   // to="/quan-ly/tai-khoan/add"
                   onClick={() => {
@@ -176,7 +216,8 @@ export default function PageQLTaiKhoan() {
                   <MdAdd color="white" size={25} />
                   Tạo mới
                 </NavLink>
-              </div>
+              </div> */}
+              <div className="px-3 mx-3"></div>
             </div>
 
             {/* Bảng danh sách data */}
@@ -185,11 +226,9 @@ export default function PageQLTaiKhoan() {
                 <thead>
                   <tr>
                     <th>STT</th>
-                    <th style={{ minWidth: "90px" }}>Mã tài khoản</th>
+                    <th style={{ minWidth: "110px" }}>Mã tài khoản</th>
                     <th style={{ minWidth: "125px" }}>Tên đăng nhập</th>
                     <th style={{ minWidth: "160px" }}>Quyền sử dụng</th>
-                    <th style={{ minWidth: "100px" }}>Mã người dùng</th>
-                    <th style={{ minWidth: "110px" }}>Tên người dùng</th>
                     <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
                 </thead>
