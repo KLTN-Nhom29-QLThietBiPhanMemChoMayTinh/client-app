@@ -98,8 +98,7 @@ export default taiKhoanReducer.reducer;
 export const insertTaiKhoanApi = (taiKhoan) => {
   return async (dispatch) => {
     try {
-      let result = await http.post("/tai_khoan", taiKhoan);
-
+      let result = await http.post("/them_tai_khoan", taiKhoan);
       dispatch(insertTaiKhoanAction(result.data));
     } catch (error) {
       console.log("🚀 ~ file: taiKhoanReducer.jsx:89 ~ return ~ error:", error);

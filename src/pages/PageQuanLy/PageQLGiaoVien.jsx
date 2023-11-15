@@ -20,9 +20,8 @@ import { getAllKhoaApi } from "../../redux/reducers/khoaReducer";
 export default function PageQLGiaoVien() {
   const dispatch = useDispatch();
 
-  const { arrGiaoVien, arrGiaoVienSearch } = useSelector(
-    (state) => state.giaoVienReducer
-  );
+  const { arrGiaoVien, arrGiaoVienSearch, valueSelect, valueSearch } =
+    useSelector((state) => state.giaoVienReducer);
   let { arrKhoa } = useSelector((state) => state.khoaReducer);
 
   useEffect(() => {
@@ -40,8 +39,8 @@ export default function PageQLGiaoVien() {
     dispatch(setValueSearchGiaoVien(e.target.value));
   };
   const handleChangeSelectKhoa = (e) => {
-    dispatch(setValueSelectGiaoVien(e.target.value))
-  }
+    dispatch(setValueSelectGiaoVien(e.target.value));
+  };
   //render
   const renderDataGiaoVien = () => {
     return arrGiaoVienSearch?.map((item, index) => {
@@ -102,12 +101,19 @@ export default function PageQLGiaoVien() {
   //
   const renderSelectKhoa = () => {
     return arrKhoa?.map((item, index) => {
+      if (item.maKhoa == valueSelect) {
+        return (
+          <option key={index} selected value={item.maKhoa}>
+            {item.tenKhoa}
+          </option>
+        );
+      }
       return (
         <option key={index} value={item.maKhoa}>
           {item.tenKhoa}
         </option>
       );
-    })
+    });
   };
   //
   // Mảng quản lý data navtab
@@ -145,7 +151,10 @@ export default function PageQLGiaoVien() {
               <div></div>
               {/* select - option */}
               <div className="col-2 m-2">
-                <select className="form-select" onChange={handleChangeSelectKhoa}>
+                <select
+                  className="form-select"
+                  onChange={handleChangeSelectKhoa}
+                >
                   <option value="-1" selected>
                     tất cả
                   </option>

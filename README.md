@@ -63,6 +63,7 @@
     - chưa sử lý tgian hết hạn sử dụng của Tbi - PM (dang them +1 vao thang) - y
     - ModalChangePass: gui data redux -- Call Api - z
     - FormAddPhong: chua co check data co ToaNha vs tang - z
+    - FormAddGiaoVien: api add TaiKhoan Thanh cong -- api Add GV errr 500 -- update theeo server mới thử- good look = z (fix them tai khoan trong api insert cua GV)
 
     - tìm kiếm -  detailKhuVuc chưa có gì
     - PageQLPhongMay - can 1 search theo status
@@ -94,7 +95,6 @@
     - QL Phong khi them 1 phong chon so luong máy tính(VD 5 cai) có thế mặc định add 5 cái may tinh không? 
     - FormAddPhong: api chua duoc
     - PageQLKhoa - update: chua biet tat model
-    -- FormAddGiaoVien: api add TaiKhoan Thanh cong -- api Add GV errr 500 -- update theeo server mới thử- good look
 
 ## Tài liệu
 

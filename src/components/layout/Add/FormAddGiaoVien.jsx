@@ -32,7 +32,7 @@ export default function FormAddGiaoVien() {
     taiKhoan: "",
   });
 
-  //
+  //3
   useEffect(() => {
     if (arrKhoa.length === 0) {
       dispatch(getAllKhoaApi);
@@ -122,7 +122,7 @@ export default function FormAddGiaoVien() {
       objGiaoVien.current = { ...objGiaoVien.current, maGiaoVien, taiKhoan }
 
       //
-      dispatch(insertTaiKhoanApi(taiKhoan));
+      // dispatch(insertTaiKhoanApi(taiKhoan));
       dispatch(insertGiaoVienApi(objGiaoVien.current));
     }
     // false
@@ -392,10 +392,10 @@ export default function FormAddGiaoVien() {
                 </div>
                 {/* footer - form */}
                 <div className="">
-                  <button type="reset" class="btn btn-danger mx-3">
+                  <button type="reset" className="btn btn-danger mx-3">
                     Khôi phục
                   </button>
-                  <button type="submit" class="btn btn-success mx-3">
+                  <button type="submit" className="btn btn-success mx-3">
                     Tạo mới
                   </button>
                 </div>

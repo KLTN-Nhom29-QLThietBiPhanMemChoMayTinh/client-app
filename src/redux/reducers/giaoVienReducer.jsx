@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { formatNameByHocVi, http } from "../../util/config";
 import Database from "../../util/database/Database";
 import { history } from "../..";
+import { insertTaiKhoanAction } from "./taiKhoanReducer";
 
 // function
 const dataSearch = (arrData, valSearch, valSelect) => {
@@ -99,16 +100,18 @@ export default giaoVienReducer.reducer;
  * add 1 Giao Vien
  */
 export const insertGiaoVienApi = (giaoVien) => {
-  console.log("🚀 ~ file: giaoVienReducer.jsx:102 ~ insertGiaoVienApi ~ giaoVien:", giaoVien)
   return async(dispatch) => {
     try {
-
+      let resultAddTaiKhoan = await http.post("/them_tai_khoan", giaoVien.taiKhoan);
+      
       let result = await http.post('/LuuGiaoVien', giaoVien);
-      console.log("🚀 ~ file: giaoVienReducer.jsx:106 ~ returnasync ~ result.data:", result.data)
-
+      
+      dispatch(insertTaiKhoanAction(resultAddTaiKhoan.data));
       dispatch(insertGiaoVienAction(result.data))
 
-      history('/quan-ly/giao-vien')
+      alert(`Tạo thành công giao viên ${giaoVien.hoTen} với tài khoản: ${giaoVien.taiKhoan.tenDangNhap}, mật khẩu: ${giaoVien.taiKhoan.matKhau}`)
+     
+      history.push('/quan-ly/giao-vien')
     } catch (error) {
       console.log("🚀 ~ file: giaoVienReducer.jsx:93 ~ returnasync ~ error:", error)
       
