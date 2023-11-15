@@ -25,13 +25,14 @@ const dataSearch = (arrData, valSearch, valSelect) => {
     } else {
       return (
         (item.maGiaoVien.toLowerCase().includes(search) ||
-        formatNameByHocVi({ hocVi: item.hocVi, name: item.hoTen })
-          .toLowerCase()
-          .includes(search) ||
-        item.soDienThoai.toLowerCase().includes(search) ||
-        item.hocVi.toLowerCase().includes(search) ||
-        item.taiKhoan.tenDangNhap.toLowerCase().includes(search) ||
-        item.email.toLowerCase().includes(search)) && item.khoa.maKhoa == valSelect
+          formatNameByHocVi({ hocVi: item.hocVi, name: item.hoTen })
+            .toLowerCase()
+            .includes(search) ||
+          item.soDienThoai.toLowerCase().includes(search) ||
+          item.hocVi.toLowerCase().includes(search) ||
+          item.taiKhoan.tenDangNhap.toLowerCase().includes(search) ||
+          item.email.toLowerCase().includes(search)) &&
+        item.khoa.maKhoa == valSelect
       );
     }
   });
@@ -70,58 +71,107 @@ const giaoVienReducer = createSlice({
 
       let { arrGiaoVien, valueSearch, valueSelect } = state;
       state.arrGiaoVienSearch = dataSearch(
-        arrGiaoVien, 
+        arrGiaoVien,
         valueSearch,
         action.payload
       );
     },
-    insertGiaoVienAction: (state, action) =>{
+    insertGiaoVienAction: (state, action) => {
       let giaoVien = action.payload;
-      console.log("🚀 ~ file: giaoVienReducer.jsx:79 ~ giaoVien:", giaoVien)
 
       state.arrGiaoVien.push(giaoVien);
 
-      let{arrGiaoVien, valueSearch, valueSelect} = state;
-      state.arrGiaoVienSearch = dataSearch(arrGiaoVien, valueSearch, valueSelect)
+      let { arrGiaoVien, valueSearch, valueSelect } = state;
+      state.arrGiaoVienSearch = dataSearch(
+        arrGiaoVien,
+        valueSearch,
+        valueSelect
+      );
+    },
+    updateGiaoVienAction: (state, action) => {
+      let objGiaoVien = action.payload;
 
-    }
+      let rowToChange = state.arrGiaoVien.findIndex((item) => {
+        return item.maGiaoVien == objGiaoVien.maGiaoVien;
+      });
+
+      state.arrGiaoVien[rowToChange] = objGiaoVien;
+
+      //
+      let { arrGiaoVien, valueSearch, valueSelect } = state;
+      state.arrGiaoVienSearch = dataSearch(
+        arrGiaoVien,
+        valueSearch,
+        valueSelect
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
-export const { setArrGiaoVienAction, setValueSelectGiaoVien, setValueSearchGiaoVien,
-insertGiaoVienAction,
- } =
-  giaoVienReducer.actions;
+export const {
+  setArrGiaoVienAction,
+  setValueSelectGiaoVien,
+  setValueSearchGiaoVien,
+  insertGiaoVienAction,
+  updateGiaoVienAction,
+} = giaoVienReducer.actions;
 export default giaoVienReducer.reducer;
 
 // -------------- Call API ---------------
+/**
+ * update 1 Giao vien
+ */
+export const updateGiaoVienApi = (giaoVien) => {
+  return async (dispatch) => {
+    try {
+      let result = await http.post("/LuuGiaoVien", giaoVien);
+      console.log("dang dung api add - chua  co update");
+
+      dispatch(updateGiaoVienAction(result.data));
+
+      history.push('/quan-ly/giao-vien')
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: giaoVienReducer.jsx:106 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
 
 /**
  * add 1 Giao Vien
  */
 export const insertGiaoVienApi = (giaoVien) => {
-  return async(dispatch) => {
+  return async (dispatch) => {
     try {
-      let resultAddTaiKhoan = await http.post("/them_tai_khoan", giaoVien.taiKhoan);
-      
-      let result = await http.post('/LuuGiaoVien', giaoVien);
-      
-      dispatch(insertTaiKhoanAction(resultAddTaiKhoan.data));
-      dispatch(insertGiaoVienAction(result.data))
+      let resultAddTaiKhoan = await http.post(
+        "/them_tai_khoan",
+        giaoVien.taiKhoan
+      );
 
-      alert(`Tạo thành công giao viên ${giaoVien.hoTen} với tài khoản: ${giaoVien.taiKhoan.tenDangNhap}, mật khẩu: ${giaoVien.taiKhoan.matKhau}`)
-     
-      history.push('/quan-ly/giao-vien')
+      let result = await http.post("/LuuGiaoVien", giaoVien);
+
+      dispatch(insertTaiKhoanAction(resultAddTaiKhoan.data));
+      dispatch(insertGiaoVienAction(result.data));
+
+      alert(
+        `Tạo thành công giao viên ${giaoVien.hoTen} với tài khoản: ${giaoVien.taiKhoan.tenDangNhap}, mật khẩu: ${giaoVien.taiKhoan.matKhau}`
+      );
+
+      history.push("/quan-ly/giao-vien");
     } catch (error) {
-      console.log("🚀 ~ file: giaoVienReducer.jsx:93 ~ returnasync ~ error:", error)
-      
+      console.log(
+        "🚀 ~ file: giaoVienReducer.jsx:93 ~ returnasync ~ error:",
+        error
+      );
     }
-  }
-}
+  };
+};
 
 /**
  * Get all Api
- * @param {*} dispatch 
+ * @param {*} dispatch
  */
 export const getAllGiaoVienApi = async (dispatch) => {
   try {

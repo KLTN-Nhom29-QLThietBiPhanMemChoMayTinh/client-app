@@ -6,6 +6,7 @@ import { getAllKhoaApi } from "../../../redux/reducers/khoaReducer";
 import {
   getAllGiaoVienApi,
   insertGiaoVienApi,
+  updateGiaoVienApi,
 } from "../../../redux/reducers/giaoVienReducer";
 import {
   getAllTaiKhoanApi,
@@ -58,6 +59,7 @@ export default function FormUpdateGiaoVien() {
         ...objData_old,
         txtTaiKhoan: objData_old.taiKhoan.tenDangNhap,
       };
+      objData_old = {...objData_old,txtTaiKhoan: objData_old.taiKhoan.tenDangNhap }
       setErrGiaoVien({ ...errGiaoVien });
     }
     if (arrTaiKhoan.length === 0) {
@@ -108,10 +110,8 @@ export default function FormUpdateGiaoVien() {
     e.preventDefault();
     if (checkData()) {
       // true
-      console.log(objGiaoVien.current);
       //
-      // dispatch(insertTaiKhoanApi(taiKhoan));
-      // dispatch(insertGiaoVienApi(objGiaoVien.current));
+      dispatch(updateGiaoVienApi(objGiaoVien.current));
     }
     // false
   };
