@@ -7,7 +7,7 @@ import { BiSolidDetail } from "react-icons/bi";
 //
 import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteGiaoVienApi,
@@ -21,7 +21,11 @@ import { getAllKhoaApi } from "../../redux/reducers/khoaReducer";
 export default function PageQLGiaoVien() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  // nhan data gui theo uri
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const objParam = Object.fromEntries(searchParams);
+  //
   const { arrGiaoVien, arrGiaoVienSearch, valueSelect, valueSearch } =
     useSelector((state) => state.giaoVienReducer);
   let { arrKhoa } = useSelector((state) => state.khoaReducer);
@@ -33,6 +37,9 @@ export default function PageQLGiaoVien() {
     }
     if (arrKhoa.length === 0) {
       dispatch(getAllKhoaApi);
+    }
+    if(objParam.idKhoa != null){
+      dispatch(setValueSelectGiaoVien(objParam.idKhoa));
     }
   }, []);
 
@@ -70,8 +77,8 @@ export default function PageQLGiaoVien() {
               <FaPencilAlt color="white" size={16} />
             </button>
             <button
-               onClick={() => {
-                if(window.confirm("Bấm vào nút OK để xóa " + item.hoTen)){
+              onClick={() => {
+                if (window.confirm("Bấm vào nút OK để xóa " + item.hoTen)) {
                   dispatch(deleteGiaoVienApi(item.maGiaoVien));
                 }
               }}

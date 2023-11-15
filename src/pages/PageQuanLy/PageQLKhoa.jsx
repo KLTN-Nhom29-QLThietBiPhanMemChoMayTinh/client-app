@@ -7,7 +7,7 @@ import { BiSolidDetail } from "react-icons/bi";
 //
 import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteKhoaApi,
@@ -20,6 +20,7 @@ import FormAddKhoaModal from "../../components/layout/Add/FormAddKhoaModal";
 import FormUpdateKhoaModal from "../../components/layout/Edit/FormUpdateKhoaModal";
 
 export default function PageQLKhoa() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   let { arrKhoa, arrKhoaSearch } = useSelector((state) => state.khoaReducer);
@@ -66,17 +67,17 @@ export default function PageQLKhoa() {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            <NavLink
-              // to={`../quan-ly/phong`}
+            <button
+              
               onClick={() => {
-                alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
+                navigate(`/quan-ly/giao-vien?idKhoa=${item.maKhoa}`)
               }}
               type="button"
               className="btn btn-info mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink>
+            </button>
           </td>
         </tr>
       );
