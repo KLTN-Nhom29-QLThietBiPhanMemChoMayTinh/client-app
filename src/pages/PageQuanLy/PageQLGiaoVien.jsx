@@ -105,7 +105,8 @@ export default function PageQLGiaoVien() {
     });
   };
   //
-  const renderSelectKhoa = () => {
+  const 
+  renderSelectKhoa = () => {
     return arrKhoa?.map((item, index) => {
       if (item.maKhoa == valueSelect) {
         return (

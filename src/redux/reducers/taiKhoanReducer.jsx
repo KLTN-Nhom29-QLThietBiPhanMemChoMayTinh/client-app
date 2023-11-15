@@ -128,12 +128,22 @@ export default taiKhoanReducer.reducer;
 
 // -------------- Call API ---------------
 
+export const deleteTaiKhoanApi= (maTk) => {
+  return async (dispatch) => {
+    try {
+      
+    } catch (error) {
+      console.log("🚀 ~ file: taiKhoanReducer.jsx:136 ~ return ~ error:", error)
+      
+    }
+  }
+}
+
 /**
  * update taiKhoan
  * @param {*} taiKhoan
  * @returns
  */
-
 export const updateTaiKhoan2 = (taiKhoan) => {
   return async (dispatch) => {
     try {

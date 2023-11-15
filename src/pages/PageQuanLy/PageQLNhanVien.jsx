@@ -9,20 +9,37 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllNhanVienApi, setValueSearchNhanVien } from "../../redux/reducers/nhanVienReducer";
+import {
+  getAllNhanVienApi,
+  setValueSearchNhanVien,
+  setValueSelectNhanVienAction,
+} from "../../redux/reducers/nhanVienReducer";
+import { getAllChucVuApi } from "../../redux/reducers/chucVuReducer";
 
 export default function PageQLNhanVien() {
   const dispatch = useDispatch();
 
-  const { arrNhanVienSearch } = useSelector((state) => state.nhanVienReducer);
+  const { arrNhanVien, arrNhanVienSearch, valueSelect, valueSearch } =
+    useSelector((state) => state.nhanVienReducer);
+  const { arrChucVu } = useSelector((state) => state.chucVuReducer);
 
   useEffect(() => {
-    dispatch(getAllNhanVienApi);
+    if (arrNhanVien.length === 0) {
+      dispatch(getAllNhanVienApi);
+    }
+
+    if (arrChucVu.length === 0) {
+      dispatch(getAllChucVuApi);
+    }
   }, []);
 
   //handle
   const handleChangeSearch = (e) => {
-    dispatch(setValueSearchNhanVien(e.target.value))
+    dispatch(setValueSearchNhanVien(e.target.value));
+  };
+  //
+  const handleChangeSelectChucVu = (e) => {
+    dispatch(setValueSelectNhanVienAction(e.target.value));
   };
   //render
   const renderDataNhanVien = () => {
@@ -83,6 +100,20 @@ export default function PageQLNhanVien() {
       );
     });
   };
+  //
+  const renderSelectChucVu = () => {
+    return arrChucVu?.map((item, index) => {
+      return (
+        <option
+          key={index}
+          selected={item.maCV == valueSelect ? 1 : 0}
+          value={item.maCV}
+        >
+          {item.tenCV}
+        </option>
+      );
+    });
+  };
 
   // Mảng quản lý data navtab
   let arrLinkNavTab = [{ name: "Quản lý nhân viên", link: "" }];
@@ -110,10 +141,21 @@ export default function PageQLNhanVien() {
             >
               <h2 style={{ margin: "0" }}>Danh sách nhân viên</h2>
               <div></div>
-
-              {/* select - option */}
-              {/* {renderSelectTrangThai()} */}
               <div></div>
+              {/* select - option */}
+
+              <div className="col-2 m-2">
+                <select
+                  className="form-select"
+                  onChange={handleChangeSelectChucVu}
+                >
+                  <option value="-1" selected>
+                    tất cả
+                  </option>
+                  {renderSelectChucVu()}
+                </select>
+              </div>
+
               <div></div>
 
               {/* input tim kiem */}
@@ -122,6 +164,7 @@ export default function PageQLNhanVien() {
                   type="text"
                   className="form-control"
                   placeholder="tìm kiếm..."
+                  value={valueSearch}
                   onChange={handleChangeSearch}
                 />
               </div>

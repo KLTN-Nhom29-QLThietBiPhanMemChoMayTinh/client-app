@@ -10,6 +10,7 @@ import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteTaiKhoanApi,
   getAllQuyenSDApi,
   getAllTaiKhoanApi,
   getUserbyIdApi,
@@ -57,21 +58,6 @@ export default function PageQLTaiKhoan() {
           <td>{item.mota.name}</td> */}
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            {/* <NavLink
-              // to={"/quan-ly/tai-khoan/update"}
-              onClick={() => {
-                alert(`Update -- ${item.id} -- dang cập nhật!`);
-                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-              }}
-            >
-              <button
-                type="button"
-                className="btn btn-primary mx-2 px-2"
-                style={{ padding: "2px" }}
-              >
-                <FaPencilAlt color="white" size={16} />
-              </button>
-            </NavLink> */}
 
             <button
               type="button"
@@ -86,16 +72,18 @@ export default function PageQLTaiKhoan() {
               <BiSolidDetail color="white" size={16} />
             </button>
 
-            <button
+            {/* <button
               onClick={() => {
-                alert(`Del -- ${item.id} -- dang cập nhật!`);
+                if (window.confirm("Bấm vào nút OK để xóa tài khoản" + item.tenDangNhap)) {
+                  dispatch(deleteTaiKhoanApi(item.maTK));
+                }
               }}
               type="button"
               className="btn btn-danger mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <ImBin2 color="white" size={16} />
-            </button>
+            </button> */}
           </td>
         </tr>
       );
@@ -198,7 +186,7 @@ export default function PageQLTaiKhoan() {
                     <th style={{ minWidth: "110px" }}>Mã tài khoản</th>
                     <th style={{ minWidth: "125px" }}>Tên đăng nhập</th>
                     <th style={{ minWidth: "160px" }}>Quyền sử dụng</th>
-                    <th style={{ minWidth: "170px" }}>Hành động</th>
+                    <th style={{ minWidth: "120px" }}>Hành động</th>
                   </tr>
                 </thead>
                 <tbody className="over_flow_auto">
