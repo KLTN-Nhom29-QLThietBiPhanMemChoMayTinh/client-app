@@ -41,7 +41,8 @@ const initialState = {
   arrQuyen: [],
   detailTaiKhoan: {},
   valueSearch: "",
-  valueSelect: "",
+  valueSelect: "-1",
+  objUser: {},
 };
 
 const taiKhoanReducer = createSlice({
@@ -89,6 +90,9 @@ const taiKhoanReducer = createSlice({
       //   valueSelect
       // );
     },
+    setObjUserAction: (state,action) => {
+      state.objUser = action.payload
+    }
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -98,10 +102,39 @@ export const {
   serArrQuyenAction,
   setValueSelectTaiKhoan,
   insertTaiKhoanAction,
+  setObjUserAction,
 } = taiKhoanReducer.actions;
 export default taiKhoanReducer.reducer;
 
 // -------------- Call API ---------------
+/**
+ * get 1 user theo id
+ */
+export const getUserbyIdApi = (taiKhoan) => {
+  let {maTK, quyen} = taiKhoan;
+  return async(dispatch) => {
+    try {
+      let resultUser = {};
+      if(quyen.tenQuyen.toLowerCase().includes("Giáo viên".toLowerCase())){
+        resultUser = await http.get(`/GiaoVien/${maTK}`);
+      }
+      else {
+        resultUser = await http.get(`/NhanVien/${maTK}`);
+      }
+
+      dispatch(setObjUserAction(resultUser.data))
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+/**
+ * add 1 tai khoan
+ * @param {*} taiKhoan 
+ * @returns 
+ */
 export const insertTaiKhoanApi = (taiKhoan) => {
   return async (dispatch) => {
     try {

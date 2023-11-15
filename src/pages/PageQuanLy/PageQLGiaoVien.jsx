@@ -174,6 +174,7 @@ export default function PageQLGiaoVien() {
                   type="text"
                   className="form-control"
                   id
+                  value={valueSearch}
                   placeholder="tìm kiếm..."
                   onChange={handleChangeSearch}
                 />

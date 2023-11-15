@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllQuyenSDApi,
   getAllTaiKhoanApi,
+  getUserbyIdApi,
   setValueSearchTaiKhoan,
   setValueSelectTaiKhoan,
 } from "../../redux/reducers/taiKhoanReducer";
@@ -19,15 +20,19 @@ import {
 export default function PageQLTaiKhoan() {
   const dispatch = useDispatch();
 
-  const { arrTaiKhoan, arrTaiKhoanSearch, arrQuyen } = useSelector(
-    (state) => state.taiKhoanReducer
-  );
+  const {
+    arrTaiKhoan,
+    arrTaiKhoanSearch,
+    arrQuyen,
+    valueSearch,
+    valueSelect,
+    objUser,
+  } = useSelector((state) => state.taiKhoanReducer);
 
   useEffect(() => {
     if (arrTaiKhoan.length === 0) {
       dispatch(getAllTaiKhoanApi);
     }
-
     if (arrQuyen.length === 0) {
       dispatch(getAllQuyenSDApi);
     }
@@ -57,7 +62,7 @@ export default function PageQLTaiKhoan() {
           <td>{item.mota.name}</td> */}
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink
+            {/* <NavLink
               // to={"/quan-ly/tai-khoan/update"}
               onClick={() => {
                 alert(`Update -- ${item.id} -- dang cập nhật!`);
@@ -71,7 +76,21 @@ export default function PageQLTaiKhoan() {
               >
                 <FaPencilAlt color="white" size={16} />
               </button>
-            </NavLink>
+            </NavLink> */}
+
+            <button
+              type="button"
+              className="btn btn-info mx-2 px-2"
+              style={{ padding: "2px" }}
+              data-bs-toggle="modal"
+              data-bs-target="#modalDetail"
+              onClick={() => {
+                dispatch(getUserbyIdApi(item));
+              }}
+            >
+              <BiSolidDetail color="white" size={16} />
+            </button>
+
             <button
               onClick={() => {
                 alert(`Del -- ${item.id} -- dang cập nhật!`);
@@ -81,15 +100,6 @@ export default function PageQLTaiKhoan() {
               style={{ padding: "2px" }}
             >
               <ImBin2 color="white" size={16} />
-            </button>
-            <button
-              type="button"
-              className="btn btn-info mx-2 px-2"
-              style={{ padding: "2px" }}
-              data-bs-toggle="modal"
-              data-bs-target="#modalDetail"
-            >
-              <BiSolidDetail color="white" size={16} />
             </button>
           </td>
         </tr>
@@ -101,12 +111,16 @@ export default function PageQLTaiKhoan() {
     return (
       <div className="col-2 mx-2">
         <select className="form-select " onChange={handleChangeSelectQuyen}>
-          <option selected value="-1">
+          <option selected={valueSelect == -1 ? 1 : 0} value="-1">
             Tất cả
           </option>
           {arrQuyen.map((item, index) => {
             return (
-              <option value={item.maQuyen} key={index}>
+              <option
+                selected={valueSelect == item.maQuyen ? 1 : 0}
+                value={item.maQuyen}
+                key={index}
+              >
                 {item.tenQuyen}
               </option>
             );
@@ -119,6 +133,81 @@ export default function PageQLTaiKhoan() {
   // Mảng quản lý data navtab
   let arrLinkNavTab = [{ name: "Quản lý tài khoản", link: "" }];
   //
+
+  const renderUserModal = () => {
+    if (Object.keys(objUser).length === 0)
+      return <>Chưa có thông tin hãy quay lại sau.</>;
+
+    let { quyen } = objUser.taiKhoan;
+
+    if (quyen.tenQuyen.toLowerCase().includes("Giáo viên".toLowerCase())) {
+      let { maGiaoVien, taiKhoan, hoTen, soDienThoai, khoa } = objUser;
+      return (
+        <div className="p-3">
+          <h3 className="text-center">Thông tin tài khoản</h3>
+          <p>
+            <strong>Tài khoản: </strong> {taiKhoan.tenDangNhap} ({" "}
+            <span className="text-primary text-decoration-underline btn_moune">
+              Sửa
+            </span>{" "}
+            )
+          </p>
+          <p>
+            <strong>Mật khẩu: </strong> ********** ({" "}
+            <span className="text-primary text-decoration-underline btn_moune">
+              Sửa
+            </span>{" "}
+            ){" "}
+          </p>
+          <p>
+            <strong>Mã giáo viên: </strong> {maGiaoVien}{" "}
+          </p>
+          <p>
+            <strong>Tên giáo viên: </strong> {hoTen}{" "}
+          </p>
+          <p>
+            <strong>Số điện thoại: </strong> {soDienThoai}{" "}
+          </p>
+          <p>
+            <strong>Khoa: </strong> {khoa.tenKhoa}39{" "}
+          </p>
+        </div>
+      );
+    } else {
+      let { maNV, taiKhoan, tenNV, sDT, chucVu } = objUser;
+      return (
+        <div className="p-3">
+          <h3 className="text-center">Thông tin tài khoản</h3>
+          <p>
+            <strong>Tài khoản: </strong> {taiKhoan.tenDangNhap} (
+            <span className="text-primary text-decoration-underline btn_moune">
+              Sửa
+            </span>
+            )
+          </p>
+          <p>
+            <strong>Mật khẩu: </strong> ********** (
+            <span className="text-primary text-decoration-underline btn_moune">
+              Sửa
+            </span>
+            )
+          </p>
+          <p>
+            <strong>Mã nhân viên: </strong> {maNV}
+          </p>
+          <p>
+            <strong>Tên nhân viên: </strong> {tenNV}
+          </p>
+          <p>
+            <strong>Số điện thoại: </strong> {sDT}
+          </p>
+          <p>
+            <strong>Công việc: </strong> {chucVu.tenCV}
+          </p>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="container " style={{ height: "100vh" }}>
@@ -133,21 +222,13 @@ export default function PageQLTaiKhoan() {
         aria-labelledby="modalTitleId"
         aria-hidden="true"
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-dialog " role="document">
           <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="modalTitleId">
-                Modal title
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              />
-            </div>
             <div className="modal-body">
-              <div className="container-fluid">Add rows here</div>
+              {/*  */}
+              {renderUserModal()}
+
+              {/*  */}
             </div>
             <div className="modal-footer">
               <button
@@ -156,9 +237,6 @@ export default function PageQLTaiKhoan() {
                 data-bs-dismiss="modal"
               >
                 Close
-              </button>
-              <button type="button" className="btn btn-primary">
-                Save
               </button>
             </div>
           </div>
@@ -199,6 +277,7 @@ export default function PageQLTaiKhoan() {
                   type="text"
                   className="form-control"
                   id
+                  value={valueSearch}
                   placeholder="tìm kiếm..."
                   onChange={handleChangeSearch}
                 />
