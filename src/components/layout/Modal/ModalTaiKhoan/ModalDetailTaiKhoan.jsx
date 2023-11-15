@@ -288,7 +288,7 @@ export default function ModalDetailTaiKhoan() {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              Đóng
             </button>
           </div>
         </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Footer from "../../common/Footer/Footer";
 import NavTab from "../../common/NavTab/NavTab";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllNhanVienApi } from "../../../redux/reducers/nhanVienReducer";
+import { getAllNhanVienApi, insertNhanVienApi } from "../../../redux/reducers/nhanVienReducer";
 import { getAllTaiKhoanApi } from "../../../redux/reducers/taiKhoanReducer";
 import { getAllChucVuApi } from "../../../redux/reducers/chucVuReducer";
 
@@ -48,11 +48,116 @@ export default function FormAddNhanVien() {
     }
   }, []);
 
+  const checkData = () => {
+    let result = 1;
+    let err_tenNV = "";
+    let err_sDT = "";
+    let err_email = "";
+    let err_chucVu = "";
+    let err_taiKhoan = "";
+
+    let regexEmail = new RegExp(
+      /^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$/
+    );
+    let regexPhone = new RegExp(/^\d{9,12}$/);
+
+    let { tenNV, sDT, email, txtTaiKhoan, chucVu } = objNhanVien.current;
+
+    if(txtTaiKhoan.trim().length === 0){
+      err_taiKhoan = "Hãy nhập thông tin!"
+      result = false;
+    }
+    //
+    if (chucVu == null || Object.keys(chucVu).length === 0) {
+      err_chucVu = "Hãy chọn một khoa!";
+      result = false;
+    }
+    //
+    if (email.trim().length === 0) {
+      result = false;
+      err_email = "Hãy nhập thông tin!";
+    } else if (!regexEmail.test(email)) {
+      err_email = "Hãy nhập đúng định danh của email!";
+      result = false;
+    }
+    //
+    if (sDT.trim().length === 0) {
+      err_sDT = "Hãy nhập thông tin!";
+      result = false;
+    } else if (
+      sDT.trim().length < 9 ||
+      sDT.trim().length > 15
+    ) {
+      err_sDT = "Số điện thoại có trên 9 số và nhỏ hơn 15 số!";
+      result = false;
+    } else if (!regexPhone.test(sDT)) {
+      err_sDT = "Hãy nhập các ký tự số!";
+      result = false;
+    }
+    //
+    if (tenNV.trim().length === 0) {
+      err_tenNV = "Hãy nhập thông tin!";
+      result = false;
+    }
+
+
+    setErrNhanVien({
+      tenNV: err_tenNV,
+      sDT: err_sDT,
+      email: err_email,
+      chucVu: err_chucVu,
+      taiKhoan: err_taiKhoan,
+    })
+
+    return result;
+  };
+
   // handle
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("submit");
+    if (!checkData()) {
+      return;
+    }
+    //true
+    // check trung Tai khoan
+    let objTaiKhoan = arrTaiKhoan.find(item => item.tenDangNhap == objNhanVien.current.txtTaiKhoan )
+
+    if(objTaiKhoan != null){
+      alert('Trùng tài khoản!')
+      return;
+    }
+    //
+    let maNhanVien = getRandomMaNV(arrNhanVien);
+    //
+    let {txtTaiKhoan, chucVu} = objNhanVien.current 
+
+    let quyen = {} ;
+
+    if(chucVu.tenCV.includes('Nhân viên quản lý')) {
+      quyen = {
+        maQuyen: 1,
+        tenQuyen: "Người quản lý"
+        }
+    }
+    else {
+      quyen = {
+        maQuyen: 3,
+        tenQuyen: "Nhân viên"
+        }
+    }
+
+    let taiKhoan =  {
+      maTK: maNhanVien,
+      tenDangNhap: txtTaiKhoan,
+      matKhau:'123456A',
+      quyen
+    }
+
+    objNhanVien.current = {...objNhanVien.current, maNhanVien,taiKhoan}
+
+    dispatch(insertNhanVienApi(objNhanVien.current))
+    
   };
   //
   const handleChangeText = (e) => {
@@ -86,7 +191,7 @@ export default function FormAddNhanVien() {
       return item.maCV == idChucvu;
     });
 
-    objNhanVien.current.chucVu = {...objData};
+    objNhanVien.current.chucVu = { ...objData };
     setErrNhanVien({ ...errNhanVien, chucVu: "" });
   };
 
