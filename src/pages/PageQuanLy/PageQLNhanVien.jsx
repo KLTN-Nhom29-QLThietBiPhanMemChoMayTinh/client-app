@@ -172,10 +172,7 @@ export default function PageQLNhanVien() {
               <div style={{ display: "flex", alignItems: "center" }}>
                 {/* Btn them */}
                 <NavLink
-                  // to="/quan-ly/nhan-vien/add"
-                  onClick={() => {
-                    alert(`tạo mới -- dang cập nhật!`);
-                  }}
+                  to="/quan-ly/nhan-vien/add"
                   type="button"
                   className="btn btn-success ms-4 view_center_vertical"
                 >
