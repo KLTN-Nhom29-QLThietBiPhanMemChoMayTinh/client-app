@@ -189,7 +189,7 @@ const PageQLTang = () => {
                     <th>STT</th>
                     <th scope="col">Tên tầng</th>
                     <th scope="col">Tên tòa nhà</th>
-                    <th scope="col">Số phòng</th>
+                    <th scope="col">Số máy</th>
                     <th scope="col" style={{ width: "220px" }}>
                       Hành động
                     </th>

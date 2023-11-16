@@ -100,6 +100,7 @@
     --  error - select value: mối khi reset lại
     - PageQLNhanVien: xoa NV có lịch trực bị lỗi 500
     - PageLichTruc: xóa 1 lich truc cung bi lỗi 500
+    - FormAddPhongMay: them moi  tung obj moi - add mayTinh - add phong - add phan mem vs Phong
 
 
 ## Tài liệu

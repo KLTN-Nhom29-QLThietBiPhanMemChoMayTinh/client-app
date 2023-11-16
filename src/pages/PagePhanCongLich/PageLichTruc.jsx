@@ -60,6 +60,8 @@ export default function PageLichTruc(props) {
               <button
                 onClick={() => {
                   if (window.confirm(`Bấm vào nút OK để xóa lịch trực ${item.nhanVien.tenNV} - ${item.tang.tenTang}, ${item.tang.toaNha.tenToaNha} -- Thời gian:  ${strTgian}. `)) {
+                    alert('Lỗi api xóa lịch trực.')
+                    return ;
                     dispatch(deleteLichTrucApi(item.maLich));
                   }
                 }}

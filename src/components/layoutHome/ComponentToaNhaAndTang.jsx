@@ -16,6 +16,7 @@ export default function ComponentToaNhaAndTang() {
   let { objThongTin, arrToaNhaH, arrTangH } = useSelector(
     (state) => state.homeReducer
   );
+  let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
 
   // 3.del
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
@@ -44,7 +45,7 @@ export default function ComponentToaNhaAndTang() {
       );
     }
     if (Object.keys(objThongTin.tang).length === 0) {
-      return arrToaNhaH?.map((item, index) => {
+      return arrToaNha?.map((item, index) => {
         return (
           <option key={index} value={item.maToaNha}>
             {item.tenToaNha}
@@ -52,7 +53,7 @@ export default function ComponentToaNhaAndTang() {
         );
       });
     }
-    return arrToaNhaH?.map((item, index) => {
+    return arrToaNha?.map((item, index) => {
       if (item.maToaNha === objThongTin?.tang.toaNha.maToaNha) {
         return (
           <option key={index} selected value={item.maToaNha}>

@@ -9,14 +9,13 @@ import ComponentToaNhaAndTang from "../../components/layoutHome/ComponentToaNhaA
 import ComponentListPhong from "../../components/layoutHome/ComponentListPhong";
 import ComponentDetailPhong from "../../components/layoutHome/ComponentDetailPhong";
 import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
-
+import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 
 export default function PageHome() {
   const dispatch = useDispatch();
 
-  let { objThongTin, arrToaNhaH } = useSelector(
-    (state) => state.homeReducer
-  );
+  let { objThongTin, arrToaNhaH } = useSelector((state) => state.homeReducer);
+  let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
 
   // 3.
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
@@ -27,8 +26,8 @@ export default function PageHome() {
       dispatch(getPhongByFirst);
     }
     //
-    if (arrToaNhaH.length === 0) {
-      dispatch(getAllToaNhaHomeApi);
+    if (arrToaNha.length === 0) {
+      dispatch(getAllToaNhaApi);
     }
     // call Tang
 
@@ -78,19 +77,31 @@ export default function PageHome() {
           </div>
           <ComponentThongTinChiTiet />
           <div className="d-flex justify-content-around">
-            <button onClick={() => {
-              alert("Đang cập nhật...")
-            }} type="button" className="btn btn-primary">
+            <button
+              onClick={() => {
+                alert("Đang cập nhật...");
+              }}
+              type="button"
+              className="btn btn-primary"
+            >
               Chi tiết
             </button>
-            <button onClick={() => {
-              alert("Đang cập nhật...")
-            }} type="button" className="btn btn-primary">
+            <button
+              onClick={() => {
+                alert("Đang cập nhật...");
+              }}
+              type="button"
+              className="btn btn-primary"
+            >
               Chỉnh sửa
             </button>
-            <button onClick={() => {
-              alert("Đang cập nhật...")
-            }} type="button" className="btn btn-primary">
+            <button
+              onClick={() => {
+                alert("Đang cập nhật...");
+              }}
+              type="button"
+              className="btn btn-primary"
+            >
               Ghi chú
             </button>
           </div>

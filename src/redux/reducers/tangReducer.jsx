@@ -3,6 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 import { history } from "../..";
+import { getAllToaNhaApi } from "./toaNhaReducer";
 
 const initialState = {
   arrTang: [],
@@ -136,9 +137,11 @@ export const deleteTangApi = (maXoa) => {
 export const updateTangApi = (objTang) => {
   return async (dispatch) => {
     try {
+      const result = await http.post("/LuuTang", objTang);
       console.log("Chua co Api Update");
 
       dispatch(updateTangApiAction(objTang));
+      dispatch(getAllToaNhaApi)
       history.push("/quan-ly/tang");
     } catch (error) {
       console.log(

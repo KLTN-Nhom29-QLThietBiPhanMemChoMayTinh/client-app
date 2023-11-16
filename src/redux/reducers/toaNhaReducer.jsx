@@ -85,7 +85,8 @@ export default toaNhaReducer.reducer;
 export const updateToaNha = (toaNha) => {
   return async (dispatch) => {
     // let result = await http.put("/toaNha", toaNha)
-    console.log("chua co api update ToaNha");
+    let result = await http.post("/LuuToaNha", toaNha);
+    console.log("chua co api update ToaNha - dang dung api add");
 
     dispatch(updateToaNhaAction(toaNha));
     history.push('../')

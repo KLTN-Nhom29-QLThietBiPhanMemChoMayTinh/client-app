@@ -387,6 +387,9 @@ export default function FormAddNhanVien() {
 }
 
 const getRandomMaNV = (arrData) => {
+  if(arrData.length === 0) {
+    return 'NV001'
+  }
   let idNext = "";
   let objDataLast = arrData[arrData.length - 1];
 

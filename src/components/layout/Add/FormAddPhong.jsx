@@ -162,8 +162,8 @@ export default function FormAddPhong() {
     e.preventDefault();
     if (checkDataInput()) {
       //true - di tiep
-      alert(`dang cập nhật`)
-      console.log('Chua co api');
+      // alert(`dang cập nhật`)
+      // console.log('Chua co api');
       // dispatch(insertPhongMayApi(itemPhongRef.current))
     }
   };
