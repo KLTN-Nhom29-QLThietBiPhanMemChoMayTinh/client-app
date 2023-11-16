@@ -9,26 +9,32 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllThietBiApi, setValueSelectActionTBi, setValueTxtSearchAction } from "../../redux/reducers/thietBiReducer";
+import {
+  getAllThietBiApi,
+  setValueSelectActionTBi,
+  setValueTxtSearchAction,
+} from "../../redux/reducers/thietBiReducer";
 import { formatStringDate } from "../../util/config";
 
 export default function PageQLThietBi() {
   const dispatch = useDispatch();
 
-  let { arrThietBiSearch } = useSelector((state) => state.thietBiReducer);
+  let { arrThietBi, arrThietBiSearch, valueTxtSearch, valueSelect } =
+    useSelector((state) => state.thietBiReducer);
 
   useEffect(() => {
-    const action = getAllThietBiApi;
-    dispatch(action);
+    if (arrThietBi.length === 0) {
+      const action = getAllThietBiApi;
+      dispatch(action);
+    }
   }, []);
 
   // handle
   const handleChangeSearch = (e) => {
-    dispatch(setValueTxtSearchAction(e.target.value.trim()))
+    dispatch(setValueTxtSearchAction(e.target.value.trim()));
   };
   const handleChangeSelect = (e) => {
-    dispatch(setValueSelectActionTBi(e.target.value.trim()))
-
+    dispatch(setValueSelectActionTBi(e.target.value.trim()));
   };
   //render
   const renderDataThietBi = () => {
@@ -60,7 +66,7 @@ export default function PageQLThietBi() {
             return <td style={{ backgroundColor: "#4dff7c" }}>Đang sử dụng</td>;
           }
         } else {
-          return <td style={{ backgroundColor: "#ff6666" }}>Đang hỏng</td>;
+          return <td style={{ backgroundColor: "#ff6666" }}>Không sử dụng</td>;
         }
       };
 
@@ -122,11 +128,13 @@ export default function PageQLThietBi() {
     return (
       <div className=" col-2 m-2 ">
         <select className="form-select " onChange={handleChangeSelect}>
-          <option value="0">Toàn bộ</option>
-          <option value="1">Bị hỏng</option>
-          <option value="2">Đang sử dụng</option>
-          <option value="3">Hết hạn</option>
-          <option value="4">Sắp hết hạn</option>
+          <option selected={valueSelect == -1 ? 1 : 0} value="-1">
+            Toàn bộ
+          </option>
+          <option selected={valueSelect == 1 ? 1 : 0} value="1">Không sử dụng</option>
+          <option selected={valueSelect == 2 ? 1 : 0} value="2">Đang sử dụng</option>
+          <option selected={valueSelect == 3 ? 1 : 0} value="3">Hết hạn</option>
+          <option selected={valueSelect == 4 ? 1 : 0} value="4">Sắp hết hạn</option>
         </select>
       </div>
     );
@@ -167,7 +175,7 @@ export default function PageQLThietBi() {
                 <input
                   type="text"
                   className="form-control"
-                  id
+                  value={valueTxtSearch}
                   placeholder="tìm kiếm..."
                   onChange={handleChangeSearch}
                 />
@@ -198,7 +206,7 @@ export default function PageQLThietBi() {
                     <th style={{ minWidth: "90px" }}>Mã thiết bị</th>
                     <th style={{ minWidth: "180px" }}>Tên thiết bị</th>
                     <th style={{ minWidth: "120px" }}>Ngày bắt đầu sử dụng</th>
-                    <th style={{ minWidth: "90px" }}>Hạn bảo hành</th>
+                    <th style={{ minWidth: "90px" }}>Hạn bảo hành (tháng)</th>
                     <th style={{ minWidth: "90px" }}>Ngày hết hạn </th>
                     <th style={{ minWidth: "150px" }}>Trạng thái</th>
                     <th style={{ minWidth: "170px" }}>Hành động</th>

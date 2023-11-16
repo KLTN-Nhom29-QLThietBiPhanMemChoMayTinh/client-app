@@ -26,6 +26,9 @@
 ### ảnh quản lý Thiết bị
 ![QL Thiết bị](./AnhMinhHoa/img_QLThietbi.png)
 
+### ảnh quản lý Thiết bị
+![QL Thiết bị](./AnhMinhHoa/img_QLPhanMem.png)
+
 ### ảnh quản lý Nhân viên
 ![QL Nhân viên](./AnhMinhHoa/img_QLNhanVien.png)
 

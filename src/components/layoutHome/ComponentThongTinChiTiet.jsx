@@ -24,6 +24,9 @@ export default function ComponentThongTinChiTiet() {
         return <li className="ms-3">Không có.</li>
       }
       return arrPhanMem?.map((item, index) => {
+        if(!item.trangThai){
+          return <></>
+        }
         return <li key={index} className="ms-3">{item.tenPhanMem}</li>
       })
     }

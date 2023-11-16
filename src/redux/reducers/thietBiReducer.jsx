@@ -8,9 +8,9 @@ import Database from "../../util/database/Database";
 
 const searchData = (arrData, valSearch, valSelect) => {
   let textSearch = valSearch.toLowerCase();
-
+  let arrUpdate = [];
   // search - text
-  let arrUpdate = arrData.filter((item) => {
+  arrUpdate = arrData.filter((item) => {
     let ngaySD = new Date(item.ngayCaiDat);
     let ngayKT = new Date(item.ngayCaiDat);
     ngayKT.setMonth(ngayKT.getMonth() + item.tuoiTho);
@@ -18,7 +18,6 @@ const searchData = (arrData, valSearch, valSelect) => {
     return (
       (item.maThietBi + "").toLowerCase().includes(textSearch) ||
       item.tenThietBi.toLowerCase().includes(textSearch) ||
-      // item.ngayBatDau.toLowerCase().includes(textSearch)  ||
       (item.tuoiTho + "").toLowerCase().includes(textSearch) ||
       formatStringDate(ngaySD).toLowerCase().includes(textSearch) ||
       formatStringDate(ngayKT).toLowerCase().includes(textSearch)
@@ -27,7 +26,6 @@ const searchData = (arrData, valSearch, valSelect) => {
 
   // search -- select
   let day = new Date();
-  
 
   if (valSelect == 1) {
     // bi hong
@@ -47,16 +45,15 @@ const searchData = (arrData, valSearch, valSelect) => {
 
       ngayKT.setMonth(ngayKT.getMonth() + item.tuoiTho);
 
-      return  day > ngayKT;
+      return day > ngayKT;
     });
   } else if (valSelect == 4) {
     // sap het han
     arrUpdate = arrUpdate.filter((item) => {
-        let ngayKT = new Date(item.ngayCaiDat);
+      let ngayKT = new Date(item.ngayCaiDat);
       ngayKT.setMonth(ngayKT.getMonth() + item.tuoiTho);
       let day2 = new Date(ngayKT);
       day2.setDate(day2.getDate() - 30); // day2 là tgian trước ngày kt 30 ngay
-
 
       return day2 < day && ngayKT > day;
     });
@@ -66,7 +63,7 @@ const searchData = (arrData, valSearch, valSelect) => {
 
 const initialState = {
   valueTxtSearch: "",
-  valueSelect: "",
+  valueSelect: "-1",
   arrThietBi: [],
   arrThietBiSearch: [],
   detailValue: {},
@@ -78,7 +75,10 @@ const thietBiReducer = createSlice({
   reducers: {
     setArrThietBiAction: (state, action) => {
       state.arrThietBi = action.payload;
+
       state.arrThietBiSearch = action.payload;
+      state.valueSelect = "-1";
+      state.valueTxtSearch = "";
     },
     setValueTxtSearchAction: (state, action) => {
       state.valueTxtSearch = action.payload;
@@ -116,7 +116,7 @@ export default thietBiReducer.reducer;
 
 export const getAllThietBiApi = async (dispatch) => {
   try {
-    let result = await http.get('/DSThietBiMay');
+    let result = await http.get("/DSThietBiMay");
     const action = setArrThietBiAction(result.data);
 
     // const action = setArrThietBiAction(Database.dataThietBi);

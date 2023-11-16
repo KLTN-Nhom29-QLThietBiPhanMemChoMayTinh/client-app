@@ -9,78 +9,79 @@ import { FaPencilAlt } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
 import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
-
-const dataServerPM = Database.dataPhanMem;
-
-let dataLocalArrPM = [];
-
-const getCallApiDataPM = () => {
-  dataLocalArrPM = [...dataServerPM];
-};
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllPhanMemApi,
+  setValueSearchPhanMemAction,
+  setValueSelectPhanMemAction,
+} from "../../redux/reducers/phanMemReducer";
+import { formatStringDate } from "../../util/config";
 
 /**
  * môn học - phòng máy
  * 4.	Phần mềm (mã phần mềm, tên phần mềm, trạng thái, ngay bd, tuoitho )
  */
 export default function PageQLPhanMem() {
-  let [arrPhanMem, setArrPhanMem] = useState([]);
-
-  let [txtSearch, setTxtSearch] = useState("");
+  const dispatch = useDispatch();
+  //
+  let { arrPhanMemSearch, valueSelect, valueSearch } = useSelector(
+    (state) => state.phanMemReducer
+  );
 
   // useEffect lay data khoi dau
   useEffect(() => {
-    if (dataLocalArrPM.length === 0) {
-      getCallApiDataPM();
+    if (arrPhanMemSearch.length === 0) {
+      dispatch(getAllPhanMemApi);
     }
   }, []);
-  useEffect(() => {
-    filterData();
-  }, [txtSearch]);
 
-  // Hàm tìm kiếm dựa trên giá trị của searchText
-  const filterData = () => {
-    const arrNew = dataLocalArrPM.filter((item) => {
-      const search = txtSearch.toLowerCase();
-      return (
-        (item.id + "").toLowerCase().includes(search) ||
-        item.name.toLowerCase().includes(search) ||
-        (item.soPhong + "").toLowerCase().includes(search)
-      );
-    });
-    setArrPhanMem([...arrNew]);
-  };
   //handle
   const handleChangeSearch = (e) => {
-    setTxtSearch(e.target.value);
+    // setTxtSearch(e.target.value);
+    dispatch(setValueSearchPhanMemAction(e.target.value));
+  };
+  //
+  const handleChangeSelect = (e) => {
+    dispatch(setValueSelectPhanMemAction(e.target.value));
   };
   //Render
   const renderSelectTheoRouterMon = () => {
     return <></>;
   };
   const renderDataPM = () => {
-    return arrPhanMem.map((item, index) => {
-      let ngaySuDung = item.ngaySuDung;
+    return arrPhanMemSearch.map((item, index) => {
+      let ngaySD = new Date(item?.ngayCaiDat);
+      let ngayKT = new Date(item?.ngayCaiDat);
+
+      ngayKT.setMonth(ngayKT.getMonth() + item?.tuoiTho);
+
+      let ngaySuDung = item.ngayCaiDat;
       let ngayHetHan = new Date(ngaySuDung);
 
       ngayHetHan.setMonth(ngayHetHan.getMonth() + item.tuoiTho);
 
-      let strNgaySuDung = `${item.ngaySuDung.getDate()}/${
-        item.ngaySuDung.getMonth() + 1
-      }/${item.ngaySuDung.getYear() + 1900}`;
-      let strNgatHethan = `${ngayHetHan.getDate()}/${
-        ngayHetHan.getMonth() + 1
-      }/${ngayHetHan.getYear() + 1900}`;
       const strTrangThai = () => {
-        let date = new Date();
-        if (date <= ngayHetHan) {
-          date.setDate(date.getDate() + 30);
-
-          if (ngayHetHan <= date) {
-            return <td style={{backgroundColor:'#fff563'}}>Sắp hết hạn</td>;
+        let day = new Date();
+        let day2 = new Date(ngayKT);
+        day2.setDate(day2.getDate() - 30); // day2 là tgian trước ngày kt 30 ngay
+        if (item.trangThai) {
+          if (day > ngayKT) {
+            return (
+              <td style={{ backgroundColor: "#fff563" }}>Hết hạn sử dụng</td>
+            );
+          } else if (day > day2 && day < ngayKT) {
+            return (
+              <td style={{ backgroundColor: "#4dff7c" }}>
+                Đang sử dụng, sắp hết hạn
+              </td>
+            );
+          } else {
+            return <td style={{ backgroundColor: "#4dff7c" }}>Đang sử dụng</td>;
           }
-          return <td style={{backgroundColor:'#4dff7c'}}>Còn hạn sử dụng</td>;
+        } else {
+          return <td style={{ backgroundColor: "#ff6666" }}>Không sử dụng</td>;
         }
-        return <td style={{backgroundColor:'#ff6666'}}>Hết hạn</td>;
+
         // return <td className="bg-danger">Hết hạn sử dụng</td>
         // return <td className="bg-success text-white ">Còn hạn sử dụng</td>
       };
@@ -90,12 +91,12 @@ export default function PageQLPhanMem() {
           <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
             {index < 9 ? `0${index + 1}` : index + 1}
           </td>
-          <td>{item.idCode}</td>
-          <td>{item.name}</td>
-          <td>{item.mota}</td>
-          <td>{strNgaySuDung}</td>
-          <td>{strNgatHethan}</td>
+          <td>{item.maPhanMem}</td>
+          <td>{item.tenPhanMem}</td>
+          <td>{item.moTa}</td>
+          <td>{formatStringDate(ngaySD)}</td>
           <td>{item.tuoiTho}</td>
+          <td>{formatStringDate(ngayKT)}</td>
           {strTrangThai()}
 
           {/* <td style={{ display: "flex", justifyContent: "space-evenly" }}> */}
@@ -141,6 +142,30 @@ export default function PageQLPhanMem() {
       );
     });
   };
+  //
+  const renderSelectTrangThai = () => {
+    return (
+      <div className=" col-2 m-2 ">
+        <select className="form-select " onChange={handleChangeSelect}>
+          <option selected={valueSelect == -1 ? 1 : 0} value="-1">
+            Toàn bộ
+          </option>
+          <option selected={valueSelect == 1 ? 1 : 0} value="1">
+            Không sử dụng
+          </option>
+          <option selected={valueSelect == 2 ? 1 : 0} value="2">
+            Đang sử dụng
+          </option>
+          <option selected={valueSelect == 3 ? 1 : 0} value="3">
+            Hết hạn
+          </option>
+          <option selected={valueSelect == 4 ? 1 : 0} value="4">
+            Sắp hết hạn
+          </option>
+        </select>
+      </div>
+    );
+  };
 
   // Mảng quản lý data navtab
   let arrLinkNavTab = [{ name: "Quản lý thiết bị phần mềm", link: "" }];
@@ -169,36 +194,34 @@ export default function PageQLPhanMem() {
               }}
             >
               <h2 style={{ margin: "0" }}>Danh sách phần mềm</h2>
+              <div></div>
+              {renderSelectTheoRouterMon()}
+              {renderSelectTrangThai()}
               {/* input tim kiem */}
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {renderSelectTheoRouterMon()}
-                {renderSelectTheoRouterMon()}
-
-                <div>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name
-                    id
-                    placeholder="tìm kiếm..."
-                    value={txtSearch}
-                    onChange={handleChangeSearch}
-                  />
-                </div>
-
-                {/* Btn them */}
-                <NavLink
-                  // to="/quan-ly/tang/add"
-                  onClick={() => {
-                    alert(`tạo mới -- dang cập nhật!`);
-                  }}
-                  type="button"
-                  className="btn btn-success ms-5 view_center_vertical"
-                >
-                  <MdAdd color="white" size={25} />
-                  Tạo mới
-                </NavLink>
+              <div
+                className="col-2 m-2"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="tìm kiếm..."
+                  value={valueSearch}
+                  onChange={handleChangeSearch}
+                />
               </div>
+              {/* Btn them */}
+              <NavLink
+                // to="/quan-ly/tang/add"
+                onClick={() => {
+                  alert(`tạo mới -- dang cập nhật!`);
+                }}
+                type="button"
+                className="btn btn-success ms-5 view_center_vertical"
+              >
+                <MdAdd color="white" size={25} />
+                Tạo mới
+              </NavLink>
             </div>
 
             {/* Bảng danh sách data */}
@@ -211,8 +234,8 @@ export default function PageQLPhanMem() {
                     <th style={{ minWidth: "120px" }}>Tên phần mềm</th>
                     <th style={{ minWidth: "200px" }}>Mô tả</th>
                     <th>Ngày cài đặt</th>
-                    <th>Ngày hết hạn </th>
                     <th style={{ minWidth: "90px" }}>Hạn sử dụng(tháng)</th>
+                    <th>Ngày hết hạn </th>
                     <th style={{ minWidth: "100px" }}>Trạng thái</th>
                     <th style={{ minWidth: "170px" }}>Hành động</th>
                   </tr>
