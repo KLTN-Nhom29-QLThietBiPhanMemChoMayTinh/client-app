@@ -11,6 +11,7 @@ import ComponentDetailPhong from "../../components/layoutHome/ComponentDetailPho
 import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 import ComponentModelDetail from "../../components/layoutHome/ComponentModelDetail";
+import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiChu";
 
 export default function PageHome() {
   const dispatch = useDispatch();
@@ -46,6 +47,10 @@ export default function PageHome() {
     >
       {/* modal thong tin chi tiet */}
       <ComponentModelDetail />
+
+      {/* modal Ghi chu */}
+      <ComponentModalGhiChu />
+
       {/*1. col Toa nha -- Tang */}
       <div className="col-2  flex-column d-flex justify-content-between px-1">
         <ComponentToaNhaAndTang />
@@ -90,9 +95,8 @@ export default function PageHome() {
             </button>
             
             <button
-              onClick={() => {
-                alert("Đang cập nhật...");
-              }}
+              data-bs-toggle="modal"
+              data-bs-target="#modalIdGhiChu"
               type="button"
               className="btn btn-primary"
             >

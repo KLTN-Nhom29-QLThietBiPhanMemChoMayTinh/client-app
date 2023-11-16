@@ -225,10 +225,10 @@ export default function ComponentModelDetail() {
         <div className=" modal-dialog modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h2 className="modal-title text-center w-100" id="modalTitleId">
+              <h3 className="modal-title text-center w-100" id="modalTitleId">
                 {tang.toaNha.tenToaNha} - {tang.tenTang} - {phong.tenPhong} - Số
                 máy: {phong.soMay}
-              </h2>
+              </h3>
               <button
                 type="button"
                 className="btn-close"

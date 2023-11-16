@@ -105,6 +105,7 @@
     - PageLichTruc: xóa 1 lich truc cung bi lỗi 500
     - FormAddPhongMay: them moi  tung obj moi - add mayTinh - add phong - add phan mem vs Phong
     -- Add phong (tao phong - phanMem_Phong -mayTinh(co maPhong) - mayTinh_ThietBI)
+    -- ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi
 
 
 ## Tài liệu
