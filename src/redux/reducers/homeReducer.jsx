@@ -51,9 +51,9 @@ const homeReducer = createSlice({
       state.arrMayTinhH = arrMayTinh;
     },
     setObjThongTinByMayAction: (state, action) => {
-      let objUpdate = state.objThongTin;
-
-      state.objThongTin = { ...objUpdate, mayTinh: action.payload };
+      let {objMay, arrThietBi} = action.payload;
+      //trangThaiTbi luu thiet bij  or may này co dang bi hong hay  khong
+      state.objThongTin = { ...state.objThongTin, mayTinh: objMay,arrThietBi };
     },
   },
 });
@@ -72,9 +72,21 @@ export default homeReducer.reducer;
 /**
  * thay doi data trang home khi click ở btn detail May
  * */
-export const setObjThongTinByMay = (valMay) => {
+export const setObjThongTinByMay = (objMay) => {
   return async (dispatch) => {
-    dispatch(setObjThongTinByMayAction(valMay));
+    let {maMay} = objMay;
+
+    let resultArrMayTinhThietbi = await http.get(`/DSMayTinhThietBi/${maMay}`)
+
+    let arrThietBi = [];
+
+    resultArrMayTinhThietbi.data.forEach(item => {
+      let {thietBi, status} = item;
+      arrThietBi.push({...thietBi, trangThaiTbi: status})
+
+    });
+
+    dispatch(setObjThongTinByMayAction({objMay, arrThietBi}));
   };
 };
 
@@ -87,7 +99,7 @@ const getArrPhanmemByMaPhong = async (maPhong) => {
     let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
     if (resultPM.data.length !== 0) {
       arrPhanMem = resultPM.data.map((item) => {
-        return item.phanMem;
+        return {...item.phanMem,trangThaiPM:item.status};
       });
     }
   } catch (error) {
@@ -132,7 +144,7 @@ export const setObjThongTinByPhongMay = (valPhong) => {
     let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
     if (resultPM.data.length !== 0) {
       arrPhanMem = resultPM.data.map((item) => {
-        return item.phanMem;
+        return {...item.phanMem,trangThaiPM:item.status};
       });
     }
 
@@ -194,7 +206,7 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
       let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
       if (resultPM.data.length !== 0) {
         arrPhanMem = resultPM.data.map((item) => {
-          return item.phanMem;
+          return {...item.phanMem,trangThaiPM:item.status};
         });
       }
       // gans gtri phong dau tien vao obj gtri chon
@@ -268,7 +280,7 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
         let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
         if (resultPM.data.length !== 0) {
           arrPhanMem = resultPM.data.map((item) => {
-            return item.phanMem;
+            return {...item.phanMem,trangThaiPM:item.status};
           });
         }
         // gans gtri phong dau tien vao obj gtri chon
@@ -328,7 +340,7 @@ export const getPhongByFirst = async (dispatch) => {
     let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
     if (resultPM.data.length !== 0) {
       arrPhanMem = resultPM.data.map((item) => {
-        return item.phanMem;
+        return {...item.phanMem,trangThaiPM:item.status};
       });
     }
 

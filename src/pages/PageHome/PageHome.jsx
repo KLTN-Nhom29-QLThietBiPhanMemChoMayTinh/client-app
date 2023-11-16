@@ -10,6 +10,7 @@ import ComponentListPhong from "../../components/layoutHome/ComponentListPhong";
 import ComponentDetailPhong from "../../components/layoutHome/ComponentDetailPhong";
 import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
+import ComponentModelDetail from "../../components/layoutHome/ComponentModelDetail";
 
 export default function PageHome() {
   const dispatch = useDispatch();
@@ -43,6 +44,8 @@ export default function PageHome() {
       className="row p-2 d-flex justify-content-between bg-light  w-100"
       style={{ height: "100vh", margin: "0px" }}
     >
+      {/* modal thong tin chi tiet */}
+      <ComponentModelDetail />
       {/*1. col Toa nha -- Tang */}
       <div className="col-2  flex-column d-flex justify-content-between px-1">
         <ComponentToaNhaAndTang />
@@ -78,23 +81,14 @@ export default function PageHome() {
           <ComponentThongTinChiTiet />
           <div className="d-flex justify-content-around">
             <button
-              onClick={() => {
-                alert("Đang cập nhật...");
-              }}
+              data-bs-toggle="modal"
+              data-bs-target="#modalIdDetail"
               type="button"
               className="btn btn-primary"
             >
               Chi tiết
             </button>
-            <button
-              onClick={() => {
-                alert("Đang cập nhật...");
-              }}
-              type="button"
-              className="btn btn-primary"
-            >
-              Chỉnh sửa
-            </button>
+            
             <button
               onClick={() => {
                 alert("Đang cập nhật...");

@@ -36,7 +36,7 @@ export default function ComponentListPhong() {
         <div
           key={index}
           className="bg-success rounded   my-2 ms-2 "
-          style={{ height: "89px" }}
+          style={{ minHeight: "89px" }}
         >
           <div className="d-flex flex-column justify-content-between h-100">
             <span

@@ -10,7 +10,7 @@ export default function ComponentThongTinChiTiet() {
     return <></>;
   }
 
-  let { phong, tang, mayTinh, arrPhanMem, giaoVien, nhanVien, monHoc } =
+  let { phong, tang, mayTinh, arrPhanMem, arrThietBi, giaoVien, nhanVien, monHoc } =
     objThongTin;
 
   // render
@@ -26,6 +26,9 @@ export default function ComponentThongTinChiTiet() {
       return arrPhanMem?.map((item, index) => {
         if(!item.trangThai){
           return <></>
+        }
+        if(!item.trangThaiPM) {
+          return <li key={index} className="ms-3 text-danger">{item.tenPhanMem}</li>
         }
         return <li key={index} className="ms-3">{item.tenPhanMem}</li>
       })
@@ -66,14 +69,26 @@ export default function ComponentThongTinChiTiet() {
     }
     // render
     const renderThietBi = () => {
-      if(mayTinh.thietBis?.length === 0)
+      if(arrThietBi?.length === 0)
         return <><li className="ms-3">
         Không có.
       </li></>
-      return mayTinh.thietBis?.map((item, index) => {
+      return arrThietBi?.map((item, index) => {
+        if(!item.status) {// thiet biij khong con sử dụng nưa
+          return <></>
+        }
+
+        let {loaiThietBi}  = item;
+        if(!item.trangThaiTbi){
+          return (
+            <li key={index} className="ms-3 text-danger">
+              <strong>{loaiThietBi.tenLoai}: </strong>{item.tenThietBi}
+            </li>
+          );
+        }
         return (
           <li key={index} className="ms-3">
-            {item.tenThietBi}
+            <strong>{loaiThietBi.tenLoai}: </strong>{item.tenThietBi}
           </li>
         );
       });

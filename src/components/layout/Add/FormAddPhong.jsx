@@ -169,7 +169,7 @@ export default function FormAddPhong() {
   };
   // check data
   const checkDataInput = () => {
-    let { tenPhong, phanMem, phanCung, objToaNha, objTang } =
+    let { tenPhong, phanMem, phanCung, objToaNha, soLuongMay, objTang } =
       itemPhongRef.current;
 
     let errName = "";
@@ -177,6 +177,7 @@ export default function FormAddPhong() {
     let errPhanCung = "";
     let errTang = "";
     let errtoaNha = "";
+    let errSoLuongMay = '';
 
     let check = 1;
 
@@ -216,6 +217,11 @@ export default function FormAddPhong() {
       errTang = "Hãy chọn tằng!";
       check = 0;
     }
+    let soLuong = parseInt(soLuongMay);
+    if(soLuong <= 0 ) {
+      errSoLuongMay = "Số lượng máy lớn hơn một!"
+      check = 0;
+    }
 
     setErrPhong({
       tenPhong: errName,
@@ -223,6 +229,7 @@ export default function FormAddPhong() {
       phanCung: errPhanCung,
       tang: errTang,
       toaNha: errtoaNha,
+      soLuongMay: errSoLuongMay
     });
 
     return check;
@@ -231,6 +238,9 @@ export default function FormAddPhong() {
   // Render
   const renderCheckBox_TBi = () => {
     return arrThietBi?.map((item, index) => {
+      if(!item.status){// tbi hỏng sẽ không hiện ở đây
+        return <></>
+      }
       return (
         <div className="form-check" key={index}>
           <input
@@ -254,6 +264,9 @@ export default function FormAddPhong() {
 
   const renderCheckBox_PM = () => {
     return arrPhanMem?.map((item, index) => {
+      if(!item.trangThai) {// trang thai hong se khogn hien owr day
+        return <></>
+      }
       return (
         <div key={index} className="form-check">
           <input
@@ -402,7 +415,7 @@ export default function FormAddPhong() {
                     name="tenPhong"
                     id="tenPhong"
                     aria-describedby="errTenPhong"
-                    placeholder="Phòng máy..."
+                    placeholder="Lab A1.0.1..."
                     onChange={handleChangeText}
                   />
                   <small className="form-text py-2  text-danger mx-2">

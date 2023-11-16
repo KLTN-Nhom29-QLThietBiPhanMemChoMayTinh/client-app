@@ -2,6 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
+import { history } from "../..";
 
 const initialState = {
   arrPhongMay: [],
@@ -169,7 +170,6 @@ export const insertPhongMayApi = (phongMay) => {
       // luu phong may
       let result = await http.post(`/LuuPhongMay/`, savePhong);
       let { maPhong } = result.data;
-      console.log("🚀 ~ file: phongMayReducer.jsx:172 ~ return ~  result.data:",  result.data)
       // Luu phong máy vs Phanmem
 
       arrPhanMem.forEach(async (item) => {
@@ -178,7 +178,6 @@ export const insertPhongMayApi = (phongMay) => {
           phanMem: item,
           status: true,
         };
-        console.log("🚀 ~ file: phongMayReducer.jsx:181 ~ arrPhanMem.forEach ~ savePhongMay_PhanMem:", savePhongMay_PhanMem)
         await http.post("/LuuPhongMayPhanMem", savePhongMay_PhanMem);
       });
 
@@ -202,7 +201,6 @@ export const insertPhongMayApi = (phongMay) => {
 
       arrMayTinh.forEach(async (item) => {
         let resultMayTinh = await http.post("/LuuMayTinh", item);
-        console.log("🚀 ~ file: phongMayReducer.jsx:205 ~ arrMayTinh.forEach ~ resultMayTinh:", resultMayTinh.data)
 
         // luu maytinh vaf thiet bi
         phanCung.forEach(async (item) => {
@@ -210,14 +208,15 @@ export const insertPhongMayApi = (phongMay) => {
             mayTinh: resultMayTinh.data,
             thietBi: item,
           };
-          console.log("🚀 ~ file: phongMayReducer.jsx:213 ~ phanCung.forEach ~ saveMayTinhThietBi:", saveMayTinhThietBi)
 
           await http.post("/LuuMayTinhThietBi", saveMayTinhThietBi);
         });
       });
+      
+      dispatch(getAllPhongMayApi)
+      alert('Tạo mới thành công.')
 
-      alert('Good luck')
-      // dispatch(insertPhongMayAction())
+      history.push('/quan-ly/phong');
     } catch (error) {
       console.log(
         "🚀 ~ file: phongMayReducer.jsx:157 ~ returnasync ~ error:",

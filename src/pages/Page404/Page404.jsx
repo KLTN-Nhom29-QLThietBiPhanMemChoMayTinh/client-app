@@ -6,7 +6,7 @@ import {NavLink} from 'react-router-dom'
 const Page404 = props => {
   return (
     <>
-      <h4 className="mt-5">Không tìm thấy!!! Quay lại <NavLink to="/detail-khu-vuc/1">trang chủ</NavLink>.</h4>
+      <h4 className="mt-5">Không tìm thấy!!! Quay lại <NavLink to="/home">trang chủ</NavLink>.</h4>
     </>
   )
 }
