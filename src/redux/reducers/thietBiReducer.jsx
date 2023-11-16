@@ -11,13 +11,13 @@ const searchData = (arrData, valSearch, valSelect) => {
 
   // search - text
   let arrUpdate = arrData.filter((item) => {
-    let ngaySD = new Date(item.ngaySuDung);
-    let ngayKT = new Date(item.ngaySuDung);
+    let ngaySD = new Date(item.ngayCaiDat);
+    let ngayKT = new Date(item.ngayCaiDat);
     ngayKT.setMonth(ngayKT.getMonth() + item.tuoiTho);
 
     return (
-      item.idCode.toLowerCase().includes(textSearch) ||
-      item.name.toLowerCase().includes(textSearch) ||
+      (item.maThietBi + "").toLowerCase().includes(textSearch) ||
+      item.tenThietBi.toLowerCase().includes(textSearch) ||
       // item.ngayBatDau.toLowerCase().includes(textSearch)  ||
       (item.tuoiTho + "").toLowerCase().includes(textSearch) ||
       formatStringDate(ngaySD).toLowerCase().includes(textSearch) ||
@@ -27,30 +27,32 @@ const searchData = (arrData, valSearch, valSelect) => {
 
   // search -- select
   let day = new Date();
+  
 
   if (valSelect == 1) {
     // bi hong
     arrUpdate = arrUpdate.filter((item) => {
-      return item.status === 0;
+      return item.status === false;
     });
   } else if (valSelect == 2) {
     // Đang sử dụng
     arrUpdate = arrUpdate.filter((item) => {
-      return item.status === 1;
+      return item.status === true;
     });
   } else if (valSelect == 3) {
     // het han
     arrUpdate = arrUpdate.filter((item) => {
-      let ngaySD = new Date(item.ngaySuDung);
-      let ngayKT = new Date(item.ngaySuDung);
+      let ngaySD = new Date(item.ngayCaiDat);
+      let ngayKT = new Date(item.ngayCaiDat);
+
       ngayKT.setMonth(ngayKT.getMonth() + item.tuoiTho);
 
-      return  ngayKT < day;
+      return  day > ngayKT;
     });
   } else if (valSelect == 4) {
     // sap het han
     arrUpdate = arrUpdate.filter((item) => {
-        let ngayKT = new Date(item.ngaySuDung);
+        let ngayKT = new Date(item.ngayCaiDat);
       ngayKT.setMonth(ngayKT.getMonth() + item.tuoiTho);
       let day2 = new Date(ngayKT);
       day2.setDate(day2.getDate() - 30); // day2 là tgian trước ngày kt 30 ngay

@@ -33,8 +33,8 @@ export default function PageQLThietBi() {
   //render
   const renderDataThietBi = () => {
     return arrThietBiSearch?.map((item, index) => {
-      let ngaySD = new Date(item?.ngaySuDung);
-      let ngayKT = new Date(item?.ngaySuDung);
+      let ngaySD = new Date(item?.ngayCaiDat);
+      let ngayKT = new Date(item?.ngayCaiDat);
 
       ngayKT.setMonth(ngayKT.getMonth() + item?.tuoiTho);
 
@@ -69,8 +69,8 @@ export default function PageQLThietBi() {
           <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
             {index < 9 ? `0${index + 1}` : index + 1}
           </td>
-          <td>{item?.idCode}</td>
-          <td>{item?.name}</td>
+          <td>{item?.maThietBi}</td>
+          <td>{item?.tenThietBi}</td>
           <td>{formatStringDate(ngaySD)}</td>
           <td>{item?.tuoiTho}</td>
           <td>{formatStringDate(ngayKT)}</td>
