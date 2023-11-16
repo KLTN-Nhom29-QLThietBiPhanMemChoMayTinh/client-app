@@ -164,7 +164,7 @@ export default function FormAddPhong() {
       //true - di tiep
       // alert(`dang cập nhật`)
       // console.log('Chua co api');
-      // dispatch(insertPhongMayApi(itemPhongRef.current))
+      dispatch(insertPhongMayApi(itemPhongRef.current))
     }
   };
   // check data

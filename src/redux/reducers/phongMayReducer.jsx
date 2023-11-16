@@ -67,9 +67,7 @@ const phongMayReducer = createSlice({
         valSelect
       );
     },
-    insertPhongMayAction: (state, action) => {
-
-    },
+    insertPhongMayAction: (state, action) => {},
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -150,51 +148,88 @@ const dataSearch = (arrData, valSearch, valSelectTN, valSelectTG) => {
 // CAll APi++++++++++++++++++++++++++++++++++++++
 
 export const insertPhongMayApi = (phongMay) => {
-  let {tenPhong, soLuongMay, phanMem, phanCung, objToaNha, objTang, mota } = phongMay
-  
-  let arrMayTinh = []
-  let day = new Date();
+  let { tenPhong, soLuongMay, phanMem, phanCung, objToaNha, objTang, mota } =
+    phongMay;
 
-  for (let i = 0; i < soLuongMay; i++) {
-    let x = i+1;
-    let mayTinh = {
-      moTa:`Máy tính ${x<10?'0'+x:x}`,
-      ngayLapDat: day,
-      thietBis:phanCung
-    };
-    arrMayTinh.push(mayTinh)
-    
-  }
+  let arrPhanMem = [...phanMem];
 
-
-  let phanMems = [...phanMem]
-  let objPhong = {
+  // luu phong may
+  let savePhong = {
     tenPhong,
-    soMay:soLuongMay,
-    moTa:mota,
-    tang:objTang,
-    mayTinhs:arrMayTinh
+    soMay: soLuongMay,
+    moTa: mota,
+    tang: objTang,
+    trangThai: "Trống",
   };
-  console.log("🚀 ~ file: phongMayReducer.jsx:177 ~ insertPhongMayApi ~ objPhong:", objPhong) 
-  console.log("🚀 ~ file: phongMayReducer.jsx:177 ~ insertPhongMayApi ~ objPhong:", phanMems)
-  return async(dispatch) => {
+  //
+  //Luu phong máy vs Phanmem
+
+  return async (dispatch) => {
     try {
-      
-      let result = await http.post(`/LuuPhongMay/`,objPhong);
+      // luu phong may
+      let result = await http.post(`/LuuPhongMay/`, savePhong);
+      let { maPhong } = result.data;
+      console.log("🚀 ~ file: phongMayReducer.jsx:172 ~ return ~  result.data:",  result.data)
+      // Luu phong máy vs Phanmem
 
-      console.log("🚀 ~ file: phongMayReducer.jsx:185 ~ returnasync ~ result:", result)
+      arrPhanMem.forEach(async (item) => {
+        let savePhongMay_PhanMem = {
+          phongMay: result.data,
+          phanMem: item,
+          status: true,
+        };
+        console.log("🚀 ~ file: phongMayReducer.jsx:181 ~ arrPhanMem.forEach ~ savePhongMay_PhanMem:", savePhongMay_PhanMem)
+        await http.post("/LuuPhongMayPhanMem", savePhongMay_PhanMem);
+      });
 
+      // luu mayIinh
+
+      let arrMayTinh = [];
+      let day = new Date();
+
+      for (let i = 0; i < soLuongMay; i++) {
+        let x = i + 1;
+        let mayTinh = {
+          moTa: `Máy tính ${x < 10 ? "0" + x : x}`,
+          ngayLapDat: day,
+          trangThai: "Đang hoạt động",
+          phongMay: {
+            maPhong,
+          },
+        };
+        arrMayTinh.push(mayTinh);
+      }
+
+      arrMayTinh.forEach(async (item) => {
+        let resultMayTinh = await http.post("/LuuMayTinh", item);
+        console.log("🚀 ~ file: phongMayReducer.jsx:205 ~ arrMayTinh.forEach ~ resultMayTinh:", resultMayTinh.data)
+
+        // luu maytinh vaf thiet bi
+        phanCung.forEach(async (item) => {
+          let saveMayTinhThietBi = {
+            mayTinh: resultMayTinh.data,
+            thietBi: item,
+          };
+          console.log("🚀 ~ file: phongMayReducer.jsx:213 ~ phanCung.forEach ~ saveMayTinhThietBi:", saveMayTinhThietBi)
+
+          await http.post("/LuuMayTinhThietBi", saveMayTinhThietBi);
+        });
+      });
+
+      alert('Good luck')
       // dispatch(insertPhongMayAction())
     } catch (error) {
-      console.log("🚀 ~ file: phongMayReducer.jsx:157 ~ returnasync ~ error:", error)
-      
+      console.log(
+        "🚀 ~ file: phongMayReducer.jsx:157 ~ returnasync ~ error:",
+        error
+      );
     }
-  }
-}
+  };
+};
 
 /**
- * call All 
- * @param {*} dispatch 
+ * call All
+ * @param {*} dispatch
  */
 export const getAllPhongMayApi = async (dispatch) => {
   try {

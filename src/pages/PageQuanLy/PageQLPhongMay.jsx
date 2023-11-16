@@ -24,7 +24,7 @@ function PageQLPhongMay() {
   //
   const dispatch = useDispatch();
   //
-  let { arrPhongMay, arrPhongMaySearch, valueSelectToaNha,arrTangbyToaNha } = useSelector(
+  let { arrPhongMay, arrPhongMaySearch, valueSelectToaNha, valueSelectTang,arrTangbyToaNha } = useSelector(
     (state) => state.phongMayReducer
   );
   let { arrTang } = useSelector((state) => state.tangReducer);
