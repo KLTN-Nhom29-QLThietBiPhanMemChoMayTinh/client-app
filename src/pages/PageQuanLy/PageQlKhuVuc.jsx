@@ -70,13 +70,13 @@ const PageQlKhuVuc = (props) => {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            {/* <NavLink
-              to={`../quan-ly/tang`}
+            <NavLink
+              to={`../home-detail?id=${item.maToaNha}&key=toanha`}
               className="btn bg-info mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink> */}
+            </NavLink>
           </td>
         </tr>
       );

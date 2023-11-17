@@ -40,6 +40,7 @@ import FormAddGiaoVien from "./components/layout/Add/FormAddGiaoVien";
 import FormUpdateGiaoVien from "./components/layout/Edit/FormUpdateGiaoVien";
 import FormAddNhanVien from "./components/layout/Add/FormAddNhanVien";
 import FormUpdateNhanVien from "./components/layout/Edit/FormUpdateNhanVien";
+import PageHomeDetail from "./pages/PageHome/PageHomeDetail";
 
 export const history = createBrowserHistory();
 
@@ -58,6 +59,7 @@ root.render(
           </Route> */}
 
           <Route path="/home" element={<PageHome />}></Route>
+          <Route path="/home-detail" element={<PageHomeDetail />}></Route>
           <Route path="/quan-ly" element={<PageQlKhuVuc />}></Route>
           <Route path="/quan-ly/khu-vuc" element={<PageQlKhuVuc />}></Route>
           <Route
