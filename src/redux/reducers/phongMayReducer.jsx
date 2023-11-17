@@ -3,6 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 import { history } from "../..";
+import { setStatusDataMoi } from "./homeReducer";
 
 const initialState = {
   arrPhongMay: [],
@@ -215,7 +216,7 @@ export const insertPhongMayApi = (phongMay) => {
       
       dispatch(getAllPhongMayApi)
       alert('Tạo mới thành công.')
-
+      dispatch(setStatusDataMoi(true)); // cap nhat trang home
       history.push('/quan-ly/phong');
     } catch (error) {
       console.log(

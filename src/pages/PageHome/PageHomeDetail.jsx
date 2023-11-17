@@ -12,12 +12,24 @@ import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 import ComponentModelDetail from "../../components/layoutHome/ComponentModelDetail";
 import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiChu";
+import { useLocation } from "react-router-dom";
 
 export default function PageHomeDetail() {
   const dispatch = useDispatch();
-  
 
-  let { objThongTin, arrToaNhaH } = useSelector((state) => state.homeReducer);
+  // nhan data gui theo uri
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const objParam = Object.fromEntries(searchParams);
+  console.log(
+    "🚀 ~ file: PageHomeDetail.jsx:23 ~ PageHomeDetail ~ objParam:",
+    objParam
+  );
+  //
+
+  let { objThongTin, arrToaNhaH, status } = useSelector(
+    (state) => state.homeReducer
+  );
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
 
   // 3.
@@ -25,9 +37,14 @@ export default function PageHomeDetail() {
 
   useEffect(() => {
     //
-    if (Object.keys(objThongTin).length === 0) {
+    if (status) {
       dispatch(getPhongByFirst);
+    } else {
+      if (Object.keys(objThongTin).length === 0) {
+        dispatch(getPhongByFirst);
+      }
     }
+
     //
     if (arrToaNha.length === 0) {
       dispatch(getAllToaNhaApi);
@@ -94,7 +111,7 @@ export default function PageHomeDetail() {
             >
               Chi tiết
             </button>
-            
+
             <button
               data-bs-toggle="modal"
               data-bs-target="#modalIdGhiChu"

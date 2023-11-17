@@ -9,6 +9,7 @@ const initialState = {
   arrTangH: [], // ds tang ma co ma Toa nha = maToaNha trong objThongTin
   arrPhongH: [], // ds Phong thuoc tang co trong objThongTin
   arrMayTinhH: [], // ds may tinh thuoc phong co trong objThongTin
+  status:true
 };
 
 const homeReducer = createSlice({
@@ -55,6 +56,9 @@ const homeReducer = createSlice({
       //trangThaiTbi luu thiet bij  or may này co dang bi hong hay  khong
       state.objThongTin = { ...state.objThongTin, mayTinh: objMay,arrThietBi };
     },
+    setStatusDataMoi :(state,action) => {
+      state.status = action.payload
+    }
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -66,6 +70,7 @@ export const {
   setObjThongTinByTangAction,
   setObjThongTinByPhongAction,
   setObjThongTinByMayAction,
+  setStatusDataMoi,
 } = homeReducer.actions;
 export default homeReducer.reducer;
 
@@ -367,6 +372,8 @@ export const getPhongByFirst = async (dispatch) => {
         objThongTin,
       })
     );
+
+    dispatch(setStatusDataMoi(false));
     // dispatch(setArrTangHomeAction(resultTang.data));
   } catch (error) {}
 };

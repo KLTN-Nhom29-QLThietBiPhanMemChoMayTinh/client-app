@@ -16,7 +16,7 @@ import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiC
 export default function PageHome() {
   const dispatch = useDispatch();
 
-  let { objThongTin, arrToaNhaH } = useSelector((state) => state.homeReducer);
+  let { objThongTin, status } = useSelector((state) => state.homeReducer);
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
 
   // 3.
@@ -24,8 +24,12 @@ export default function PageHome() {
 
   useEffect(() => {
     //
-    if (Object.keys(objThongTin).length === 0) {
+    if (status) {
       dispatch(getPhongByFirst);
+    } else {
+      if (Object.keys(objThongTin).length === 0) {
+        dispatch(getPhongByFirst);
+      }
     }
     //
     if (arrToaNha.length === 0) {
@@ -93,7 +97,7 @@ export default function PageHome() {
             >
               Chi tiết
             </button>
-            
+
             <button
               data-bs-toggle="modal"
               data-bs-target="#modalIdGhiChu"
