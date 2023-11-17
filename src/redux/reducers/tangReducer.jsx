@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 import { history } from "../..";
 import { getAllToaNhaApi } from "./toaNhaReducer";
+import { setStatusDataMoi } from "./homeReducer";
 
 const initialState = {
   arrTang: [],
@@ -143,6 +144,7 @@ export const updateTangApi = (objTang) => {
       dispatch(updateTangApiAction(objTang));
       dispatch(getAllToaNhaApi)
       history.push("/quan-ly/tang");
+      dispatch(setStatusDataMoi(true));
     } catch (error) {
       console.log(
         "🚀 ~ file: tangReducer.jsx:90 ~ returnasync ~ error:",

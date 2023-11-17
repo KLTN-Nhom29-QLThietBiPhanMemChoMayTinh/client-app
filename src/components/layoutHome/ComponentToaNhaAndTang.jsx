@@ -71,6 +71,7 @@ export default function ComponentToaNhaAndTang() {
   //
   const renderArrTangH = () => {
     return arrTangH?.map((item, index) => {
+      console.log(item.maTang === objThongTin?.tang.maTang)
       if (item.maTang === objThongTin?.tang.maTang) {
         return (
           <button

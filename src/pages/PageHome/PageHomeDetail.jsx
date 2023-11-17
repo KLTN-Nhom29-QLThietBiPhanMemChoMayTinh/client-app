@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllToaNhaHomeApi,
   getPhongByFirst,
+  setObjThongTinByTang,
+  setObjThongTinByToaNha,
 } from "../../redux/reducers/homeReducer";
 import ComponentThongTinChiTiet from "../../components/layoutHome/ComponentThongTinChiTiet";
 import ComponentToaNhaAndTang from "../../components/layoutHome/ComponentToaNhaAndTang";
@@ -21,30 +23,19 @@ export default function PageHomeDetail() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const objParam = Object.fromEntries(searchParams);
-  console.log(
-    "🚀 ~ file: PageHomeDetail.jsx:23 ~ PageHomeDetail ~ objParam:",
-    objParam
-  );
   //
 
   let { objThongTin, arrToaNhaH, status } = useSelector(
     (state) => state.homeReducer
   );
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
+  // arrTang dùng cho detail gửi về detail id tang
+  let { arrTang } = useSelector((state) => state.tangReducer);
 
   // 3.
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
 
   useEffect(() => {
-    //
-    if (status) {
-      dispatch(getPhongByFirst);
-    } else {
-      if (Object.keys(objThongTin).length === 0) {
-        dispatch(getPhongByFirst);
-      }
-    }
-
     //
     if (arrToaNha.length === 0) {
       dispatch(getAllToaNhaApi);
@@ -54,6 +45,33 @@ export default function PageHomeDetail() {
     // 3.del
     if (arrPhongMay.length === 0) {
       dispatch(getAllPhongMayApi);
+    }
+    //
+
+    if (Object.keys(objParam).length !== 0) {
+      let { id, key } = objParam;
+  
+
+      switch (key) {
+        case "toanha":
+          dispatch(setObjThongTinByToaNha(id, arrPhongMay));
+          break;
+        case "tang":
+          let objTang = arrTang.find((item) => item.maTang == id);
+          dispatch(setObjThongTinByTang(objTang, arrPhongMay));
+          break;
+        default:
+          break;
+      }
+    } else {
+      // kiểm soát khi có update data liên quan đến trang home thì se reload lại data
+      if (status) {
+        dispatch(getPhongByFirst);
+      } else {
+        if (Object.keys(objThongTin).length === 0) {
+          dispatch(getPhongByFirst);
+        }
+      }
     }
   }, []);
 

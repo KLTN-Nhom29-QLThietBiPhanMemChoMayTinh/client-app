@@ -22,6 +22,7 @@ import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 
 
 const PageQLTang = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   let { arrTang, arrTangSearch } = useSelector((state) => state.tangReducer);
@@ -91,14 +92,17 @@ const PageQLTang = () => {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            {/* <NavLink
-              to={`../quan-ly/phong`}
+            <button
+              // `../quan-ly/phong`
+              onClick={() => {
+                navigate(`/home-detail?id=${item.maTang}&key=tang`)
+              }}
               type="button"
               className="btn btn-info mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink> */}
+            </button>
           </td>
         </tr>
       );

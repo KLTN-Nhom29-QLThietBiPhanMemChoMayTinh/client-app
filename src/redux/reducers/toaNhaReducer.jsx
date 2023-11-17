@@ -3,6 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 import { history } from "../..";
+import { setStatusDataMoi } from "./homeReducer";
 
 const initialState = {
   arrToaNha: [],
@@ -84,12 +85,17 @@ export default toaNhaReducer.reducer;
 
 export const updateToaNha = (toaNha) => {
   return async (dispatch) => {
-    // let result = await http.put("/toaNha", toaNha)
-    let result = await http.post("/LuuToaNha", toaNha);
-    console.log("chua co api update ToaNha - dang dung api add");
+    try {
+      // let result = await http.put("/toaNha", toaNha)
+      let result = await http.post("/LuuToaNha", toaNha);
+      console.log("chua co api update ToaNha - dang dung api add");
 
-    dispatch(updateToaNhaAction(toaNha));
-    history.push('../')
+      dispatch(updateToaNhaAction(toaNha));
+      dispatch(setStatusDataMoi(true));
+      history.push("../");
+    } catch (error) {
+      console.log("🚀 ~ file: toaNhaReducer.jsx:90 ~ return ~ error:", error);
+    }
   };
 };
 
