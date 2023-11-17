@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function ComponentModalGhiChu() {
@@ -7,6 +7,140 @@ export default function ComponentModalGhiChu() {
 
   //
   let { arrPhanMem, arrThietBi } = objThongTin;
+
+  //
+  const objGhiChu = useRef({
+    arrTbi: [],
+    arrPM: [],
+    txtGhiChu: "",
+  });
+
+  const [errGhiChu, setErrGhiChu] = useState({
+    arrTbi: "",
+    arrPM: "",
+    txtGhiChu: "",
+  });
+  //handle
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // kiểm tra arrPhanmem co data khong
+    if (arrPhanMem.length === 0) {
+      alert(
+        "Chưa có thông tin. Hãy chọn một phòng học khác hoặc một phòng máy khác!"
+      );
+      return;
+    }
+
+    if (!checkData()) {
+      //false
+      return;
+    }
+
+    // true
+    alert('Đang cập nhật!')
+    console.log(objGhiChu.current);
+
+  };
+  //
+  const checkData = () => {
+    let result = 1;
+    let err_arrTbi = "";
+    let err_arrPM = "";
+    let err_txtGhiChu = "";
+
+    let { arrPM, arrTbi, txtGhiChu } = objGhiChu.current;
+    //
+    if (arrPM.length === 0) {
+      err_arrPM = "Hãy nhập thông tin!";
+      result = 0;
+    } else {
+      err_arrPM = "";
+    }
+    //
+    if (arrTbi.length === 0 && arrThietBi.length !== 0 ) {
+      err_arrTbi = "Hãy nhập thông tin!";
+      result = 0;
+    } else {
+      err_arrTbi = "";
+    }
+    //
+    if (txtGhiChu.trim().length === 0) {
+      err_txtGhiChu = "Hãy nhập thông tin!";
+      result = 0;
+    } else {
+      err_txtGhiChu = "";
+    }
+
+    //
+    setErrGhiChu({
+      arrPM: err_arrPM,
+      arrTbi: err_arrTbi,
+      txtGhiChu: err_txtGhiChu,
+    });
+
+    return result;
+  };
+  //
+  const handleChangSelectPM = (e) => {
+    let { checked, value } = e.target;
+
+    let arrUpdate = objGhiChu.current.arrPM;
+
+    if (checked) {
+      arrUpdate.push(
+        arrPhanMem.find((item) => {
+          return item.maPhanMem == value;
+        })
+      );
+    } else {
+      arrUpdate = arrUpdate.filter((item) => item.maPhanMem != value);
+    }
+    //
+    objGhiChu.current.arrPM = [...arrUpdate];
+    if (objGhiChu.current.arrPM.length === 0) {
+      setErrGhiChu({ ...errGhiChu, arrPM: "Hãy chọn phần mềm!" });
+    } else {
+      setErrGhiChu({ ...errGhiChu, arrPM: "" });
+    }
+  };
+  //
+  const handleChangSelectTbi = (e) => {
+    let { checked, value } = e.target;
+
+    let arrUpdate = objGhiChu.current.arrTbi;
+
+    if (checked) {
+      arrUpdate.push(
+        arrThietBi.find((item) => {
+          return item.maThietBi == value;
+        })
+      );
+    } else {
+      arrUpdate = arrUpdate.filter((item) => item.maThietBi != value);
+    }
+
+    objGhiChu.current.arrTbi = [...arrUpdate];
+
+    //
+    objGhiChu.current.arrTbi = [...arrUpdate];
+    if (objGhiChu.current.arrTbi.length === 0) {
+      setErrGhiChu({ ...errGhiChu, arrTbi: "Hãy chọn thiết bị!" });
+    } else {
+      setErrGhiChu({ ...errGhiChu, arrTbi: "" });
+    }
+  };
+  //
+  const handleChangeTextGhiChu = (e) => {
+    let { id, value } = e.target;
+
+    objGhiChu.current[id] = value;
+    if (value.trim().length === 0) {
+      setErrGhiChu({ ...errGhiChu, [id]: "Hãy ghi chú ở đây!" });
+    } else {
+      setErrGhiChu({ ...errGhiChu, [id]: "" });
+    }
+  };
 
   // render
   const renderCheckBoxPhanMem = () => {
@@ -20,12 +154,13 @@ export default function ComponentModalGhiChu() {
             className="form-check-input "
             type="checkbox"
             value={item.maPhanMem}
-            id="flexCheckDefault"
+            id={`${item.maPhanMem}_PM`}
+            onChange={handleChangSelectPM}
           />
           <label
             className="form-check-label"
             style={{ paddingTop: "2px" }}
-            htmlFor="flexCheckDefault"
+            htmlFor={`${item.maPhanMem}_PM`}
           >
             {item.tenPhanMem} ( {item.phienBan} )
           </label>
@@ -43,12 +178,13 @@ export default function ComponentModalGhiChu() {
               className="form-check-input "
               type="checkbox"
               value={item.maThietBi}
-              id="flexCheckDefault"
+              id={`${item.maThietBi}_Tbi`}
+              onChange={handleChangSelectTbi}
             />
             <label
               className="form-check-label"
               style={{ paddingTop: "2px" }}
-              htmlFor="flexCheckDefault"
+              htmlFor={`${item.maThietBi}_Tbi`}
             >
               <strong>{item.loaiThietBi.tenLoai}</strong> {item.tenThietBi}
             </label>
@@ -112,7 +248,7 @@ export default function ComponentModalGhiChu() {
         aria-hidden="true"
       >
         <div className=" modal-dialog  modal-lg" role="document">
-          <form className="modal-content">
+          <form className="modal-content" onSubmit={handleSubmit}>
             <div className="modal-header">
               <h3 className="modal-title text-center w-100" id="modalTitleId">
                 Ghi chú thông tin máy
@@ -130,7 +266,11 @@ export default function ComponentModalGhiChu() {
 
                 <div className="row">
                   <div className="col-6">
-                    <strong>Danh sách ứng dụng phần mềm:</strong> <br />
+                    <strong>Danh sách ứng dụng phần mềm:</strong>
+                    <span className="text-danger mx-2">
+                      * {errGhiChu.arrPM}
+                    </span>
+                    <br />
                     <div
                       className="over_flow_auto"
                       style={{ maxHeight: "150px" }}
@@ -139,7 +279,11 @@ export default function ComponentModalGhiChu() {
                     </div>
                   </div>
                   <div className="col-6">
-                    <strong>Danh sách thiết bị phần cứng:</strong> <br />
+                    <strong>Danh sách thiết bị phần cứng:</strong>
+                    <span className="text-danger mx-2">
+                      * {errGhiChu.arrTbi}
+                    </span>
+                    <br />
                     <div
                       className="over_flow_auto"
                       style={{ maxHeight: "150px" }}
@@ -153,6 +297,9 @@ export default function ComponentModalGhiChu() {
                 <div className="mb-3">
                   <label htmlFor="txtGhiChu" className="form-label">
                     <strong>Mô tả:</strong>
+                    <span className="text-danger mx-2">
+                      * {errGhiChu.txtGhiChu}
+                    </span>
                   </label>
                   <textarea
                     className="form-control"
@@ -160,12 +307,24 @@ export default function ComponentModalGhiChu() {
                     id="txtGhiChu"
                     rows={5}
                     defaultValue={""}
+                    onChange={handleChangeTextGhiChu}
                   />
                 </div>
               </div>
             </div>
             <div className="modal-footer">
-              <button type="reset" className="btn btn-secondary">
+              <button
+                onChange={() => {
+                  //
+                  setErrGhiChu({
+                    arrPM: "",
+                    arrTbi: "",
+                    txtGhiChu: "",
+                  });
+                }}
+                type="reset"
+                className="btn btn-secondary"
+              >
                 Làm mới
               </button>
               <button type="submit" className="btn btn-primary">
