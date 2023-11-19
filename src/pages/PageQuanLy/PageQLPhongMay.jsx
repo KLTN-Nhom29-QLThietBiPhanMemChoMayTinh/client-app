@@ -143,7 +143,7 @@ function PageQLPhongMay() {
   //
   // Mảng quản lý data navtab
   let arrLinkNavTab = [
-    { name: "Quản lý khu vực", link: "../quan-ly/khu-vuc" },
+    { name: "Quản lý tòa nhà", link: "../quan-ly/khu-vuc" },
     { name: "Quản lý tầng", link: "../quan-ly/tang" },
     { name: "Quản lý phòng máy", link: "" },
   ];
