@@ -7,7 +7,7 @@ export default function ComponentDetailPhong() {
   const dispatch = useDispatch();
 
   //
-  let { arrMayTinhH } = useSelector((state) => state.homeReducer);
+  let { arrMayTinhH, objThongTin } = useSelector((state) => state.homeReducer);
 
   // handle
   const handleBtnChiTietMay = (valMay) => {
@@ -17,27 +17,37 @@ export default function ComponentDetailPhong() {
   const renderArrMayTinh = () => {
     return arrMayTinhH?.map((item, index) => {
       let colorText = "black";
-       if (
-          !item.trangThai.toLowerCase().includes("Đang hoạt động".toLowerCase())
-        ){
-          colorText = "red";
-        }
-      
-        //
+      if (
+        !item.trangThai.toLowerCase().includes("Đang hoạt động".toLowerCase())
+      ) {
+        colorText = "red";
+      }
+      let colorBorder = "";
+
+      let { mayTinh } = objThongTin;
+      if (mayTinh != null && item.maMay === mayTinh.maMay) {
+        colorBorder = "border-primary";
+      }
+
+      //
       return (
         <button
           onClick={() => {
             handleBtnChiTietMay(item);
           }}
           key={index}
-          className=" card  align-items-center my-3 ms-4 "
+          className={`card  align-items-center my-3 ms-4 ${colorBorder}`}
           style={{ width: "150px", height: "150px" }}
         >
           <div className="card-body text-center p-2">
             <FaComputer size={50} />
             <h4
               className="pt-3 px-4"
-              style={{ fontSize: "20px", color: `${colorText}`, fontWeight: "600" }}
+              style={{
+                fontSize: "20px",
+                color: `${colorText}`,
+                fontWeight: "600",
+              }}
             >
               {item.moTa}
             </h4>

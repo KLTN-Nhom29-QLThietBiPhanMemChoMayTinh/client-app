@@ -30,6 +30,9 @@ const homeReducer = createSlice({
     setArrTangHomeAction: (state, action) => {
       state.arrTangH = action.payload;
     },
+    setArrPhongMayHomeAction: (state, action) => {
+      state.arrPhongH = action.payload;
+    },
     setObjThongTinByToaNhaAction: (state, action) => {
       let { arrTangH, objThongTin, arrPhongH, arrMayTinh } = action.payload;
 
@@ -66,6 +69,7 @@ export const {
   setObjPhongFirstAction,
   setArrToaNhaHomeAction,
   setArrTangHomeAction,
+  setArrPhongMayHomeAction,
   setObjThongTinByToaNhaAction,
   setObjThongTinByTangAction,
   setObjThongTinByPhongAction,

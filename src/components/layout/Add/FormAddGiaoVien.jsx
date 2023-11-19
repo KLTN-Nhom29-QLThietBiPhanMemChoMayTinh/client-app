@@ -410,6 +410,9 @@ export default function FormAddGiaoVien() {
 }
 
 const getRandomMaGV = (arrData) => {
+  if(arrData.length === 0) {
+    return 'GV001'
+  }
   let idNext = "";
   let objDataLast = arrData[arrData.length - 1];
 

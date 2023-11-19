@@ -25,7 +25,7 @@ export default function ComponentToaNhaAndTang() {
 
   // handle
   const handleChangeToaNha = (e) => {
-    // 3.del
+    // 3.del -arrPhongMay
     dispatch(setObjThongTinByToaNha(e.target.value, arrPhongMay));
     // dispatch(setObjThongTinByToaNha(e.target.value));
   };
@@ -44,7 +44,7 @@ export default function ComponentToaNhaAndTang() {
         </option>
       );
     }
-    if (Object.keys(objThongTin.tang).length === 0) {
+    if (objThongTin.tang == null || Object.keys(objThongTin.tang).length === 0) {
       return arrToaNha?.map((item, index) => {
         return (
           <option key={index} value={item.maToaNha}>
@@ -71,8 +71,7 @@ export default function ComponentToaNhaAndTang() {
   //
   const renderArrTangH = () => {
     return arrTangH?.map((item, index) => {
-      console.log(item.maTang === objThongTin?.tang.maTang)
-      if (item.maTang === objThongTin?.tang.maTang) {
+      if (objThongTin?.tang != null && item.maTang === objThongTin?.tang.maTang) {
         return (
           <button
             type="button"

@@ -26,9 +26,8 @@ export default function PageQLTaiKhoan() {
     useSelector((state) => state.taiKhoanReducer);
 
   useEffect(() => {
-    if (arrTaiKhoan.length === 0) {
-      dispatch(getAllTaiKhoanApi);
-    }
+    dispatch(getAllTaiKhoanApi);
+
     if (arrQuyen.length === 0) {
       dispatch(getAllQuyenSDApi);
     }
@@ -58,7 +57,6 @@ export default function PageQLTaiKhoan() {
           <td>{item.mota.name}</td> */}
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-
             <button
               type="button"
               className="btn btn-info mx-2 px-2"

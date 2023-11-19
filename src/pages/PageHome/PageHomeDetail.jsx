@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllToaNhaHomeApi,
   getPhongByFirst,
+  setArrPhongMayHomeAction,
+  setArrTangHomeAction,
+  setObjThongTinByPhongMay,
   setObjThongTinByTang,
   setObjThongTinByToaNha,
 } from "../../redux/reducers/homeReducer";
@@ -50,16 +53,36 @@ export default function PageHomeDetail() {
 
     if (Object.keys(objParam).length !== 0) {
       let { id, key } = objParam;
-  
-
       switch (key) {
         case "toanha":
           dispatch(setObjThongTinByToaNha(id, arrPhongMay));
           break;
-        case "tang":
+        case "tang": {
           let objTang = arrTang.find((item) => item.maTang == id);
+
+          let arrTangH = arrTang.filter(
+            (item) => item.toaNha.maToaNha == objTang.toaNha.maToaNha
+          );
+
+          dispatch(setArrTangHomeAction(arrTangH));
           dispatch(setObjThongTinByTang(objTang, arrPhongMay));
           break;
+        }
+        case "phongmay": {
+          let objPhongmay = arrPhongMay.find((item) => item.maPhong == id);
+          // update ds tang Home
+          let arrTangH = arrTang.filter(
+            (item) => item.toaNha.maToaNha == objPhongmay.tang.toaNha.maToaNha
+          );
+
+          dispatch(setArrTangHomeAction(arrTangH));
+          // update ds phong Home
+          let arrPhongH = arrPhongMay.filter(item => item.tang.maTang == objPhongmay.tang.maTang)
+          dispatch(setArrPhongMayHomeAction(arrPhongH))
+          //
+          dispatch(setObjThongTinByPhongMay(objPhongmay));
+          break;
+        }
         default:
           break;
       }

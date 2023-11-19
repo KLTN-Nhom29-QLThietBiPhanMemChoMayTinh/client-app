@@ -110,6 +110,7 @@ export const deleteToaNha = (idXoa) => {
       await http.delete(`/XoaToaNha/${idXoa}`);
 
       //
+      dispatch(setStatusDataMoi(true))
       dispatch(deleteToaNhaAction(idXoa));
     } catch (error) {
       console.log("🚀 ~ file: toaNhaReducer.jsx:73 ~ return ~ error:", error);
@@ -130,6 +131,7 @@ export const insertToaNha = (tenToaNha) => {
     try {
       let result = await http.post("/LuuToaNha", toaNhaNew);
       let toaNha = result.data;
+      dispatch(setStatusDataMoi(true))
       dispatch(insertToaNhaAction(toaNha));
 
       history.push("/quan-ly/khu-vuc");

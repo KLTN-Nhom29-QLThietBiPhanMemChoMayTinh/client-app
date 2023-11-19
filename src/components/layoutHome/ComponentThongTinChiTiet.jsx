@@ -5,6 +5,7 @@ export default function ComponentThongTinChiTiet() {
   let { objThongTin } = useSelector((state) => state.homeReducer);
   if (
     Object.keys(objThongTin).length === 0 ||
+    objThongTin.tang == null ||
     Object.keys(objThongTin.tang).length === 0
   ) {
     return <></>;

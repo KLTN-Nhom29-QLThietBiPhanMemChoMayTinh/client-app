@@ -5,6 +5,7 @@ import { formatNameByHocVi, http } from "../../util/config";
 import Database from "../../util/database/Database";
 import { history } from "../..";
 import { insertTaiKhoanAction } from "./taiKhoanReducer";
+import { getAllKhoaApi } from "./khoaReducer";
 
 // function
 const dataSearch = (arrData, valSearch, valSelect) => {
@@ -113,7 +114,7 @@ const giaoVienReducer = createSlice({
       });
 
       state.arrGiaoVien = [...arrUpdate];
-      
+
       //
       let { arrGiaoVien, valueSearch, valueSelect } = state;
       state.arrGiaoVienSearch = dataSearch(
@@ -147,6 +148,8 @@ export const deleteGiaoVienApi = (maXoa) => {
       await http.delete(`/XoaGiaoVien/${maXoa}`);
 
       dispatch(deleteGiaoVienAction(maXoa));
+
+      dispatch(getAllKhoaApi);
     } catch (error) {
       console.log(
         "🚀 ~ file: giaoVienReducer.jsx:131 ~ return ~ error:",
@@ -196,6 +199,8 @@ export const insertGiaoVienApi = (giaoVien) => {
       alert(
         `Tạo thành công giao viên ${giaoVien.hoTen} với tài khoản: ${giaoVien.taiKhoan.tenDangNhap}, mật khẩu: ${giaoVien.taiKhoan.matKhau}`
       );
+
+      dispatch(getAllKhoaApi);
 
       history.push("/quan-ly/giao-vien");
     } catch (error) {

@@ -116,7 +116,7 @@ function PageQLPhongMay() {
             </NavLink>
             <button
               onClick={() => {
-                alert(`Del -- ${item.id}`);
+                alert(`Đang cập nhật.`);
               }}
               type="button"
               className="btn btn-danger mx-2 px-2"
@@ -125,10 +125,7 @@ function PageQLPhongMay() {
               <ImBin2 color="white" size={16} />
             </button>
             <NavLink
-              to={`../quan-ly/phong/detail/${item.id}`}
-              onClick={() => {
-                alert(`Add -- item`);
-              }}
+              to={`../home-detail?id=${item.maPhong}&key=phongmay`}
               type="button"
               className="btn btn-info mx-2 px-2"
               style={{ padding: "2px" }}

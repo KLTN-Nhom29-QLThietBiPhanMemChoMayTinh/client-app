@@ -66,7 +66,7 @@ const tangReducer = createSlice({
     deleteTangAction: (state, action) => {
       let maXoa = action.payload;
 
-      let arrUpdate = state.arrTang.filter(item => {
+      let arrUpdate = state.arrTang.filter((item) => {
         return item.maTang !== maXoa;
       });
       state.arrTang = [...arrUpdate];
@@ -113,27 +113,31 @@ const dataSearch = (arrData, valSearch, valSelect) => {
 
 /**
  * xoa tnag theo id - maXoa
- * @param {*} maXoa 
- * @returns 
+ * @param {*} maXoa
+ * @returns
  */
 export const deleteTangApi = (maXoa) => {
-  return async(dispatch) => {
+  return async (dispatch) => {
     try {
-      await http.delete(`/XoaTang/${maXoa}`)
-      
-      dispatch(deleteTangAction(maXoa))
+      await http.delete(`/XoaTang/${maXoa}`);
 
+      dispatch(deleteTangAction(maXoa));
+      dispatch(getAllToaNhaApi);
+      dispatch(setStatusDataMoi(true))
       history.push("/quan-ly/tang");
     } catch (error) {
-      console.log("🚀 ~ file: tangReducer.jsx:106 ~ returnasync ~ error:", error)
+      console.log(
+        "🚀 ~ file: tangReducer.jsx:106 ~ returnasync ~ error:",
+        error
+      );
     }
-  }
-}
+  };
+};
 
 /**
  * update Tang theo Api
- * @param {} objTang 
- * @returns 
+ * @param {} objTang
+ * @returns
  */
 export const updateTangApi = (objTang) => {
   return async (dispatch) => {
@@ -142,7 +146,7 @@ export const updateTangApi = (objTang) => {
       console.log("Chua co Api Update");
 
       dispatch(updateTangApiAction(objTang));
-      dispatch(getAllToaNhaApi)
+      dispatch(getAllToaNhaApi);
       history.push("/quan-ly/tang");
       dispatch(setStatusDataMoi(true));
     } catch (error) {
@@ -165,7 +169,8 @@ export const insertTangApi = (objTang) => {
       const result = await http.post("/LuuTang", objTang);
 
       dispatch(insertTangAction(result.data));
-
+      dispatch(getAllToaNhaApi);
+      dispatch(setStatusDataMoi(true))
       history.push("/quan-ly/tang");
     } catch (error) {
       console.log(
