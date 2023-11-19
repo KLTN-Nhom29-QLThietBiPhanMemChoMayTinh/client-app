@@ -1,5 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { FaPencilAlt } from "react-icons/fa";
+import { BiEditAlt } from "react-icons/bi";
 
 export default function ComponentThongTinChiTiet() {
   let { objThongTin } = useSelector((state) => state.homeReducer);
@@ -11,29 +13,55 @@ export default function ComponentThongTinChiTiet() {
     return <></>;
   }
 
-  let { phong, tang, mayTinh, arrPhanMem, arrThietBi, giaoVien, nhanVien, monHoc } =
-    objThongTin;
+  let {
+    phong,
+    tang,
+    mayTinh,
+    arrPhanMem,
+    arrThietBi,
+    giaoVien,
+    nhanVien,
+    monHoc,
+  } = objThongTin;
 
   // render
   const renderThongTinTheoPhong = () => {
     if (Object.keys(phong).length === 0) {
       return <></>;
     }
-    // render 
+    // render
     const renderArrPhanMem = () => {
-      if(arrPhanMem.length === 0) {
-        return <li className="ms-3">Không có.</li>
+      if (arrPhanMem.length === 0) {
+        return <li className="ms-3">Không có.</li>;
       }
       return arrPhanMem?.map((item, index) => {
-        if(!item.trangThai){
-          return <></>
+        if (!item.trangThai) {
+          return <></>;
         }
-        if(!item.trangThaiPM) {
-          return <li key={index} className="ms-3 text-danger">{item.tenPhanMem}</li>
+        if (!item.trangThaiPM) {
+          return (
+            <li key={index} className="ms-3 text-danger">
+              {item.tenPhanMem}
+              <button
+                type="button"
+                className="btn btn-outline-primary mx-2 px-2"
+                style={{ padding: "2px" }}
+                onClick={() => {
+                  alert("dang cập nhật - Tb đã sửa - ");
+                }}
+              >
+                <BiEditAlt  size={20}  />
+              </button>
+            </li>
+          );
         }
-        return <li key={index} className="ms-3">{item.tenPhanMem}</li>
-      })
-    }
+        return (
+          <li key={index} className="ms-3">
+            {item.tenPhanMem}
+          </li>
+        );
+      });
+    };
     //
     return (
       <>
@@ -57,7 +85,6 @@ export default function ComponentThongTinChiTiet() {
             <span style={{ fontWeight: 600 }}>- Ứng dụng phần mềm: </span>{" "}
             <br />
             {renderArrPhanMem()}
-            
           </div>
         </div>
       </>
@@ -70,38 +97,55 @@ export default function ComponentThongTinChiTiet() {
     }
     // render
     const renderThietBi = () => {
-      if(arrThietBi?.length === 0)
-        return <><li className="ms-3">
-        Không có.
-      </li></>
+      if (arrThietBi?.length === 0)
+        return (
+          <>
+            <li className="ms-3">Không có.</li>
+          </>
+        );
       return arrThietBi?.map((item, index) => {
-        if(!item.status) {// thiet biij khong con sử dụng nưa
-          return <></>
+        if (!item.status) {
+          // thiet biij khong con sử dụng nưa
+          return <></>;
         }
 
-        let {loaiThietBi}  = item;
-        if(!item.trangThaiTbi){
+        let { loaiThietBi } = item;
+        if (!item.trangThaiTbi) {
           return (
             <li key={index} className="ms-3 text-danger">
-              <strong>{loaiThietBi.tenLoai}: </strong>{item.tenThietBi}
+              <strong>{loaiThietBi.tenLoai}: </strong>
+              {item.tenThietBi}
+              <button
+                type="button"
+                className="btn btn-outline-primary mx-2 px-2"
+                style={{ padding: "2px" }}
+                onClick={() => {
+                  alert("dang cập nhật - Tb đã sửa - ");
+                }}
+              >
+                <BiEditAlt  size={20}  />
+              </button>
             </li>
           );
         }
         return (
           <li key={index} className="ms-3">
-            <strong>{loaiThietBi.tenLoai}: </strong>{item.tenThietBi}
+            <strong>{loaiThietBi.tenLoai}: </strong>
+            {item.tenThietBi}
           </li>
         );
       });
     };
 
-    // 
+    //
     const renderTrangThai = () => {
-      if (mayTinh.trangThai.toLowerCase().includes( ("Đang hoạt động").toLowerCase())) {
-        return <span>{mayTinh.trangThai}</span>
+      if (
+        mayTinh.trangThai.toLowerCase().includes("Đang hoạt động".toLowerCase())
+      ) {
+        return <span>{mayTinh.trangThai}</span>;
       }
-      return <span style={{color:'red'}}>{mayTinh.trangThai}</span> 
-    }
+      return <span style={{ color: "red" }}>{mayTinh.trangThai}</span>;
+    };
     //
     return (
       <>

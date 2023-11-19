@@ -41,6 +41,7 @@ import FormUpdateGiaoVien from "./components/layout/Edit/FormUpdateGiaoVien";
 import FormAddNhanVien from "./components/layout/Add/FormAddNhanVien";
 import FormUpdateNhanVien from "./components/layout/Edit/FormUpdateNhanVien";
 import PageHomeDetail from "./pages/PageHome/PageHomeDetail";
+import PageQlMayTinh from "./pages/PageQuanLy/PageQlMayTinh";
 
 export const history = createBrowserHistory();
 
@@ -97,6 +98,7 @@ root.render(
           <Route path="/quan-ly/giao-vien/add" element={<FormAddGiaoVien />}></Route>
           <Route path="/quan-ly/giao-vien/update" element={<FormUpdateGiaoVien />}></Route>
           <Route path="/quan-ly/tai-khoan" element={<PageQLTaiKhoan />}></Route>
+          <Route path="/quan-ly/may-tinh" element={<PageQlMayTinh />}></Route>
           <Route path="/phan-cong/lich-truc" element={<PageLichTruc />}></Route>
           <Route
             path="/phan-cong/lich-truc/add"

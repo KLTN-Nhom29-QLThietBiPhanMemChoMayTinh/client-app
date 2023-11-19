@@ -42,6 +42,10 @@
 ### ảnh quản lý tai khoan
 ![QL tai khoan](./AnhMinhHoa/img_QLTaiKhoan.png)
 
+### ảnh quản lý mayTinh
+![QL tai khoan](./AnhMinhHoa/img_QLMayTinh.png)
+![QL tai khoan](./AnhMinhHoa/img_QLMayTinh_form.png)
+
 ### ảnh Login
 ![login](./AnhMinhHoa/img_login.png)
 
@@ -108,9 +112,23 @@
     - PageLichTruc: xóa 1 lich truc cung bi lỗi 500
     - FormAddPhongMay: them moi  tung obj moi - add mayTinh - add phong - add phan mem vs Phong
     -- Add phong (tao phong - phanMem_Phong -mayTinh(co maPhong) - mayTinh_ThietBI)
-    -- ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi
     -- Page home: Cần hiên text red cho phòng may hay may tinh nào bị lỗi - chac cần 1 api co kèm theo status gì đó
     
+
+    - ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi
+        + api thong báo - gửi ghi chú cùng thietbi bị lỗi  lưu data
+        + btn sửa (bên cạnh textErr Thiet bị lỗi) hiên 1 modal chon cac tbi lỗi đã sủa xong cap nhật vao data;
+        + chú ý cần cập nhật status ở mayTinhTHietbi và PhongMayPhanmem
+        + thông báo: 
+            - ma
+            - noteGhi err
+            - người ghi
+            - tgian ghi
+            - noteGhi sửa 
+            - người Sửa
+            - Tgian sửa
+
+
 
 ## Tài liệu
 

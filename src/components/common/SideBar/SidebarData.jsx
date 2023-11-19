@@ -9,9 +9,9 @@ import {
 } from "react-icons/io";
 import { RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
-import { MdOutlineScience, MdManageAccounts } from "react-icons/md";
+import { MdOutlineScience, MdManageAccounts, MdOutlineMeetingRoom } from "react-icons/md";
 import { SiJirasoftware } from "react-icons/si";
-import { PiArticleNyTimesLight } from "react-icons/pi";
+import { PiArticleNyTimesLight,PiComputerTowerDuotone } from "react-icons/pi";
 import { FaUserFriends, FaUsers, FaMapMarkedAlt } from "react-icons/fa";
 
 export const SidebarData = [
@@ -54,13 +54,19 @@ export const SidebarData = [
         title: "Phòng máy",
         path: "/quan-ly/phong",
         valQuyen: 2,
+        icon: <MdOutlineMeetingRoom style={{ marginBottom: "6px", fontSize: "25px" }} />,
+      },
+      {
+        title: "Máy tính",
+        path: "/quan-ly/may-tinh",
+        valQuyen: 2,
         icon: <FaComputer style={{ marginBottom: "6px", fontSize: "25px" }} />,
       },
       {
         title: "Thiết bị",
         path: "/quan-ly/thiet-bi",
         valQuyen: 2,
-        icon: <FaComputer style={{ marginBottom: "6px", fontSize: "25px" }} />,
+        icon: <PiComputerTowerDuotone style={{ marginBottom: "6px", fontSize: "25px" }} />,
       },
       {
         title: "Phần mềm",
