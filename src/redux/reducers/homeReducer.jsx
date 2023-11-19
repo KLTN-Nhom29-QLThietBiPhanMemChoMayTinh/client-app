@@ -9,7 +9,7 @@ const initialState = {
   arrTangH: [], // ds tang ma co ma Toa nha = maToaNha trong objThongTin
   arrPhongH: [], // ds Phong thuoc tang co trong objThongTin
   arrMayTinhH: [], // ds may tinh thuoc phong co trong objThongTin
-  status:true
+  status: true,
 };
 
 const homeReducer = createSlice({
@@ -55,13 +55,13 @@ const homeReducer = createSlice({
       state.arrMayTinhH = arrMayTinh;
     },
     setObjThongTinByMayAction: (state, action) => {
-      let {objMay, arrThietBi} = action.payload;
+      let { objMay, arrThietBi } = action.payload;
       //trangThaiTbi luu thiet bij  or may này co dang bi hong hay  khong
-      state.objThongTin = { ...state.objThongTin, mayTinh: objMay,arrThietBi };
+      state.objThongTin = { ...state.objThongTin, mayTinh: objMay, arrThietBi };
     },
-    setStatusDataMoi :(state,action) => {
-      state.status = action.payload
-    }
+    setStatusDataMoi: (state, action) => {
+      state.status = action.payload;
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -83,19 +83,24 @@ export default homeReducer.reducer;
  * */
 export const setObjThongTinByMay = (objMay) => {
   return async (dispatch) => {
-    let {maMay} = objMay;
+    try {
+      let { maMay } = objMay;
 
-    let resultArrMayTinhThietbi = await http.get(`/DSMayTinhThietBi/${maMay}`)
+      let resultArrMayTinhThietbi = await http.get(
+        `/DSMayTinhThietBi/${maMay}`
+      );
 
-    let arrThietBi = [];
+      let arrThietBi = [];
 
-    resultArrMayTinhThietbi.data.forEach(item => {
-      let {thietBi, status} = item;
-      arrThietBi.push({...thietBi, trangThaiTbi: status})
+      resultArrMayTinhThietbi.data.forEach((item) => {
+        let { thietBi, status } = item;
+        arrThietBi.push({ ...thietBi, trangThaiTbi: status });
+      });
 
-    });
-
-    dispatch(setObjThongTinByMayAction({objMay, arrThietBi}));
+      dispatch(setObjThongTinByMayAction({ objMay, arrThietBi }));
+    } catch (error) {
+      console.log("🚀 ~ file: homeReducer.jsx:89 ~ return ~ error:", error);
+    }
   };
 };
 
@@ -108,7 +113,7 @@ const getArrPhanmemByMaPhong = async (maPhong) => {
     let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
     if (resultPM.data.length !== 0) {
       arrPhanMem = resultPM.data.map((item) => {
-        return {...item.phanMem,trangThaiPM:item.status};
+        return { ...item.phanMem, trangThaiPM: item.status };
       });
     }
   } catch (error) {
@@ -125,56 +130,60 @@ const getArrPhanmemByMaPhong = async (maPhong) => {
 export const setObjThongTinByPhongMay = (valPhong) => {
   // valPhong = {}  data phong duoc chon
   return async (dispatch) => {
-    let { maPhong, tenPhong, moTa, tang, mayTinhs } = valPhong;
-    // phong: { maPhong,tenPhong,moTa},
+    try {
+      let { maPhong, tenPhong, moTa, tang, mayTinhs } = valPhong;
+      // phong: { maPhong,tenPhong,moTa},
 
-    let arrMayTinh = [];
-    // arr may Tinh
-    if (mayTinhs.length !== 0) {
-      // gan ds may tinh vao arr
-      // ds may tinh nay pha thuoc ma phong duoc chon
-      arrMayTinh = mayTinhs;
+      let arrMayTinh = [];
+      // arr may Tinh
+      if (mayTinhs.length !== 0) {
+        // gan ds may tinh vao arr
+        // ds may tinh nay pha thuoc ma phong duoc chon
+        arrMayTinh = mayTinhs;
+      }
+
+      // Api lay arr phanMem
+      // let arrPhanMem = [];
+      // khongo hiệu quả.....
+      // await getArrPhanmemByMaPhong(maPhong).then(
+      //   data => {
+      //     console.log(data);
+      //     arrPhanMem = [...data]
+      //     console.log("🚀 ~ file: homeReducer.jsx:125 ~ return ~ arrPhanMem:", arrPhanMem)
+      //   }
+      // ).catch(err => console.log(err))
+      //  console.log("🚀 ~ file: homeReducer.jsx:125 ~ return ~ arrPhanMem:", arrPhanMem)
+
+      // Api lay arr phanMem
+      let arrPhanMem = [];
+      let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+      if (resultPM.data.length !== 0) {
+        arrPhanMem = resultPM.data.map((item) => {
+          return { ...item.phanMem, trangThaiPM: item.status };
+        });
+      }
+
+      //
+      let objThongTin = {
+        phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
+        tang,
+        mayTinh: {},
+        arrPhanMem,
+        arrThietBi: [],
+        giaoVien: {},
+        nhanVien: {},
+        monHoc: {},
+      };
+      //
+      dispatch(
+        setObjThongTinByPhongAction({
+          objThongTin,
+          arrMayTinh,
+        })
+      );
+    } catch (error) {
+      console.log("🚀 ~ file: homeReducer.jsx:136 ~ return ~ error:", error);
     }
-
-    // Api lay arr phanMem
-    // let arrPhanMem = [];
-    // khongo hiệu quả.....
-    // await getArrPhanmemByMaPhong(maPhong).then(
-    //   data => {
-    //     console.log(data);
-    //     arrPhanMem = [...data]
-    //     console.log("🚀 ~ file: homeReducer.jsx:125 ~ return ~ arrPhanMem:", arrPhanMem)
-    //   }
-    // ).catch(err => console.log(err))
-    //  console.log("🚀 ~ file: homeReducer.jsx:125 ~ return ~ arrPhanMem:", arrPhanMem)
-
-    // Api lay arr phanMem
-    let arrPhanMem = [];
-    let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
-    if (resultPM.data.length !== 0) {
-      arrPhanMem = resultPM.data.map((item) => {
-        return {...item.phanMem,trangThaiPM:item.status};
-      });
-    }
-
-    //
-    let objThongTin = {
-      phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
-      tang,
-      mayTinh: {},
-      arrPhanMem,
-      arrThietBi: [],
-      giaoVien: {},
-      nhanVien: {},
-      monHoc: {},
-    };
-    //
-    dispatch(
-      setObjThongTinByPhongAction({
-        objThongTin,
-        arrMayTinh,
-      })
-    );
   };
 };
 
@@ -184,102 +193,28 @@ export const setObjThongTinByPhongMay = (valPhong) => {
 export const setObjThongTinByTang = (valTang, arrPhongMay) => {
   // valTang = {} tang duoc chon
   return async (dispatch) => {
-    // phong: { maPhong,tenPhong,moTa},
-    let objThongTin = {
-      phong: {},
-      tang: valTang,
-      mayTinh: {},
-      arrPhanMem: [],
-      giaoVien: {},
-      arrThietBi: [],
-      nhanVien: {},
-      monHoc: {},
-    };
-    //
-    let arrPhongH = [];
-    let arrMayTinh = [];
-
-    //
-    console.log("Chua co api lay list Phong theo maTang");
-    // let resultArrPhong = await http.get("/DSPhongMay");
-
-    // duyet tim phong trong ds co maTang dang chonj
-    // arrPhongH = resultArrPhong.data.filter((item) => {
-    arrPhongH = arrPhongMay.filter((item) => {
-      return item.tang.maTang === objThongTin.tang.maTang;
-    });
-
-    if (arrPhongH.length !== 0) {
-      let { maPhong, tenPhong, moTa, mayTinhs } = arrPhongH[0];
-
-      // Api lay arr phanMem
-      let arrPhanMem = [];
-      let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
-      if (resultPM.data.length !== 0) {
-        arrPhanMem = resultPM.data.map((item) => {
-          return {...item.phanMem,trangThaiPM:item.status};
-        });
-      }
-      // gans gtri phong dau tien vao obj gtri chon
-      objThongTin = {
-        ...objThongTin,
-        phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
-        arrPhanMem,
+    try {
+      // phong: { maPhong,tenPhong,moTa},
+      let objThongTin = {
+        phong: {},
+        tang: valTang,
+        mayTinh: {},
+        arrPhanMem: [],
+        giaoVien: {},
+        arrThietBi: [],
+        nhanVien: {},
+        monHoc: {},
       };
-      // arr may Tinh
-      if (mayTinhs.length !== 0) {
-        // gan ds may tinh vao arr
-        // ds may tinh nay pha thuoc ma phong duoc chon
-        arrMayTinh = mayTinhs;
-      }
-    }
-
-    //
-    //
-    dispatch(
-      setObjThongTinByTangAction({
-        objThongTin,
-        arrPhongH,
-        arrMayTinh,
-      })
-    );
-  };
-};
-
-/**
- * thay doi data trang home khi click ở select Toa nha
- * */
-export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
-  // idSelect == maToaNha
-  return async (dispatch) => {
-    // phong: { maPhong,tenPhong,moTa},
-    let objThongTin = {
-      phong: {},
-      tang: {},
-      mayTinh: {},
-      arrPhanMem: [],
-      arrThietBi: [],
-      giaoVien: {},
-      nhanVien: {},
-      monHoc: {},
-    };
-    //
-    let arrTangH = [];
-    let arrPhongH = [];
-    let arrMayTinh = [];
-    ///
-    let resultArrTang = await http.get(`/TangTheoToaNha/${idSelect}`);
-    arrTangH = resultArrTang.data;
-    ///
-
-    if (arrTangH.length !== 0) {
-      objThongTin = { ...objThongTin, tang: arrTangH[0] };
+      //
+      let arrPhongH = [];
+      let arrMayTinh = [];
 
       //
       console.log("Chua co api lay list Phong theo maTang");
       // let resultArrPhong = await http.get("/DSPhongMay");
 
       // duyet tim phong trong ds co maTang dang chonj
+      // arrPhongH = resultArrPhong.data.filter((item) => {
       arrPhongH = arrPhongMay.filter((item) => {
         return item.tang.maTang === objThongTin.tang.maTang;
       });
@@ -292,7 +227,7 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
         let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
         if (resultPM.data.length !== 0) {
           arrPhanMem = resultPM.data.map((item) => {
-            return {...item.phanMem,trangThaiPM:item.status};
+            return { ...item.phanMem, trangThaiPM: item.status };
           });
         }
         // gans gtri phong dau tien vao obj gtri chon
@@ -308,17 +243,99 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
           arrMayTinh = mayTinhs;
         }
       }
+
+      //
+      //
+      dispatch(
+        setObjThongTinByTangAction({
+          objThongTin,
+          arrPhongH,
+          arrMayTinh,
+        })
+      );
+    } catch (error) {
+      console.log("🚀 ~ file: homeReducer.jsx:202 ~ return ~ error:", error);
     }
-    //
-    //
-    dispatch(
-      setObjThongTinByToaNhaAction({
-        arrTangH,
-        objThongTin,
-        arrPhongH,
-        arrMayTinh,
-      })
-    );
+  };
+};
+
+/**
+ * thay doi data trang home khi click ở select Toa nha
+ * */
+export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
+  // idSelect == maToaNha
+  return async (dispatch) => {
+    try {
+      // phong: { maPhong,tenPhong,moTa},
+      let objThongTin = {
+        phong: {},
+        tang: {},
+        mayTinh: {},
+        arrPhanMem: [],
+        arrThietBi: [],
+        giaoVien: {},
+        nhanVien: {},
+        monHoc: {},
+      };
+      //
+      let arrTangH = [];
+      let arrPhongH = [];
+      let arrMayTinh = [];
+      ///
+      let resultArrTang = await http.get(`/TangTheoToaNha/${idSelect}`);
+      arrTangH = resultArrTang.data;
+      ///
+
+      if (arrTangH.length !== 0) {
+        objThongTin = { ...objThongTin, tang: arrTangH[0] };
+
+        //
+        console.log("Chua co api lay list Phong theo maTang");
+        // let resultArrPhong = await http.get("/DSPhongMay");
+
+        // duyet tim phong trong ds co maTang dang chonj
+        arrPhongH = arrPhongMay.filter((item) => {
+          return item.tang.maTang === objThongTin.tang.maTang;
+        });
+
+        if (arrPhongH.length !== 0) {
+          let { maPhong, tenPhong, moTa, mayTinhs } = arrPhongH[0];
+
+          // Api lay arr phanMem
+          let arrPhanMem = [];
+          let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+          if (resultPM.data.length !== 0) {
+            arrPhanMem = resultPM.data.map((item) => {
+              return { ...item.phanMem, trangThaiPM: item.status };
+            });
+          }
+          // gans gtri phong dau tien vao obj gtri chon
+          objThongTin = {
+            ...objThongTin,
+            phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
+            arrPhanMem,
+          };
+          // arr may Tinh
+          if (mayTinhs.length !== 0) {
+            // gan ds may tinh vao arr
+            // ds may tinh nay pha thuoc ma phong duoc chon
+            arrMayTinh = mayTinhs;
+          }
+        }
+      }
+      //
+      //
+      dispatch(
+        setObjThongTinByToaNhaAction({
+          arrTangH,
+          objThongTin,
+          arrPhongH,
+          arrMayTinh,
+        })
+      );
+    } catch (error) {
+      console.log("🚀 ~ file: homeReducer.jsx:277 ~ return ~ error:", error);
+    }
   };
 };
 /**
@@ -352,7 +369,7 @@ export const getPhongByFirst = async (dispatch) => {
     let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
     if (resultPM.data.length !== 0) {
       arrPhanMem = resultPM.data.map((item) => {
-        return {...item.phanMem,trangThaiPM:item.status};
+        return { ...item.phanMem, trangThaiPM: item.status };
       });
     }
 
@@ -379,7 +396,12 @@ export const getPhongByFirst = async (dispatch) => {
 
     dispatch(setStatusDataMoi(false));
     // dispatch(setArrTangHomeAction(resultTang.data));
-  } catch (error) {}
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: homeReducer.jsx:409 ~ getPhongByFirst ~ error:",
+      error
+    );
+  }
 };
 /**
  * Lấy toàn bộ tòa nhà - api
@@ -388,5 +410,10 @@ export const getAllToaNhaHomeApi = async (dispatch) => {
   try {
     let result = await http.get("/DSToaNha");
     dispatch(setArrToaNhaHomeAction(result.data));
-  } catch (error) {}
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: homeReducer.jsx:420 ~ getAllToaNhaHomeApi ~ error:",
+      error
+    );
+  }
 };

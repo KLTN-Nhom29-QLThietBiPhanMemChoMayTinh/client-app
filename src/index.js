@@ -85,9 +85,7 @@ root.render(
           </Route>
           <Route path="/quan-ly/phong" element={<PageQLPhongMay />}></Route>
           <Route path="/quan-ly/phong/add" element={<FormAddPhong />}></Route>
-          <Route path="/quan-ly/phong/update">
-            <Route path=":id" element={<FormUpdatePhong />}></Route>
-          </Route>
+          <Route path="/quan-ly/phong/update" element={<FormUpdatePhong />}></Route>
           <Route path="/quan-ly/phan-mem" element={<PageQLPhanMem />}></Route>
           <Route path="/quan-ly/mon" element={<PageQlMonHoc />}></Route>
           <Route path="/quan-ly/thiet-bi" element={<PageQLThietBi />}></Route>

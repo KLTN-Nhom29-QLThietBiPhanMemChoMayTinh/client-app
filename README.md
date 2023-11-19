@@ -106,7 +106,8 @@
     - FormAddPhongMay: them moi  tung obj moi - add mayTinh - add phong - add phan mem vs Phong
     -- Add phong (tao phong - phanMem_Phong -mayTinh(co maPhong) - mayTinh_ThietBI)
     -- ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi
-
+    -- Page home: Cần hiên text red cho phòng may hay may tinh nào bị lỗi - chac cần 1 api co kèm theo status gì đó
+    
 
 ## Tài liệu
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import NavTab from "../../common/NavTab/NavTab";
 import Footer from "../../common/Footer/Footer";
-import Database from "../../../util/database/Database";
 
 import { IoReloadOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,7 +41,7 @@ export default function FormAddPhong() {
     phanCung: [],
     objToaNha: {},
     objTang: {},
-    mota:'',
+    mota: "",
   });
 
   useEffect(() => {
@@ -149,14 +148,18 @@ export default function FormAddPhong() {
     let maTang = e.target.value;
     let objTang = arrTang.find((item) => item.maTang == maTang);
 
-    itemPhongRef.current = { ...itemPhongRef.current, objTang, objToaNha: objTang.toaNha };
+    itemPhongRef.current = {
+      ...itemPhongRef.current,
+      objTang,
+      objToaNha: objTang.toaNha,
+    };
 
     setErrPhong({ ...errPhong, toaNha: "", tang: "" });
   };
   //
   const handleChangeTxtMota = (e) => {
-    itemPhongRef.current = { ...itemPhongRef.current, mota:e.target.value };
-  }
+    itemPhongRef.current = { ...itemPhongRef.current, mota: e.target.value };
+  };
   //
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -164,7 +167,7 @@ export default function FormAddPhong() {
       //true - di tiep
       // alert(`dang cập nhật`)
       // console.log('Chua co api');
-      dispatch(insertPhongMayApi(itemPhongRef.current))
+      dispatch(insertPhongMayApi(itemPhongRef.current));
     }
   };
   // check data
@@ -177,7 +180,7 @@ export default function FormAddPhong() {
     let errPhanCung = "";
     let errTang = "";
     let errtoaNha = "";
-    let errSoLuongMay = '';
+    let errSoLuongMay = "";
 
     let check = 1;
 
@@ -218,8 +221,8 @@ export default function FormAddPhong() {
       check = 0;
     }
     let soLuong = parseInt(soLuongMay);
-    if(soLuong <= 0 ) {
-      errSoLuongMay = "Số lượng máy lớn hơn một!"
+    if (soLuong <= 0) {
+      errSoLuongMay = "Số lượng máy lớn hơn một!";
       check = 0;
     }
 
@@ -229,7 +232,7 @@ export default function FormAddPhong() {
       phanCung: errPhanCung,
       tang: errTang,
       toaNha: errtoaNha,
-      soLuongMay: errSoLuongMay
+      soLuongMay: errSoLuongMay,
     });
 
     return check;
@@ -238,8 +241,9 @@ export default function FormAddPhong() {
   // Render
   const renderCheckBox_TBi = () => {
     return arrThietBi?.map((item, index) => {
-      if(!item.status){// tbi hỏng sẽ không hiện ở đây
-        return <></>
+      if (!item.status) {
+        // tbi hỏng sẽ không hiện ở đây
+        return <></>;
       }
       return (
         <div className="form-check" key={index}>
@@ -264,8 +268,9 @@ export default function FormAddPhong() {
 
   const renderCheckBox_PM = () => {
     return arrPhanMem?.map((item, index) => {
-      if(!item.trangThai) {// trang thai hong se khogn hien owr day
-        return <></>
+      if (!item.trangThai) {
+        // trang thai hong se khogn hien owr day
+        return <></>;
       }
       return (
         <div key={index} className="form-check">
@@ -319,7 +324,9 @@ export default function FormAddPhong() {
     if (Object.keys(itemPhongRef.current.objToaNha).length === 0) {
       return (
         <>
-          <option key={-1} value={-1}>Chọn tòa nhà</option>
+          <option key={-1} value={-1}>
+            Chọn tòa nhà
+          </option>
           {arrToaNha?.map((item, index) => {
             return (
               <option key={index} value={item.maToaNha}>
@@ -353,7 +360,9 @@ export default function FormAddPhong() {
     if (Object.keys(itemPhongRef.current.objTang).length === 0) {
       return (
         <>
-          <option key={-1} value={-1}>Chọn tầng</option>
+          <option key={-1} value={-1}>
+            Chọn tầng
+          </option>
           {arrTang?.map((item, index) => {
             return (
               <option key={index} value={item.maTang}>
@@ -547,7 +556,7 @@ export default function FormAddPhong() {
               </div>
               {/*  */}
               <button type="submit" className="btn btn-success">
-                Submit
+                Tạo mới
               </button>
               <button
                 onClick={() => {
@@ -560,7 +569,7 @@ export default function FormAddPhong() {
                 type="reset"
                 className="btn btn-danger mx-3"
               >
-                Reset
+                Làm mới
               </button>
             </form>
           </div>

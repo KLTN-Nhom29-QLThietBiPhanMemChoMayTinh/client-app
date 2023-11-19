@@ -105,7 +105,7 @@ function PageQLPhongMay() {
           {/* {item.status===1 ? <td className="bg-success">Đang sử dụng</td> : item.status===0 ? <td>Phòng trống</td> : <td className="bg-danger">Đang bảo trì</td>} */}
           <td>{item.trangThai}</td>
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink to={`/quan-ly/phong/update/${item.id}`}>
+            <NavLink to={`/quan-ly/phong/update?id=${item.maPhong}`}>
               <button
                 type="button"
                 className="btn btn-primary mx-2 px-2"

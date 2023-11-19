@@ -1,148 +1,168 @@
 import React, { useEffect, useRef, useState } from "react";
 import NavTab from "../../common/NavTab/NavTab";
 import Footer from "../../common/Footer/Footer";
-import Database from "../../../util/database/Database";
 
 import { IoReloadOutline } from "react-icons/io5";
-import { useLocation, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPhanMemApi } from "../../../redux/reducers/phanMemReducer";
+import { getAllThietBiApi } from "../../../redux/reducers/thietBiReducer";
+import { getAllToaNhaApi } from "../../../redux/reducers/toaNhaReducer";
+import { getAllTangApi } from "../../../redux/reducers/tangReducer";
+import { insertPhongMayApi } from "../../../redux/reducers/phongMayReducer";
+import { useLocation, useNavigate } from "react-router-dom";
 
-/**
- * VD data ở server chưa lấy lên
- */
-const dataServer_PM = Database.dataPhanMem;
-const dataServer_TBi = Database.dataThietBi;
-//description : "Phòng máy H4.2" id: 3,numberOfMachines: 45,roomCode: "H4.2",soPhanMem: 5,soThietBi: 3,status: 1
-const dataServerPhong = Database.dataPhongMay[2];
-console.log(
-  "🚀 ~ file: FormUpdatePhong.jsx:16 ~ dataServerPhong:",
-  dataServerPhong
-);
-
-let datalocal_PM = []; // luu tru all data call duoc
-let datalocal_TBi = [];
-
-const getApiData_PM_TBi = () => {
-  //Call API
-  datalocal_PM = [...dataServer_PM];
-  datalocal_TBi = [...dataServer_TBi];
-};
-const getPhongById = () => {
-  // call Api
-  let itemPhong = dataServerPhong;
-
-  //VD 2 PM - 2 TBi
-  let itemPhanMem = [dataServer_PM[0], dataServer_PM[3], dataServer_PM[4]];
-  let itemThietBi = [dataServer_TBi[1], dataServer_TBi[3], dataServer_TBi[0]];
-  return {
-    name: itemPhong.description,
-    soLuongMay: itemPhong.numberOfMachines,
-    phanMem: itemPhanMem,
-    phanCung: itemThietBi,
-  };
-};
- //   const itemPhongRef = useRef({
-  //     name: "",
-  //     soLuongMay: 1,
-  //     phanMem: [],
-  //     phanCung: [],
-  //   });
+let objData_old = {};
 /**
  * 3.	Phòng máy(mã phòng, tên phòng, số máy , sothietbi, soPhanMem,trạng thái)
  *
  */
 export default function FormUpdatePhong() {
-  // sd useParams de nhan data truyen toi theo router
-  const params = useParams();
+  const navigatie = useNavigate();
+  const dispatch = useDispatch();
   // nhan data gui theo uri
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const objParam = Object.fromEntries(searchParams);
   //
-  let [btnReload, setBtnReload] = useState(1);
+  //
+  let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
+  let { arrPhanMem } = useSelector((state) => state.phanMemReducer);
+  let { arrThietBi } = useSelector((state) => state.thietBiReducer);
+  let { arrTang } = useSelector((state) => state.tangReducer);
+  let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
+
   // phong err
   let [errPhong, setErrPhong] = useState({
-    name: "",
-    soLuongMay: "",
-    phanMem: "",
-    phanCung: "",
+    tenPhong: "",
+    phanMems: "",
+    toaNha: "",
+    tang: "",
   });
-  // phong moiD
-  let [itemPhong, setItemPhong] = useState({
-    name: "",
-    soLuongMay: 1,
-    phanMem: [],
-    phanCung: [],
+  // phong moi
+  const itemPhongRef = useRef({
+    tenPhong: "",
+    phanMems: [],
+    toaNha: {},
+    tang: {},
+    moTa: "",
+    mayTinhs: [],
   });
 
- 
-
+  //
   useEffect(() => {
-    if (datalocal_PM.length === 0 && datalocal_TBi.length === 0) {
-      getApiData_PM_TBi();
-      setItemPhong(getPhongById(params.id));
+    if (objParam.id == null || arrPhongMay.length == 0) {
+      navigatie("/quan-ly/phong");
+    } else {
+      let objData_old = arrPhongMay.find((item) => item.maPhong == objParam.id);
+      itemPhongRef.current = {
+        ...objData_old,
+        toaNha: objData_old.tang.toaNha,
+      };
+      console.log(
+        "🚀 ~ file: FormUpdatePhong.jsx:58 ~ useEffect ~ itemPhongRef.current:",
+        itemPhongRef.current
+      );
     }
+    if (arrPhanMem.length === 0) {
+      dispatch(getAllPhanMemApi);
+    }
+
+    setErrPhong({ ...errPhong });
   }, []);
 
   // handle
-  //
-  const handleCheckTbi = (e) => {
-    let { checked, value } = e.target;
-    var updateList = [...itemPhong.phanCung];
-    if (checked) {
-      updateList.push(dataServer_TBi.find((item) => item.idCode === value));
-    } else {
-      updateList.splice(
-        updateList.indexOf(
-          dataServer_TBi.find((item) => item.idCode === value)
-        ),
-        1
-      );
-    }
-    let updateValue = { phanCung: updateList };
-    setItemPhong((itemPhong) => ({ ...itemPhong, ...updateValue }));
-  };
   const handleCheckPM = (e) => {
     let { checked, value } = e.target;
-    var updateList = [...itemPhong.phanMem];
+    var updateList = itemPhongRef.current.phanMem;
     if (checked) {
-      updateList.push(dataServer_PM.find((item) => item.idCode === value));
+      let arrData = arrPhanMem.filter((item) => item.maPhanMem == value);
+      updateList.push(arrData[0]);
     } else {
-      console.log();
-      updateList.splice(
-        updateList.indexOf(dataServer_PM.find((item) => item.idCode === value)),
-        1
-      );
+      updateList = updateList.filter((item) => item.maPhanMem != value);
     }
 
-    let updateValue = { phanMem: updateList };
-    setItemPhong((itemPhong) => ({ ...itemPhong, ...updateValue }));
+    itemPhongRef.current.phanMem = updateList;
+
+    if (itemPhongRef.current.phanMem.length === 0) {
+      setErrPhong({ ...errPhong, phanMem: "Hãy chọn ứng dụng" });
+    } else {
+      setErrPhong({ ...errPhong, phanMem: "" });
+    }
   };
   const handleChangeText = (e) => {
     let { id, value } = e.target;
 
-    let updateValue = { [id]: value };
-    setItemPhong((itemPhong) => ({ ...itemPhong, ...updateValue }));
+    itemPhongRef.current[id] = value;
+
+    if (id.includes("tenPhong")) {
+      if (value.trim().length === 0) {
+        setErrPhong({ ...errPhong, tenPhong: "Hãy nhập giá trị" });
+      } else {
+        setErrPhong({ ...errPhong, tenPhong: "" });
+      }
+    } else {
+      if (value.trim().length === 0) {
+        setErrPhong({ ...errPhong, soLuongMay: "Hãy nhập giá trị" });
+      } else {
+        setErrPhong({ ...errPhong, soLuongMay: "" });
+      }
+    }
+  };
+  //
+  const handleChangeSelectToaNha = (e) => {
+    // itemPhongRef.current.objToaNha =
+    let maToaNha = e.target.value;
+
+    let objToaNha = arrToaNha.find((item) => item.maToaNha == maToaNha);
+
+    let objTang = arrTang.find((item) => item.toaNha.maToaNha == maToaNha);
+
+    if (objTang == null) {
+      setErrPhong({ ...errPhong, toaNha: "Hãy chọn tòa nhà khác!" });
+    } else {
+      setErrPhong({ ...errPhong, toaNha: "", tang: "" });
+    }
+
+    itemPhongRef.current = { ...itemPhongRef.current, objToaNha, objTang };
+  };
+  //
+  const handleChangeSelectTang = (e) => {
+    let maTang = e.target.value;
+    let objTang = arrTang.find((item) => item.maTang == maTang);
+
+    itemPhongRef.current = {
+      ...itemPhongRef.current,
+      objTang,
+      objToaNha: objTang.toaNha,
+    };
+
+    setErrPhong({ ...errPhong, toaNha: "", tang: "" });
+  };
+  //
+  const handleChangeTxtMota = (e) => {
+    itemPhongRef.current = { ...itemPhongRef.current, mota: e.target.value };
   };
   //
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (checkDataInput()) {
       //true - di tiep
-      alert("Run - " + itemPhong.name);
+      console.log(itemPhongRef.current);
+      // dispatch(insertPhongMayApi(itemPhongRef.current));
     }
   };
   // check data
   const checkDataInput = () => {
-    let { name, phanMem, phanCung } = itemPhong;
+    let { tenPhong, phanMem, objToaNha, objTang } = itemPhongRef.current;
 
     let errName = "";
     let errPhanMem = "";
-    let errPhanCung = "";
+    let errTang = "";
+    let errtoaNha = "";
 
     let check = 1;
 
-    if (name.trim().length === 0) {
+    if (tenPhong?.trim().length === 0) {
       errName = " Hãy nhập dữ liệu!!";
       check = 0;
       //
@@ -161,136 +181,105 @@ export default function FormUpdatePhong() {
     }
 
     //
-    if (phanCung.length === 0) {
-      errPhanCung = " Hãy nhập dữ liệu!!";
+    if (objToaNha == null || Object.keys(objToaNha).length === 0) {
+      errtoaNha = "Hãy chọn tòa nhà!";
       check = 0;
-    } else {
-      // so sanh khac cua phanCung
+    }
+
+    //
+    if (objTang == null || Object.keys(objTang).length === 0) {
+      errTang = "Hãy chọn tằng!";
+      check = 0;
     }
 
     setErrPhong({
-      name: errName,
+      tenPhong: errName,
       phanMem: errPhanMem,
-      phanCung: errPhanCung,
+      tang: errTang,
+      toaNha: errtoaNha,
     });
 
-    return check;
+    return true;
   };
 
   // Render
-  const renderCheckBox_TBi = () => {
-    return datalocal_TBi.map((item, index) => {
-      // console.log(itemPhong.phanCung.indexOf(item));
-
-      if (itemPhong.phanCung.indexOf(item) >= 0) {
-        return (
-          <div className="form-check" key={index}>
-            <input
-              className="form-check-input"
-              type="checkbox"
-              defaultValue={item.idCode}
-              id={item.idCode}
-              onChange={handleCheckTbi}
-              checked
-            />
-            <label
-              className="form-check-label"
-              style={{ marginTop: "2px" }}
-              htmlFor={item.idCode}
-            >
-              {item.name}
-            </label>
-          </div>
-        );
-      }
-      return (
-        <div className="form-check" key={index}>
-          <input
-            className="form-check-input"
-            type="checkbox"
-            defaultValue={item.idCode}
-            id={item.idCode}
-            onChange={handleCheckTbi}
-          />
-          <label
-            className="form-check-label"
-            style={{ marginTop: "2px" }}
-            htmlFor={item.idCode}
-          >
-            {item.name}
-          </label>
-        </div>
-      );
-    });
-  };
 
   const renderCheckBox_PM = () => {
-    return datalocal_PM.map((item, index) => {
-      if (itemPhong.phanMem.indexOf(item) >= 0) {
-        return (
-          <div key={index} className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value={item.idCode}
-              id={item.idCode}
-              onChange={handleCheckPM}
-              checked
-            />
-            <label className="form-check-label" htmlFor={item.idCode}>
-              {item.name}
-            </label>
-          </div>
-        );
+    return arrPhanMem?.map((item, index) => {
+      if (!item.trangThai) {
+        // trang thai hong se khogn hien owr day
+        return <></>;
       }
+      // 
+      let valCheck = false;
+      if(itemPhongRef.current.phanMems.findIndex(e => e.maPhanMem == item.maPhanMem) >= 0 )
+      {
+        valCheck = 1;
+      }
+      
+      //
       return (
         <div key={index} className="form-check">
           <input
             className="form-check-input"
             type="checkbox"
-            value={item.idCode}
-            id={item.idCode}
+            value={item.maPhanMem}
+            id={`${item.maPhanMem}_PM`}
+            checked={valCheck}
             onChange={handleCheckPM}
           />
-          <label className="form-check-label" htmlFor={item.idCode}>
-            {item.name}
+          <label className="form-check-label" htmlFor={`${item.maPhanMem}_PM`}>
+            {item.tenPhanMem}
           </label>
         </div>
       );
     });
   };
 
-  const renderFooterData = () => {
-    let { name, soLuongMay, phanMem, phanCung } = itemPhong;
-    let strName = "";
-    let strPM = "";
-    let strTbi = "";
-    if (name.trim() !== "") {
-      strName = `${name} -- có ${soLuongMay} máy `;
-    }
-    if (phanCung.length > 0) {
-      strTbi = "-- thiết bị: ";
-      phanCung.forEach((item) => (strTbi += `${item.name}, `));
-    }
-    if (phanMem.length > 0) {
-      strPM = "-- phần mềm: ";
-      phanMem.forEach((item) => (strPM += `${item.name}, `));
-    }
-    let str = "" + strName + strTbi + strPM;
-    return (
-      <div className="">
-        <span className="fw-bold">Thông tin phòng mới: </span>
-        {str}
-      </div>
-    );
+  //
+  // RENDER
+  const renderToaNha = () => {
+    return arrToaNha?.map((item, index) => {
+      if (item.maToaNha == itemPhongRef.current.toaNha.maToaNha) {
+        return (
+          <option key={index} selected value={item.maToaNha}>
+            {item.tenToaNha}
+          </option>
+        );
+      }
+      return (
+        <option key={index} value={item.maToaNha}>
+          {item.tenToaNha}
+        </option>
+      );
+    });
+  };
+  //
+  const renderTang = () => {
+    return arrTang?.map((item, index) => {
+      if (item.toaNha.maToaNha === itemPhongRef.current.toaNha.maToaNha) {
+        if(item.maTang == itemPhongRef.current.tang.maTang) {
+          return (
+            <option key={index} selected value={item.maTang}>
+              {item.tenTang}
+            </option>
+          );
+        }
+        return (
+          <option key={index} value={item.maTang}>
+            {item.tenTang}
+          </option>
+        );
+      } else return <></>;
+    });
   };
 
   //
   // Mảng quản lý data navtab
   let arrLinkNavTab = [
-    { name: "Quản lý khu vực", link: "../../quan-ly/khu-vuc" },
-    { name: "Quản lý tầng", link: "../../quan-ly/tang" },
-    { name: "Quản lý phòng máy", link: "../../quan-ly/phong" },
+    { name: "Quản lý khu vực", link: "/quan-ly/khu-vuc" },
+    { name: "Quản lý tầng", link: "/quan-ly/tang" },
+    { name: "Quản lý phòng máy", link: "/quan-ly/phong" },
   ];
   //
   return (
@@ -299,142 +288,136 @@ export default function FormUpdatePhong() {
         className="d-flex flex-column justify-content-between "
         style={{ minHeight: "100vh" }}
       >
-        <div className="mb-2">
+        <div className="mb-2" style={{ height: "80vh" }}>
           {/*  */}
           <NavTab
+            style={{ height: "8vh" }}
             itemLink={{
               arrLinkNavTab,
-              chucNang: "Cập nhật",
+              chucNang: "Chỉnh sửa",
             }}
           />
           {/* Form */}
-          <div className=" bg-white p-4 rounded ">
-            <form onSubmit={handleSubmit}>
-              {/* input name - soluong may */}
-              <div className="row">
-                <div className="mb-3 col">
-                  <label htmlFor="txtTenPhong" className="form-label">
-                    Tên phòng{" "}
-                    <small
-                      id="errTenPhong"
-                      className="form-text  text-danger mx-2"
-                    >
-                      *{errPhong.name}
-                    </small>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="txtTenPhong"
-                    id="name"
-                    aria-describedby="errTenPhong"
-                    placeholder="Phòng máy..."
-                    onChange={handleChangeText}
-                    value={itemPhong.name}
-                  />
-                </div>
-                <div className="mb-3 col">
-                  <label htmlFor="soLuongMay" className="form-label">
-                    Số lượng máy tính
-                    <small
-                      id="errSoLuongMay"
-                      className="form-text mx-2 text-danger"
-                    >
-                      *{errPhong.soLuongMay}
-                    </small>
-                  </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    name="soLuongMay"
-                    id="soLuongMay"
-                    aria-describedby="errSoLuongMay"
-                    placeholder="Số lượng máy ..."
-                    min={1}
-                    max={150}
-                    value={itemPhong.soLuongMay}
-                    onChange={handleChangeText}
-                  />
-                </div>
-              </div>
-
-              {/* input check PM - Tbi*/}
-              <div className="row">
-                {/* checkbox - Tbi */}
-                <div className=" col">
-                  <label htmlFor="soLuongMay" className="form-label">
-                    Chọn thiết bị phần cứng cho máy tính
-                    <small
-                      id="errSoLuongMay"
-                      className="form-text mx-2 text-danger"
-                    >
-                      *{errPhong.phanCung}
-                    </small>
-                  </label>
-                  <div
-                    className="over_flow_auto"
-                    style={{
-                      height: "250px",
-                      paddingLeft: "10px",
-                      paddingBottom: "15px",
-                    }}
-                  >
-                    {/* item */}
-
-                    {renderCheckBox_TBi()}
+          <div className=" bg-white p-4 rounded " style={{ height: "82vh" }}>
+            <form className="h-100" onSubmit={handleSubmit}>
+              <div className="d-flex flex-column justify-content-between h-100">
+                <div className="bodyForm">
+                  {/* input name - soluong may */}
+                  <div className="row mb-2">
+                    <div className=" col-md-4">
+                      <label htmlFor="tenPhong" className="form-label">
+                        Tên phòng{" "}
+                        <small className="form-text  text-danger mx-2">*</small>
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="tenPhong"
+                        id="tenPhong"
+                        value={itemPhongRef.current.tenPhong}
+                        aria-describedby="errTenPhong"
+                        placeholder="Lab A1.0.1..."
+                        onChange={handleChangeText}
+                      />
+                      <small className="form-text py-2  text-danger mx-2">
+                        {errPhong.tenPhong}
+                      </small>
+                    </div>
+                    {/* select ToaNha */}
+                    <div className="col-md-4 ">
+                      <label className="form-label">
+                        Chọn tòa nhà
+                        <small className="form-text  text-danger mx-2">*</small>
+                      </label>
+                      <select
+                        className="form-select"
+                        onChange={handleChangeSelectToaNha}
+                      >
+                        {renderToaNha()}
+                      </select>
+                      <small className="form-text py-2  text-danger mx-2">
+                        {errPhong.toaNha}
+                      </small>
+                    </div>
+                    {/* select Tang */}
+                    <div className="col-md-4 ">
+                      <label className="form-label">
+                        Chọn tầng
+                        <small className="form-text  text-danger mx-2">*</small>
+                      </label>
+                      <select
+                        className="form-select"
+                        onChange={handleChangeSelectTang}
+                      >
+                        {renderTang()}
+                      </select>
+                      <small className="form-text py-2 text-danger mx-2">
+                        {errPhong.tang}
+                      </small>
+                    </div>
+                  </div>
+                  {/* input check PM - Tbi*/}
+                  <div className="row">
+                    {/* MoTa */}
+                    <div className="col">
+                      <div className="mb-3">
+                        <label htmlFor="txtMota" className="form-label">
+                          Mô tả
+                        </label>
+                        <textarea
+                          className="form-control"
+                          name="txtMota"
+                          id="txtMota"
+                          value={itemPhongRef.current.moTa}
+                          rows={5}
+                          onChange={handleChangeTxtMota}
+                        />
+                      </div>
+                    </div>
+                    {/* checkbox - PM */}
+                    <div className="col">
+                      <label htmlFor="soPhanMem" className="form-label">
+                        Chọn ứng dụng phần mềm cho máy tính
+                        <small
+                          id="errSoPhanMem"
+                          className="form-text  mx-2 text-danger"
+                        >
+                          *{errPhong.phanMem}
+                        </small>
+                      </label>
+                      <div
+                        className="over_flow_auto"
+                        style={{
+                          height: "225px",
+                          paddingLeft: "10px",
+                          paddingBottom: "15px",
+                        }}
+                      >
+                        {renderCheckBox_PM()}
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                {/* checkbox - PM */}
-                <div className="col">
-                  <label htmlFor="soLuongMay" className="form-label">
-                    Chọn ứng dụng phần mềm cho máy tính
-                    <small
-                      id="errSoLuongMay"
-                      className="form-text  mx-2 text-danger"
-                    >
-                      *{errPhong.phanMem}
-                    </small>
-                  </label>
-                  <div
-                    className="over_flow_auto"
-                    style={{
-                      height: "250px",
-                      paddingLeft: "10px",
-                      paddingBottom: "15px",
+                {/*  */}
+                <div>
+                  <button type="submit" className="btn btn-success">
+                    Chỉnh sửa
+                  </button>
+                  <button
+                    onClick={() => {
+                      itemPhongRef.current.name = "";
+                      itemPhongRef.current.soLuongMay = 1;
+                      itemPhongRef.current.phanMem = [];
+                      itemPhongRef.current.phanCung = [];
                     }}
+                    type="reset"
+                    className="btn btn-danger mx-3"
                   >
-                    {renderCheckBox_PM()}
-                  </div>
+                    Khôi phục
+                  </button>
                 </div>
               </div>
-
-              {/*  */}
-              <button type="submit" className="btn btn-success">
-                Cập nhật
-              </button>
-              <button
-                onClick={() => {
-                  setItemPhong(getPhongById(params.id));
-                }}
-                type="reset"
-                className="btn btn-danger mx-3"
-              >
-                Khôi phục
-              </button>
             </form>
-          </div>
-
-          <div className=" bg-white px-4 py-2 pt-3 rounded text-dark mt-2 d-flex justify-content-between ">
-            {renderFooterData()}
-            <IoReloadOutline
-              className="btn_moune "
-              style={{ width: "20px" }}
-              onClick={() => {
-                setBtnReload(btnReload + 1);
-              }}
-              size={20}
-            />
           </div>
         </div>
 
