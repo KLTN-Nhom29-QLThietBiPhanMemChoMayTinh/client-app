@@ -88,6 +88,26 @@ const phongMayReducer = createSlice({
         valueSelectTang
       );
     },
+    deletePhongAction: (state, action) => {
+      let maXoa = action.payload;
+
+      let arrUpdate = state.arrPhongMay.filter(
+        (item) => item.maPhong !== maXoa
+      );
+
+      state.arrPhongMay = [...arrUpdate];
+
+      //
+      let { arrPhongMay, valueSearch, valueSelectToaNha, valueSelectTang } =
+        state;
+
+      state.arrPhongMaySearch = dataSearch(
+        arrPhongMay,
+        valueSearch,
+        valueSelectToaNha,
+        valueSelectTang
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -97,6 +117,7 @@ export const {
   setvalueSelectToaNhaPhongMayAction,
   setvalueSelectTangPhongMayAction,
   updatePhongMayAction,
+  deletePhongAction,
 } = phongMayReducer.actions;
 export default phongMayReducer.reducer;
 
@@ -166,6 +187,36 @@ const dataSearch = (arrData, valSearch, valSelectTN, valSelectTG) => {
 };
 
 // CAll APi++++++++++++++++++++++++++++++++++++++
+
+/**
+ * - del PhongMayPHanMem theo phanMems<arr>
+ * del phong theo idPhong
+ */
+export const deletePhongApi = (phongMay) => {
+  // phongMay - Object
+  return async (dispatch) => {
+    try {
+      phongMay.phanMems.forEach(async (item) => {
+        // del phong may PM cu
+        await http.delete(
+          `/XoaPhongMayPhanMem/${phongMay.maPhong}/${item.maPhanMem}`
+        );
+      });
+
+      await http.delete(`/XoaPhongMay/${phongMay.maPhong}`);
+
+      dispatch(deletePhongAction(phongMay.maPhong));
+      // reload data
+      dispatch(setStatusDataMoi(true));
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: phongMayReducer.jsx:177 ~ deletePhongApi ~ error:",
+        error
+      );
+    }
+  };
+};
+
 /**
  * update phong may
  *  - update data phong mays
@@ -198,6 +249,8 @@ export const updatePhongMayApi1 = (phongMay, phongMayOld) => {
       });
 
       dispatch(updatePhongMayAction(phongMay));
+      // reload data
+      dispatch(setStatusDataMoi(true));
       history.push("/quan-ly/phong");
     } catch (error) {
       console.log(
@@ -239,6 +292,8 @@ export const updatePhongMayApi = (phongMay, arrPhanMem) => {
       });
 
       dispatch(updatePhongMayAction(phongMay));
+      // reload data
+      dispatch(setStatusDataMoi(true));
       history.push("/quan-ly/phong");
     } catch (error) {
       console.log(

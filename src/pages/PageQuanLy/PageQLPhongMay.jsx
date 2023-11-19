@@ -11,6 +11,7 @@ import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deletePhongApi,
   getAllPhongMayApi,
   getAllPhongMayApi2,
   setValueSearchPhongMayAction,
@@ -116,7 +117,9 @@ function PageQLPhongMay() {
             </NavLink>
             <button
               onClick={() => {
-                alert(`Đang cập nhật.`);
+                if (window.confirm("Bấm vào nút OK để xóa " + item.tenPhong)) {
+                  dispatch(deletePhongApi(item));
+                }
               }}
               type="button"
               className="btn btn-danger mx-2 px-2"

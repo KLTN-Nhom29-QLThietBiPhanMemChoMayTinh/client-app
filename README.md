@@ -54,6 +54,9 @@
 
 
 
+## note del
+* load lai data trang home
+    - dispatch(setStatusDataMoi(true))
 
 
 ## Note
