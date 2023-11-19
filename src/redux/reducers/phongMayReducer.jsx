@@ -70,6 +70,24 @@ const phongMayReducer = createSlice({
       );
     },
     insertPhongMayAction: (state, action) => {},
+    updatePhongMayAction: (state, action) => {
+      let itemUpdate = action.payload;
+
+      let rowToChange = state.arrPhongMay.findIndex(
+        (item) => item.maPhong == itemUpdate.maPhong
+      );
+      state.arrPhongMay[rowToChange] = itemUpdate;
+      //
+      let { arrPhongMay, valueSearch, valueSelectToaNha, valueSelectTang } =
+        state;
+
+      state.arrPhongMaySearch = dataSearch(
+        arrPhongMay,
+        valueSearch,
+        valueSelectToaNha,
+        valueSelectTang
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -78,7 +96,7 @@ export const {
   setValueSearchPhongMayAction,
   setvalueSelectToaNhaPhongMayAction,
   setvalueSelectTangPhongMayAction,
-  insertPhongMayAction,
+  updatePhongMayAction,
 } = phongMayReducer.actions;
 export default phongMayReducer.reducer;
 
@@ -87,9 +105,9 @@ const dataSearch = (arrData, valSearch, valSelectTN, valSelectTG) => {
   let search = valSearch.toLowerCase();
   let arrUpdate = arrData;
   if (valSelectTN != -1) {
-    console.log("toa nha != -1");
+    // console.log("toa nha != -1");
     if (valSelectTG != -1) {
-      console.log("tang != -1");
+      // console.log("tang != -1");
       arrUpdate = arrUpdate.filter((item) => {
         return (
           (item.tenPhong.toLowerCase().includes(search) ||
@@ -102,7 +120,7 @@ const dataSearch = (arrData, valSearch, valSelectTN, valSelectTG) => {
         );
       });
     } else {
-      console.log("tang == -1");
+      // console.log("tang == -1");
       arrUpdate = arrUpdate.filter((item) => {
         return (
           (item.tenPhong.toLowerCase().includes(search) ||
@@ -115,10 +133,10 @@ const dataSearch = (arrData, valSearch, valSelectTN, valSelectTG) => {
       });
     }
   } else {
-    console.log("toa nha = -1");
+    // console.log("toa nha = -1");
 
     if (valSelectTG != -1) {
-      console.log("tang != -1");
+      // console.log("tang != -1");
       arrUpdate = arrData.filter((item) => {
         return (
           (item.tenPhong.toLowerCase().includes(search) ||
@@ -130,7 +148,7 @@ const dataSearch = (arrData, valSearch, valSelectTN, valSelectTG) => {
         );
       });
     } else {
-      console.log("tang == -1");
+      // console.log("tang == -1");
       arrUpdate = arrUpdate.filter((item) => {
         return (
           item.tenPhong.toLowerCase().includes(search) ||
@@ -143,12 +161,97 @@ const dataSearch = (arrData, valSearch, valSelectTN, valSelectTG) => {
     }
   }
 
-  console.log(arrUpdate);
+  // console.log(arrUpdate);
   return [...arrUpdate];
 };
 
 // CAll APi++++++++++++++++++++++++++++++++++++++
+/**
+ * update phong may
+ *  - update data phong mays
+ *  - xoa het phongf mays phần mềm
+ *  - tạo mới phòng máy phần mềm
+ * @param {} phongMay
+ * @returns
+ */
+export const updatePhongMayApi1 = (phongMay, phongMayOld) => {
+  let phanMems_old = phongMayOld.phanMems;
+  return async (dispatch) => {
+    try {
+      let result = await http.post(`/LuuPhongMay/`, phongMay);
 
+      // del phong may PM cu
+      phanMems_old.forEach(async (item) => {
+        await http.delete(
+          `/XoaPhongMayPhanMem/${phongMay.maPhong}/${item.maPhanMem}`
+        );
+      });
+      // add Phong may PM moi
+
+      phongMay.phanMems.forEach(async (item) => {
+        let savePhongMay_PhanMem = {
+          phongMay: result.data,
+          phanMem: item,
+          status: true,
+        };
+        await http.post("/LuuPhongMayPhanMem", savePhongMay_PhanMem);
+      });
+
+      dispatch(updatePhongMayAction(phongMay));
+      history.push("/quan-ly/phong");
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: phongMayReducer.jsx:175 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
+/**
+ * update phong may
+ *  - update data phong mays
+ *  - duyet list PM phan mêm nào được chọn trong phongmay(new) thì được dthem ngược lại del
+ * @param {} phongMay
+ * @returns
+ */
+export const updatePhongMayApi = (phongMay, arrPhanMem) => {
+  let { phanMems } = phongMay;
+  return async (dispatch) => {
+    try {
+      let result = await http.post(`/LuuPhongMay/`, phongMay);
+
+      arrPhanMem.forEach(async (item) => {
+        let rowData = phanMems.findIndex((e) => e.maPhanMem == item.maPhanMem);
+        if (rowData >= 0) {
+          // add Phong may PM moi
+          let savePhongMay_PhanMem = {
+            phongMay: result.data,
+            phanMem: item,
+            status: true,
+          };
+          await http.post("/LuuPhongMayPhanMem", savePhongMay_PhanMem);
+        } else {
+          // del phong may PM cu
+          await http.delete(
+            `/XoaPhongMayPhanMem/${phongMay.maPhong}/${item.maPhanMem}`
+          );
+        }
+      });
+
+      dispatch(updatePhongMayAction(phongMay));
+      history.push("/quan-ly/phong");
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: phongMayReducer.jsx:175 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
+
+/**
+ * add 1 phong may và 1 list may tính
+ */
 export const insertPhongMayApi = (phongMay) => {
   let { tenPhong, soLuongMay, phanMem, phanCung, objToaNha, objTang, mota } =
     phongMay;
@@ -213,11 +316,11 @@ export const insertPhongMayApi = (phongMay) => {
           await http.post("/LuuMayTinhThietBi", saveMayTinhThietBi);
         });
       });
-      
-      dispatch(getAllPhongMayApi)
-      alert('Tạo mới thành công.')
+
+      dispatch(getAllPhongMayApi);
+      alert("Tạo mới thành công.");
       dispatch(setStatusDataMoi(true)); // cap nhat trang home
-      history.push('/quan-ly/phong');
+      history.push("/quan-ly/phong");
     } catch (error) {
       console.log(
         "🚀 ~ file: phongMayReducer.jsx:157 ~ returnasync ~ error:",

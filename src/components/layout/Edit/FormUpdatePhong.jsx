@@ -8,7 +8,7 @@ import { getAllPhanMemApi } from "../../../redux/reducers/phanMemReducer";
 import { getAllThietBiApi } from "../../../redux/reducers/thietBiReducer";
 import { getAllToaNhaApi } from "../../../redux/reducers/toaNhaReducer";
 import { getAllTangApi } from "../../../redux/reducers/tangReducer";
-import { insertPhongMayApi } from "../../../redux/reducers/phongMayReducer";
+import { insertPhongMayApi, updatePhongMayApi } from "../../../redux/reducers/phongMayReducer";
 import { useLocation, useNavigate } from "react-router-dom";
 
 let objData_old = {};
@@ -27,7 +27,6 @@ export default function FormUpdatePhong() {
   //
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
   let { arrPhanMem } = useSelector((state) => state.phanMemReducer);
-  let { arrThietBi } = useSelector((state) => state.thietBiReducer);
   let { arrTang } = useSelector((state) => state.tangReducer);
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
 
@@ -53,15 +52,11 @@ export default function FormUpdatePhong() {
     if (objParam.id == null || arrPhongMay.length == 0) {
       navigatie("/quan-ly/phong");
     } else {
-      let objData_old = arrPhongMay.find((item) => item.maPhong == objParam.id);
+      objData_old = arrPhongMay.find((item) => item.maPhong == objParam.id);
       itemPhongRef.current = {
         ...objData_old,
         toaNha: objData_old.tang.toaNha,
       };
-      console.log(
-        "🚀 ~ file: FormUpdatePhong.jsx:58 ~ useEffect ~ itemPhongRef.current:",
-        itemPhongRef.current
-      );
     }
     if (arrPhanMem.length === 0) {
       dispatch(getAllPhanMemApi);
@@ -73,39 +68,31 @@ export default function FormUpdatePhong() {
   // handle
   const handleCheckPM = (e) => {
     let { checked, value } = e.target;
-    var updateList = itemPhongRef.current.phanMem;
+    var updateList = structuredClone(itemPhongRef.current.phanMems);
     if (checked) {
-      let arrData = arrPhanMem.filter((item) => item.maPhanMem == value);
-      updateList.push(arrData[0]);
+      updateList.push(arrPhanMem.find((item) => item.maPhanMem == value));
     } else {
       updateList = updateList.filter((item) => item.maPhanMem != value);
     }
 
-    itemPhongRef.current.phanMem = updateList;
+    itemPhongRef.current.phanMems = updateList;
 
-    if (itemPhongRef.current.phanMem.length === 0) {
+    if (itemPhongRef.current.phanMems.length === 0) {
       setErrPhong({ ...errPhong, phanMem: "Hãy chọn ứng dụng" });
     } else {
       setErrPhong({ ...errPhong, phanMem: "" });
     }
   };
+  //
   const handleChangeText = (e) => {
     let { id, value } = e.target;
 
     itemPhongRef.current[id] = value;
 
-    if (id.includes("tenPhong")) {
-      if (value.trim().length === 0) {
-        setErrPhong({ ...errPhong, tenPhong: "Hãy nhập giá trị" });
-      } else {
-        setErrPhong({ ...errPhong, tenPhong: "" });
-      }
+    if (value.trim().length === 0) {
+      setErrPhong({ ...errPhong, tenPhong: "Hãy nhập giá trị" });
     } else {
-      if (value.trim().length === 0) {
-        setErrPhong({ ...errPhong, soLuongMay: "Hãy nhập giá trị" });
-      } else {
-        setErrPhong({ ...errPhong, soLuongMay: "" });
-      }
+      setErrPhong({ ...errPhong, tenPhong: "" });
     }
   };
   //
@@ -113,47 +100,47 @@ export default function FormUpdatePhong() {
     // itemPhongRef.current.objToaNha =
     let maToaNha = e.target.value;
 
-    let objToaNha = arrToaNha.find((item) => item.maToaNha == maToaNha);
+    let toaNha = arrToaNha.find((item) => item.maToaNha == maToaNha);
 
-    let objTang = arrTang.find((item) => item.toaNha.maToaNha == maToaNha);
+    let tang = arrTang.find((item) => item.toaNha.maToaNha == maToaNha);
 
-    if (objTang == null) {
+    itemPhongRef.current = { ...itemPhongRef.current, toaNha, tang };
+
+    if (tang == null) {
       setErrPhong({ ...errPhong, toaNha: "Hãy chọn tòa nhà khác!" });
     } else {
       setErrPhong({ ...errPhong, toaNha: "", tang: "" });
     }
-
-    itemPhongRef.current = { ...itemPhongRef.current, objToaNha, objTang };
   };
   //
   const handleChangeSelectTang = (e) => {
     let maTang = e.target.value;
-    let objTang = arrTang.find((item) => item.maTang == maTang);
+    let tang = arrTang.find((item) => item.maTang == maTang);
 
     itemPhongRef.current = {
       ...itemPhongRef.current,
-      objTang,
-      objToaNha: objTang.toaNha,
+      tang,
+      toaNha: tang.toaNha,
     };
 
     setErrPhong({ ...errPhong, toaNha: "", tang: "" });
   };
   //
   const handleChangeTxtMota = (e) => {
-    itemPhongRef.current = { ...itemPhongRef.current, mota: e.target.value };
+    itemPhongRef.current = { ...itemPhongRef.current, moTa: e.target.value };
+    setErrPhong({ ...errPhong});
   };
   //
   const handleSubmit = (e) => {
     e.preventDefault();
     if (checkDataInput()) {
       //true - di tiep
-      console.log(itemPhongRef.current);
-      // dispatch(insertPhongMayApi(itemPhongRef.current));
+      dispatch(updatePhongMayApi(itemPhongRef.current, arrPhanMem));
     }
   };
   // check data
   const checkDataInput = () => {
-    let { tenPhong, phanMem, objToaNha, objTang } = itemPhongRef.current;
+    let { tenPhong, phanMems, toaNha, tang } = itemPhongRef.current;
 
     let errName = "";
     let errPhanMem = "";
@@ -171,7 +158,7 @@ export default function FormUpdatePhong() {
     }
     //
 
-    if (phanMem.length === 0) {
+    if (phanMems.length === 0) {
       errPhanMem = " Hãy nhập dữ liệu!!";
       check = 0;
       //
@@ -181,13 +168,13 @@ export default function FormUpdatePhong() {
     }
 
     //
-    if (objToaNha == null || Object.keys(objToaNha).length === 0) {
+    if (toaNha == null || Object.keys(toaNha).length === 0) {
       errtoaNha = "Hãy chọn tòa nhà!";
       check = 0;
     }
 
     //
-    if (objTang == null || Object.keys(objTang).length === 0) {
+    if (tang == null || Object.keys(tang).length === 0) {
       errTang = "Hãy chọn tằng!";
       check = 0;
     }
@@ -199,7 +186,7 @@ export default function FormUpdatePhong() {
       toaNha: errtoaNha,
     });
 
-    return true;
+    return check;
   };
 
   // Render
@@ -210,13 +197,16 @@ export default function FormUpdatePhong() {
         // trang thai hong se khogn hien owr day
         return <></>;
       }
-      // 
+      //
       let valCheck = false;
-      if(itemPhongRef.current.phanMems.findIndex(e => e.maPhanMem == item.maPhanMem) >= 0 )
-      {
+      if (
+        itemPhongRef.current.phanMems.findIndex(
+          (e) => e.maPhanMem == item.maPhanMem
+        ) >= 0
+      ) {
         valCheck = 1;
       }
-      
+
       //
       return (
         <div key={index} className="form-check">
@@ -258,7 +248,7 @@ export default function FormUpdatePhong() {
   const renderTang = () => {
     return arrTang?.map((item, index) => {
       if (item.toaNha.maToaNha === itemPhongRef.current.toaNha.maToaNha) {
-        if(item.maTang == itemPhongRef.current.tang.maTang) {
+        if (item.maTang == itemPhongRef.current.tang.maTang) {
           return (
             <option key={index} selected value={item.maTang}>
               {item.tenTang}
