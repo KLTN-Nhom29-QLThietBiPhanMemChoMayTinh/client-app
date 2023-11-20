@@ -67,7 +67,7 @@ export default function PageQlMayTinh() {
           {/*  */}
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
-            // to={`/quan-ly/may-tinh/update?id=${item.maTang}`}
+            to={`/quan-ly/may-tinh/update?id=${item.maMay}`}
             >
               <button
                 type="button"
@@ -80,7 +80,7 @@ export default function PageQlMayTinh() {
             <button
               onClick={() => {
                 if (window.confirm("Bấm vào nút OK để xóa " + item.tenTang)) {
-                  // dispatch(deleteTangApi(item.maTang));
+                  // dispatch(deleteTangApi(item.maMay));
                 }
               }}
               type="button"
