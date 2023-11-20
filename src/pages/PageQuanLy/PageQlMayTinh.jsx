@@ -32,11 +32,14 @@ export default function PageQlMayTinh() {
 
   // render
   const renderDataMayTinh = () => {
+    if(arrMayTinhSearch.length === 0) {
+      return <span >Không có giá thị thỏa mãn.</span>
+    }
     return arrMayTinhSearch?.map((item, index) => {
       let ngaySD = new Date(item.ngayLapDat);
       let textColor_TrangThai = "black";
 
-      if (item.trangThai.toLowerCase().includes("bị hỏng".toLowerCase())) {
+      if (item.trangThai.toLowerCase().includes("đã hỏng".toLowerCase())) {
         textColor_TrangThai = "red";
       }
 
@@ -136,7 +139,7 @@ export default function PageQlMayTinh() {
                 <div></div>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  className="btn btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#modalIdSearchSelect"
                 >

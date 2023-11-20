@@ -30,6 +30,22 @@ const mayTinhReducer = createSlice({
 
       state.arrMayTinhSearch = dataSearch(arrMayTinh, action.payload, valueSelToaNha, valueSelTang, valueSelPhongMay,valueSelTrangThai)
     },
+    setvalueSelToaNha_MayTinhAction: (state, action) => {
+      state.valueSelToaNha = action.payload;
+      state.valueSelTang = -1
+      // 
+      let {arrMayTinh, valueSearch, valueSelPhongMay, valueSelTang, valueSelToaNha, valueSelTrangThai} = state;
+
+      state.arrMayTinhSearch = dataSearch(arrMayTinh, valueSearch, action.payload, valueSelTang, valueSelPhongMay,valueSelTrangThai)
+    },
+    setvalueSelTang_MayTinhAction: (state, action) => {
+      state.valueSelTang = action.payload;
+
+      // 
+      let {arrMayTinh, valueSearch, valueSelPhongMay, valueSelTang, valueSelToaNha, valueSelTrangThai} = state;
+
+      state.arrMayTinhSearch = dataSearch(arrMayTinh, valueSearch, valueSelToaNha, action.payload, valueSelPhongMay,valueSelTrangThai)
+    },
 
   },
 });
@@ -37,6 +53,8 @@ const mayTinhReducer = createSlice({
 export const { 
   setArrMayTinhAction,
   setValueSearchMayTinhAction, 
+  setvalueSelToaNha_MayTinhAction,
+  setvalueSelTang_MayTinhAction,
 } = mayTinhReducer.actions;
 export default mayTinhReducer.reducer;
 
@@ -77,6 +95,13 @@ const dataSearch = (
   if(valSelect1 != -1) {
     arrUpdate = arrUpdate.filter(item =>{
       return item.phongMay.tang.toaNha.maToaNha == valSelect1
+    })
+  }
+  
+  // 2
+  if(valSelect2 != -1) {
+    arrUpdate = arrUpdate.filter(item =>{
+      return item.phongMay.tang.maTang == valSelect2
     })
   }
 
