@@ -3,6 +3,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { formatStringDate, http } from "../../util/config";
 import { formatToaNhaAndTang } from "../../util/formatString";
+import { history } from "../..";
+import { setStatusDataMoi } from "./homeReducer";
+import { getAllPhongMayApi } from "./phongMayReducer";
 
 const initialState = {
   arrMayTinh: [],
@@ -134,6 +137,29 @@ const mayTinhReducer = createSlice({
         action.payload
       );
     },
+    insertMayTinhAction: (state, action) => {
+      let objNew = action.payload;
+
+      state.arrMayTinh.push(objNew);
+      //
+      let {
+        arrMayTinh,
+        valueSearch,
+        valueSelPhongMay,
+        valueSelTang,
+        valueSelToaNha,
+        valueSelTrangThai,
+      } = state;
+
+      state.arrMayTinhSearch = dataSearch(
+        arrMayTinh,
+        valueSearch,
+        valueSelToaNha,
+        valueSelTang,
+        valueSelPhongMay,
+        valueSelTrangThai
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -144,6 +170,7 @@ export const {
   setvalueSelTang_MayTinhAction,
   setvalueSelPhongMay_MayTinhAction,
   setvalueSelTrangThai_MayTinhAction,
+  insertMayTinhAction,
 } = mayTinhReducer.actions;
 export default mayTinhReducer.reducer;
 
@@ -207,18 +234,79 @@ const dataSearch = (
     });
   }
 
+  arrUpdate = sortArrDataMayTinhByTenPhong(arrUpdate);
   return [...arrUpdate];
 };
 
 // Call Api ++++++++++++++++++++++++++++++++++++++++++++++
 
+export const insertMayTinhApi = (mayTinh) => {
+  let { moTa, valueSelPhongMay, thietBis, phongMay } = mayTinh;
+  let day = new Date();
+
+  //
+  let saveMayTinh = {
+    moTa,
+    trangThai: "Đang hoạt động",
+    ngayLapDat: day,
+    phongMay: {
+      maPhong: valueSelPhongMay,
+    },
+  };
+  return async (dispatch) => {
+    try {
+      let resultSaveMayTinh = await http.post("/LuuMayTinh", saveMayTinh);
+
+      let objMayTinh = resultSaveMayTinh.data;
+
+      thietBis.forEach(async (item) => {
+        let objSave = {
+          mayTinh: objMayTinh,
+          thietBi: item,
+          status: true,
+        };
+        let resultMayTinhThietBI = await http.post(
+          "/LuuMayTinhThietBi",
+          objSave
+        );
+      });
+
+      // luu len reducer
+
+      let thietBiMays = thietBis.map((item) => {
+        return { ...item, trangThaiTbi: true };
+      });
+      let objRedux = {
+        maMay: objMayTinh.maMay,
+        trangThai: objMayTinh.trangThai,
+        moTa: objMayTinh.moTa,
+        ngayLapDat: objMayTinh.ngayLapDat,
+        phongMay,
+        thietBiMays,
+      };
+      dispatch(insertMayTinhAction(objRedux));
+
+      dispatch(getAllPhongMayApi);
+      dispatch(setStatusDataMoi(true));
+      history.push("/quan-ly/may-tinh");
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: mayTinhReducer.jsx:220 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
+
+/**
+ * Get all may tinh
+ * @param {*} dispatch
+ */
 export const getAllMayTinhApi = async (dispatch) => {
   try {
     let result = await http.get("/DSMayTinh2");
     let updateData = result.data;
-    updateData = updateData.sort((a, b) =>
-      a.phongMay.tenPhong > b.phongMay.tenPhong ? 1 : b.phongMay.tenPhong > a.phongMay.tenPhong ? -1 : 0
-    );
+    updateData = sortArrDataMayTinhByTenPhong(updateData);
     dispatch(setArrMayTinhAction([...updateData]));
   } catch (error) {
     console.log(
@@ -226,4 +314,13 @@ export const getAllMayTinhApi = async (dispatch) => {
       error
     );
   }
+};
+const sortArrDataMayTinhByTenPhong = (updateData) => {
+  return updateData.sort((a, b) =>
+    a.phongMay.tenPhong > b.phongMay.tenPhong
+      ? 1
+      : b.phongMay.tenPhong > a.phongMay.tenPhong
+      ? -1
+      : 0
+  );
 };

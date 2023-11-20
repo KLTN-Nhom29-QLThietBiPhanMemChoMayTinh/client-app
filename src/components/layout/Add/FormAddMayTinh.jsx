@@ -6,6 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllToaNhaApi } from "../../../redux/reducers/toaNhaReducer";
 import { getAllTangApi } from "../../../redux/reducers/tangReducer";
 import { getAllPhongMayApi } from "../../../redux/reducers/phongMayReducer";
+import {
+  getAllMayTinhApi,
+  insertMayTinhApi,
+} from "../../../redux/reducers/mayTinhReducer";
 
 export default function FormAddMayTinh() {
   const dispatch = useDispatch();
@@ -14,6 +18,7 @@ export default function FormAddMayTinh() {
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
   let { arrTang } = useSelector((state) => state.tangReducer);
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
+  let { arrMayTinh } = useSelector((state) => state.mayTinhReducer);
   //
 
   let objMayTinh = useRef({
@@ -32,6 +37,9 @@ export default function FormAddMayTinh() {
   });
 
   useEffect(() => {
+    if (arrMayTinh.length === 0) {
+      dispatch(getAllMayTinhApi);
+    }
     if (arrThietBi.length === 0) {
       dispatch(getAllThietBiApi);
     }
@@ -55,6 +63,27 @@ export default function FormAddMayTinh() {
       return;
     }
     // true
+    let { moTa, valueSelPhongMay } = objMayTinh.current;
+    //check ten may: ten may trùng và mà phòng trùng
+    let objPhongMay = arrPhongMay.find(
+      (item) => item.maPhong == valueSelPhongMay
+    );
+    let search = moTa.toLowerCase();
+
+    let objData = objPhongMay.mayTinhs.find((item) => {
+      return item.moTa.toLowerCase().includes(search);
+    });
+    if (objData != null) {
+      // timf they obj
+      alert("Tên máy tính đã được sử dụng!");
+      return;
+    }
+
+    // tên MT không trung
+
+    dispatch(
+      insertMayTinhApi({ ...objMayTinh.current, phongMay: objPhongMay })
+    );
   };
   const checkData = () => {
     let check = 1;
@@ -86,7 +115,7 @@ export default function FormAddMayTinh() {
           err_valueSelToaNha = "Hãy chọn thông tin!";
           check = 0;
         }
-        
+
         err_valueSelTang = "Hãy chọn thông tin!";
         check = 0;
       }
@@ -155,6 +184,7 @@ export default function FormAddMayTinh() {
     if (strFirst.toLowerCase().includes("Máy tính".toLowerCase())) {
       // true xuat chuỗi text mới vs number lớn hơn 1
       let strNumber = moTa.slice(8, moTa.length);
+
       return "Máy tính " + (parseInt(strNumber) + 1);
     }
 
@@ -239,6 +269,7 @@ export default function FormAddMayTinh() {
             style={{ marginTop: "2px" }}
             htmlFor={`${item.maThietBi}_Tbi`}
           >
+            <strong>{item.loaiThietBi.tenLoai}: </strong>
             {item.tenThietBi}
           </label>
         </div>
