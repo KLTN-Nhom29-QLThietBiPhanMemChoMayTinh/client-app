@@ -10,9 +10,19 @@ import {
   getAllMayTinhApi,
   insertMayTinhApi,
 } from "../../../redux/reducers/mayTinhReducer";
+import { useLocation, useNavigate } from "react-router-dom";
+
+let objData_old = {};
 
 export default function FormUpdateMayTinh() {
+  //
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  // nhan data gui theo uri
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const objParam = Object.fromEntries(searchParams);
+  //
   //
   let { arrThietBi } = useSelector((state) => state.thietBiReducer);
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
@@ -37,9 +47,29 @@ export default function FormUpdateMayTinh() {
   });
 
   useEffect(() => {
-    if (arrMayTinh.length === 0) {
-      dispatch(getAllMayTinhApi);
+    if (objParam.id == null || arrMayTinh.length === 0) {
+      navigate("/quan-ly/may-tinh");
+    } else {
+      objData_old = arrMayTinh.find((item) => item.maMay == objParam.id);
+
+      let { phongMay, moTa, thietBiMays } = objData_old;
+      objMayTinh.current = {
+        valueSelToaNha: phongMay.tang.toaNha.maToaNha,
+        valueSelTang: phongMay.tang.maTang,
+        valueSelPhongMay: phongMay.maPhong,
+        moTa,
+        thietBis: thietBiMays,
+      };
+      //
+      setErrMayTinh({
+        valueSelToaNha: "",
+        valueSelTang: "",
+        valueSelPhongMay: "",
+        moTa: "",
+        thietBis: "",
+      });
     }
+
     if (arrThietBi.length === 0) {
       dispatch(getAllThietBiApi);
     }
@@ -255,6 +285,16 @@ export default function FormUpdateMayTinh() {
         // tbi hỏng sẽ không hiện ở đây
         return <></>;
       }
+      //
+      let valChecked = false;
+      if (
+        objMayTinh.current.thietBis.findIndex(
+          (e) => e.maThietBi == item.maThietBi
+        ) >= 0
+      ) {
+        valChecked = 1;
+      }
+
       return (
         <div className="form-check" key={index}>
           <input
@@ -262,6 +302,7 @@ export default function FormUpdateMayTinh() {
             type="checkbox"
             value={item.maThietBi}
             id={`${item.maThietBi}_Tbi`}
+            checked= {valChecked}
             onChange={handleCheckTbi}
           />
           <label
