@@ -8,26 +8,31 @@ import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { getAllMayTinhApi } from "../../redux/reducers/mayTinhReducer";
+import { getAllMayTinhApi, setValueSearchMayTinhAction } from "../../redux/reducers/mayTinhReducer";
 import { formatStringDate } from "../../util/config";
 import { formatToaNhaAndTang } from "../../util/formatString";
+import ModalSearchMayTinh from "../../components/layout/Modal/ModalSearchMayTinh/ModalSearchMayTinh";
 //
 
 export default function PageQlMayTinh() {
   //
   const dispatch = useDispatch();
   //
-  let { arrMayTinh } = useSelector((state) => state.mayTinhReducer);
+  let { arrMayTinh, arrMayTinhSearch,valueSearch } = useSelector((state) => state.mayTinhReducer);
 
   useEffect(() => {
     if (arrMayTinh.length === 0) {
       dispatch(getAllMayTinhApi);
     }
   }, []);
+  // handle
+  const handleSearchChange = (e) => {
+    dispatch(setValueSearchMayTinhAction(e.target.value))
+  }
 
   // render
   const renderDataMayTinh = () => {
-    return arrMayTinh?.map((item, index) => {
+    return arrMayTinhSearch?.map((item, index) => {
       let ngaySD = new Date(item.ngayLapDat);
       let textColor_TrangThai = "black";
 
@@ -35,7 +40,6 @@ export default function PageQlMayTinh() {
         textColor_TrangThai = "red";
       }
 
-      
       return (
         <tr key={index}>
           <td scope="row" style={{ fontWeight: 600 }}>
@@ -103,6 +107,7 @@ export default function PageQlMayTinh() {
   return (
     <>
       <div className="container " style={{ height: "100vh" }}>
+        <ModalSearchMayTinh />
         <div
           className="d-flex flex-column justify-content-between "
           style={{ height: "100vh" }}
@@ -126,17 +131,28 @@ export default function PageQlMayTinh() {
               >
                 <h2 style={{ margin: "0" }}>Danh sách máy tính</h2>
                 {/* {renderSelectTheoKhuVuc()} */}
+                <div></div>
+                <div></div>
+                <div></div>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalIdSearchSelect"
+                >
+                  Danh sách tìm kiếm
+                </button>
+                <div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="tìm kiếm..."
+                    value={valueSearch}
+                    onChange={handleSearchChange}
+                  />
+                </div>
                 {/* input tim kiem */}
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  <div>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="tìm kiếm..."
-                      // onChange={handleSearchChange}
-                    />
-                  </div>
-
                   {/* Btn them */}
                   <button
                     to="/quan-ly/tang/add"
