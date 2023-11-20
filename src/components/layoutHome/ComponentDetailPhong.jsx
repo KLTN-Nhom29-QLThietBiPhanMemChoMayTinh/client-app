@@ -40,12 +40,12 @@ export default function ComponentDetailPhong() {
           style={{ width: "150px", height: "150px" }}
         >
           <div className="card-body text-center p-2">
-            <FaComputer size={50} />
+            <FaComputer color={`${colorText}`} size={50} />
             <h4
               className="pt-3 px-4"
               style={{
                 fontSize: "20px",
-                color: `${colorText}`,
+                // color: `${colorText}`,
                 fontWeight: "600",
               }}
             >

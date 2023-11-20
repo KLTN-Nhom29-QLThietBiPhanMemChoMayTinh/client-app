@@ -11,7 +11,7 @@ const initialState = {
   valueSelToaNha: "-1",
   valueSelTang: "-1",
   valueSelPhongMay: "-1",
-  valueSelTrangThai:'-1',
+  valueSelTrangThai: "-1",
 };
 
 const mayTinhReducer = createSlice({
@@ -25,47 +25,136 @@ const mayTinhReducer = createSlice({
     setValueSearchMayTinhAction: (state, action) => {
       state.valueSearch = action.payload;
 
-      // 
-      let {arrMayTinh, valueSearch, valueSelPhongMay, valueSelTang, valueSelToaNha, valueSelTrangThai} = state;
+      //
+      let {
+        arrMayTinh,
+        valueSearch,
+        valueSelPhongMay,
+        valueSelTang,
+        valueSelToaNha,
+        valueSelTrangThai,
+      } = state;
 
-      state.arrMayTinhSearch = dataSearch(arrMayTinh, action.payload, valueSelToaNha, valueSelTang, valueSelPhongMay,valueSelTrangThai)
+      state.arrMayTinhSearch = dataSearch(
+        arrMayTinh,
+        action.payload,
+        valueSelToaNha,
+        valueSelTang,
+        valueSelPhongMay,
+        valueSelTrangThai
+      );
     },
     setvalueSelToaNha_MayTinhAction: (state, action) => {
       state.valueSelToaNha = action.payload;
-      state.valueSelTang = -1
-      // 
-      let {arrMayTinh, valueSearch, valueSelPhongMay, valueSelTang, valueSelToaNha, valueSelTrangThai} = state;
+      state.valueSelTang = -1;
+      state.valueSelPhongMay = -1;
+      //
+      let {
+        arrMayTinh,
+        valueSearch,
+        valueSelPhongMay,
+        valueSelTang,
+        valueSelToaNha,
+        valueSelTrangThai,
+      } = state;
 
-      state.arrMayTinhSearch = dataSearch(arrMayTinh, valueSearch, action.payload, valueSelTang, valueSelPhongMay,valueSelTrangThai)
+      state.arrMayTinhSearch = dataSearch(
+        arrMayTinh,
+        valueSearch,
+        action.payload,
+        valueSelTang,
+        valueSelPhongMay,
+        valueSelTrangThai
+      );
     },
     setvalueSelTang_MayTinhAction: (state, action) => {
       state.valueSelTang = action.payload;
+      state.valueSelPhongMay = -1;
 
-      // 
-      let {arrMayTinh, valueSearch, valueSelPhongMay, valueSelTang, valueSelToaNha, valueSelTrangThai} = state;
+      //
+      let {
+        arrMayTinh,
+        valueSearch,
+        valueSelPhongMay,
+        valueSelTang,
+        valueSelToaNha,
+        valueSelTrangThai,
+      } = state;
 
-      state.arrMayTinhSearch = dataSearch(arrMayTinh, valueSearch, valueSelToaNha, action.payload, valueSelPhongMay,valueSelTrangThai)
+      state.arrMayTinhSearch = dataSearch(
+        arrMayTinh,
+        valueSearch,
+        valueSelToaNha,
+        action.payload,
+        valueSelPhongMay,
+        valueSelTrangThai
+      );
     },
+    setvalueSelPhongMay_MayTinhAction: (state, action) => {
+      state.valueSelPhongMay = action.payload;
 
+      //
+      let {
+        arrMayTinh,
+        valueSearch,
+        valueSelPhongMay,
+        valueSelTang,
+        valueSelToaNha,
+        valueSelTrangThai,
+      } = state;
+
+      state.arrMayTinhSearch = dataSearch(
+        arrMayTinh,
+        valueSearch,
+        valueSelToaNha,
+        valueSelTang,
+        action.payload,
+        valueSelTrangThai
+      );
+    },
+    setvalueSelTrangThai_MayTinhAction: (state, action) => {
+      state.valueSelTrangThai = action.payload;
+
+      //
+      let {
+        arrMayTinh,
+        valueSearch,
+        valueSelPhongMay,
+        valueSelTang,
+        valueSelToaNha,
+        valueSelTrangThai,
+      } = state;
+
+      state.arrMayTinhSearch = dataSearch(
+        arrMayTinh,
+        valueSearch,
+        valueSelToaNha,
+        valueSelTang,
+        valueSelPhongMay,
+        action.payload
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
-export const { 
+export const {
   setArrMayTinhAction,
-  setValueSearchMayTinhAction, 
+  setValueSearchMayTinhAction,
   setvalueSelToaNha_MayTinhAction,
   setvalueSelTang_MayTinhAction,
+  setvalueSelPhongMay_MayTinhAction,
+  setvalueSelTrangThai_MayTinhAction,
 } = mayTinhReducer.actions;
 export default mayTinhReducer.reducer;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /**
- * 
- * @param {* data ccần tìm} arrData 
- * @param {* data search ở text} valSearch 
- * @param {* data select toaNha} valSelect1 
- * @param {* data select tang} valSelect2 
- * @param {* data select phong may} valSelect3 
+ *
+ * @param {* data ccần tìm} arrData
+ * @param {* data search ở text} valSearch
+ * @param {* data select toaNha} valSelect1
+ * @param {* data select tang} valSelect2
+ * @param {* data select phong may} valSelect3
  * @param {* data select Trangj thai} valSelect4
  */
 const dataSearch = (
@@ -77,32 +166,45 @@ const dataSearch = (
   valSelect4
 ) => {
   let search = valSearch.toLowerCase();
-  
-  let arrUpdate = arrData.filter(item => {
+
+  let arrUpdate = arrData.filter((item) => {
     let ngaySD = new Date(item.ngayLapDat);
     return (
-      (item.thietBiMays.length+'').toLowerCase().includes(search) ||
+      (item.thietBiMays.length + "").toLowerCase().includes(search) ||
       item.moTa.toLowerCase().includes(search) ||
       item.phongMay.tenPhong.toLowerCase().includes(search) ||
       item.phongMay.tang.tenTang.toLowerCase().includes(search) ||
       item.phongMay.tang.toaNha.tenToaNha.toLowerCase().includes(search) ||
       formatToaNhaAndTang(item.phongMay.tang).toLowerCase().includes(search) ||
       formatStringDate(ngaySD).toLowerCase().includes(search)
-    )
-  })
+    );
+  });
 
   // 1
-  if(valSelect1 != -1) {
-    arrUpdate = arrUpdate.filter(item =>{
-      return item.phongMay.tang.toaNha.maToaNha == valSelect1
-    })
+  if (valSelect1 != -1) {
+    arrUpdate = arrUpdate.filter((item) => {
+      return item.phongMay.tang.toaNha.maToaNha == valSelect1;
+    });
   }
-  
+
   // 2
-  if(valSelect2 != -1) {
-    arrUpdate = arrUpdate.filter(item =>{
-      return item.phongMay.tang.maTang == valSelect2
-    })
+  if (valSelect2 != -1) {
+    arrUpdate = arrUpdate.filter((item) => {
+      return item.phongMay.tang.maTang == valSelect2;
+    });
+  }
+  // 3
+  if (valSelect3 != -1) {
+    arrUpdate = arrUpdate.filter((item) => {
+      return item.phongMay.maPhong == valSelect3;
+    });
+  }
+
+  // 3
+  if (valSelect4 != -1) {
+    arrUpdate = arrUpdate.filter((item) => {
+      return item.trangThai.toLowerCase().includes(valSelect4.toLowerCase());
+    });
   }
 
   return [...arrUpdate];

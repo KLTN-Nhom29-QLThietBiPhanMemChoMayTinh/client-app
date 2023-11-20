@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllToaNhaApi } from "../../../../redux/reducers/toaNhaReducer";
 import {
+  setvalueSelPhongMay_MayTinhAction,
   setvalueSelTang_MayTinhAction,
   setvalueSelToaNha_MayTinhAction,
+  setvalueSelTrangThai_MayTinhAction,
 } from "../../../../redux/reducers/mayTinhReducer";
 import { getAllTangApi } from "../../../../redux/reducers/tangReducer";
 import { getAllPhongMayApi } from "../../../../redux/reducers/phongMayReducer";
@@ -31,6 +33,14 @@ export default function ModalSearchMayTinh() {
   }, []);
 
   //handle
+  const handleChangeSelectTrangThai = (e) => {
+    dispatch(setvalueSelTrangThai_MayTinhAction(e.target.value));
+  };
+  //
+  const handleChangeSelectPhongMay = (e) => {
+    dispatch(setvalueSelPhongMay_MayTinhAction(e.target.value));
+  };
+  //
   const handleChangeSelectTang = (e) => {
     dispatch(setvalueSelTang_MayTinhAction(e.target.value));
   };
@@ -47,7 +57,7 @@ export default function ModalSearchMayTinh() {
         // toa nha khong co giatri
         return arrPhongMay.map((item, index) => {
           return (
-            <option key={index} value={item.maPhong}>
+            <option key={index} selected={valueSelPhongMay == item.maPhong ? 1 : 0} value={item.maPhong}>
               {item.tenPhong} - {item.tang.tenTang} -{" "}
               {item.tang.toaNha.tenToaNha}
             </option>
@@ -112,13 +122,6 @@ export default function ModalSearchMayTinh() {
       }
     }
 
-    return arrPhongMay.map((item, index) => {
-      return (
-        <option key={index} value={item.maPhong}>
-          {item.tenPhong} - {item.tang.tenTang} - {item.tang.toaNha.tenToaNha}
-        </option>
-      );
-    });
   };
   //
   const renderSelectTang = () => {
@@ -231,6 +234,7 @@ export default function ModalSearchMayTinh() {
                     className="form-select  "
                     name="searchPhongMay"
                     id="searchPhongMay"
+                    onChange={handleChangeSelectPhongMay}
                   >
                     <option value={-1}>Tất cả</option>
                     {renderSelectPhongMay()}
@@ -246,11 +250,32 @@ export default function ModalSearchMayTinh() {
                     className="form-select  "
                     name="searchTrangThai"
                     id="searchTrangThai"
+                    onChange={handleChangeSelectTrangThai}
                   >
-                    <option value={-1}>Tất cả</option>
-                    <option value>New Delhi</option>
-                    <option value>Istanbul</option>
-                    <option value>Jakarta</option>
+                    <option
+                      selected={valueSelTrangThai
+                        .toLowerCase()
+                        .includes("-1".toLowerCase())}
+                      value={-1}
+                    >
+                      Tất cả
+                    </option>
+                    <option
+                      selected={valueSelTrangThai
+                        .toLowerCase()
+                        .includes("Đang hoạt động".toLowerCase())}
+                      value="Đang hoạt động"
+                    >
+                      Đang hoạt động
+                    </option>
+                    <option
+                      selected={valueSelTrangThai
+                        .toLowerCase()
+                        .includes("Đã hỏng".toLowerCase())}
+                      value="Đã hỏng"
+                    >
+                      Đã hỏng
+                    </option>
                   </select>
                 </div>
                 {/* */}
