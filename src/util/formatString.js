@@ -18,13 +18,12 @@ export const formatString = {
     return str;
   },
   formatNumber: () => {
-    
     return Math.floor(Math.random() * 100000) + 1000;
+  },
+  formatToaNhaAndTang: (objTang) => {
+    return objTang.tenTang + " - " + objTang.toaNha.tenToaNha;
   },
 };
 
-export const { 
-  formatNameByQuyen,
-  formatDate_MM_YYYY,
-  formatNumber,
- } = formatString;
+export const { formatNameByQuyen, formatToaNhaAndTang, formatDate_MM_YYYY, formatNumber } =
+  formatString;

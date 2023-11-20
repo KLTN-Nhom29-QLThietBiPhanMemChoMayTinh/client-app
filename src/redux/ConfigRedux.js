@@ -14,9 +14,11 @@ import homeReducer from "./reducers/homeReducer";
 import phongMayReducer from "./reducers/phongMayReducer";
 import phanMemReducer from "./reducers/phanMemReducer";
 import chucVuReducer from "./reducers/chucVuReducer";
+import mayTinhReducer from "./reducers/mayTinhReducer";
 
 export const store = configureStore({
     reducer: {
+      mayTinhReducer:mayTinhReducer,
       chucVuReducer:chucVuReducer,
       phanMemReducer:phanMemReducer,
       phongMayReducer:phongMayReducer,
