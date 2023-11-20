@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllToaNhaApi } from "../../../../redux/reducers/toaNhaReducer";
-import { setvalueSelTang_MayTinhAction, setvalueSelToaNha_MayTinhAction } from "../../../../redux/reducers/mayTinhReducer";
+import {
+  setvalueSelTang_MayTinhAction,
+  setvalueSelToaNha_MayTinhAction,
+} from "../../../../redux/reducers/mayTinhReducer";
 import { getAllTangApi } from "../../../../redux/reducers/tangReducer";
+import { getAllPhongMayApi } from "../../../../redux/reducers/phongMayReducer";
 
 export default function ModalSearchMayTinh() {
   //
@@ -12,6 +16,7 @@ export default function ModalSearchMayTinh() {
     useSelector((state) => state.mayTinhReducer);
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
   let { arrTang } = useSelector((state) => state.tangReducer);
+  let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
   //
   useEffect(() => {
     if (arrToaNha.length === 0) {
@@ -20,18 +25,102 @@ export default function ModalSearchMayTinh() {
     if (arrTang.length === 0) {
       dispatch(getAllTangApi);
     }
+    if (arrPhongMay.length === 0) {
+      dispatch(getAllPhongMayApi);
+    }
   }, []);
 
   //handle
   const handleChangeSelectTang = (e) => {
-    dispatch(setvalueSelTang_MayTinhAction(e.target.value))
-  }
+    dispatch(setvalueSelTang_MayTinhAction(e.target.value));
+  };
   //
   const handleChangeSelectToaNha = (e) => {
     dispatch(setvalueSelToaNha_MayTinhAction(e.target.value));
   };
 
   // render
+  const renderSelectPhongMay = () => {
+    if (valueSelToaNha == -1) {
+      if (valueSelTang == -1) {
+        // select tang khong co gia tri
+        // toa nha khong co giatri
+        return arrPhongMay.map((item, index) => {
+          return (
+            <option key={index} value={item.maPhong}>
+              {item.tenPhong} - {item.tang.tenTang} -{" "}
+              {item.tang.toaNha.tenToaNha}
+            </option>
+          );
+        });
+      } else {
+        // select tang co gia tri
+        // toa nha khong co giatri
+        return arrPhongMay.map((item, index) => {
+          if (item.tang.maTang == valueSelTang) {
+            return (
+              <option
+                key={index}
+                selected={valueSelPhongMay == item.maPhong ? 1 : 0}
+                value={item.maPhong}
+              >
+                {item.tenPhong} - {item.tang.toaNha.tenToaNha}
+              </option>
+            );
+          }
+          return <></>;
+        });
+      }
+    } else {
+      if (valueSelTang == -1) {
+        // select tang khong co gia tri
+        // toa nha co giatri
+        return arrPhongMay.map((item, index) => {
+          if (item.tang.toaNha.maToaNha == valueSelToaNha) {
+            return (
+              <option
+                key={index}
+                selected={valueSelPhongMay == item.maPhong ? 1 : 0}
+                value={item.maPhong}
+              >
+                {item.tenPhong} - {item.tang.tenTang}
+              </option>
+            );
+          }
+          return <></>;
+        });
+      } else {
+        // select tang co gia tri
+        // toa nha co giatri
+        return arrPhongMay.map((item, index) => {
+          if (
+            item.tang.maTang == valueSelTang &&
+            item.tang.toaNha.maToaNha == valueSelToaNha
+          ) {
+            return (
+              <option
+                key={index}
+                selected={valueSelPhongMay == item.maPhong ? 1 : 0}
+                value={item.maPhong}
+              >
+                {item.tenPhong}
+              </option>
+            );
+          }
+          return <></>;
+        });
+      }
+    }
+
+    return arrPhongMay.map((item, index) => {
+      return (
+        <option key={index} value={item.maPhong}>
+          {item.tenPhong} - {item.tang.tenTang} - {item.tang.toaNha.tenToaNha}
+        </option>
+      );
+    });
+  };
+  //
   const renderSelectTang = () => {
     return arrTang?.map((item, index) => {
       if (valueSelToaNha == -1) {
@@ -144,9 +233,7 @@ export default function ModalSearchMayTinh() {
                     id="searchPhongMay"
                   >
                     <option value={-1}>Tất cả</option>
-                    <option value>New Delhi</option>
-                    <option value>Istanbul</option>
-                    <option value>Jakarta</option>
+                    {renderSelectPhongMay()}
                   </select>
                 </div>
                 {/* trang thai */}
