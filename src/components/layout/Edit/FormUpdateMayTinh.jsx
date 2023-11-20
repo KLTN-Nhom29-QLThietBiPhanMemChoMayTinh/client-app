@@ -9,6 +9,7 @@ import { getAllPhongMayApi } from "../../../redux/reducers/phongMayReducer";
 import {
   getAllMayTinhApi,
   insertMayTinhApi,
+  updateMayTinhApi,
 } from "../../../redux/reducers/mayTinhReducer";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -36,6 +37,7 @@ export default function FormUpdateMayTinh() {
     valueSelTang: "-1",
     valueSelPhongMay: "-1",
     moTa: "",
+    valueSelTrangThai: "Đang hoạt động",
     thietBis: [],
   });
   let [errMayTinh, setErrMayTinh] = useState({
@@ -52,13 +54,14 @@ export default function FormUpdateMayTinh() {
     } else {
       objData_old = arrMayTinh.find((item) => item.maMay == objParam.id);
 
-      let { phongMay, moTa, thietBiMays } = objData_old;
+      let { phongMay, moTa, thietBiMays, trangThai } = objData_old;
       objMayTinh.current = {
         valueSelToaNha: phongMay.tang.toaNha.maToaNha,
         valueSelTang: phongMay.tang.maTang,
         valueSelPhongMay: phongMay.maPhong,
         moTa,
         thietBis: thietBiMays,
+        valueSelTrangThai: trangThai,
       };
       //
       setErrMayTinh({
@@ -99,21 +102,21 @@ export default function FormUpdateMayTinh() {
       (item) => item.maPhong == valueSelPhongMay
     );
     let search = moTa.toLowerCase();
-
-    let objData = objPhongMay.mayTinhs.find((item) => {
-      return item.moTa.toLowerCase().includes(search);
-    });
-    if (objData != null) {
-      // timf they obj
-      alert("Tên máy tính đã được sử dụng!");
-      return;
+    if (!objData_old.moTa.toLowerCase().includes(search)) {
+      let objData = objPhongMay.mayTinhs.find((item) => {
+        return item.moTa.toLowerCase().includes(search);
+      });
+      if (objData != null) {
+        // timf they obj
+        alert("Tên máy tính đã được sử dụng!");
+        return;
+      }
     }
 
     // tên MT không trung
-
-    dispatch(
-      insertMayTinhApi({ ...objMayTinh.current, phongMay: objPhongMay })
-    );
+    let objMayTinhNew = { ...objMayTinh.current, phongMay: objPhongMay };
+    console.log("🚀 ~ file: FormUpdateMayTinh.jsx:118 ~ handleSubmit ~ objMayTinhNew:", objMayTinhNew)
+    dispatch(updateMayTinhApi({ objMayTinhNew, objData_old, arrThietBi }));
   };
   const checkData = () => {
     let check = 1;
@@ -165,6 +168,12 @@ export default function FormUpdateMayTinh() {
 
     return check;
   };
+  //
+  const handleChangeSelectTrangThai = (e) => {
+    objMayTinh.current.valueSelTrangThai = e.target.value;
+
+    setErrMayTinh({...errMayTinh});
+  }
   //
   const handleChangeSelectPhongMay = (e) => {
     let value = e.target.value; // maPhong
@@ -302,7 +311,7 @@ export default function FormUpdateMayTinh() {
             type="checkbox"
             value={item.maThietBi}
             id={`${item.maThietBi}_Tbi`}
-            checked= {valChecked}
+            checked={valChecked}
             onChange={handleCheckTbi}
           />
           <label
@@ -574,6 +583,34 @@ export default function FormUpdateMayTinh() {
                           {renderSelectPhongMay()}
                         </select>
                       </div>
+                      {/* trang thai */}
+                      <div className="mb-3 col-10 mx-3">
+                        <label htmlFor="searchTrangThai" className="form-label">
+                          Chọn trạng thái máy tính
+                          <span className="text-danger mx-2">*</span>
+                        </label>
+                        <select
+                          className="form-select  "
+                          name="searchTrangThai"
+                          id="searchTrangThai"
+                          onChange={handleChangeSelectTrangThai}
+                        >
+                         
+                          <option
+                            selected={objMayTinh.current.valueSelTrangThai.toLowerCase().includes("Đang hoạt động".toLowerCase())}
+                            value="Đang hoạt động"
+                          >
+                            Đang hoạt động
+                          </option>
+                          <option
+                            selected={objMayTinh.current.valueSelTrangThai.toLowerCase().includes("Đã hỏng".toLowerCase())}
+                            value="Đã hỏng"
+                          >
+                            Đã hỏng
+                          </option>
+                        </select>
+                      </div>
+                      {/*  */}
                     </div>
                   </div>
                 </div>

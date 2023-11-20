@@ -6,10 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllToaNhaApi } from "../../../redux/reducers/toaNhaReducer";
 import { getAllTangApi } from "../../../redux/reducers/tangReducer";
 import { getAllPhongMayApi } from "../../../redux/reducers/phongMayReducer";
-import {
-  getAllMayTinhApi,
-  insertMayTinhApi,
-} from "../../../redux/reducers/mayTinhReducer";
+import { getAllMayTinhApi, insertMayTinhApi } from "../../../redux/reducers/mayTinhReducer";
 
 export default function FormAddMayTinh() {
   const dispatch = useDispatch();
@@ -18,7 +15,9 @@ export default function FormAddMayTinh() {
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
   let { arrTang } = useSelector((state) => state.tangReducer);
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
-  let { arrMayTinh } = useSelector((state) => state.mayTinhReducer);
+  let { arrMayTinh } = useSelector(
+    (state) => state.mayTinhReducer
+  );
   //
 
   let objMayTinh = useRef({
@@ -37,8 +36,8 @@ export default function FormAddMayTinh() {
   });
 
   useEffect(() => {
-    if (arrMayTinh.length === 0) {
-      dispatch(getAllMayTinhApi);
+    if(arrMayTinh.length === 0) {
+      dispatch(getAllMayTinhApi)
     }
     if (arrThietBi.length === 0) {
       dispatch(getAllThietBiApi);

@@ -240,6 +240,75 @@ const dataSearch = (
 
 // Call Api ++++++++++++++++++++++++++++++++++++++++++++++
 
+/**
+ * // tao data luu server
+ * // update data - api
+ * // duyet ds thiet bi
+ * // trùng vs thietbis thi gui api tao moi (thiet bi va maytinh va status thietbi may)
+ * // khác vs thietbis thì gui api del(thiet bi va maytinh va status thietbi may)
+ * @param {(dataObj moi - dataObj cu - dsThiet bi)} param0
+ * @returns
+ */
+export const updateMayTinhApi = ({
+  objMayTinhNew,
+  objData_old,
+  arrThietBi,
+}) => {
+  let { moTa, valueSelPhongMay, thietBis, phongMay, valueSelTrangThai } =
+    objMayTinhNew;
+
+  //
+  let saveMayTinh = {
+    maMay: objData_old.maMay,
+    moTa,
+    trangThai: valueSelTrangThai,
+    ngayLapDat: objData_old.ngayLapDat,
+    phongMay: {
+      maPhong: valueSelPhongMay,
+    },
+  };
+  return async (dispatch) => {
+    try {
+      let resultSaveMayTinh = await http.post("/LuuMayTinh", saveMayTinh);
+      console.log("🚀 ~ file: mayTinhReducer.jsx:273 ~ return ~ resultSaveMayTinh:", resultSaveMayTinh)
+
+      //
+      arrThietBi.forEach(async (item) => {
+        let rowData = thietBis.findIndex((e) => e.maThietBi == item.maThietBi);
+        if (rowData >= 0) {
+          // trùng
+          let saveMayTinhThietBi = {
+            mayTinh: {
+              maMay: objData_old.maMay,
+            },
+            thietBi: item,
+            status: true,
+          };
+          //
+          await http.post("/LuuMayTinhThietBi", saveMayTinhThietBi);
+        } else {
+          await http.delete(
+            `/XoaMayTinhThietBi/${objData_old.maMay}/${item.maThietBi}`
+          );
+        }
+      });
+
+      dispatch(getAllMayTinhApi);
+      dispatch(getAllPhongMayApi);
+      dispatch(setStatusDataMoi(true));
+      history.push("/quan-ly/may-tinh");
+    } catch (error) {
+      console.log("🚀 ~ file: mayTinhReducer.jsx:248 ~ return ~ error:", error);
+    }
+  };
+};
+
+/**
+ * add 1 may tinh
+ * add list may tinh vs thiet bij
+ * @param {*} mayTinh
+ * @returns
+ */
 export const insertMayTinhApi = (mayTinh) => {
   let { moTa, valueSelPhongMay, thietBis, phongMay } = mayTinh;
   let day = new Date();
