@@ -215,8 +215,11 @@ const dataSearch = (
 export const getAllMayTinhApi = async (dispatch) => {
   try {
     let result = await http.get("/DSMayTinh2");
-
-    dispatch(setArrMayTinhAction(result.data));
+    let updateData = result.data;
+    updateData = updateData.sort((a, b) =>
+      a.phongMay.tenPhong > b.phongMay.tenPhong ? 1 : b.phongMay.tenPhong > a.phongMay.tenPhong ? -1 : 0
+    );
+    dispatch(setArrMayTinhAction([...updateData]));
   } catch (error) {
     console.log(
       "🚀 ~ file: mayTinhReducer.jsx:32 ~ getAllMayTinhApi ~ error:",

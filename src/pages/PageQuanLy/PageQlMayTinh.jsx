@@ -7,8 +7,11 @@ import { ImBin2 } from "react-icons/im";
 import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { getAllMayTinhApi, setValueSearchMayTinhAction } from "../../redux/reducers/mayTinhReducer";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  getAllMayTinhApi,
+  setValueSearchMayTinhAction,
+} from "../../redux/reducers/mayTinhReducer";
 import { formatStringDate } from "../../util/config";
 import { formatToaNhaAndTang } from "../../util/formatString";
 import ModalSearchMayTinh from "../../components/layout/Modal/ModalSearchMayTinh/ModalSearchMayTinh";
@@ -16,9 +19,12 @@ import ModalSearchMayTinh from "../../components/layout/Modal/ModalSearchMayTinh
 
 export default function PageQlMayTinh() {
   //
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   //
-  let { arrMayTinh, arrMayTinhSearch,valueSearch } = useSelector((state) => state.mayTinhReducer);
+  let { arrMayTinh, arrMayTinhSearch, valueSearch } = useSelector(
+    (state) => state.mayTinhReducer
+  );
 
   useEffect(() => {
     if (arrMayTinh.length === 0) {
@@ -27,14 +33,15 @@ export default function PageQlMayTinh() {
   }, []);
   // handle
   const handleSearchChange = (e) => {
-    dispatch(setValueSearchMayTinhAction(e.target.value))
-  }
+    dispatch(setValueSearchMayTinhAction(e.target.value));
+  };
 
   // render
   const renderDataMayTinh = () => {
-    if(arrMayTinhSearch.length === 0) {
-      return <span >Không có giá thị thỏa mãn.</span>
+    if (arrMayTinhSearch.length === 0) {
+      return <span>Không có giá thị thỏa mãn.</span>;
     }
+
     return arrMayTinhSearch?.map((item, index) => {
       let ngaySD = new Date(item.ngayLapDat);
       let textColor_TrangThai = "black";
@@ -60,7 +67,7 @@ export default function PageQlMayTinh() {
           {/*  */}
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
-            // to={`/quan-ly/tang/update?id=${item.maTang}`}
+            // to={`/quan-ly/may-tinh/update?id=${item.maTang}`}
             >
               <button
                 type="button"
@@ -158,7 +165,9 @@ export default function PageQlMayTinh() {
                 <div style={{ display: "flex", alignItems: "center" }}>
                   {/* Btn them */}
                   <button
-                    to="/quan-ly/tang/add"
+                    onClick={() => {
+                      navigate("/quan-ly/may-tinh/add");
+                    }}
                     type="button"
                     className="btn btn-success ms-5 view_center_vertical"
                   >
