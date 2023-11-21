@@ -62,11 +62,12 @@ const searchData = (arrData, valSearch, valSelect) => {
 };
 
 const initialState = {
-  valueTxtSearch: "",
-  valueSelect: "-1",
   arrThietBi: [],
   arrThietBiSearch: [],
+  arrLoaiTBi: [],
   detailValue: {},
+  valueTxtSearch: "",
+  valueSelect: "-1",
 };
 
 const thietBiReducer = createSlice({
@@ -79,6 +80,9 @@ const thietBiReducer = createSlice({
       state.arrThietBiSearch = action.payload;
       state.valueSelect = "-1";
       state.valueTxtSearch = "";
+    },
+    setArrLoaiThietBiAction: (state, action) => {
+      state.arrLoaiTBi = action.payload;
     },
     setValueTxtSearchAction: (state, action) => {
       state.valueTxtSearch = action.payload;
@@ -106,6 +110,7 @@ const thietBiReducer = createSlice({
 });
 // exp nay de sử dụng theo cách 2
 export const {
+  setArrLoaiThietBiAction,
   setArrThietBiAction,
   setValueTxtSearchAction,
   setValueSelectActionTBi,
@@ -114,6 +119,24 @@ export default thietBiReducer.reducer;
 
 // -------------- Call Api -----------------
 
+/**
+ * ds loai thiet bi
+ */
+export const getAllLoaiThietBiApi = async (dispatch) => {
+  try {
+    let result = await http.get('/DSLoaiThietBi');
+
+    dispatch(setArrLoaiThietBiAction(result.data));
+    
+  } catch (error) {
+    console.log("🚀 ~ file: thietBiReducer.jsx:128 ~ getAllLoaiThietBiApi ~ error:", error)
+    
+  }
+}
+/**
+ * Ds all Thiet bij
+ * @param {*} dispatch 
+ */
 export const getAllThietBiApi = async (dispatch) => {
   try {
     let result = await http.get("/DSThietBiMay");

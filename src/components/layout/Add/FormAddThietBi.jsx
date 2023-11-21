@@ -1,6 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Footer from "../../common/Footer/Footer";
 import NavTab from "../../common/NavTab/NavTab";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllLoaiThietBiApi,
+  getAllThietBiApi,
+} from "../../../redux/reducers/thietBiReducer";
 
 let date = new Date();
 let dateYear = date.getFullYear();
@@ -12,13 +17,16 @@ let strDate = `${dateYear}-${dateMonth}-${dateDay}`;
 let strDateMin = `${dateYearMin}-${dateMonth}-${dateDay}`;
 
 export default function FormAddThietBi() {
+  //
+  const dispatch = useDispatch();
+  //
+  let { arrLoaiTBi, arrThietBi } = useSelector((state) => state.thietBiReducer);
 
-    
   let objThietBi = useRef({
     tenTBi: "",
-    valSelLoaiTBi: "",
-    ngaySD: date,
-    status: true,
+    valSelLoaiTBi: 1,
+    ngaySD: strDate,
+    status: "Đang sử dụng",
     tgianBaoHanh: 1,
     ngayKT: "00/00/0000",
   });
@@ -28,7 +36,97 @@ export default function FormAddThietBi() {
     ngaySD: "",
     tgianBaoHanh: "",
   });
+  //
+  useEffect(() => {
+    if (arrLoaiTBi.length === 0) {
+      dispatch(getAllLoaiThietBiApi);
+    }
+    //
+    if (arrThietBi.length === 0) {
+      const action = getAllThietBiApi;
+      dispatch(action);
+    }
+  }, []);
 
+  // handle
+  //
+  const getCheckTgianKT = (objCheck) => {
+    let { tgianBaoHanh, ngaySD } = objCheck;
+    let day = new Date(); // ngay hien taij
+    let ngayKT = new Date(ngaySD);
+    ngayKT.setMonth(ngayKT.getMonth() + tgianBaoHanh);
+
+    let day2 = new Date(ngayKT);
+    let status = "";
+    day2.setDate(day2.getDate() - 30); // day2 là tgian trước ngày kt 30 ngay
+
+    if (day > ngayKT) {
+      status = "Đang sử dụng - hết hạn bảo hành";
+    } else if (day > day2 && day < ngayKT) {
+      status = "Đang sử dụng, sắp hết hạn bảo hành";
+    } else {
+      status = "Đang sử dụng";
+      return <td style={{ backgroundColor: "#4dff7c" }}>Đang sử dụng</td>;
+    }
+    return { ...objCheck, status, ngayKT };
+  };
+  const handleChangeTgianBH = (e) => {
+    let { value } = e.target;
+    console.log(
+      "🚀 ~ file: FormAddThietBi.jsx:75 ~ handleChangeTgianBH ~ value:",
+      value
+    );
+    objThietBi.current.tgianBaoHanh = e.target.value;
+    console.log(
+      "🚀 ~ file: FormAddThietBi.jsx:77 ~ handleChangeTgianBH ~ objThietBi.current:",
+      objThietBi.current
+    );
+    objThietBi.current = getCheckTgianKT(objThietBi.current);
+
+    setErrTBi({ ...errTbi });
+  };
+  //
+  const handleChangeNgaySD = (e) => {
+    objThietBi.current.ngaySD = e.target.value;
+
+    setErrTBi({ ...errTbi });
+  };
+  //
+  const handleChangeLoaiTbi = (e) => {
+    objThietBi.current.valSelLoaiTBi = e.target.value;
+
+    setErrTBi({ ...errTbi });
+  };
+  //
+  const handleChangeTenTbi = (e) => {
+    let { value } = e.target;
+    objThietBi.current.tenTBi = value;
+
+    if (value.trim().length === 0) {
+      setErrTBi({ ...errTbi, tenTBi: "Hãy nhập thông tin!" });
+    } else {
+      setErrTBi({ ...errTbi, tenTBi: "" });
+    }
+  };
+
+  // render
+  //
+  const renderLoaithietBi = () => {
+    return arrLoaiTBi?.map((item, index) => {
+      if (item.maLoai == objThietBi.current.valSelLoaiTBi) {
+        return (
+          <option key={index} selected value={item.maLoai}>
+            {item.tenLoai}
+          </option>
+        );
+      }
+      return (
+        <option key={index} value={item.maLoai}>
+          {item.tenLoai}
+        </option>
+      );
+    });
+  };
   // Mảng quản lý data navtab
   let arrLinkNavTab = [{ name: "Quản lý thiết bị", link: "/quan-ly/thiet-bi" }];
   //
@@ -60,7 +158,7 @@ export default function FormAddThietBi() {
                       {/* left */}
                       {/* ten Tbi */}
                       <div className="mb-3 col-10">
-                        <label htmlFor="txtTenTbi" className="form-label">
+                        <label htmlFor="tenTbi" className="form-label">
                           Tên thiết bị
                           <small
                             id="helpIdTenTbi"
@@ -72,8 +170,9 @@ export default function FormAddThietBi() {
                         <input
                           type="text"
                           className="form-control"
-                          name="txtTenTbi"
-                          id="txtTenTbi"
+                          name="tenTbi"
+                          id="tenTbi"
+                          onChange={handleChangeTenTbi}
                           aria-describedby="helpIdTenTbi"
                           placeholder="Dell ADG..."
                         />
@@ -90,10 +189,9 @@ export default function FormAddThietBi() {
                           className="form-select "
                           name="selLoaiThieBi"
                           id="selLoaiThieBij"
+                          onChange={handleChangeLoaiTbi}
                         >
-                          <option value>New Delhi</option>
-                          <option value>Istanbul</option>
-                          <option value>Jakarta</option>
+                          {renderLoaithietBi()}
                         </select>
                       </div>
 
@@ -112,11 +210,7 @@ export default function FormAddThietBi() {
                           type="text"
                           className="form-control"
                           disabled
-                          value={
-                            objThietBi.current.tgianBaoHanh == 1
-                              ? "Sắp hết hạn"
-                              : "Đang sử dụng"
-                          }
+                          value={objThietBi.current.status}
                         />
                       </div>
                     </div>
@@ -137,7 +231,8 @@ export default function FormAddThietBi() {
                           className="form-control"
                           name="txtNgay"
                           id="txtNgay"
-                          value={strDate}
+                          onChange={handleChangeNgaySD}
+                          value={objThietBi.current.ngaySD}
                           max={strDate}
                           min={strDateMin}
                           aria-describedby="helpIdNgaySD"
@@ -162,8 +257,9 @@ export default function FormAddThietBi() {
                           name="txtTgianBaoHanh"
                           id="txtTgianBaoHanh"
                           min={1}
-                          defaultValue={1}
+                          value={objThietBi.current.tgianBaoHanh}
                           max={50}
+                          onChange={handleChangeTgianBH}
                           aria-describedby="helpIdtgian"
                         />
                       </div>
