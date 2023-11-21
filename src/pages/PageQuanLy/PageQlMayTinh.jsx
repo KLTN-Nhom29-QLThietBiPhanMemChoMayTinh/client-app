@@ -9,6 +9,7 @@ import { BiSolidDetail } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
+  deleteMayTinhApi,
   getAllMayTinhApi,
   setValueSearchMayTinhAction,
 } from "../../redux/reducers/mayTinhReducer";
@@ -79,8 +80,8 @@ export default function PageQlMayTinh() {
             </NavLink>
             <button
               onClick={() => {
-                if (window.confirm("Bấm vào nút OK để xóa " + item.tenTang)) {
-                  // dispatch(deleteTangApi(item.maMay));
+                if (window.confirm("Bấm vào nút OK để xóa " + item.moTa + ' - '+ item.phongMay.tenPhong)) {
+                  dispatch(deleteMayTinhApi(item));
                 }
               }}
               type="button"

@@ -160,6 +160,31 @@ const mayTinhReducer = createSlice({
         valueSelTrangThai
       );
     },
+    deleteMayTinhAction: (state, action) => {
+      let maXoa = action.payload;
+
+      let arrUpdate = state.arrMayTinh.filter((item) => item.maMay != maXoa);
+
+      state.arrMayTinh = [...arrUpdate];
+      //
+      let {
+        arrMayTinh,
+        valueSearch,
+        valueSelPhongMay,
+        valueSelTang,
+        valueSelToaNha,
+        valueSelTrangThai,
+      } = state;
+
+      state.arrMayTinhSearch = dataSearch(
+        arrMayTinh,
+        valueSearch,
+        valueSelToaNha,
+        valueSelTang,
+        valueSelPhongMay,
+        valueSelTrangThai
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -171,6 +196,7 @@ export const {
   setvalueSelPhongMay_MayTinhAction,
   setvalueSelTrangThai_MayTinhAction,
   insertMayTinhAction,
+  deleteMayTinhAction,
 } = mayTinhReducer.actions;
 export default mayTinhReducer.reducer;
 
@@ -240,6 +266,28 @@ const dataSearch = (
 
 // Call Api ++++++++++++++++++++++++++++++++++++++++++++++
 
+export const deleteMayTinhApi = (objMayTinh) => {
+  let { thietBiMays, maMay } = objMayTinh;
+  return async (dispatch) => {
+    try {
+      // xoas thiet bi may và mayTInh
+      thietBiMays?.forEach(async (item) => {
+        await http.delete(`/XoaMayTinhThietBi/${maMay}/${item.maThietBi}`);
+      });
+
+      // del may tinh api
+      await http.delete(`/XoaMayTinh/${maMay}`);
+
+      dispatch(deleteMayTinhAction(maMay));
+      dispatch(getAllPhongMayApi);
+      // reload data
+      dispatch(setStatusDataMoi(true));
+    } catch (error) {
+      console.log("🚀 ~ file: mayTinhReducer.jsx:248 ~ return ~ error:", error);
+    }
+  };
+};
+
 /**
  * // tao data luu server
  * // update data - api
@@ -270,7 +318,6 @@ export const updateMayTinhApi = ({
   return async (dispatch) => {
     try {
       let resultSaveMayTinh = await http.post("/LuuMayTinh", saveMayTinh);
-      console.log("🚀 ~ file: mayTinhReducer.jsx:273 ~ return ~ resultSaveMayTinh:", resultSaveMayTinh)
 
       //
       arrThietBi.forEach(async (item) => {
