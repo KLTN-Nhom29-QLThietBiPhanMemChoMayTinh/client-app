@@ -78,6 +78,7 @@ export const {
 } = homeReducer.actions;
 export default homeReducer.reducer;
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
 /**
  * thay doi data trang home khi click ở btn detail May
  * */
@@ -175,7 +176,7 @@ export const setObjThongTinByPhongMay = (valPhong) => {
         monHoc: {},
       };
       //
-      dispatch(
+      await dispatch(
         setObjThongTinByPhongAction({
           objThongTin,
           arrMayTinh,

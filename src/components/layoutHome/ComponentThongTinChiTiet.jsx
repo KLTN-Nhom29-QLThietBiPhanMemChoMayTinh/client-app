@@ -92,7 +92,7 @@ export default function ComponentThongTinChiTiet() {
   };
   //
   const renderThongTinTheoMayTinh = () => {
-    if (Object.keys(mayTinh).length === 0) {
+    if (mayTinh == null || Object.keys(mayTinh).length === 0) {
       return <></>;
     }
     // render

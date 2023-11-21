@@ -193,7 +193,7 @@ export default function ModalSearchMayTinh() {
               />
             </div>
             <div className="modal-body">
-              <div classname="container-fluid px-2">
+              <div className="container-fluid px-2">
                 {/* tòa nhà */}
                 <div className="mb-3 mx-3">
                   <label htmlFor="searchToaNha" className="form-label">

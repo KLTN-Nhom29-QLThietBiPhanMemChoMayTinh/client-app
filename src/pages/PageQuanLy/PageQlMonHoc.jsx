@@ -16,7 +16,7 @@ import { getAllMonHoc, setValueSelectAction, setValueTxtSearchAction } from "../
 export default function PageQlMonHoc() {
   const dispatch = useDispatch();
 
-  let { arrMonHocSort } = useSelector((state) => state.monHocReducer);
+  let { arrMonHocSearch } = useSelector((state) => state.monHocReducer);
 
   // useEffect -- call data mon hoc
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function PageQlMonHoc() {
   //render
   const renderDataMon = () => {
 
-    return arrMonHocSort?.map((item, index) => {
+    return arrMonHocSearch?.map((item, index) => {
       let ngayBD = new Date(item?.ngayBatDau);
       let ngayKT = new Date(ngayBD);
 

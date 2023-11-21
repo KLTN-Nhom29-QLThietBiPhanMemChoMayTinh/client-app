@@ -93,7 +93,7 @@ export default function PageQlMayTinh() {
             <button
               // `../quan-ly/phong`
               onClick={() => {
-                // navigate(`/home-detail?id=${item.maTang}&key=tang`)
+                navigate(`/home-detail?id=${item.maMay}&key=maytinh`)
               }}
               type="button"
               className="btn btn-info mx-2 px-2"

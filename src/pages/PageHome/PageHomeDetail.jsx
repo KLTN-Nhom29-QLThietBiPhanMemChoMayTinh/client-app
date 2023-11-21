@@ -5,6 +5,9 @@ import {
   getPhongByFirst,
   setArrPhongMayHomeAction,
   setArrTangHomeAction,
+  setObjThongTinByMay,
+  setObjThongTinByMay2,
+  setObjThongTinByMayAction,
   setObjThongTinByPhongMay,
   setObjThongTinByTang,
   setObjThongTinByToaNha,
@@ -17,11 +20,11 @@ import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 import ComponentModelDetail from "../../components/layoutHome/ComponentModelDetail";
 import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiChu";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function PageHomeDetail() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   // nhan data gui theo uri
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -34,7 +37,8 @@ export default function PageHomeDetail() {
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
   // arrTang dùng cho detail gửi về detail id tang
   let { arrTang } = useSelector((state) => state.tangReducer);
-
+  // arrmayTinh dung cho detail
+  let { arrMayTinh } = useSelector((state) => state.mayTinhReducer);
   // 3.
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
 
@@ -58,6 +62,10 @@ export default function PageHomeDetail() {
           dispatch(setObjThongTinByToaNha(id, arrPhongMay));
           break;
         case "tang": {
+          if (arrTang.length === 0) {
+            navigate("quan-ly/tang");
+            return;
+          }
           let objTang = arrTang.find((item) => item.maTang == id);
 
           let arrTangH = arrTang.filter(
@@ -69,6 +77,10 @@ export default function PageHomeDetail() {
           break;
         }
         case "phongmay": {
+          if (arrTang.length === 0) {
+            navigate("quan-ly/tang");
+            return;
+          }
           let objPhongmay = arrPhongMay.find((item) => item.maPhong == id);
           // update ds tang Home
           let arrTangH = arrTang.filter(
@@ -77,11 +89,64 @@ export default function PageHomeDetail() {
 
           dispatch(setArrTangHomeAction(arrTangH));
           // update ds phong Home
-          let arrPhongH = arrPhongMay.filter(item => item.tang.maTang == objPhongmay.tang.maTang)
-          dispatch(setArrPhongMayHomeAction(arrPhongH))
+          let arrPhongH = arrPhongMay.filter(
+            (item) => item.tang.maTang == objPhongmay.tang.maTang
+          );
+          dispatch(setArrPhongMayHomeAction(arrPhongH));
           //
           dispatch(setObjThongTinByPhongMay(objPhongmay));
           break;
+        }
+        //
+        case "maytinh": {
+          //
+          if (arrTang.length === 0) {
+            navigate("quan-ly/tang");
+            return;
+          }
+          if (arrMayTinh.length === 0) {
+            navigate("/quan-ly/may-tinh");
+            return;
+          }
+          //
+          let objMayTinh = arrMayTinh.find((item) => item.maMay == id);
+          let idPhong = objMayTinh.phongMay.maPhong;
+
+          //
+          let objPhongmay = arrPhongMay.find((item) => item.maPhong == idPhong);
+          // update ds tang Home
+          let arrTangH = arrTang.filter(
+            (item) => item.toaNha.maToaNha == objPhongmay.tang.toaNha.maToaNha
+          );
+
+          dispatch(setArrTangHomeAction(arrTangH));
+          // update ds phong Home
+          let arrPhongH = arrPhongMay.filter(
+            (item) => item.tang.maTang == objPhongmay.tang.maTang
+          );
+          dispatch(setArrPhongMayHomeAction(arrPhongH));
+
+          //
+          dispatch(setObjThongTinByPhongMay(objPhongmay));
+          //
+
+          /**
+           * objMay tin co data objMayTinh va thietBiMays
+           * nhung thang dispatch(setObjThongTinByPhongMay(objPhongmay));
+           * no chay chậm đẫn đến chạy dispatch(setObjThongTinByMayAction()) trước,
+           * mà ở trong thằng  setObjThongTinByPhongMay - nó sẽ new 1 obj mới
+           * đẫn đến data - setObjThongTinByMayAction bi xóa mất
+           */
+
+          let arrThietBi = objMayTinh.thietBiMays;
+          let objMay = objMayTinh;
+          setTimeout(() => {
+            console.log("chú ý - 0.5s");
+            dispatch(setObjThongTinByMayAction({ objMay, arrThietBi }));
+
+          }, 500)
+
+          // dispatch(setObjThongTinByMay(objMayTinh));
         }
         default:
           break;

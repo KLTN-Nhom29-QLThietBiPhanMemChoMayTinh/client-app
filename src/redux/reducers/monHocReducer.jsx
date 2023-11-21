@@ -75,7 +75,7 @@ const initialState = {
       soBuoi: 15,
     },
   ],
-  arrMonHocSort: [],
+  arrMonHocSearch: [],
   detailMonHoc: {},
 };
 
@@ -87,17 +87,17 @@ const monHocReducer = createSlice({
       state.valueTxtSearch = action.payload;
 
       let { arrMonHoc, valueTxtSearch, valueSelect } = state;
-      state.arrMonHocSort = searchData(arrMonHoc, valueTxtSearch, valueSelect);
+      state.arrMonHocSearch = searchData(arrMonHoc, valueTxtSearch, valueSelect);
     },
     setValueSelectAction: (state, action) => {
       state.valueSelect = action.payload;
 
       let { arrMonHoc, valueTxtSearch, valueSelect } = state;
-      state.arrMonHocSort = searchData(arrMonHoc, valueTxtSearch, valueSelect);
+      state.arrMonHocSearch = searchData(arrMonHoc, valueTxtSearch, valueSelect);
     },
     setArrMonHocAction: (state, action) => {
       state.arrMonHoc = action.payload;
-      state.arrMonHocSort = action.payload;
+      state.arrMonHocSearch = action.payload;
     },
     /**
      * tìm kiem theo txtSearch
@@ -119,14 +119,14 @@ const monHocReducer = createSlice({
         );
       });
 
-      state.arrMonHocSort = [...dataUpdate];
+      state.arrMonHocSearch = [...dataUpdate];
     },
     /**
      * tìm kiem theo select
      */
     searchArrMonHocSelectAction: (state, action) => {
       let value = action.payload;
-      let dataUpdate = state.arrMonHocSort;
+      let dataUpdate = state.arrMonHocSearch;
       let day = new Date();
 
       if (value == 1) {
@@ -155,7 +155,7 @@ const monHocReducer = createSlice({
         });
       }
 
-      state.arrMonHocSort = [...dataUpdate];
+      state.arrMonHocSearch = [...dataUpdate];
     },
   },
 });
