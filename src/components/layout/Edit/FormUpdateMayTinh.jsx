@@ -115,7 +115,6 @@ export default function FormUpdateMayTinh() {
 
     // tên MT không trung
     let objMayTinhNew = { ...objMayTinh.current, phongMay: objPhongMay };
-    console.log("🚀 ~ file: FormUpdateMayTinh.jsx:118 ~ handleSubmit ~ objMayTinhNew:", objMayTinhNew)
     dispatch(updateMayTinhApi({ objMayTinhNew, objData_old, arrThietBi }));
   };
   const checkData = () => {
@@ -172,8 +171,8 @@ export default function FormUpdateMayTinh() {
   const handleChangeSelectTrangThai = (e) => {
     objMayTinh.current.valueSelTrangThai = e.target.value;
 
-    setErrMayTinh({...errMayTinh});
-  }
+    setErrMayTinh({ ...errMayTinh });
+  };
   //
   const handleChangeSelectPhongMay = (e) => {
     let value = e.target.value; // maPhong
@@ -257,7 +256,7 @@ export default function FormUpdateMayTinh() {
   const handleCheckTbi = (e) => {
     let { checked, value } = e.target;
 
-    let updateData = objMayTinh.current.thietBis;
+    let updateData = [...objMayTinh.current.thietBis];
 
     if (checked) {
       let objThietBi = arrThietBi.find((item) => item.maThietBi == value);
@@ -595,15 +594,18 @@ export default function FormUpdateMayTinh() {
                           id="searchTrangThai"
                           onChange={handleChangeSelectTrangThai}
                         >
-                         
                           <option
-                            selected={objMayTinh.current.valueSelTrangThai.toLowerCase().includes("Đang hoạt động".toLowerCase())}
+                            selected={objMayTinh.current.valueSelTrangThai
+                              .toLowerCase()
+                              .includes("Đang hoạt động".toLowerCase())}
                             value="Đang hoạt động"
                           >
                             Đang hoạt động
                           </option>
                           <option
-                            selected={objMayTinh.current.valueSelTrangThai.toLowerCase().includes("Đã hỏng".toLowerCase())}
+                            selected={objMayTinh.current.valueSelTrangThai
+                              .toLowerCase()
+                              .includes("Đã hỏng".toLowerCase())}
                             value="Đã hỏng"
                           >
                             Đã hỏng
@@ -618,16 +620,19 @@ export default function FormUpdateMayTinh() {
                 {/* footer - form */}
                 <div className="">
                   <button
-                    type="reset"
+                    type="button"
                     onClick={() => {
+                      let { phongMay, moTa, thietBiMays, trangThai } =
+                        objData_old;
                       objMayTinh.current = {
-                        valueSelToaNha: "-1",
-                        valueSelTang: "-1",
-                        valueSelPhongMay: "-1",
-                        moTa: "",
-                        thietBis: [],
+                        valueSelToaNha: phongMay.tang.toaNha.maToaNha,
+                        valueSelTang: phongMay.tang.maTang,
+                        valueSelPhongMay: phongMay.maPhong,
+                        moTa,
+                        thietBis: thietBiMays,
+                        valueSelTrangThai: trangThai,
                       };
-
+                      //
                       setErrMayTinh({
                         valueSelToaNha: "",
                         valueSelTang: "",
