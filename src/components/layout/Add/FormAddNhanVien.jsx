@@ -2,7 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import Footer from "../../common/Footer/Footer";
 import NavTab from "../../common/NavTab/NavTab";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllNhanVienApi, insertNhanVienApi } from "../../../redux/reducers/nhanVienReducer";
+import {
+  getAllNhanVienApi,
+  insertNhanVienApi,
+} from "../../../redux/reducers/nhanVienReducer";
 import { getAllTaiKhoanApi } from "../../../redux/reducers/taiKhoanReducer";
 import { getAllChucVuApi } from "../../../redux/reducers/chucVuReducer";
 
@@ -63,8 +66,8 @@ export default function FormAddNhanVien() {
 
     let { tenNV, sDT, email, txtTaiKhoan, chucVu } = objNhanVien.current;
 
-    if(txtTaiKhoan.trim().length === 0){
-      err_taiKhoan = "Hãy nhập thông tin!"
+    if (txtTaiKhoan.trim().length === 0) {
+      err_taiKhoan = "Hãy nhập thông tin!";
       result = false;
     }
     //
@@ -84,10 +87,7 @@ export default function FormAddNhanVien() {
     if (sDT.trim().length === 0) {
       err_sDT = "Hãy nhập thông tin!";
       result = false;
-    } else if (
-      sDT.trim().length < 9 ||
-      sDT.trim().length > 15
-    ) {
+    } else if (sDT.trim().length < 9 || sDT.trim().length > 15) {
       err_sDT = "Số điện thoại có trên 9 số và nhỏ hơn 15 số!";
       result = false;
     } else if (!regexPhone.test(sDT)) {
@@ -100,14 +100,13 @@ export default function FormAddNhanVien() {
       result = false;
     }
 
-
     setErrNhanVien({
       tenNV: err_tenNV,
       sDT: err_sDT,
       email: err_email,
       chucVu: err_chucVu,
       taiKhoan: err_taiKhoan,
-    })
+    });
 
     return result;
   };
@@ -121,43 +120,43 @@ export default function FormAddNhanVien() {
     }
     //true
     // check trung Tai khoan
-    let objTaiKhoan = arrTaiKhoan.find(item => item.tenDangNhap == objNhanVien.current.txtTaiKhoan )
+    let objTaiKhoan = arrTaiKhoan.find(
+      (item) => item.tenDangNhap == objNhanVien.current.txtTaiKhoan
+    );
 
-    if(objTaiKhoan != null){
-      alert('Trùng tài khoản!')
+    if (objTaiKhoan != null) {
+      alert("Trùng tài khoản!");
       return;
     }
     //
     let maNhanVien = getRandomMaNV(arrNhanVien);
     //
-    let {txtTaiKhoan, chucVu} = objNhanVien.current 
+    let { txtTaiKhoan, chucVu } = objNhanVien.current;
 
-    let quyen = {} ;
+    let quyen = {};
 
-    if(chucVu.tenCV.includes('Nhân viên quản lý')) {
+    if (chucVu.tenCV.includes("Nhân viên quản lý")) {
       quyen = {
         maQuyen: 1,
-        tenQuyen: "Người quản lý"
-        }
-    }
-    else {
+        tenQuyen: "Người quản lý",
+      };
+    } else {
       quyen = {
         maQuyen: 3,
-        tenQuyen: "Nhân viên"
-        }
+        tenQuyen: "Nhân viên",
+      };
     }
 
-    let taiKhoan =  {
+    let taiKhoan = {
       maTK: maNhanVien,
       tenDangNhap: txtTaiKhoan,
-      matKhau:'123456A',
-      quyen
-    }
+      matKhau: "123456A",
+      quyen,
+    };
 
-    objNhanVien.current = {...objNhanVien.current, maNhanVien,taiKhoan}
+    objNhanVien.current = { ...objNhanVien.current, maNhanVien, taiKhoan };
 
-    dispatch(insertNhanVienApi(objNhanVien.current))
-    
+    dispatch(insertNhanVienApi(objNhanVien.current));
   };
   //
   const handleChangeText = (e) => {
@@ -387,8 +386,8 @@ export default function FormAddNhanVien() {
 }
 
 const getRandomMaNV = (arrData) => {
-  if(arrData.length === 0) {
-    return 'NV001'
+  if (arrData.length === 0) {
+    return "NV001";
   }
   let idNext = "";
   let objDataLast = arrData[arrData.length - 1];

@@ -184,10 +184,7 @@ export default function PageQLThietBi() {
               <div style={{ display: "flex", alignItems: "center" }}>
                 {/* Btn them */}
                 <NavLink
-                  // to="/quan-ly/tang/add"
-                  onClick={() => {
-                    alert(`tạo mới -- dang cập nhật!`);
-                  }}
+                  to="/quan-ly/thiet-bi/add"
                   type="button"
                   className="btn btn-success ms-4 view_center_vertical"
                 >
