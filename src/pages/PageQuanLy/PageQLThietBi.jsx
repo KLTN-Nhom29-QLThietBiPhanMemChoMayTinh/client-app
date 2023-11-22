@@ -120,11 +120,7 @@ export default function PageQLThietBi() {
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
             <NavLink
-              // to={"/quan-ly/phan-mem/update"}
-              onClick={() => {
-                alert(`Update -- ${item.id} -- dang cập nhật!`);
-                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-              }}
+              to={`/quan-ly/thiet-bi/update?id=${item.maThietBi}`}
             >
               <button
                 type="button"
