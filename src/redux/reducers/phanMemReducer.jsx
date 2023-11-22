@@ -2,6 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { formatStringDate, http } from "../../util/config";
+import { history } from "../..";
 
 const initialState = {
   arrPhanMem: [],
@@ -43,6 +44,19 @@ const phanMemReducer = createSlice({
         action.payload
       );
     },
+    insertPhanMemAction: (state, action) =>{
+      let item = action.payload;
+
+      state.arrPhanMem.push(item);
+
+      //
+      let { arrPhanMem, valueSearch, valueSelect } = state;
+      state.arrPhanMemSearch = searchData(
+        arrPhanMem,
+        valueSearch,
+        valueSelect
+      );
+    }
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -50,6 +64,7 @@ export const {
   setArrPhanMemAction,
   setValueSelectPhanMemAction,
   setValueSearchPhanMemAction,
+  insertPhanMemAction,
 } = phanMemReducer.actions;
 export default phanMemReducer.reducer;
 
@@ -111,6 +126,20 @@ const searchData = (arrData, valSearch, valSelect) => {
 };
 
 // Call Api ++++++++++++++++++++++++++++++++++++++
+
+export const insertPhanMemApi = (phanMem) => {
+  return async(dispatch) =>{
+    try {
+      let result = await http.post('/LuuPhanMem', phanMem);
+
+      dispatch(insertPhanMemAction(result.data))
+      history.push('/quan-ly/phan-mem')
+    } catch (error) {
+      console.log("🚀 ~ file: phanMemReducer.jsx:120 ~ returnasync ~ error:", error)
+      
+    }
+  }
+}
 /**
  * get all api Phan mem
  */

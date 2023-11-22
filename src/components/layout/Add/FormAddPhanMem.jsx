@@ -3,7 +3,7 @@ import Footer from "../../common/Footer/Footer";
 import NavTab from "../../common/NavTab/NavTab";
 import { formatStringDate, formatStringDate2 } from "../../../util/config";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPhanMemApi } from "../../../redux/reducers/phanMemReducer";
+import { getAllPhanMemApi, insertPhanMemApi } from "../../../redux/reducers/phanMemReducer";
 
 let date = new Date();
 let dateYear = date.getFullYear();
@@ -70,15 +70,14 @@ export default function FormAddPhanMem() {
 
     let phanMemNew = {
       tenPhanMem,
-      status: true,
+      trangThai: true,
       moTa,
       phienBan,
       tuoiTho: tgianBaoHanh,
       ngayCaiDat: new Date(ngaySD),
     };
-    console.log("🚀 ~ file: FormAddPhanMem.jsx:79 ~ handleSubmit ~ phanMemNew:", phanMemNew)
     //
-    // dispatch(insertThietBiApi(thietBiNew));
+    dispatch(insertPhanMemApi(phanMemNew));
   };
   const checkData = () => {
     let check = 1;
@@ -138,7 +137,10 @@ export default function FormAddPhanMem() {
       ngayKT,
     };
 
-    setErrPhanMem({ ...errPhanMem });
+    setErrPhanMem({
+      ...errPhanMem,
+      tgianBaoHanh: "",
+    });
   };
 
   //

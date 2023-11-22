@@ -138,7 +138,10 @@ export default function FormAddThietBi() {
       ngayKT,
     };
 
-    setErrTBi({ ...errTbi });
+    setErrTBi({
+      ...errTbi,
+      tgianBaoHanh: "",
+    });
   };
 
   //
