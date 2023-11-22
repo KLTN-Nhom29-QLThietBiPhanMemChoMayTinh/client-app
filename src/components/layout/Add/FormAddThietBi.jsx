@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllLoaiThietBiApi,
   getAllThietBiApi,
+  insertThietBiApi,
 } from "../../../redux/reducers/thietBiReducer";
 import { formatStringDate, formatStringDate2 } from "../../../util/config";
 
@@ -71,11 +72,10 @@ export default function FormAddThietBi() {
     }
     // true
 
-    let { tenTBi, valSelLoaiTBi, ngaySD,  tgianBaoHanh, ngayKT } =
+    let { tenTBi, valSelLoaiTBi, ngaySD, tgianBaoHanh, ngayKT } =
       objThietBi.current;
 
-    let loaiThietBi = arrLoaiTBi.find(item => item.maLoai == valSelLoaiTBi)
-
+    let loaiThietBi = arrLoaiTBi.find((item) => item.maLoai == valSelLoaiTBi);
 
     let thietBiNew = {
       tenThietBi: tenTBi,
@@ -83,8 +83,9 @@ export default function FormAddThietBi() {
       ngayCaiDat: new Date(ngaySD),
       status: true,
       loaiThietBi,
-    }
-    console.log(thietBiNew);
+    };
+    //
+    dispatch(insertThietBiApi(thietBiNew));
   };
   const checkData = () => {
     let check = 1;
@@ -305,7 +306,7 @@ export default function FormAddThietBi() {
                           Thời gian bảo hảnh ( tháng )
                           <small
                             id="helpIdtgian"
-                            className="form-text text-muted mx-2"
+                            className="form-text text-danger mx-2"
                           >
                             *{errTbi.tgianBaoHanh}
                           </small>

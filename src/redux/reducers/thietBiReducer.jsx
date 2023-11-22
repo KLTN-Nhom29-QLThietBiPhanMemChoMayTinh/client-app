@@ -3,6 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { formatStringDate, http } from "../../util/config";
 import Database from "../../util/database/Database";
+import { history } from "../..";
 
 //function
 
@@ -106,6 +107,19 @@ const thietBiReducer = createSlice({
         action.payload
       );
     },
+    insertThietBiAction: (state, action) => {
+      let thietbi = action.payload;
+      state.arrThietBi.push(thietbi);
+
+      //
+      let { valueTxtSearch, arrThietBi, valSelect } = state;
+
+      state.arrThietBiSearch = searchData(
+        arrThietBi,
+        valueTxtSearch,
+        valSelect
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -114,28 +128,45 @@ export const {
   setArrThietBiAction,
   setValueTxtSearchAction,
   setValueSelectActionTBi,
+  insertThietBiAction,
 } = thietBiReducer.actions;
 export default thietBiReducer.reducer;
 
 // -------------- Call Api -----------------
+export const insertThietBiApi = (thietBi) => {
+  return async (dispatch) => {
+    try {
+      let result = await http.post("/LuuThietBiMay", thietBi);
 
+      dispatch(insertThietBiAction(result.data));
+
+      history.push("/quan-ly/thiet-bi");
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: thietBiReducer.jsx:126 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
 /**
  * ds loai thiet bi
  */
 export const getAllLoaiThietBiApi = async (dispatch) => {
   try {
-    let result = await http.get('/DSLoaiThietBi');
+    let result = await http.get("/DSLoaiThietBi");
 
     dispatch(setArrLoaiThietBiAction(result.data));
-    
   } catch (error) {
-    console.log("🚀 ~ file: thietBiReducer.jsx:128 ~ getAllLoaiThietBiApi ~ error:", error)
-    
+    console.log(
+      "🚀 ~ file: thietBiReducer.jsx:128 ~ getAllLoaiThietBiApi ~ error:",
+      error
+    );
   }
-}
+};
 /**
  * Ds all Thiet bij
- * @param {*} dispatch 
+ * @param {*} dispatch
  */
 export const getAllThietBiApi = async (dispatch) => {
   try {
