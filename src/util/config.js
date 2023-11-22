@@ -79,6 +79,20 @@ export const configs = {
       month < 10 ? "0" + month : month
     }/${year + 1900}`;
   },
+  /**
+   * Format Date -> String
+   * yyyy-mm-dd
+   * @returns String
+   */
+  formatStringDate2: (day = new Date()) => {
+    let dateYear = day.getYear() + 1900;
+    let dateMonth = day.getMonth() + 1;
+    let dateDay = day.getDate();
+
+    let strDate = `${dateYear}-${dateMonth}-${dateDay}`;
+
+    return strDate;
+  },
   formatNameByHocVi: (giaoVien) => {
     let str = "";
     switch (giaoVien.hocVi) {
@@ -97,7 +111,7 @@ export const configs = {
   },
   ACCESS_TOKEN: "accessToken",
   USER_LOGIN: "userLogin",
-  REGEX_PASSWORD : /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z_.\-@]{6,}$/,
+  REGEX_PASSWORD: /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z_.\-@]{6,}$/,
 };
 
 export const {
@@ -110,10 +124,11 @@ export const {
   clearCookie,
   clearLocalStorage,
   formatStringDate,
+  formatStringDate2,
   formatNameByHocVi,
   ACCESS_TOKEN,
   USER_LOGIN,
-  REGEX_PASSWORD
+  REGEX_PASSWORD,
 } = configs;
 
 // cấu hình  interceptor (Cau hình cho các  request và response)

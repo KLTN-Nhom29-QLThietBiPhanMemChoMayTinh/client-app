@@ -72,7 +72,7 @@ export default function FormAddNhanVien() {
     }
     //
     if (chucVu == null || Object.keys(chucVu).length === 0) {
-      err_chucVu = "Hãy chọn một khoa!";
+      err_chucVu = "Hãy chọn thông tin!";
       result = false;
     }
     //

@@ -6,6 +6,7 @@ import {
   getAllLoaiThietBiApi,
   getAllThietBiApi,
 } from "../../../redux/reducers/thietBiReducer";
+import { formatStringDate, formatStringDate2 } from "../../../util/config";
 
 let date = new Date();
 let dateYear = date.getFullYear();
@@ -21,11 +22,10 @@ export default function FormAddThietBi() {
   const dispatch = useDispatch();
   //
   let { arrLoaiTBi, arrThietBi } = useSelector((state) => state.thietBiReducer);
-
   let objThietBi = useRef({
     tenTBi: "",
     valSelLoaiTBi: 1,
-    ngaySD: strDate,
+    ngaySD: formatStringDate2(),
     status: "Đang sử dụng",
     tgianBaoHanh: 1,
     ngayKT: "00/00/0000",
@@ -46,48 +46,72 @@ export default function FormAddThietBi() {
       const action = getAllThietBiApi;
       dispatch(action);
     }
+    //
+    let { tgianBaoHanh, ngaySD } = objThietBi.current;
+    let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
+
+    objThietBi.current = {
+      tenTBi: "",
+      valSelLoaiTBi: 1,
+      ngaySD,
+      status,
+      tgianBaoHanh: 1,
+      ngayKT,
+    };
+    setErrTBi({ ...errTbi });
   }, []);
 
   // handle
   //
-  const getCheckTgianKT = (objCheck) => {
-    let { tgianBaoHanh, ngaySD } = objCheck;
-    let day = new Date(); // ngay hien taij
-    let ngayKT = new Date(ngaySD);
-    ngayKT.setMonth(ngayKT.getMonth() + tgianBaoHanh);
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    let day2 = new Date(ngayKT);
-    let status = "";
-    day2.setDate(day2.getDate() - 30); // day2 là tgian trước ngày kt 30 ngay
-
-    if (day > ngayKT) {
-      status = "Đang sử dụng - hết hạn bảo hành";
-    } else if (day > day2 && day < ngayKT) {
-      status = "Đang sử dụng, sắp hết hạn bảo hành";
-    } else {
-      status = "Đang sử dụng";
-      return <td style={{ backgroundColor: "#4dff7c" }}>Đang sử dụng</td>;
-    }
-    return { ...objCheck, status, ngayKT };
-  };
-  const handleChangeTgianBH = (e) => {
-    let { value } = e.target;
-    console.log(
-      "🚀 ~ file: FormAddThietBi.jsx:75 ~ handleChangeTgianBH ~ value:",
-      value
-    );
-    objThietBi.current.tgianBaoHanh = e.target.value;
-    console.log(
-      "🚀 ~ file: FormAddThietBi.jsx:77 ~ handleChangeTgianBH ~ objThietBi.current:",
-      objThietBi.current
-    );
-    objThietBi.current = getCheckTgianKT(objThietBi.current);
-
-    setErrTBi({ ...errTbi });
+    console.log(objThietBi.current);
   };
   //
+
+  const handleChangeTgianBH = (e) => {
+    let value = e.target.value;
+
+    let errTgianBH = "";
+    if (value == 0) {
+      errTgianBH = "Thời gian bảo hành phải lớn hơn 0";
+      value = 1;
+    }
+    if (value >= 50) {
+      console.log("1");
+      errTgianBH = "Thời gian bảo hành phải nhỏ hơn 50";
+      value = 50;
+    }
+
+    let ngaySD = objThietBi.current.ngaySD;
+    let tgianBaoHanh = parseInt(value);
+
+    let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
+
+    objThietBi.current = {
+      ...objThietBi.current,
+      tgianBaoHanh,
+      status,
+      ngayKT,
+    };
+
+    setErrTBi({ ...errTbi, tgianBaoHanh: errTgianBH });
+  };
+
+  //
   const handleChangeNgaySD = (e) => {
-    objThietBi.current.ngaySD = e.target.value;
+    let ngaySD = e.target.value;
+
+    let tgianBaoHanh = objThietBi.current.tgianBaoHanh;
+    let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
+
+    objThietBi.current = {
+      ...objThietBi.current,
+      ngaySD,
+      status,
+      ngayKT,
+    };
 
     setErrTBi({ ...errTbi });
   };
@@ -147,7 +171,7 @@ export default function FormAddThietBi() {
             >
               {/* Form add */}
               <form
-                // onSubmit={handleSubmit}
+                onSubmit={handleSubmit}
                 className="d-flex h-100 justify-content-between flex-column"
               >
                 {/* body */}
@@ -197,7 +221,7 @@ export default function FormAddThietBi() {
 
                       {/* Trang thai */}
                       <div className="mb-3 col-10">
-                        <label htmlFor className="form-label">
+                        <label className="form-label">
                           Trạng thái
                           <small
                             id="helpId"
@@ -243,7 +267,7 @@ export default function FormAddThietBi() {
                       {/* tgian bao hanh */}
                       <div className="mb-3 col-10">
                         <label htmlFor="txtTgianBaoHanh" className="form-label">
-                          Thời gian bảo hảnh
+                          Thời gian bảo hảnh ( tháng )
                           <small
                             id="helpIdtgian"
                             className="form-text text-muted mx-2"
@@ -266,7 +290,7 @@ export default function FormAddThietBi() {
 
                       {/* Trang thai */}
                       <div className="mb-3 col-10">
-                        <label htmlFor className="form-label">
+                        <label className="form-label">
                           Ngày hết hạn
                           <small
                             id="helpId"
@@ -329,3 +353,25 @@ export default function FormAddThietBi() {
     </>
   );
 }
+
+const getCheckTgianKT = ({ tgianBaoHanh, ngaySD }) => {
+  let ngayKT = new Date(ngaySD);
+
+  ngayKT.setMonth(ngayKT.getMonth() + parseInt(tgianBaoHanh));
+
+  let status = "";
+  let day = new Date();
+  let day2 = new Date(ngayKT);
+
+  day2.setDate(day2.getDate() - 30); // day2 là tgian trước ngày kt 30 ngay
+
+  if (day > ngayKT) {
+    status = "Đang sử dụng - hết hạn bảo hành";
+  } else if (day > day2 && day < ngayKT) {
+    status = "Đang sử dụng, sắp hết hạn bảo hành";
+  } else {
+    status = "Đang sử dụng";
+  }
+
+  return { status, ngayKT: formatStringDate(ngayKT) };
+};

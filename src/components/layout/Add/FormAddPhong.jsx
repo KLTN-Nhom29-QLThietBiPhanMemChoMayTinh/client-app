@@ -27,7 +27,7 @@ export default function FormAddPhong() {
   // phong err
   let [errPhong, setErrPhong] = useState({
     tenPhong: "",
-    soLuongMay: "",
+    soLuongMay: '',
     phanMem: "",
     phanCung: "",
     toaNha: "",
@@ -259,7 +259,7 @@ export default function FormAddPhong() {
             style={{ marginTop: "2px" }}
             htmlFor={`${item.maThietBi}_Tbi`}
           >
-            {item.tenThietBi}
+            <strong>{item.loaiThietBi.tenLoai}: </strong>{item.tenThietBi}
           </label>
         </div>
       );

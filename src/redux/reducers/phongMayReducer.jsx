@@ -312,6 +312,7 @@ export const insertPhongMayApi = (phongMay) => {
     phongMay;
 
   let arrPhanMem = [...phanMem];
+  console.log("🚀 ~ file: phongMayReducer.jsx:315 ~ insertPhongMayApi ~ arrPhanMem:", arrPhanMem)
 
   // luu phong may
   let savePhong = {
