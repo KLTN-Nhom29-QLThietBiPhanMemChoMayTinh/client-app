@@ -4,6 +4,7 @@ import { FaPencilAlt } from "react-icons/fa";
 import { BiEditAlt } from "react-icons/bi";
 
 export default function ComponentThongTinChiTiet() {
+  //
   let { objThongTin } = useSelector((state) => state.homeReducer);
   if (
     Object.keys(objThongTin).length === 0 ||

@@ -6,15 +6,14 @@ import "./assets/scss/style.scss";
 import { createBrowserHistory } from "history";
 import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { Provider } from "react-redux";
+import { store } from "./redux/ConfigRedux";
+//
 import Page404 from "./pages/Page404/Page404";
-import PageHome2 from "./pages/PageHome/PageHome2";
 import PageQlKhuVuc from "./pages/PageQuanLy/PageQlKhuVuc";
 import PageQLPhongMay from "./pages/PageQuanLy/PageQLPhongMay";
 import FromAddKhuVuc from "./components/layout/Add/FormAddKhuVuc";
 import FormKhuVucUpdate from "./components/layout/Edit/FormKhuVucUpdate";
-import { Provider } from "react-redux";
-import { store } from "./redux/ConfigRedux";
 import PageQLTang from "./pages/PageQuanLy/PageQLTang";
 import FormAddTang from "./components/layout/Add/FormAddTang";
 import FormUpdateTang from "./components/layout/Edit/FormUpdateTang";
@@ -32,7 +31,6 @@ import PageHome from "./pages/PageHome/PageHome";
 import PageLogin from "./pages/PageLogin/PageLogin";
 import PageBrand from "./pages/PageBrand/PageBrand";
 import PageLichTruc from "./pages/PagePhanCongLich/PageLichTruc";
-import FormAddKhuVuc from "./components/layout/Add/FormAddKhuVuc";
 import FormAddLichTruc from "./components/layout/Add/FormAddLichTruc";
 import FormUpdateLichTruc from "./components/layout/Edit/FormUpdateLichTruc";
 import PageProfile from "./pages/PageProfile/PageProfile";
@@ -46,7 +44,9 @@ import FormAddMayTinh from "./components/layout/Add/FormAddMayTinh";
 import FormUpdateMayTinh from "./components/layout/Edit/FormUpdateMayTinh";
 import FormAddThietBi from "./components/layout/Add/FormAddThietBi";
 import FormUpdateThietBi from "./components/layout/Edit/FormUpdateThietBi";
+import FormAddPhanMem from "./components/layout/Add/FormAddPhanMem";
 
+//
 export const history = createBrowserHistory();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -91,8 +91,11 @@ root.render(
           <Route path="/quan-ly/phong" element={<PageQLPhongMay />}></Route>
           <Route path="/quan-ly/phong/add" element={<FormAddPhong />}></Route>
           <Route path="/quan-ly/phong/update" element={<FormUpdatePhong />}></Route>
+
           <Route path="/quan-ly/phan-mem" element={<PageQLPhanMem />}></Route>
+          <Route path="/quan-ly/phan-mem/add" element={<FormAddPhanMem />}></Route>
           <Route path="/quan-ly/mon" element={<PageQlMonHoc />}></Route>
+
           <Route path="/quan-ly/thiet-bi" element={<PageQLThietBi />}></Route>
           <Route path="/quan-ly/thiet-bi/add" element={<FormAddThietBi />}></Route>
           <Route path="/quan-ly/thiet-bi/update" element={<FormUpdateThietBi />}></Route>

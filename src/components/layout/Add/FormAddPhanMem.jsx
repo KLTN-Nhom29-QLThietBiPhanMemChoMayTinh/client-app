@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Footer from "../../common/Footer/Footer";
 import NavTab from "../../common/NavTab/NavTab";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllLoaiThietBiApi,
-  getAllThietBiApi,
-  insertThietBiApi,
-} from "../../../redux/reducers/thietBiReducer";
 import { formatStringDate, formatStringDate2 } from "../../../util/config";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPhanMemApi } from "../../../redux/reducers/phanMemReducer";
 
 let date = new Date();
 let dateYear = date.getFullYear();
@@ -18,51 +14,49 @@ let dateDay = date.getDate();
 let strDate = `${dateYear}-${dateMonth}-${dateDay}`;
 let strDateMin = `${dateYearMin}-${dateMonth}-${dateDay}`;
 
-export default function FormAddThietBi() {
+export default function FormAddPhanMem() {
   //
   const dispatch = useDispatch();
   //
-  let { arrLoaiTBi, arrThietBi } = useSelector((state) => state.thietBiReducer);
-  let objThietBi = useRef({
-    tenTBi: "",
-    valSelLoaiTBi: 1,
-    ngaySD: formatStringDate2(),
+  let { arrPhanMem } = useSelector((state) => state.phanMemReducer);
+  //
+  let objPhanMem = useRef({
+    tenPhanMem: "",
     status: "Đang sử dụng",
+    moTa: "",
+    ngaySD: formatStringDate2(),
     tgianBaoHanh: 1,
     ngayKT: "00/00/0000",
+    phienBan: "",
   });
-  let [errTbi, setErrTBi] = useState({
-    tenTBi: "",
-    valSelLoaiTBi: "",
+  let [errPhanMem, setErrPhanMem] = useState({
+    tenPhanMem: "",
+    moTa: "",
     ngaySD: "",
     tgianBaoHanh: "",
+    phienBan: "",
   });
   //
   useEffect(() => {
-    if (arrLoaiTBi.length === 0) {
-      dispatch(getAllLoaiThietBiApi);
-    }
     //
-    if (arrThietBi.length === 0) {
-      const action = getAllThietBiApi;
+    if (arrPhanMem.length === 0) {
+      const action = getAllPhanMemApi;
       dispatch(action);
     }
     //
-    let { tgianBaoHanh, ngaySD } = objThietBi.current;
+    let { tgianBaoHanh, ngaySD } = objPhanMem.current;
     let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
 
-    objThietBi.current = {
-      tenTBi: "",
-      valSelLoaiTBi: 1,
-      ngaySD,
+    objPhanMem.current = {
+      ...objPhanMem.current,
       status,
-      tgianBaoHanh: 1,
       ngayKT,
     };
-    setErrTBi({ ...errTbi });
+    setErrPhanMem({ ...errPhanMem });
   }, []);
 
   // handle
+  //
   //
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -72,129 +66,111 @@ export default function FormAddThietBi() {
     }
     // true
 
-    let { tenTBi, valSelLoaiTBi, ngaySD, tgianBaoHanh, ngayKT } =
-      objThietBi.current;
+    let { tenPhanMem, moTa, ngaySD, phienBan, tgianBaoHanh, ngayKT } = objPhanMem.current;
 
-    let loaiThietBi = arrLoaiTBi.find((item) => item.maLoai == valSelLoaiTBi);
-
-    let thietBiNew = {
-      tenThietBi: tenTBi,
+    let phanMemNew = {
+      tenPhanMem,
+      status: true,
+      moTa,
+      phienBan,
       tuoiTho: tgianBaoHanh,
       ngayCaiDat: new Date(ngaySD),
-      status: true,
-      loaiThietBi,
     };
+    console.log("🚀 ~ file: FormAddPhanMem.jsx:79 ~ handleSubmit ~ phanMemNew:", phanMemNew)
     //
-    dispatch(insertThietBiApi(thietBiNew));
+    // dispatch(insertThietBiApi(thietBiNew));
   };
   const checkData = () => {
     let check = 1;
     let err_tenTBi = "";
-    let { tenTBi } = objThietBi.current;
+    let err_phienBan = "";
+    let { tenPhanMem, phienBan } = objPhanMem.current;
 
-    if (tenTBi.trim().length === 0) {
+    //
+    if (tenPhanMem.trim().length === 0) {
       err_tenTBi = "Hãy nhập thông tin!";
       check = 0;
     }
+    //
+    if (phienBan.trim().length === 0) {
+      err_phienBan = "Hãy nhập thông tin!";
+      check = 0;
+    }
 
-    setErrTBi({
-      ...errTbi,
-      tenTBi: err_tenTBi,
+    setErrPhanMem({
+      ...errPhanMem,
+      tenPhanMem: err_tenTBi,
+      phienBan:err_phienBan,
     });
 
     return check;
   };
   //
-
   const handleChangeTgianBH = (e) => {
     let value = e.target.value;
 
     if (value == 0) {
       value = 1;
-      setErrTBi({
-        ...errTbi,
+      setErrPhanMem({
+        ...errPhanMem,
         tgianBaoHanh: "Thời gian bảo hành phải lớn hơn 0",
       });
       return;
     }
     if (value >= 50) {
       value = 50;
-      setErrTBi({
-        ...errTbi,
+      setErrPhanMem({
+        ...errPhanMem,
         tgianBaoHanh: "Thời gian bảo hành phải nhỏ hơn 50",
       });
       return;
     }
 
-    let ngaySD = objThietBi.current.ngaySD;
+    let ngaySD = objPhanMem.current.ngaySD;
     let tgianBaoHanh = parseInt(value);
 
     let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
 
-    objThietBi.current = {
-      ...objThietBi.current,
+    objPhanMem.current = {
+      ...objPhanMem.current,
       tgianBaoHanh,
       status,
       ngayKT,
     };
 
-    setErrTBi({ ...errTbi });
+    setErrPhanMem({ ...errPhanMem });
   };
 
   //
   const handleChangeNgaySD = (e) => {
     let ngaySD = e.target.value;
 
-    let tgianBaoHanh = objThietBi.current.tgianBaoHanh;
+    let tgianBaoHanh = objPhanMem.current.tgianBaoHanh;
     let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
 
-    objThietBi.current = {
-      ...objThietBi.current,
+    objPhanMem.current = {
+      ...objPhanMem.current,
       ngaySD,
       status,
       ngayKT,
     };
 
-    setErrTBi({ ...errTbi });
+    setErrPhanMem({ ...errPhanMem });
   };
   //
-  const handleChangeLoaiTbi = (e) => {
-    objThietBi.current.valSelLoaiTBi = e.target.value;
+  const handleChangeText = (e) => {
+    let { value, id } = e.target;
+    objPhanMem.current[id] = value;
 
-    setErrTBi({ ...errTbi });
-  };
-  //
-  const handleChangeTenTbi = (e) => {
-    let { value } = e.target;
-    objThietBi.current.tenTBi = value;
-
-    if (value.trim().length === 0) {
-      setErrTBi({ ...errTbi, tenTBi: "Hãy nhập thông tin!" });
+    if (value.length === 0) {
+      setErrPhanMem({ ...errPhanMem, [id]: "Hãy nhập thông tin!" });
     } else {
-      setErrTBi({ ...errTbi, tenTBi: "" });
+      setErrPhanMem({ ...errPhanMem, [id]: "" });
     }
   };
 
-  // render
-  //
-  const renderLoaithietBi = () => {
-    return arrLoaiTBi?.map((item, index) => {
-      if (item.maLoai == objThietBi.current.valSelLoaiTBi) {
-        return (
-          <option key={index} selected value={item.maLoai}>
-            {item.tenLoai}
-          </option>
-        );
-      }
-      return (
-        <option key={index} value={item.maLoai}>
-          {item.tenLoai}
-        </option>
-      );
-    });
-  };
   // Mảng quản lý data navtab
-  let arrLinkNavTab = [{ name: "Quản lý thiết bị", link: "/quan-ly/thiet-bi" }];
+  let arrLinkNavTab = [{ name: "Quản lý phần mềm", link: "/quan-ly/phan-mem" }];
   //
   return (
     <>
@@ -218,47 +194,138 @@ export default function FormAddThietBi() {
               >
                 {/* body */}
                 <div>
-                  <h2 className="mx-3 mb-3 ">Thêm thiết bị</h2>
+                  <h2 className="mx-3 mb-3 ">Thêm phần mềm</h2>
                   <div className="row">
                     <div className="col-6">
                       {/* left */}
                       {/* ten Tbi */}
                       <div className="mb-3 col-10">
-                        <label htmlFor="tenTbi" className="form-label">
-                          Tên thiết bị
+                        <label htmlFor="tenPhanMem" className="form-label">
+                          Tên phần mềm
                           <small
-                            id="helpIdTenTbi"
+                            id="helpIdTenPM"
                             className="form-text text-danger mx-2"
                           >
-                            *{errTbi.tenTBi}
+                            *{errPhanMem.tenPhanMem}
                           </small>
                         </label>
                         <input
                           type="text"
                           className="form-control"
-                          name="tenTbi"
-                          id="tenTbi"
-                          onChange={handleChangeTenTbi}
-                          aria-describedby="helpIdTenTbi"
-                          placeholder="Dell ADG..."
+                          name="tenPhanMem"
+                          id="tenPhanMem"
+                          onChange={handleChangeText}
+                          aria-describedby="helpIdTenPM"
+                          placeholder="Phần mềm Excel..."
                         />
                       </div>
-                      {/* Loại thiết bị */}
+                      {/* phien bản */}
                       <div className="mb-3 col-10">
-                        <label htmlFor="selLoaiThieBi" className="form-label">
-                          Loại thiết bị
-                          <small className="form-text text-danger mx-2">
-                            *{errTbi.valSelLoaiTBi}
+                        <label htmlFor="phienBan" className="form-label">
+                          Phiên bản
+                          <small
+                            id="helpIdPhienban"
+                            className="form-text text-danger mx-2"
+                          >
+                            *{errPhanMem.phienBan}
                           </small>
                         </label>
-                        <select
-                          className="form-select "
-                          name="selLoaiThieBi"
-                          id="selLoaiThieBij"
-                          onChange={handleChangeLoaiTbi}
-                        >
-                          {renderLoaithietBi()}
-                        </select>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="phienBan"
+                          id="phienBan"
+                          onChange={handleChangeText}
+                          aria-describedby="helpIdPhienban"
+                          placeholder="2023..."
+                        />
+                      </div>
+                      {/* Mota */}
+                      <div className="mb-3 col-10">
+                        <label htmlFor="moTa" className="form-label">
+                          Mô tả{" "}
+                          <span className="form-text text-danger">
+                            *{errPhanMem.moTa}
+                          </span>
+                        </label>
+                        <textarea
+                          className="form-control"
+                          name="moTa"
+                          id="moTa"
+                          onChange={handleChangeText}
+                          rows={5}
+                        />
+                      </div>
+
+                      {/*  */}
+                    </div>
+                    <div className="col-6">
+                      {/* Ngay su dung */}
+                      <div className="mb-3 col-10">
+                        <label htmlFor="txtNgay" className="form-label">
+                          Ngày sử dụng
+                          <small
+                            id="helpIdNgaySD"
+                            className="form-text text-danger mx-2"
+                          >
+                            *{errPhanMem.ngaySD}
+                          </small>
+                        </label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          name="txtNgay"
+                          id="txtNgay"
+                          onChange={handleChangeNgaySD}
+                          value={objPhanMem.current.ngaySD}
+                          max={strDate}
+                          min={strDateMin}
+                          aria-describedby="helpIdNgaySD"
+                          placeholder="01/01/2023"
+                        />
+                      </div>
+
+                      {/* tgian bao hanh */}
+                      <div className="mb-3 col-10">
+                        <label htmlFor="txtTgianBaoHanh" className="form-label">
+                          Thời hạn sử dụng ( tháng )
+                          <small
+                            id="helpIdtgian"
+                            className="form-text text-danger mx-2"
+                          >
+                            *{errPhanMem.tgianBaoHanh}
+                          </small>
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          name="txtTgianBaoHanh"
+                          id="txtTgianBaoHanh"
+                          min={1}
+                          value={objPhanMem.current.tgianBaoHanh}
+                          max={50}
+                          onChange={handleChangeTgianBH}
+                          aria-describedby="helpIdtgian"
+                        />
+                      </div>
+
+                      {/* Ngay het han */}
+                      <div className="mb-3 col-10">
+                        <label className="form-label">
+                          Ngày hết hạn
+                          <small
+                            id="helpId"
+                            className="form-text text-danger mx-2"
+                          >
+                            *
+                          </small>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          disabled
+                          value={objPhanMem.current.ngayKT}
+                        />
                       </div>
 
                       {/* Trang thai */}
@@ -276,79 +343,9 @@ export default function FormAddThietBi() {
                           type="text"
                           className="form-control"
                           disabled
-                          value={objThietBi.current.status}
+                          value={objPhanMem.current.status}
                         />
                       </div>
-                    </div>
-                    <div className="col-6">
-                      {/* Ngay su dung */}
-                      <div className="mb-3 col-10">
-                        <label htmlFor="txtNgay" className="form-label">
-                          Ngày sử dụng{" "}
-                          <small
-                            id="helpIdNgaySD"
-                            className="form-text text-danger mx-2"
-                          >
-                            *{errTbi.ngaySD}
-                          </small>
-                        </label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          name="txtNgay"
-                          id="txtNgay"
-                          onChange={handleChangeNgaySD}
-                          value={objThietBi.current.ngaySD}
-                          max={strDate}
-                          min={strDateMin}
-                          aria-describedby="helpIdNgaySD"
-                          placeholder="01/01/2023"
-                        />
-                      </div>
-
-                      {/* tgian bao hanh */}
-                      <div className="mb-3 col-10">
-                        <label htmlFor="txtTgianBaoHanh" className="form-label">
-                          Thời gian bảo hành ( tháng )
-                          <small
-                            id="helpIdtgian"
-                            className="form-text text-danger mx-2"
-                          >
-                            *{errTbi.tgianBaoHanh}
-                          </small>
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          name="txtTgianBaoHanh"
-                          id="txtTgianBaoHanh"
-                          min={1}
-                          value={objThietBi.current.tgianBaoHanh}
-                          max={50}
-                          onChange={handleChangeTgianBH}
-                          aria-describedby="helpIdtgian"
-                        />
-                      </div>
-
-                      {/* Trang thai */}
-                      <div className="mb-3 col-10">
-                        <label className="form-label">
-                          Ngày hết hạn
-                          <small
-                            id="helpId"
-                            className="form-text text-danger mx-2"
-                          >
-                            *
-                          </small>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          disabled
-                          value={objThietBi.current.ngayKT}
-                        />
-                      </div>
-
                       {/*  */}
                     </div>
                   </div>
@@ -360,23 +357,7 @@ export default function FormAddThietBi() {
                   </button>
                   <button
                     type="reset"
-                    onClick={() => {
-                      objThietBi.current = {
-                        tenTBi: "",
-                        valSelLoaiTBi: "",
-                        ngaySD: date,
-                        status: true,
-                        tgianBaoHanh: 1,
-                        ngayKT: "00/00/0000",
-                      };
-
-                      setErrTBi({
-                        tenTBi: "",
-                        valSelLoaiTBi: "",
-                        ngaySD: "",
-                        tgianBaoHanh: "",
-                      });
-                    }}
+                    onClick={() => {}}
                     className="btn btn-danger mx-3"
                   >
                     Khôi phục
@@ -384,8 +365,6 @@ export default function FormAddThietBi() {
                 </div>
               </form>
             </div>
-
-            {/*  */}
           </div>
 
           {/*  */}
