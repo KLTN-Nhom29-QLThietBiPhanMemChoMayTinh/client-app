@@ -303,7 +303,7 @@ export default function FormAddThietBi() {
                       {/* tgian bao hanh */}
                       <div className="mb-3 col-10">
                         <label htmlFor="txtTgianBaoHanh" className="form-label">
-                          Thời gian bảo hảnh ( tháng )
+                          Thời gian bảo hành ( tháng )
                           <small
                             id="helpIdtgian"
                             className="form-text text-danger mx-2"

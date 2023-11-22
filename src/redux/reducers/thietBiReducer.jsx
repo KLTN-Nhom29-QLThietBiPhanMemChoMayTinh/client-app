@@ -159,6 +159,26 @@ const thietBiReducer = createSlice({
         valueSelectLoaiTBi
       );
     },
+    updateThietBiAction: (state, action) => {
+      let thietbi = action.payload;
+
+      let rowToChange = state.arrThietBi.findIndex(
+        (item) => item.maThietBi == thietbi.maThietBi
+      );
+      state.arrThietBi[rowToChange] = thietbi;
+
+      let arrdata = sortData_LoaiThietBi(state.arrThietBi);
+      state.arrThietBi = arrdata;
+      //
+      let { valueTxtSearch, arrThietBi, valSelect, valueSelectLoaiTBi } = state;
+
+      state.arrThietBiSearch = searchData(
+        arrThietBi,
+        valueTxtSearch,
+        valSelect,
+        valueSelectLoaiTBi
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -169,10 +189,39 @@ export const {
   setValueSelectActionTBi,
   setValueSelectLoaiTbiAction,
   insertThietBiAction,
+  updateThietBiAction,
 } = thietBiReducer.actions;
 export default thietBiReducer.reducer;
 
 // -------------- Call Api -----------------
+
+/**
+ * edit 1 thiet bị api
+ * @param {object} thietBi
+ * @returns
+ */
+export const updateThietbiApi = (thietBi) => {
+  return async (dispatch) => {
+    try {
+      let result = await http.post("/LuuThietBiMay", thietBi);
+
+      dispatch(updateThietBiAction(result.data));
+
+      history.push("/quan-ly/thiet-bi");
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: thietBiReducer.jsx:126 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
+
+/**
+ * add 1 thiet bị api
+ * @param {object} thietBi
+ * @returns
+ */
 export const insertThietBiApi = (thietBi) => {
   return async (dispatch) => {
     try {

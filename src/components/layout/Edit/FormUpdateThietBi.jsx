@@ -6,8 +6,10 @@ import {
   getAllLoaiThietBiApi,
   getAllThietBiApi,
   insertThietBiApi,
+  updateThietbiApi,
 } from "../../../redux/reducers/thietBiReducer";
 import { formatStringDate, formatStringDate2 } from "../../../util/config";
+import { useLocation, useNavigate } from "react-router-dom";
 
 let date = new Date();
 let dateYear = date.getFullYear();
@@ -18,16 +20,24 @@ let dateDay = date.getDate();
 let strDate = `${dateYear}-${dateMonth}-${dateDay}`;
 let strDateMin = `${dateYearMin}-${dateMonth}-${dateDay}`;
 
+let objData_old = {};
+
 export default function FormUpdateThietBi() {
   //
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  // nhan data gui theo uri
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const objParam = Object.fromEntries(searchParams);
+  //
   //
   let { arrLoaiTBi, arrThietBi } = useSelector((state) => state.thietBiReducer);
   let objThietBi = useRef({
     tenTBi: "",
     valSelLoaiTBi: 1,
     ngaySD: formatStringDate2(),
-    status: "Đang sử dụng",
+    status: true,
     tgianBaoHanh: 1,
     ngayKT: "00/00/0000",
   });
@@ -39,26 +49,38 @@ export default function FormUpdateThietBi() {
   });
   //
   useEffect(() => {
+    if (objParam.id == null) {
+      navigate("/quan-ly/giao-vien");
+    }
+    //
+    if (arrThietBi.length === 0) {
+      navigate("/quan-ly/thiet-bi");
+    } else {
+      objData_old = arrThietBi.find((item) => item.maThietBi == objParam.id);
+
+      let { tenThietBi, tuoiTho, ngayCaiDat, status, loaiThietBi } =
+        objData_old;
+
+      //
+      let ngayKT = new Date(ngayCaiDat);
+      ngayKT.setMonth(ngayKT.getMonth() + tuoiTho);
+
+      objThietBi.current = {
+        tenTBi: tenThietBi,
+        valSelLoaiTBi: loaiThietBi.maLoai,
+        ngaySD: formatStringDate2(new Date(ngayCaiDat)),
+        status,
+        tgianBaoHanh: tuoiTho,
+        ngayKT: formatStringDate(ngayKT),
+      };
+      //
+    }
+    //
     if (arrLoaiTBi.length === 0) {
       dispatch(getAllLoaiThietBiApi);
     }
     //
-    if (arrThietBi.length === 0) {
-      const action = getAllThietBiApi;
-      dispatch(action);
-    }
-    //
-    let { tgianBaoHanh, ngaySD } = objThietBi.current;
-    let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
 
-    objThietBi.current = {
-      tenTBi: "",
-      valSelLoaiTBi: 1,
-      ngaySD,
-      status,
-      tgianBaoHanh: 1,
-      ngayKT,
-    };
     setErrTBi({ ...errTbi });
   }, []);
 
@@ -72,20 +94,23 @@ export default function FormUpdateThietBi() {
     }
     // true
 
-    let { tenTBi, valSelLoaiTBi, ngaySD, tgianBaoHanh, ngayKT } =
+    let { tenTBi, valSelLoaiTBi, ngaySD, tgianBaoHanh, status, ngayKT } =
       objThietBi.current;
 
     let loaiThietBi = arrLoaiTBi.find((item) => item.maLoai == valSelLoaiTBi);
 
     let thietBiNew = {
+      maThietBi: objData_old.maThietBi,
       tenThietBi: tenTBi,
       tuoiTho: tgianBaoHanh,
       ngayCaiDat: new Date(ngaySD),
-      status: true,
+      status,
       loaiThietBi,
     };
     //
-    dispatch(insertThietBiApi(thietBiNew));
+    console.log(thietBiNew);
+
+    dispatch(updateThietbiApi(thietBiNew));
   };
   const checkData = () => {
     let check = 1;
@@ -105,7 +130,10 @@ export default function FormUpdateThietBi() {
     return check;
   };
   //
-
+  const handlgeChangeSelectStatus = (e) => {
+    objThietBi.current.status = e.target.value;
+  };
+  //
   const handleChangeTgianBH = (e) => {
     let value = e.target.value;
 
@@ -122,14 +150,13 @@ export default function FormUpdateThietBi() {
 
     let ngaySD = objThietBi.current.ngaySD;
     let tgianBaoHanh = parseInt(value);
-
-    let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
+    let ngayKT = new Date(ngaySD);
+    ngayKT.setMonth(ngayKT.getMonth() + tgianBaoHanh);
 
     objThietBi.current = {
       ...objThietBi.current,
       tgianBaoHanh,
-      status,
-      ngayKT,
+      ngayKT: formatStringDate(ngayKT),
     };
 
     setErrTBi({ ...errTbi, tgianBaoHanh: errTgianBH });
@@ -140,13 +167,13 @@ export default function FormUpdateThietBi() {
     let ngaySD = e.target.value;
 
     let tgianBaoHanh = objThietBi.current.tgianBaoHanh;
-    let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
+    let ngayKT = new Date(ngaySD);
+    ngayKT.setMonth(ngayKT.getMonth() + tgianBaoHanh);
 
     objThietBi.current = {
       ...objThietBi.current,
       ngaySD,
-      status,
-      ngayKT,
+      ngayKT: formatStringDate(ngayKT),
     };
 
     setErrTBi({ ...errTbi });
@@ -232,6 +259,7 @@ export default function FormUpdateThietBi() {
                           className="form-control"
                           name="tenTbi"
                           id="tenTbi"
+                          value={objThietBi.current.tenTBi}
                           onChange={handleChangeTenTbi}
                           aria-describedby="helpIdTenTbi"
                           placeholder="Dell ADG..."
@@ -266,12 +294,24 @@ export default function FormUpdateThietBi() {
                             *
                           </small>
                         </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          disabled
-                          value={objThietBi.current.status}
-                        />
+
+                        <select
+                          onChange={handlgeChangeSelectStatus}
+                          className="form-select"
+                        >
+                          <option
+                            selected={objThietBi.current.status ? 1 : 0}
+                            value={true}
+                          >
+                            Đang sử dụng
+                          </option>
+                          <option
+                            selected={objThietBi.current.status ? 0 : 1}
+                            value={false}
+                          >
+                            Không sử dụng
+                          </option>
+                        </select>
                       </div>
                     </div>
                     <div className="col-6">
@@ -303,7 +343,7 @@ export default function FormUpdateThietBi() {
                       {/* tgian bao hanh */}
                       <div className="mb-3 col-10">
                         <label htmlFor="txtTgianBaoHanh" className="form-label">
-                          Thời gian bảo hảnh ( tháng )
+                          Thời gian bảo hành ( tháng )
                           <small
                             id="helpIdtgian"
                             className="form-text text-danger mx-2"
@@ -355,15 +395,27 @@ export default function FormUpdateThietBi() {
                   <button
                     type="reset"
                     onClick={() => {
-                      objThietBi.current = {
-                        tenTBi: "",
-                        valSelLoaiTBi: "",
-                        ngaySD: date,
-                        status: true,
-                        tgianBaoHanh: 1,
-                        ngayKT: "00/00/0000",
-                      };
+                      let {
+                        tenThietBi,
+                        tuoiTho,
+                        ngayCaiDat,
+                        status,
+                        loaiThietBi,
+                      } = objData_old;
 
+                      //
+                      let ngayKT = new Date(ngayCaiDat);
+                      ngayKT.setMonth(ngayKT.getMonth() + tuoiTho);
+
+                      objThietBi.current = {
+                        tenTBi: tenThietBi,
+                        valSelLoaiTBi: loaiThietBi.maLoai,
+                        ngaySD: formatStringDate2(new Date(ngayCaiDat)),
+                        status,
+                        tgianBaoHanh: tuoiTho,
+                        ngayKT: formatStringDate(ngayKT),
+                      };
+                      //
                       setErrTBi({
                         tenTBi: "",
                         valSelLoaiTBi: "",
@@ -389,25 +441,3 @@ export default function FormUpdateThietBi() {
     </>
   );
 }
-
-const getCheckTgianKT = ({ tgianBaoHanh, ngaySD }) => {
-  let ngayKT = new Date(ngaySD);
-
-  ngayKT.setMonth(ngayKT.getMonth() + parseInt(tgianBaoHanh));
-
-  let status = "";
-  let day = new Date();
-  let day2 = new Date(ngayKT);
-
-  day2.setDate(day2.getDate() - 30); // day2 là tgian trước ngày kt 30 ngay
-
-  if (day > ngayKT) {
-    status = "Đang sử dụng - hết hạn bảo hành";
-  } else if (day > day2 && day < ngayKT) {
-    status = "Đang sử dụng, sắp hết hạn bảo hành";
-  } else {
-    status = "Đang sử dụng";
-  }
-
-  return { status, ngayKT: formatStringDate(ngayKT) };
-};
