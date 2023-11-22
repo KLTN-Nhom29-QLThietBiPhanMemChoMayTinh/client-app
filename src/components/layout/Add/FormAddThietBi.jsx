@@ -65,8 +65,43 @@ export default function FormAddThietBi() {
   //
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!checkData()) {
+      // false
+      return;
+    }
+    // true
 
-    console.log(objThietBi.current);
+    let { tenTBi, valSelLoaiTBi, ngaySD,  tgianBaoHanh, ngayKT } =
+      objThietBi.current;
+
+    let loaiThietBi = arrLoaiTBi.find(item => item.maLoai == valSelLoaiTBi)
+
+
+    let thietBiNew = {
+      tenThietBi: tenTBi,
+      tuoiTho: tgianBaoHanh,
+      ngayCaiDat: new Date(ngaySD),
+      status: true,
+      loaiThietBi,
+    }
+    console.log(thietBiNew);
+  };
+  const checkData = () => {
+    let check = 1;
+    let err_tenTBi = "";
+    let { tenTBi } = objThietBi.current;
+
+    if (tenTBi.trim().length === 0) {
+      err_tenTBi = "Hãy nhập thông tin!";
+      check = 0;
+    }
+
+    setErrTBi({
+      ...errTbi,
+      tenTBi: err_tenTBi,
+    });
+
+    return check;
   };
   //
 
