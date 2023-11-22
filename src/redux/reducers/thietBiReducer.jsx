@@ -7,7 +7,7 @@ import { history } from "../..";
 
 //function
 
-const searchData = (arrData, valSearch, valSelect) => {
+const searchData = (arrData, valSearch, valSelect, valSelect2) => {
   let textSearch = valSearch.toLowerCase();
   let arrUpdate = [];
   // search - text
@@ -59,6 +59,26 @@ const searchData = (arrData, valSearch, valSelect) => {
       return day2 < day && ngayKT > day;
     });
   }
+
+  //
+  if (valSelect2 != -1) {
+    arrUpdate = arrUpdate.filter(
+      (item) => item.loaiThietBi.maLoai == valSelect2
+    );
+  }
+
+  return [...arrUpdate];
+};
+// sort
+const sortData_LoaiThietBi = (arrData) => {
+  let arrUpdate = arrData.sort((a, b) =>
+    a.loaiThietBi.tenLoai > b.loaiThietBi.tenLoai
+      ? 1
+      : b.loaiThietBi.tenLoai > a.loaiThietBi.tenLoai
+      ? -1
+      : 0
+  );
+
   return [...arrUpdate];
 };
 
@@ -69,6 +89,7 @@ const initialState = {
   detailValue: {},
   valueTxtSearch: "",
   valueSelect: "-1",
+  valueSelectLoaiTBi: "-1",
 };
 
 const thietBiReducer = createSlice({
@@ -76,9 +97,10 @@ const thietBiReducer = createSlice({
   initialState,
   reducers: {
     setArrThietBiAction: (state, action) => {
-      state.arrThietBi = action.payload;
+      let arrdata = sortData_LoaiThietBi(action.payload);
+      state.arrThietBi = arrdata;
 
-      state.arrThietBiSearch = action.payload;
+      state.arrThietBiSearch = arrdata;
       state.valueSelect = "-1";
       state.valueTxtSearch = "";
     },
@@ -88,22 +110,36 @@ const thietBiReducer = createSlice({
     setValueTxtSearchAction: (state, action) => {
       state.valueTxtSearch = action.payload;
 
-      let { valueSelect, arrThietBi } = state;
+      let { valueSelect, arrThietBi, valueSelectLoaiTBi } = state;
 
       state.arrThietBiSearch = searchData(
         arrThietBi,
         action.payload,
-        valueSelect
+        valueSelect,
+        valueSelectLoaiTBi
       );
     },
     setValueSelectActionTBi: (state, action) => {
       state.valueSelect = action.payload;
 
-      let { valueTxtSearch, arrThietBi } = state;
+      let { valueTxtSearch, arrThietBi, valueSelectLoaiTBi } = state;
 
       state.arrThietBiSearch = searchData(
         arrThietBi,
         valueTxtSearch,
+        action.payload,
+        valueSelectLoaiTBi
+      );
+    },
+    setValueSelectLoaiTbiAction: (state, action) => {
+      state.valueSelectLoaiTBi = action.payload;
+
+      let { valueTxtSearch, arrThietBi, valueSelect } = state;
+
+      state.arrThietBiSearch = searchData(
+        arrThietBi,
+        valueTxtSearch,
+        valueSelect,
         action.payload
       );
     },
@@ -111,13 +147,16 @@ const thietBiReducer = createSlice({
       let thietbi = action.payload;
       state.arrThietBi.push(thietbi);
 
+      let arrdata = sortData_LoaiThietBi(state.arrThietBi);
+      state.arrThietBi = arrdata;
       //
-      let { valueTxtSearch, arrThietBi, valSelect } = state;
+      let { valueTxtSearch, arrThietBi, valSelect, valueSelectLoaiTBi } = state;
 
       state.arrThietBiSearch = searchData(
         arrThietBi,
         valueTxtSearch,
-        valSelect
+        valSelect,
+        valueSelectLoaiTBi
       );
     },
   },
@@ -128,6 +167,7 @@ export const {
   setArrThietBiAction,
   setValueTxtSearchAction,
   setValueSelectActionTBi,
+  setValueSelectLoaiTbiAction,
   insertThietBiAction,
 } = thietBiReducer.actions;
 export default thietBiReducer.reducer;

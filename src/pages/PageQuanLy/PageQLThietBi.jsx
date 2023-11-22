@@ -10,8 +10,10 @@ import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAllLoaiThietBiApi,
   getAllThietBiApi,
   setValueSelectActionTBi,
+  setValueSelectLoaiTbiAction,
   setValueTxtSearchAction,
 } from "../../redux/reducers/thietBiReducer";
 import { formatStringDate } from "../../util/config";
@@ -19,17 +21,33 @@ import { formatStringDate } from "../../util/config";
 export default function PageQLThietBi() {
   const dispatch = useDispatch();
 
-  let { arrThietBi, arrThietBiSearch, valueTxtSearch, valueSelect } =
-    useSelector((state) => state.thietBiReducer);
+  let {
+    arrThietBi,
+    arrThietBiSearch,
+    valueTxtSearch,
+    arrLoaiTBi,
+    valueSelect,
+    valueSelectLoaiTBi,
+  } = useSelector((state) => state.thietBiReducer);
 
   useEffect(() => {
     if (arrThietBi.length === 0) {
       const action = getAllThietBiApi;
       dispatch(action);
     }
+    //
+    if (arrLoaiTBi.length === 0) {
+      dispatch(getAllLoaiThietBiApi);
+    }
+    //
   }, []);
 
   // handle
+  //
+  const handleChangeLoaiTbi =(e) => {
+    dispatch(setValueSelectLoaiTbiAction(e.target.value))
+  }
+  //
   const handleChangeSearch = (e) => {
     dispatch(setValueTxtSearchAction(e.target.value.trim()));
   };
@@ -37,6 +55,24 @@ export default function PageQLThietBi() {
     dispatch(setValueSelectActionTBi(e.target.value.trim()));
   };
   //render
+  //
+  const renderLoaithietBi = () => {
+    return arrLoaiTBi?.map((item, index) => {
+      if (item.maLoai == valueSelectLoaiTBi) {
+        return (
+          <option key={index} selected value={item.maLoai}>
+            {item.tenLoai}
+          </option>
+        );
+      }
+      return (
+        <option key={index} value={item.maLoai}>
+          {item.tenLoai}
+        </option>
+      );
+    });
+  };
+  //
   const renderDataThietBi = () => {
     return arrThietBiSearch?.map((item, index) => {
       let ngaySD = new Date(item?.ngayCaiDat);
@@ -75,7 +111,7 @@ export default function PageQLThietBi() {
           <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
             {index < 9 ? `0${index + 1}` : index + 1}
           </td>
-          <td>{item?.maThietBi}</td>
+          <td>{item?.loaiThietBi.tenLoai}</td>
           <td>{item?.tenThietBi}</td>
           <td>{formatStringDate(ngaySD)}</td>
           <td>{item?.tuoiTho}</td>
@@ -131,10 +167,18 @@ export default function PageQLThietBi() {
           <option selected={valueSelect == -1 ? 1 : 0} value="-1">
             Toàn bộ
           </option>
-          <option selected={valueSelect == 1 ? 1 : 0} value="1">Không sử dụng</option>
-          <option selected={valueSelect == 2 ? 1 : 0} value="2">Đang sử dụng</option>
-          <option selected={valueSelect == 3 ? 1 : 0} value="3">Hết hạn</option>
-          <option selected={valueSelect == 4 ? 1 : 0} value="4">Sắp hết hạn</option>
+          <option selected={valueSelect == 1 ? 1 : 0} value="1">
+            Không sử dụng
+          </option>
+          <option selected={valueSelect == 2 ? 1 : 0} value="2">
+            Đang sử dụng
+          </option>
+          <option selected={valueSelect == 3 ? 1 : 0} value="3">
+            Hết hạn
+          </option>
+          <option selected={valueSelect == 4 ? 1 : 0} value="4">
+            Sắp hết hạn
+          </option>
         </select>
       </div>
     );
@@ -168,6 +212,15 @@ export default function PageQLThietBi() {
               <div></div>
 
               {/* select - option */}
+              <div className=" col-2 m-2 ">
+                <select
+                  className="form-select "
+                  onChange={handleChangeLoaiTbi}
+                >
+                  <option value="-1">Toàn bộ</option>
+                  {renderLoaithietBi()}
+                </select>
+              </div>
               {renderSelectTrangThai()}
 
               {/* input tim kiem */}
@@ -200,7 +253,7 @@ export default function PageQLThietBi() {
                 <thead>
                   <tr>
                     <th>STT</th>
-                    <th style={{ minWidth: "90px" }}>Mã thiết bị</th>
+                    <th style={{ minWidth: "90px" }}>Loại thiết bị</th>
                     <th style={{ minWidth: "180px" }}>Tên thiết bị</th>
                     <th style={{ minWidth: "120px" }}>Ngày bắt đầu sử dụng</th>
                     <th style={{ minWidth: "90px" }}>Hạn bảo hành (tháng)</th>
