@@ -179,6 +179,23 @@ const thietBiReducer = createSlice({
         valueSelectLoaiTBi
       );
     },
+    deleteThietBiAction: (state, action) => {
+      let maXoa = action.payload;
+
+      let arrUpdate = state.arrThietBi.filter((item) => {
+        return item.maThietBi !== maXoa;
+      });
+      state.arrNhanVien = [...arrUpdate];
+      //
+      let { valueTxtSearch, arrThietBi, valSelect, valueSelectLoaiTBi } = state;
+
+      state.arrThietBiSearch = searchData(
+        arrThietBi,
+        valueTxtSearch,
+        valSelect,
+        valueSelectLoaiTBi
+      );
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -190,11 +207,29 @@ export const {
   setValueSelectLoaiTbiAction,
   insertThietBiAction,
   updateThietBiAction,
+  deleteThietBiAction,
 } = thietBiReducer.actions;
 export default thietBiReducer.reducer;
 
 // -------------- Call Api -----------------
 
+export const deleteThietBiApi = (maXoa) => {
+  return async (dispatch) => {
+    try {
+      // await http.post("/XoaThietBiMay", maXoa);
+      console.log(
+        "Chưa có api xoa thietbi ( xóa 1 thiet bị xóa cả MaytinhThietbij liên quan )"
+      );
+
+      dispatch(deleteThietBiAction(maXoa));
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: thietBiReducer.jsx:203 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
 /**
  * edit 1 thiet bị api
  * @param {object} thietBi

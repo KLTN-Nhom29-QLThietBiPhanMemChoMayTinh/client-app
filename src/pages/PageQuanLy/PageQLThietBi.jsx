@@ -10,6 +10,7 @@ import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteThietBiApi,
   getAllLoaiThietBiApi,
   getAllThietBiApi,
   setValueSelectActionTBi,
@@ -44,9 +45,9 @@ export default function PageQLThietBi() {
 
   // handle
   //
-  const handleChangeLoaiTbi =(e) => {
-    dispatch(setValueSelectLoaiTbiAction(e.target.value))
-  }
+  const handleChangeLoaiTbi = (e) => {
+    dispatch(setValueSelectLoaiTbiAction(e.target.value));
+  };
   //
   const handleChangeSearch = (e) => {
     dispatch(setValueTxtSearchAction(e.target.value.trim()));
@@ -119,9 +120,7 @@ export default function PageQLThietBi() {
           {renderTrangThai()}
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink
-              to={`/quan-ly/thiet-bi/update?id=${item.maThietBi}`}
-            >
+            <NavLink to={`/quan-ly/thiet-bi/update?id=${item.maThietBi}`}>
               <button
                 type="button"
                 className="btn btn-primary mx-2 px-2"
@@ -132,7 +131,16 @@ export default function PageQLThietBi() {
             </NavLink>
             <button
               onClick={() => {
-                alert(`Del -- ${item.id} -- dang cập nhật!`);
+                if (
+                  window.confirm(
+                    "Bấm vào nút OK để xóa " +
+                      item.loaiThietBi.tenLoai +
+                      " - " +
+                      item.tenThietBi
+                  )
+                ) {
+                  dispatch(deleteThietBiApi(item.maThietBi));
+                }
               }}
               type="button"
               className="btn btn-danger mx-2 px-2"
@@ -209,10 +217,7 @@ export default function PageQLThietBi() {
 
               {/* select - option */}
               <div className=" col-2 m-2 ">
-                <select
-                  className="form-select "
-                  onChange={handleChangeLoaiTbi}
-                >
+                <select className="form-select " onChange={handleChangeLoaiTbi}>
                   <option value="-1">Toàn bộ</option>
                   {renderLoaithietBi()}
                 </select>
