@@ -23,6 +23,10 @@ export default function ComponentListPhong() {
 
   // render
   const renderArrPhongHome = () => {
+    if(objThongTin.phong == null) {
+      return <></>
+    }
+    //
     return arrPhongH?.map((item, index) => {
       const renderBtnClickPhong = () => {
         if (item.maPhong === objThongTin.phong.maPhong) {

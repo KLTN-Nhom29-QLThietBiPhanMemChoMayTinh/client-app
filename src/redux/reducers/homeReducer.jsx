@@ -88,7 +88,7 @@ export const setObjThongTinByMay = (objMay) => {
       let { maMay } = objMay;
 
       let resultArrMayTinhThietbi = await http.get(
-        `/DSMayTinhThietBi/${maMay}`
+        `/DSMayTinhThietBiheoMaMay/${maMay}`
       );
 
       let arrThietBi = [];
@@ -111,7 +111,7 @@ const getArrPhanmemByMaPhong = async (maPhong) => {
 
   try {
     // Api lay arr phanMem
-    let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+    let resultPM = await http.get(`/DSPhongMayPhanMemTheoMaPhong/${maPhong}`);
     if (resultPM.data.length !== 0) {
       arrPhanMem = resultPM.data.map((item) => {
         return { ...item.phanMem, trangThaiPM: item.status };
@@ -157,7 +157,7 @@ export const setObjThongTinByPhongMay = (valPhong) => {
 
       // Api lay arr phanMem
       let arrPhanMem = [];
-      let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+      let resultPM = await http.get(`/DSPhongMayPhanMemTheoMaPhong/${maPhong}`);
       if (resultPM.data.length !== 0) {
         arrPhanMem = resultPM.data.map((item) => {
           return { ...item.phanMem, trangThaiPM: item.status };
@@ -225,7 +225,7 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
 
         // Api lay arr phanMem
         let arrPhanMem = [];
-        let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+        let resultPM = await http.get(`/DSPhongMayPhanMemTheoMaPhong/${maPhong}`);
         if (resultPM.data.length !== 0) {
           arrPhanMem = resultPM.data.map((item) => {
             return { ...item.phanMem, trangThaiPM: item.status };
@@ -304,7 +304,7 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
 
           // Api lay arr phanMem
           let arrPhanMem = [];
-          let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+          let resultPM = await http.get(`/DSPhongMayPhanMemTheoMaPhong/${maPhong}`);
           if (resultPM.data.length !== 0) {
             arrPhanMem = resultPM.data.map((item) => {
               return { ...item.phanMem, trangThaiPM: item.status };
@@ -367,7 +367,7 @@ export const getPhongByFirst = async (dispatch) => {
 
     // Api lay arr phanMem
     let arrPhanMem = [];
-    let resultPM = await http.get(`/DSPhongMayPhanMem/${maPhong}`);
+    let resultPM = await http.get(`/DSPhongMayPhanMemTheoMaPhong/${maPhong}`);
     if (resultPM.data.length !== 0) {
       arrPhanMem = resultPM.data.map((item) => {
         return { ...item.phanMem, trangThaiPM: item.status };

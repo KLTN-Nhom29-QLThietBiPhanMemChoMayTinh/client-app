@@ -31,6 +31,9 @@ const dataSearch = (arrData, valSearch) => {
 const initialState = {
   arrLichTruc: [],
   arrLichTrucSearch: [],
+  arrTangChuaCoLichTruc: [], //arrTang dung ở form LichTruc
+  arrToaNhaByChuaCoLichTruc: [], //arrToaNha dung ở form LichTruc
+  valueSearch: "",
 };
 
 const lichTrucReducer = createSlice({
@@ -42,12 +45,25 @@ const lichTrucReducer = createSlice({
       state.arrLichTrucSearch = action.payload;
     },
     setArrLichTrucSearchAction: (state, action) => {
+      state.valueSearch = action.payload;
+      //
       state.arrLichTrucSearch = dataSearch(state.arrLichTruc, action.payload);
+    },
+    setArrTangChuaCoLichTrucAction: (state, action) => {
+      state.arrTangChuaCoLichTruc = action.payload;
+    },
+    setArrToaNhaChuaCoLichTrucAction: (state, action) => {
+      state.arrToaNhaByChuaCoLichTruc = action.payload;
     },
     insertLichTrucAction: (state, action) => {
       let item = action.payload;
-      state.arrLichTruc = [...state.arrLichTruc, item];
-      state.arrLichTrucSearch = [...state.arrLichTruc];
+      let arrUpdate = state.arrLichTruc;
+      arrUpdate.push(item);
+      state.arrLichTruc = arrUpdate;
+
+      let { arrLichTruc, valueSearch } = state;
+      //
+      state.arrLichTrucSearch = dataSearch(arrLichTruc, valueSearch);
     },
     updateLichTrucAction: (state, action) => {
       let itemEdit = action.payload;
@@ -66,11 +82,11 @@ const lichTrucReducer = createSlice({
         return item.maLich !== maXoa;
       });
 
-      state.arrLichTruc = [...arrLichTruc]
+      state.arrLichTruc = [...arrLichTruc];
       //
-      let {arrLichTruc, valSearch} = state
+      let { arrLichTruc, valSearch } = state;
 
-      state.arrLichTrucSearch = dataSearch(arrLichTruc, valSearch)
+      state.arrLichTrucSearch = dataSearch(arrLichTruc, valSearch);
     },
   },
 });
@@ -78,6 +94,8 @@ const lichTrucReducer = createSlice({
 export const {
   setArrLichTrucAction,
   setArrLichTrucSearchAction,
+  setArrTangChuaCoLichTrucAction,
+  setArrToaNhaChuaCoLichTrucAction,
   insertLichTrucAction,
   updateLichTrucAction,
   deleteLichTrucAction,
@@ -86,26 +104,53 @@ export default lichTrucReducer.reducer;
 
 // CALL APi ==================================
 
+/**
+ * ds Tang chua co lich truc
+ * @param {*} dispatch
+ */
+export const getAllTangChuaCoLichTrucApi = async (dispatch) => {
+  try {
+    console.log("can api tang chua co lich truc");
+    const result = await http.get("/DSTang");
+
+    let arrDataToaNha_z = result.data.map((item) => {
+      return item.toaNha;
+    });
+
+    const ids = arrDataToaNha_z.map(({ maToaNha }) => maToaNha);
+    const filtered = arrDataToaNha_z.filter(
+      ({ maToaNha }, index) => !ids.includes(maToaNha, index + 1)
+    );
+
+    dispatch(setArrTangChuaCoLichTrucAction(result.data));
+    dispatch(setArrToaNhaChuaCoLichTrucAction(filtered));
+  } catch (error) {
+    console.log("🚀 ~ file: tangReducer.jsx:44 ~ returnasync ~ error:", error);
+  }
+};
+
+/**
+ * del lich truc theo ma
+ */
 export const deleteLichTrucApi = (maXoa) => {
   return async (dispatch) => {
     try {
       await http.delete(`/XoaNhanVien/${maXoa}`);
 
-      dispatch(deleteLichTrucAction(maXoa))
+      dispatch(deleteLichTrucAction(maXoa));
     } catch (error) {
-      console.log("🚀 ~ file: lichTrucReducer.jsx:93 ~ return ~ error:", error)
-      
+      console.log("🚀 ~ file: lichTrucReducer.jsx:93 ~ return ~ error:", error);
     }
-  }
-}
+  };
+};
 
 //get All
 export const getAllLichTruc = async (dispatch) => {
   try {
-    // let result = await http.get("DSlichTruc");
-    // dispatch(setArrLichTrucAction(result.data));
+    let result = await http.get("/DSLichTruc");
+    dispatch(setArrLichTrucAction(result.data));
 
-    dispatch(setArrLichTrucAction(Database.datalichTruc));
+    // dispatch(setArrLichTrucAction(Database.datalichTruc));
   } catch (error) {
     console.log(
       "🚀 ~ file: lichTrucReducer.jsx:29 ~ getAllLichTruc ~ error:",
@@ -135,16 +180,13 @@ export const getLichTrucbyId = (id) => {
 
 // add
 export const insertLichTrucApi = (lichTruc) => {
-  let idRandom = Math.floor(Math.random() * 10000) + 1000;
-  lichTruc = { ...lichTruc, maLich: idRandom };
   return async (dispatch) => {
     try {
       let result = await http.post("/LuuLichTruc", lichTruc);
       console.log("api OK nhung data chua okay", result);
 
       //
-      // dispatch(insertLichTrucAction(result.data));
-      dispatch(insertLichTrucAction(lichTruc));
+      dispatch(insertLichTrucAction(result.data));
       history.push("../../phan-cong/lich-truc");
     } catch (error) {
       console.log("🚀 ~ file: lichTrucReducer.jsx:65 ~ return ~ error:", error);

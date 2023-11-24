@@ -22,7 +22,7 @@ const tangReducer = createSlice({
       state.arrTang = action.payload;
       state.arrTangSearch = action.payload;
     },
-    setArrTangByLichTruc: (state, action) => {
+    setArrTangByLichTrucAction: (state, action) => {
       state.arrTangByLichTruc = action.payload;
     },
     setValueSearchTangAction: (state, action) => {
@@ -78,7 +78,7 @@ const tangReducer = createSlice({
 // exp nay de sử dụng theo cách 2
 export const {
   setArrTangAction,
-  setArrTangByLichTruc,
+  setArrTangByLichTrucAction,
   setValueSearchTangAction,
   setValueSelectTangAction,
   insertTangAction,
@@ -123,7 +123,7 @@ export const deleteTangApi = (maXoa) => {
 
       dispatch(deleteTangAction(maXoa));
       dispatch(getAllToaNhaApi);
-      dispatch(setStatusDataMoi(true))
+      dispatch(setStatusDataMoi(true));
       history.push("/quan-ly/tang");
     } catch (error) {
       console.log(
@@ -170,7 +170,7 @@ export const insertTangApi = (objTang) => {
 
       dispatch(insertTangAction(result.data));
       dispatch(getAllToaNhaApi);
-      dispatch(setStatusDataMoi(true))
+      dispatch(setStatusDataMoi(true));
       history.push("/quan-ly/tang");
     } catch (error) {
       console.log(
@@ -205,6 +205,7 @@ export const getAllTangApi = async (dispatch) => {
   }
 };
 
+
 //
 export const getAllTangbyIdToaNha = (idToaNha) => {
   return async (dispatch) => {
@@ -212,7 +213,7 @@ export const getAllTangbyIdToaNha = (idToaNha) => {
       console.log("can api tang theo ma toa nha owr day");
       const result = await http.get("/DSTang");
 
-      // dispatch(setArrTangByLichTruc(result.data));
+      // dispatch(setArrTangByLichTrucAction(result.data));
       //
 
       //
@@ -220,7 +221,7 @@ export const getAllTangbyIdToaNha = (idToaNha) => {
         return item.toaNha.maToaNha == idToaNha;
       });
 
-      dispatch(setArrTangByLichTruc([...arrTang]));
+      dispatch(setArrTangByLichTrucAction([...arrTang]));
     } catch (error) {
       console.log(
         "🚀 ~ file: tangReducer.jsx:44 ~ returnasync ~ error:",

@@ -5,23 +5,41 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllNhanVienApi } from "../../../redux/reducers/nhanVienReducer";
 import {
   getAllTangApi,
+  getAllTangChuaCoLichTruc,
   getAllTangbyIdToaNha,
 } from "../../../redux/reducers/tangReducer";
 import {
   getAllToaNhaApi,
   getAllToaNhaByLichTruc,
 } from "../../../redux/reducers/toaNhaReducer";
-import { insertLichTrucApi } from "../../../redux/reducers/lichTrucReducer";
+import {
+  getAllTangChuaCoLichTrucApi,
+  insertLichTrucApi,
+} from "../../../redux/reducers/lichTrucReducer";
 
 let day_now = new Date();
 let strDate = `${day_now.getFullYear()}-${day_now.getMonth() + 1}-01`;
+let strThang = "";
+
+if (day_now.getMonth() < 9) {
+  strThang = `0${day_now.getMonth() + 1}`;
+} else {
+  strThang = day_now.getMonth() + 1;
+}
+
+let strDate2 = `tháng ${strThang} - ${day_now.getFullYear()}`;
 
 export default function FormAddLichTruc() {
   const dispatch = useDispatch();
 
   const { arrNhanVien } = useSelector((state) => state.nhanVienReducer);
+  //arrTangByLichTruc : dsTang chưa có lich truc
   const { arrTangByLichTruc } = useSelector((state) => state.tangReducer);
   const { arrToaNhaLichTruc } = useSelector((state) => state.toaNhaReducer);
+  //
+  const { arrTangChuaCoLichTruc, arrToaNhaByChuaCoLichTruc } = useSelector(
+    (state) => state.lichTrucReducer
+  );
 
   const [lichTruc, setLichTruc] = useState({});
   const [errLTruc, setErrLTruc] = useState({
@@ -34,29 +52,28 @@ export default function FormAddLichTruc() {
     if (arrNhanVien.length === 0) {
       dispatch(getAllNhanVienApi);
     }
-    if (arrToaNhaLichTruc.length === 0) {
-      dispatch(getAllToaNhaByLichTruc);
-    }
+    dispatch(getAllTangChuaCoLichTrucApi);
 
     setLichTruc({
-      tgian: strDate,
+      ngayTruc: strDate,
       thoiGianBatDau: 6,
       thoiGianKetThuc: 14,
-      soNgayNghi: 0,
+      // soNgayNghi: 0,
       nhanVien: {},
-      tang: {},
+      valueSelTang: -1,
+      valueSelToaNha: -1,
     });
   }, []);
 
   //
   const checkData = () => {
-    let { nhanVien, tang } = lichTruc;
+    let { nhanVien, valueSelTang } = lichTruc;
 
     if (Object.keys(nhanVien).length === 0) {
       setErrLTruc({ ...errLTruc, nhanVien: "Hãy chọn nhân viên!" });
       return false;
     }
-    if (Object.keys(tang).length === 0) {
+    if (valueSelTang == -1) {
       setErrLTruc({ ...errLTruc, tang: "Hãy chọn tầng!" });
       return false;
     }
@@ -68,7 +85,28 @@ export default function FormAddLichTruc() {
     e.preventDefault();
 
     if (checkData()) {
-      dispatch(insertLichTrucApi(lichTruc))
+      let {
+        ngayTruc,
+        thoiGianBatDau,
+        thoiGianKetThuc,
+        nhanVien,
+        valueSelTang,
+        valueSelToaNha,
+      } = lichTruc;
+
+      let tang = arrTangChuaCoLichTruc.find(
+        (item) => item.maTang == valueSelTang
+      );
+
+      let objLichTruc = {
+        ngayTruc: new Date(ngayTruc),
+        thoiGianBatDau,
+        thoiGianKetThuc,
+        nhanVien,
+        tang,
+      };
+      
+      dispatch(insertLichTrucApi(objLichTruc));
     }
   };
   //
@@ -85,23 +123,30 @@ export default function FormAddLichTruc() {
   };
   //
   const handleChangeSelectToaNha = (e) => {
-    let id = e.target.value; //id = idToaNha
-    if (id == -1) {
-      setErrLTruc({ ...errLTruc, toaNha: "Hãy chọn tòa nhà!" });
+    let value = e.target.value; //id = idToaNha
+    setLichTruc({
+      ...lichTruc,
+      valueSelToaNha: value,
+    });
+
+    if (value == -1) {
+      setErrLTruc({ ...errLTruc, tang: "Hãy chọn một tầng!" });
     } else {
-      setErrLTruc({ ...errLTruc, toaNha: "" });
-      dispatch(getAllTangbyIdToaNha(id));
+      setErrLTruc({ ...errLTruc, tang: "", toaNha: "" });
     }
   };
   //
   const handleChangeSelectTang = (e) => {
-    let id = e.target.value; //id = idTang
-    if (id == -1) {
-      setLichTruc({ ...lichTruc, tang: {} });
+    let value = e.target.value; //id = idTang
+    //
+    setLichTruc({
+      ...lichTruc,
+      valueSelTang: value,
+    });
+    //
+    if (value == -1) {
       setErrLTruc({ ...errLTruc, tang: "Hãy chọn tầng!" });
     } else {
-      let tang = arrTangByLichTruc.find((item) => item.maTang == id);
-      setLichTruc({ ...lichTruc, tang: tang });
       setErrLTruc({ ...errLTruc, tang: "" });
     }
   };
@@ -114,13 +159,79 @@ export default function FormAddLichTruc() {
       setLichTruc({ ...lichTruc, thoiGianBatDau: 14, thoiGianKetThuc: 22 });
     }
   };
-  //
-  const handleChangeDate = (e) => {
-    const val = e.target.value;
-    setLichTruc({ ...lichTruc, tgian: val });
-  };
-  // render
 
+  // render
+  //
+  const renderToaNhaChuaCoLichTrucTrongThang = () => {
+    if (lichTruc.valueSelToaNha != -1) {
+      return arrToaNhaByChuaCoLichTruc?.map((item, index) => {
+        return (
+          <option key={index} value={item.maToaNha}>
+            {item.tenToaNha}
+          </option>
+        );
+      });
+    }
+    return (
+      <>
+        <option selected value={-1}>
+          Chọn tòa nhà
+        </option>
+        {arrToaNhaByChuaCoLichTruc?.map((item, index) => {
+          return (
+            <option key={index} value={item.maToaNha}>
+              {item.tenToaNha}
+            </option>
+          );
+        })}
+      </>
+    );
+  };
+  //
+  const renderTangChuaCoLichTructrongThang = () => {
+    if (lichTruc.valueSelToaNha == -1 && lichTruc.valueSelTang == -1) {
+      return (
+        <>
+          <option selected value={-1}>
+            Chọn tầng
+          </option>
+          {arrTangChuaCoLichTruc?.map((item, index) => {
+            return (
+              <option key={index} value={item.maTang}>
+                {item.tenTang} - {item.toaNha.tenToaNha}
+              </option>
+            );
+          })}
+        </>
+      );
+    }
+
+    return arrTangChuaCoLichTruc?.map((item, index) => {
+      if (lichTruc.valueSelToaNha == -1) {
+        return (
+          <option key={index} value={item.maTang}>
+            {item.tenTang} - {item.toaNha.tenToaNha}
+          </option>
+        );
+      } else {
+        if (item.toaNha.maToaNha == lichTruc.valueSelToaNha) {
+          if (item.maTang == lichTruc.valueSelTang) {
+            return (
+              <option key={index} selected value={item.maTang}>
+                {item.tenTang}
+              </option>
+            );
+          }
+          return (
+            <option key={index} value={item.maTang}>
+              {item.tenTang}
+            </option>
+          );
+        } else return <></>;
+      }
+    });
+  };
+  //
   // Mảng quản lý data navtab
   let arrLinkNavTab = [
     { name: "Phân công lịch trực", link: "../phan-cong/lich-truc" },
@@ -144,8 +255,8 @@ export default function FormAddLichTruc() {
                 <div className="row">
                   <div className="col-md-6">
                     {/* select nv  */}
-                    <div class="mb-3 px-3">
-                      <label for="selectNameNV" class="form-label">
+                    <div className="mb-3 px-3">
+                      <label for="selectNameNV" className="form-label">
                         Chọn nhân viên
                         <small
                           id="errNameNV"
@@ -156,7 +267,7 @@ export default function FormAddLichTruc() {
                       </label>
                       <div className="col-10">
                         <select
-                          class="form-select "
+                          className="form-select "
                           name="selectNameNV"
                           id="selectNameNV"
                           aria-describedby="errNameNV"
@@ -175,29 +286,7 @@ export default function FormAddLichTruc() {
                     </div>
                     {/*  */}
                     <div className="mb-3 px-3">
-                      <label htmlFor="id1" className="form-label">
-                        Thời gian trực sau phai bo
-                        <small
-                          id="helpId1"
-                          className="form-text text-danger mx-1"
-                        >
-                          *
-                        </small>
-                      </label>
-                      <div className="col-10">
-                        <input
-                          type="date"
-                          className="form-control"
-                          name="id1"
-                          id="id1"
-                          aria-describedby="helpId1"
-                          onChange={handleChangeDate}
-                        />
-                      </div>
-                    </div>
-                    {/*  */}
-                    <div class="mb-3 px-3">
-                      <label for="selectCaTruc" class="form-label">
+                      <label for="selectCaTruc" className="form-label">
                         Chọn ca chực
                         <small
                           id="errCaTruc"
@@ -208,7 +297,7 @@ export default function FormAddLichTruc() {
                       </label>
                       <div className="col-10">
                         <select
-                          class="form-select "
+                          className="form-select "
                           name="selectCaTruc"
                           id="selectCaTruc"
                           aria-describedby="errCaTruc"
@@ -219,11 +308,34 @@ export default function FormAddLichTruc() {
                         </select>
                       </div>
                     </div>
+                    {/*  */}
+                    <div className="mb-3 px-3">
+                      <label htmlFor="id1" className="form-label">
+                        Thời gian trực
+                        <small
+                          id="helpId1"
+                          className="form-text text-danger mx-1"
+                        >
+                          *
+                        </small>
+                      </label>
+                      <div className="col-10">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="id1"
+                          id="id1"
+                          value={strDate2}
+                          disabled
+                          aria-describedby="helpId1"
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="col-md-6">
                     {/* select Toa Nha  */}
-                    <div class="mb-3  px-3">
-                      <label for="selectToaNha" class="form-label">
+                    <div className="mb-3  px-3">
+                      <label for="selectToaNha" className="form-label">
                         Chọn tòa nhà
                         <small
                           id="errToaNha"
@@ -234,29 +346,20 @@ export default function FormAddLichTruc() {
                       </label>
                       <div className="col-10">
                         <select
-                          class="form-select "
+                          className="form-select "
                           name="selectToaNha"
                           id="selectToaNha"
                           aria-describedby="errToaNha"
                           onChange={handleChangeSelectToaNha}
                         >
-                          <option selected value={-1}>
-                            Chọn tòa nhà
-                          </option>
-                          {arrToaNhaLichTruc.map((item, index) => {
-                            return (
-                              <option key={index} value={item.maToaNha}>
-                                {item.tenToaNha}
-                              </option>
-                            );
-                          })}
+                          {renderToaNhaChuaCoLichTrucTrongThang()}
                         </select>
                       </div>
                     </div>
 
                     {/* select tang  */}
-                    <div class="mb-3  px-3">
-                      <label for="selectTang" class="form-label">
+                    <div className="mb-3  px-3">
+                      <label for="selectTang" className="form-label">
                         Chọn tầng
                         <small
                           id="errTang"
@@ -268,22 +371,13 @@ export default function FormAddLichTruc() {
 
                       <div className="col-10">
                         <select
-                          class="form-select "
+                          className="form-select "
                           name="selectTang"
                           id="selectTang"
                           aria-describedby="errTang"
                           onChange={handleChangeSelectTang}
                         >
-                          <option selected value={-1}>
-                            Chọn tầng
-                          </option>
-                          {arrTangByLichTruc.map((item, index) => {
-                            return (
-                              <option key={index} value={item.maTang}>
-                                {item.tenTang}
-                              </option>
-                            );
-                          })}
+                          {renderTangChuaCoLichTructrongThang()}
                         </select>
                       </div>
                     </div>
@@ -294,17 +388,21 @@ export default function FormAddLichTruc() {
                   <button type="submit" className="btn btn-success">
                     Tạo mới
                   </button>
-                  <button type="reset" onClick={() => {
-                    setLichTruc({
-                      tgian: strDate,
-                      thoiGianBatDau: 6,
-                      thoiGianKetThuc: 14,
-                      soNgayNghi: 0,
-                      nhanVien: {},
-                      tang: {},
-                    });
-                  }} className="btn btn-danger mx-3">
-                  Làm mới 
+                  <button
+                    type="reset"
+                    onClick={() => {
+                      setLichTruc({
+                        tgian: strDate,
+                        thoiGianBatDau: 6,
+                        thoiGianKetThuc: 14,
+                        soNgayNghi: 0,
+                        nhanVien: {},
+                        tang: {},
+                      });
+                    }}
+                    className="btn btn-danger mx-3"
+                  >
+                    Làm mới
                   </button>
                 </div>
               </form>

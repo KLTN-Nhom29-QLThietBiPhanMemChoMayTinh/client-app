@@ -23,15 +23,23 @@ export default function PageLichTruc(props) {
   }, []);
   // handle 
   const handleChangeSearch = (e) => {
-    dispatch(setArrLichTrucSearchAction(e.target.value.trim()))
+    dispatch(setArrLichTrucSearchAction(e.target.value))
   }
   //render
   const renderDataLichTruc = () => {
     //  ===============
     return arrLichTrucSearch?.map((item, index) => {
-      let tgian = new Date(item.tgian);
+      let tgian = new Date(item.ngayTruc);
 
-      let strTgian = `${tgian.getMonth() + 1} - ${tgian.getFullYear()}`;
+      let strThang = ''
+
+      if(tgian.getMonth() < 9) {
+        strThang = `0${tgian.getMonth() + 1}`;
+      }else {
+        strThang = tgian.getMonth() + 1
+      }
+
+      let strTgian = `tháng ${strThang} - ${tgian.getFullYear()}`;
       let strCaTruc = `${item.thoiGianBatDau}h - ${item.thoiGianKetThuc}h`;
       return (
         <>
@@ -155,7 +163,7 @@ export default function PageLichTruc(props) {
                     <th style={{ minWidth: "100px" }}>Tòa nhà</th>
                     <th style={{ minWidth: "180px" }}>Tên nhân viên</th>
                     <th style={{ minWidth: "80px" }}>Số liên lạc </th>
-                    <th style={{ minWidth: "120px" }}>
+                    <th style={{ minWidth: "140px" }}>
                       Thời gian trực (tháng)
                     </th>
                     <th style={{ minWidth: "120px" }}>Ca trực(giờ)</th>
