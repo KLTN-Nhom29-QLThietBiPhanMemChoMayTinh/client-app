@@ -13,6 +13,7 @@ import {
   getAllToaNhaByLichTruc,
 } from "../../../redux/reducers/toaNhaReducer";
 import {
+  getAllTangByToaNhaApi,
   getAllTangChuaCoLichTrucApi,
   insertLichTrucApi,
 } from "../../../redux/reducers/lichTrucReducer";
@@ -34,8 +35,7 @@ export default function FormAddLichTruc() {
 
   const { arrNhanVien } = useSelector((state) => state.nhanVienReducer);
   //arrTangByLichTruc : dsTang chưa có lich truc
-  const { arrTangByLichTruc } = useSelector((state) => state.tangReducer);
-  const { arrToaNhaLichTruc } = useSelector((state) => state.toaNhaReducer);
+  const { arrTang } = useSelector((state) => state.tangReducer);
   //
   const { arrTangChuaCoLichTruc, arrToaNhaByChuaCoLichTruc } = useSelector(
     (state) => state.lichTrucReducer
@@ -51,6 +51,9 @@ export default function FormAddLichTruc() {
   useEffect(() => {
     if (arrNhanVien.length === 0) {
       dispatch(getAllNhanVienApi);
+    }
+    if (arrTang.length === 0) {
+      dispatch(getAllTangApi);
     }
     dispatch(getAllTangChuaCoLichTrucApi);
 
@@ -105,7 +108,7 @@ export default function FormAddLichTruc() {
         nhanVien,
         tang,
       };
-      
+
       dispatch(insertLichTrucApi(objLichTruc));
     }
   };
@@ -379,6 +382,36 @@ export default function FormAddLichTruc() {
                         >
                           {renderTangChuaCoLichTructrongThang()}
                         </select>
+                      </div>
+                      <div classname="form-check  pt-1">
+                        <input
+                          classname="form-check-input"
+                          type="checkbox"
+                          defaultvalue={false}
+                          id="cbkAllTang"
+                          onChange={(e) => {
+                            let checked = e.target.checked;
+                            
+                            if (checked) {
+                              dispatch(getAllTangByToaNhaApi(arrTang));
+                            } else {
+                              dispatch(getAllTangChuaCoLichTrucApi);
+                            }
+                            setLichTruc({
+                              ...lichTruc,
+                              valueSelTang: -1,
+                              valueSelToaNha: -1,
+                            });
+                            setErrLTruc({ ...errLTruc });
+                          }}
+                        />
+                        <label
+                          classname="form-check-label "
+                          htmlFor="cbkAllTang"
+                          style={{ fontSize: "14px", paddingLeft: "5px" }}
+                        >
+                          Toàn bộ tầng
+                        </label>
                       </div>
                     </div>
                   </div>

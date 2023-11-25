@@ -25,7 +25,18 @@ const dataSearch = (arrData, valSearch) => {
       item.tang.toaNha.tenToaNha.toLowerCase().includes(search)
     );
   });
+  arrUpdate.sort(compare);
   return [...arrUpdate];
+};
+//
+const compare = (a, b) => {
+  if (a.ngayTruc < b.ngayTruc) {
+    return 1;
+  }
+  if (a.ngayTruc > b.ngayTruc) {
+    return -1;
+  }
+  return 0;
 };
 
 const initialState = {
@@ -42,7 +53,10 @@ const lichTrucReducer = createSlice({
   reducers: {
     setArrLichTrucAction: (state, action) => {
       state.arrLichTruc = action.payload;
-      state.arrLichTrucSearch = action.payload;
+
+      //
+      let { arrLichTruc, valueSearch } = state;
+      state.arrLichTrucSearch = dataSearch(arrLichTruc, valueSearch);
     },
     setArrLichTrucSearchAction: (state, action) => {
       state.valueSearch = action.payload;
@@ -104,14 +118,30 @@ export default lichTrucReducer.reducer;
 
 // CALL APi ==================================
 
+export const getAllTangByToaNhaApi = (arrtang) => {
+  return (dispatch) => {
+    let arrDataToaNha_z = arrtang.map((item) => {
+      return item.toaNha;
+    });
+
+    const ids = arrDataToaNha_z.map(({ maToaNha }) => maToaNha);
+    const filtered = arrDataToaNha_z.filter(
+      ({ maToaNha }, index) => !ids.includes(maToaNha, index + 1)
+    );
+
+    dispatch(setArrTangChuaCoLichTrucAction(arrtang));
+    dispatch(setArrToaNhaChuaCoLichTrucAction(filtered));
+  };
+};
 /**
  * ds Tang chua co lich truc
  * @param {*} dispatch
  */
 export const getAllTangChuaCoLichTrucApi = async (dispatch) => {
   try {
-    console.log("can api tang chua co lich truc");
-    const result = await http.get("/DSTang");
+
+    console.log('api này bi lỗi - lấy ds tang đã có lịch trực');
+    const result = await http.get("/TangChuaCoNhanVienTrucTrongThang");
 
     let arrDataToaNha_z = result.data.map((item) => {
       return item.toaNha;
