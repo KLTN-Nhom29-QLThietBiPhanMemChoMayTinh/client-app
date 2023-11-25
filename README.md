@@ -54,10 +54,12 @@
 ![Anh Profile](./AnhMinhHoa/img_PageProfile.png)
 
 ### ảnh lich Truc
-![login](./AnhMinhHoa/img_pcLichTruc.png)
-![login](./AnhMinhHoa/img_pcLichTruc_form.png)
+![ lich Truc](./AnhMinhHoa/img_pcLichTruc.png)
+![ lich Truc](./AnhMinhHoa/img_pcLichTruc_form.png)
 
-
+### ảnh lich Thuc HAnh
+![lich Thuc HAnh](./AnhMinhHoa/img_pcLichThucHanh.png)
+![lich Thuc HAnh](./AnhMinhHoa/img_pcLichTruc_form.png)
 
 ## note del
 * load lai data trang home

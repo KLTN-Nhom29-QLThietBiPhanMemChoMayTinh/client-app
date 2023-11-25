@@ -31,6 +31,7 @@ import PageHome from "./pages/PageHome/PageHome";
 import PageLogin from "./pages/PageLogin/PageLogin";
 import PageBrand from "./pages/PageBrand/PageBrand";
 import PageLichTruc from "./pages/PagePhanCongLich/PageLichTruc";
+import PageLichThucHanh from "./pages/PagePhanCongLich/PageLichThucHanh";
 import FormAddLichTruc from "./components/layout/Add/FormAddLichTruc";
 import FormUpdateLichTruc from "./components/layout/Edit/FormUpdateLichTruc";
 import PageProfile from "./pages/PageProfile/PageProfile";
@@ -110,6 +111,7 @@ root.render(
           <Route path="/quan-ly/may-tinh" element={<PageQlMayTinh />}></Route>
           <Route path="/quan-ly/may-tinh/add" element={<FormAddMayTinh />}></Route>
           <Route path="/quan-ly/may-tinh/update" element={<FormUpdateMayTinh />}></Route>
+          <Route path="/phan-cong/lich-thuc-hanh" element={<PageLichThucHanh />}></Route>
           <Route path="/phan-cong/lich-truc" element={<PageLichTruc />}></Route>
           <Route
             path="/phan-cong/lich-truc/add"
