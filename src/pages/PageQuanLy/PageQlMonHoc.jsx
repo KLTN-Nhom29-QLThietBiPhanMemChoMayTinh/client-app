@@ -40,12 +40,13 @@ export default function PageQlMonHoc() {
 
     return arrMonHocSearch?.map((item, index) => {
       let ngayBD = new Date(item?.ngayBatDau);
-      let ngayKT = new Date(ngayBD);
+      let ngayKT = new Date(item?.ngayBatDau);
 
       ngayKT.setDate(ngayKT.getDate() + item?.soBuoi * 7);
 
       // render
       const renderTrangThai = () => {
+        return <td >Đang Cập nhật</td>
         let day = new Date();
         if (day > ngayKT) {
           return <td style={{ backgroundColor: "#ff6666" }}>Kết thúc</td>;
@@ -61,11 +62,13 @@ export default function PageQlMonHoc() {
           <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
             {index < 9 ? `0${index + 1}` : index + 1}
           </td>
-          <td>{item?.idCode}</td>
-          <td>{item?.name}</td>
+          <td>{item?.maMon}</td>
+          <td>{item?.tenMon}</td>
           <td>{item?.soBuoi}</td>
-          <td>{formatStringDate(ngayBD)}</td>
-          <td>{formatStringDate(ngayKT)}</td>
+          <td>{formatStringDate(new Date(item.ngayBatDau))}</td>
+          <td>{formatStringDate(new Date(item.ngayKetThuc))}</td>
+          {/* <td>{formatStringDate(ngayBD)}</td>
+          <td>{formatStringDate(ngayKT)}</td> */}
           {renderTrangThai()}
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>

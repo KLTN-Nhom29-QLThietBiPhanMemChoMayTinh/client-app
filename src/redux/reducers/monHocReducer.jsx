@@ -66,15 +66,7 @@ const searchData = (arrData, valSearch, valSelect) => {
 const initialState = {
   valueTxtSearch: "",
   valueSelect: "",
-  arrMonHoc: [
-    {
-      id: 1,
-      idCode: "MH001",
-      name: "Lập trình www.",
-      ngayBatDau: "02/02/1234",
-      soBuoi: 15,
-    },
-  ],
+  arrMonHoc: [],
   arrMonHocSearch: [],
   detailMonHoc: {},
 };
@@ -174,9 +166,9 @@ export default monHocReducer.reducer;
 export const getAllMonHoc = async (dispatch) => {
   // call Api
   try {
-    // let result = await http.get('/monhoc...');
-    // const action = setArrMonHocAction(result.data.content)
-    const action = setArrMonHocAction(Database.dataMonHoc);
+    let result = await http.get('/DSMonHoc');
+    const action = setArrMonHocAction(result.data)
+    // const action = setArrMonHocAction(Database.dataMonHoc);
 
     dispatch(action);
   } catch (error) {

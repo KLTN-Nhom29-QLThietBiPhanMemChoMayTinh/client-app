@@ -118,8 +118,11 @@
     - QLMayTInh: finhs GUi select Phong may -> gui len redux = >datasearch -> checkTH(test) -> select trang thai -> redux -> dataSearch => test  
     - Form add mayTinh -> subMit -> api - > update -> del
     - QLThietbi: "Chưa có api xoa thietbi ( xóa 1 thiet bị xóa cả MaytinhThietbij liên quan )
-    - lichTrucReducer :có api server rồi - update di - T sửa page QL vs form add rồi
+    - lichTrucReducer :có api server rồi - update di - T sửa page QL vs form add rồi 
+    - lichTrucReducer: api lỗi TangChuaCoNhanVienTrucTrongThang .
     - QL phần mềm chưa có event update - del
+    - PageQlMonHoc data chua ổn
+    - PageQlMonHoc CRUD chua co gi
 
     - ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi
         + api thong báo - gửi ghi chú cùng thietbi bị lỗi  lưu data
