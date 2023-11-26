@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllPhanMemApi,
   insertPhanMemApi,
+  updatePhanMemApi,
 } from "../../../redux/reducers/phanMemReducer";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -99,6 +100,7 @@ export default function FormUpdatePhanMem() {
       objPhanMem.current;
 
     let phanMemNew = {
+      maPhanMem: objData_old.maPhanMem,
       tenPhanMem,
       trangThai: true,
       moTa,
@@ -107,7 +109,7 @@ export default function FormUpdatePhanMem() {
       ngayCaiDat: new Date(ngaySD),
     };
     //
-    dispatch(insertPhanMemApi(phanMemNew));
+    dispatch(updatePhanMemApi(phanMemNew));
   };
   const checkData = () => {
     let check = 1;
@@ -133,6 +135,25 @@ export default function FormUpdatePhanMem() {
     });
 
     return check;
+  };
+  //
+  const handleChangeTrangThai = (e) => {
+    let value = e.target.value;
+    if (value == 1) {
+      objPhanMem.current.status = true;
+    } else {
+      let tgianBaoHanh = objData_old.tuoiTho;
+      let ngaySD = objPhanMem.current.ngaySD;
+      let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
+      objPhanMem.current = {
+        ...objPhanMem.current,
+        status: false,
+        tgianBaoHanh,
+        ngayKT,
+      };
+    }
+
+    setErrPhanMem({ ...errPhanMem });
   };
   //
   const handleChangeTgianBH = (e) => {
@@ -339,10 +360,10 @@ export default function FormUpdatePhanMem() {
                           id="txtTgianBaoHanh"
                           min={1}
                           value={objPhanMem.current.tgianBaoHanh}
+                          disabled={!objPhanMem.current.status}
                           max={50}
                           onChange={handleChangeTgianBH}
                           aria-describedby="helpIdtgian"
-                          disabled={objPhanMem.current.status == 0 ? 1 : 0}
                         />
                       </div>
 
@@ -377,20 +398,21 @@ export default function FormUpdatePhanMem() {
                           </small>
                         </label>
 
-                        <select className="form-select ">
+                        <select
+                          onChange={handleChangeTrangThai}
+                          className="form-select "
+                        >
                           <option
-                            selected={objPhanMem.current.status ? 1 : 0}
-                            value="true"
+                            selected={objPhanMem.current.status == 1 ? 1 : 0}
+                            value={1}
                           >
                             Đang sử dụng
                           </option>
                           <option
-                            selected={
-                              objPhanMem.current.status == 0 ? 1 : 0
-                            }
-                            value="false"
+                            selected={objPhanMem.current.status == 0 ? 1 : 0}
+                            value={0}
                           >
-                          Bị hỏng
+                            Bị hỏng
                           </option>
                         </select>
                       </div>

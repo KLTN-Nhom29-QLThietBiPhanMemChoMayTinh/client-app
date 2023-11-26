@@ -44,19 +44,25 @@ const phanMemReducer = createSlice({
         action.payload
       );
     },
-    insertPhanMemAction: (state, action) =>{
+    insertPhanMemAction: (state, action) => {
       let item = action.payload;
 
       state.arrPhanMem.push(item);
 
       //
       let { arrPhanMem, valueSearch, valueSelect } = state;
-      state.arrPhanMemSearch = searchData(
-        arrPhanMem,
-        valueSearch,
-        valueSelect
-      );
-    }
+      state.arrPhanMemSearch = searchData(arrPhanMem, valueSearch, valueSelect);
+    },
+    updatePhanMemAction: (state, action) => {
+      let itemUpdate = action.payload;
+      let rowToChange = state.arrPhanMem.findIndex((item) => {
+        return item.maPhanMem == itemUpdate.maPhanMem;
+      });
+      state.arrPhanMem[rowToChange] = itemUpdate;
+
+      //
+      state.arrPhanMemSearch = funcSearch(state);
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -65,10 +71,18 @@ export const {
   setValueSelectPhanMemAction,
   setValueSearchPhanMemAction,
   insertPhanMemAction,
+  updatePhanMemAction,
 } = phanMemReducer.actions;
 export default phanMemReducer.reducer;
 
 // ================================================
+//
+const funcSearch = (objData) => {
+  let { arrPhanMem, valueSearch, valueSelect } = objData;
+
+  return searchData(arrPhanMem, valueSearch, valueSelect);
+};
+//
 const searchData = (arrData, valSearch, valSelect) => {
   let textSearch = valSearch.trim().toLowerCase();
 
@@ -127,20 +141,43 @@ const searchData = (arrData, valSearch, valSelect) => {
 };
 
 // Call Api ++++++++++++++++++++++++++++++++++++++
-
-export const insertPhanMemApi = (phanMem) => {
-  return async(dispatch) =>{
+/**
+ * update 1 phan mem
+ * @param {object} phanMem
+ * @returns
+ */
+export const updatePhanMemApi = (phanMem) => {
+  return async (dispatch) => {
     try {
-      let result = await http.post('/LuuPhanMem', phanMem);
+      let result = await http.post("/LuuPhanMem", phanMem);
 
-      dispatch(insertPhanMemAction(result.data))
-      history.push('/quan-ly/phan-mem')
+      dispatch(updatePhanMemAction(result.data));
+      history.push("/quan-ly/phan-mem");
     } catch (error) {
-      console.log("🚀 ~ file: phanMemReducer.jsx:120 ~ returnasync ~ error:", error)
-      
+      console.log("🚀 ~ file: phanMemReducer.jsx:140 ~ return ~ error:", error);
     }
-  }
-}
+  };
+};
+/**
+ * add 1 phan mem
+ * @param {object} phanMem
+ * @returns
+ */
+export const insertPhanMemApi = (phanMem) => {
+  return async (dispatch) => {
+    try {
+      let result = await http.post("/LuuPhanMem", phanMem);
+
+      dispatch(insertPhanMemAction(result.data));
+      history.push("/quan-ly/phan-mem");
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: phanMemReducer.jsx:120 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
 /**
  * get all api Phan mem
  */
