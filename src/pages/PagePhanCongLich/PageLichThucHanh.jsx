@@ -9,8 +9,14 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCaThucHanhApi, setObjDetailCaThucHanh } from "../../redux/reducers/lichThucHanhReducer";
+import {
+  getAllCaThucHanhApi,
+  setObjDetailCaThucHanh,
+  setValueSelSearchCaTHAction,
+} from "../../redux/reducers/lichThucHanhReducer";
 import ModalDetailLichThucHanh from "../../components/layout/Detail/ModalDetailLichThucHanh/ModalDetailLichThucHanh";
+import { formatStringDate } from "../../util/config";
+import ModalSearchLichThucHanh from "../../components/layout/Modal/ModalSearchLichThucHanh";
 
 //
 export default function PageLichThucHanh() {
@@ -29,22 +35,21 @@ export default function PageLichThucHanh() {
     }
   }, []);
   //
+  //hanle 
+  //
+  const handleChangeSearch = (e) => {
+    dispatch(setValueSelSearchCaTHAction(e.target.value))
+  }
+  //
   //render
   //
   const renderDataLichThucHanh = () => {
     //  ===============
     return arrCaThucHanhSearch?.map((item, index) => {
-      let tgian = new Date(item.ngayTruc);
-      let strThang = "";
-      if (tgian.getMonth() < 9) {
-        strThang = `0${tgian.getMonth() + 1}`;
-      } else {
-        strThang = tgian.getMonth() + 1;
-      }
-      let strTgian = `tháng ${strThang} - ${tgian.getFullYear()}`;
+      let tgian = new Date(item.ngayThucHanh);
+
       let strTietTH = `${item.tietBatDau} - ${item.tietKetThuc}`;
 
-      
       return (
         <>
           <tr key={index}>
@@ -52,6 +57,7 @@ export default function PageLichThucHanh() {
               {index < 9 ? `0${index + 1}` : index + 1}
             </td>
             <td>{item.monHoc.tenMon}</td>
+            <td>{formatStringDate(tgian)}</td>
             <td>{item.tenCa}</td>
             <td>{strTietTH}</td>
             <td>{item.giaoVien.maGiaoVien}</td>
@@ -118,6 +124,7 @@ export default function PageLichThucHanh() {
       <div className="container " style={{ height: "100vh" }}>
         {/*  */}
         <ModalDetailLichThucHanh />
+        <ModalSearchLichThucHanh />
 
         {/*  */}
         <div
@@ -144,9 +151,19 @@ export default function PageLichThucHanh() {
                 <div></div>
 
                 {/* select - option */}
-                {/* {renderSelectTrangThai()} */}
+
                 <div></div>
-                <div></div>
+                <div>
+                  {/* Button trigger modal */}
+                  <button
+                    type="button"
+                    className="btn btn-primary "
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalIdSearchLichTH"
+                  >
+                    Tìm kiếm
+                  </button>
+                </div>
 
                 {/* input tim kiem */}
                 <div>
@@ -154,7 +171,7 @@ export default function PageLichThucHanh() {
                     type="text"
                     className="form-control"
                     placeholder="tìm kiếm..."
-                    // onChange={handleChangeSearch}
+                    onChange={handleChangeSearch}
                   />
                 </div>
 
@@ -181,6 +198,7 @@ export default function PageLichThucHanh() {
                     <tr>
                       <th>STT</th>
                       <th style={{}}>Môn học</th>
+                      <th style={{}}>Ngày TH</th>
                       <th style={{}}>Buổi TH</th>
                       <th style={{}}>Tiết TH</th>
                       <th style={{}}>Giáo viên</th>

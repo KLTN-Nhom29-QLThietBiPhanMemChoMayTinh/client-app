@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { formatStringDate } from "../../../../util/config";
+import { formatNameByHocVi, formatStringDate } from "../../../../util/config";
 import { FaPencilAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -88,7 +88,9 @@ export default function ModalDetailLichThucHanh() {
           </thead>
           <tbody>
             <tr>
-              <td className="text-center">{hoTen}</td>
+              <td className="text-center">
+                {formatNameByHocVi({ hocVi, name: hoTen })}
+              </td>
               <td className="text-center">{soDienThoai}</td>
               <td className="text-center">{email}</td>
               <td className="text-center">{khoa.tenKhoa}</td>
