@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setValueSelDateFromCaTHAction, setValueSelDateToCaTHAction } from "../../../redux/reducers/lichThucHanhReducer";
+import {
+  setValueSelDateFromCaTHAction,
+  setValueSelDateToCaTHAction,
+  setValueSelGiaoVienCaTHAction,
+} from "../../../redux/reducers/lichThucHanhReducer";
+import { getAllGiaoVienApi } from "../../../redux/reducers/giaoVienReducer";
 
 let date = new Date();
 let dateYear = date.getFullYear();
@@ -15,15 +20,26 @@ export default function ModalSearchLichThucHanh() {
   const dispatch = useDispatch();
 
   //
-  let { valueDateFrom, valueDateTo } = useSelector(
+  let { valueDateFrom, valueDateTo, valueSelGiaoVien } = useSelector(
     (state) => state.lichThucHanhReducer
   );
+  let { arrGiaoVien } = useSelector((state) => state.giaoVienReducer);
+  //
+  useEffect(() => {
+    if (arrGiaoVien.length === 0) {
+      dispatch(getAllGiaoVienApi);
+    }
+  }, []);
 
   // handle
+  // 
+  const handleChangeSelGiaoVien = (e) => {
+    dispatch(setValueSelGiaoVienCaTHAction(e.target.value))
+  }
   //
   const handleChangeValDateTo = (e) => {
-    dispatch(setValueSelDateToCaTHAction(e.target.value))
-  }
+    dispatch(setValueSelDateToCaTHAction(e.target.value));
+  };
   //
   const handleChangeValDateFrom = (e) => {
     dispatch(setValueSelDateFromCaTHAction(e.target.value));
@@ -56,7 +72,7 @@ export default function ModalSearchLichThucHanh() {
             <div className="modal-body">
               <div className="container-fluid">
                 {/* body */}
-
+                {/* Date */}
                 <div className="pt-2">
                   <strong>Thời gian thực hành: </strong> <br />
                   <p>
@@ -84,7 +100,7 @@ export default function ModalSearchLichThucHanh() {
                 {/* Buổi thực hành */}
                 <div className="col-6">
                   <strong>Buổi thực hành: </strong>
-                  <select class="form-select  ms-2">
+                  <select className="form-select  ms-2">
                     <option value={-1}>Tất cả</option>
                     <option value="sáng">Sáng</option>
                     <option value="chiều">Chiều</option>
@@ -93,20 +109,29 @@ export default function ModalSearchLichThucHanh() {
                 </div>
 
                 {/* Buổi Giáo viên */}
-                <div className="col-6 pt-3">
+                <div className="col-9 pt-3">
                   <strong>Giáo viên: </strong>
-                  <select class="form-select  ms-2">
-                    <option value={-1}>Tất cả</option>
-                    <option value="sáng">Sáng</option>
-                    <option value="chiều">Chiều</option>
-                    <option value="tối">Tối</option>
+                  <select onChange={handleChangeSelGiaoVien} className="form-select  ms-2">
+                    <option
+                      selected={valueSelGiaoVien == -1 ? 1 : 0}
+                      value={-1}
+                    >
+                      Tất cả
+                    </option>
+                    {arrGiaoVien.map((item, index) => {
+                      return (
+                        <option selected={valueSelGiaoVien == item.maGiaoVien ? 1 : 0} key={index} value={item.maGiaoVien}>
+                          {item.maGiaoVien} - {item.hoTen}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 
                 {/* Buổi phòng máy */}
                 <div className="col-6 pt-3">
                   <strong>Phòng máy: </strong>
-                  <select class="form-select  ms-2">
+                  <select className="form-select  ms-2">
                     <option value={-1}>Tất cả</option>
                     <option value="sáng">Sáng</option>
                     <option value="chiều">Chiều</option>
