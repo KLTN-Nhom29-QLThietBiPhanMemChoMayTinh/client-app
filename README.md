@@ -127,6 +127,8 @@
     - PageQlMonHoc CRUD chua co gi
     - Page update duoc gui từ deltail thi phai sửa - lấy data theo api maID chứ không chả về page QL
     - update Lich truc : loi api
+    - deletePhanMemApi: xoa phần mêm có kêt nối phòng máy không được
+    - lên thông nhất sử dụng Bị hỏng hay không sử dụng
 
     # PageQlMonHoc
     - tạo mới có so buoi vs ngày bd +> ngay kết thúc (sau Tgian thực 1 tuần)

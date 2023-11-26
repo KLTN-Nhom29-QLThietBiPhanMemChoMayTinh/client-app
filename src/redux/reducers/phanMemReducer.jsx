@@ -63,6 +63,17 @@ const phanMemReducer = createSlice({
       //
       state.arrPhanMemSearch = funcSearch(state);
     },
+    deletePhanMemAction: (state, action) => {
+      let maXoa = action.payload;
+
+      let arrUpdate = state.arrPhanMem.filter((item) => {
+        return item.maPhanMem !== maXoa;
+      });
+      state.arrPhanMem = [...arrUpdate];
+
+      //
+      state.arrPhanMemSearch = funcSearch(state);
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -72,6 +83,7 @@ export const {
   setValueSearchPhanMemAction,
   insertPhanMemAction,
   updatePhanMemAction,
+  deletePhanMemAction,
 } = phanMemReducer.actions;
 export default phanMemReducer.reducer;
 
@@ -141,6 +153,17 @@ const searchData = (arrData, valSearch, valSelect) => {
 };
 
 // Call Api ++++++++++++++++++++++++++++++++++++++
+export const deletePhanMemApi = (maXoa) => {
+  return async (dispatch) =>{
+    try {
+      let result = await http.delete(`/XoaPhanMem/${maXoa}`);
+
+      dispatch(deletePhanMemAction(maXoa));
+    } catch (error) {
+    console.log("🚀 ~ file: phanMemReducer.jsx:162 ~ return ~ error:", error)
+    }
+  }
+}
 /**
  * update 1 phan mem
  * @param {object} phanMem

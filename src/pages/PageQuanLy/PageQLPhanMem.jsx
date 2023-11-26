@@ -11,6 +11,7 @@ import { MdAdd } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deletePhanMemApi,
   getAllPhanMemApi,
   setValueSearchPhanMemAction,
   setValueSelectPhanMemAction,
@@ -100,7 +101,7 @@ export default function PageQLPhanMem() {
           {strTrangThai()}
 
           {/* <td style={{ display: "flex", justifyContent: "space-evenly" }}> */}
-          <td className=" ">
+          <td className=" text-center">
             <NavLink to={`/quan-ly/phan-mem/update?id=${item.maPhanMem}`}>
               <button
                 type="button"
@@ -112,7 +113,9 @@ export default function PageQLPhanMem() {
             </NavLink>
             <button
               onClick={() => {
-                alert(`Del -- ${item.id} -- dang cập nhật!`);
+                if (window.confirm("Bấm vào nút OK để xóa " + item.tenPhanMem + " - phiên bản: " + item.phienBan)) {
+                  dispatch(deletePhanMemApi(item.maPhanMem));
+                }
               }}
               type="button"
               className="btn btn-danger mx-2 px-2"
@@ -120,7 +123,7 @@ export default function PageQLPhanMem() {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            <NavLink
+            {/* <NavLink
               // to={`../quan-ly/phong`}
               onClick={() => {
                 alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
@@ -130,7 +133,7 @@ export default function PageQLPhanMem() {
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink>
+            </NavLink> */}
           </td>
         </tr>
       );
@@ -228,7 +231,7 @@ export default function PageQLPhanMem() {
                     <th style={{ minWidth: "90px" }}>Hạn sử dụng(tháng)</th>
                     <th>Ngày hết hạn </th>
                     <th style={{ minWidth: "100px" }}>Trạng thái</th>
-                    <th style={{ minWidth: "170px" }}>Hành động</th>
+                    <th style={{ minWidth: "150px" }}>Hành động</th>
                   </tr>
                 </thead>
                 <tbody className="over_flow_auto">
