@@ -17,7 +17,7 @@ import {
   setValueSearchTaiKhoan,
   setValueSelectTaiKhoan,
 } from "../../redux/reducers/taiKhoanReducer";
-import ModalDetailTaiKhoan from "../../components/layout/Modal/ModalTaiKhoan/ModalDetailTaiKhoan";
+import ModalDetailTaiKhoan from "../../components/layout/Detail/ModalTaiKhoan/ModalDetailTaiKhoan";
 
 export default function PageQLTaiKhoan() {
   const dispatch = useDispatch();

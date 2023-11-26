@@ -9,8 +9,8 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCaThucHanhApi } from "../../redux/reducers/lichThucHanhReducer";
-import ModalDetailLichThucHanh from "../../components/layout/Modal/ModalDetailLichThucHanh/ModalDetailLichThucHanh";
+import { getAllCaThucHanhApi, setObjDetailCaThucHanh } from "../../redux/reducers/lichThucHanhReducer";
+import ModalDetailLichThucHanh from "../../components/layout/Detail/ModalDetailLichThucHanh/ModalDetailLichThucHanh";
 
 //
 export default function PageLichThucHanh() {
@@ -44,38 +44,18 @@ export default function PageLichThucHanh() {
       let strTgian = `tháng ${strThang} - ${tgian.getFullYear()}`;
       let strTietTH = `${item.tietBatDau} - ${item.tietKetThuc}`;
 
-      // handle
-      const handleDetailLichTH = (e) => {
-        console.log(
-          "🚀 ~ file: PageLichThucHanh.jsx:50 ~ handleDetailLichTH ~ e:",
-          e
-        );
-      };
+      
       return (
         <>
-          <tr className="btn_moune" key={index}>
+          <tr key={index}>
             <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
               {index < 9 ? `0${index + 1}` : index + 1}
             </td>
-            <td
-            data-bs-toggle="modal"
-              data-bs-target="#modalIdDetailLichTH"
-              onClick={handleDetailLichTH}
-            >
-              {item.monHoc.tenMon}
-            </td>
-            <td className="btn_mouse" onClick={handleDetailLichTH}>
-              {item.tenCa}
-            </td>
-            <td className="btn_mouse" onClick={handleDetailLichTH}>
-              {strTietTH}
-            </td>
-            <td className="btn_mouse" onClick={handleDetailLichTH}>
-              {item.giaoVien.maGiaoVien}
-            </td>
-            <td className="btn_mouse" onClick={handleDetailLichTH}>
-              {item.phongMay.tenPhong}
-            </td>
+            <td>{item.monHoc.tenMon}</td>
+            <td>{item.tenCa}</td>
+            <td>{strTietTH}</td>
+            <td>{item.giaoVien.maGiaoVien}</td>
+            <td>{item.phongMay.tenPhong}</td>
 
             <td style={{ display: "flex", justifyContent: "space-evenly" }}>
               <button
@@ -109,17 +89,18 @@ export default function PageLichThucHanh() {
               >
                 <ImBin2 color="white" size={16} />
               </button>
-              {/* <NavLink
-              // to={`../quan-ly/phong`}
-              onClick={() => {
-                alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
-              }}
-              type="button"
-              className="btn btn-info mx-2 px-2"
-              style={{ padding: "2px" }}
-            >
-              <BiSolidDetail color="white" size={16} />
-            </NavLink> */}
+              <button
+                onClick={() => {
+                  dispatch(setObjDetailCaThucHanh(item));
+                }}
+                type="button"
+                className="btn btn-info mx-2 px-2"
+                style={{ padding: "2px" }}
+                data-bs-toggle="modal"
+                data-bs-target="#modalIdDetailLichTH"
+              >
+                <BiSolidDetail color="white" size={16} />
+              </button>
             </td>
           </tr>
         </>

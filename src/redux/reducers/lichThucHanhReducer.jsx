@@ -7,6 +7,7 @@ const initialState = {
   arrCaThucHanh:[],
   arrCaThucHanhSearch:[],
   valueSearch:'',
+  objDetailCaTH: {},
 };
 
 const lichThucHanhReducer = createSlice({
@@ -16,13 +17,16 @@ const lichThucHanhReducer = createSlice({
     setArrCaThucHanhAction: (state, action) => {
       state.arrCaThucHanh = action.payload;
       state.arrCaThucHanhSearch = action.payload;
-
     },
+    setObjDetailCaThucHanh: (state, action) => {
+      state.objDetailCaTH = action.payload;
+    }
   },
 });
 // exp nay de sử dụng theo cách 2
 export const { 
   setArrCaThucHanhAction,
+  setObjDetailCaThucHanh,
  } = lichThucHanhReducer.actions;
 export default lichThucHanhReducer.reducer;
 
