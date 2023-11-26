@@ -17,6 +17,7 @@ const lichThucHanhReducer = createSlice({
     setArrCaThucHanhAction: (state, action) => {
       state.arrCaThucHanh = action.payload;
       state.arrCaThucHanhSearch = action.payload;
+      state.objDetailCaTH = state.arrCaThucHanh[0]
     },
     setObjDetailCaThucHanh: (state, action) => {
       state.objDetailCaTH = action.payload;

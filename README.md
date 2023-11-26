@@ -125,6 +125,7 @@
     - QL phần mềm chưa có event update - del
     - PageQlMonHoc data chua ổn
     - PageQlMonHoc CRUD chua co gi
+    - Page update duoc gui từ deltail thi phai sửa - lấy data theo api maID chứ không chả về page QL
 
     - ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi
         + api thong báo - gửi ghi chú cùng thietbi bị lỗi  lưu data
