@@ -12,10 +12,22 @@ export const formatString = {
     }
     return str + user.name;
   },
+  /**
+   * thang MM - YYYY
+   * @param {*} valdate 
+   * @returns 
+   */
   formatDate_MM_YYYY: (valdate) => {
-    let date = new Date(valdate);
-    let str = `${date.getMonth() + 1} - ${date.getFullYear()}`;
-    return str;
+    let tgian = new Date(valdate);
+    let strThang = ''
+
+      if(tgian.getMonth() < 9) {
+        strThang = `0${tgian.getMonth() + 1}`;
+      }else {
+        strThang = tgian.getMonth() + 1
+      }
+
+    return `tháng ${strThang} - ${tgian.getFullYear()}`;
   },
   formatNumber: () => {
     return Math.floor(Math.random() * 100000) + 1000;

@@ -6,15 +6,21 @@ import Database from "../../util/database/Database";
 import { history } from "../..";
 import { formatDate_MM_YYYY } from "../../util/formatString";
 
+//
+const funcSearch = (objData) => {
+  let { arrLichTruc, valueSearch } = objData;
+
+  return dataSearch(arrLichTruc, valueSearch);
+};
+
 const dataSearch = (arrData, valSearch) => {
-  let search = valSearch.toLowerCase();
+  let search = valSearch.trim().toLowerCase();
 
   let arrUpdate = arrData.filter((item) => {
     let strCaTruc = `${item.thoiGianBatDau}h - ${item.thoiGianKetThuc}h`;
 
     return (
-      (item.maLich + "").toLowerCase().includes(search) ||
-      formatDate_MM_YYYY(item.tgian).toLowerCase().includes(search) ||
+      formatDate_MM_YYYY(item.ngayTruc).toLowerCase().includes(search) ||
       strCaTruc.toLowerCase().includes(search) ||
       `${item.thoiGianBatDau}h`.toLowerCase().includes(search) ||
       `${item.thoiGianKetThuc}h`.toLowerCase().includes(search) ||
@@ -55,13 +61,12 @@ const lichTrucReducer = createSlice({
       state.arrLichTruc = action.payload;
 
       //
-      let { arrLichTruc, valueSearch } = state;
-      state.arrLichTrucSearch = dataSearch(arrLichTruc, valueSearch);
+      state.arrLichTrucSearch = funcSearch(state);
     },
     setArrLichTrucSearchAction: (state, action) => {
       state.valueSearch = action.payload;
       //
-      state.arrLichTrucSearch = dataSearch(state.arrLichTruc, action.payload);
+      state.arrLichTrucSearch = funcSearch(state);
     },
     setArrTangChuaCoLichTrucAction: (state, action) => {
       state.arrTangChuaCoLichTruc = action.payload;
@@ -75,9 +80,8 @@ const lichTrucReducer = createSlice({
       arrUpdate.push(item);
       state.arrLichTruc = arrUpdate;
 
-      let { arrLichTruc, valueSearch } = state;
       //
-      state.arrLichTrucSearch = dataSearch(arrLichTruc, valueSearch);
+      state.arrLichTrucSearch = funcSearch(state);
     },
     updateLichTrucAction: (state, action) => {
       let itemEdit = action.payload;
@@ -87,7 +91,8 @@ const lichTrucReducer = createSlice({
       });
 
       state.arrLichTruc[rowToChange] = itemEdit;
-      state.arrLichTrucSearch = [...state.arrLichTruc];
+      //
+      state.arrLichTrucSearch = funcSearch(state);
     },
     deleteLichTrucAction: (state, action) => {
       let maXoa = action.payload;
@@ -96,11 +101,9 @@ const lichTrucReducer = createSlice({
         return item.maLich !== maXoa;
       });
 
-      state.arrLichTruc = [...arrLichTruc];
+      state.arrLichTruc = [...arrUpdate];
       //
-      let { arrLichTruc, valSearch } = state;
-
-      state.arrLichTrucSearch = dataSearch(arrLichTruc, valSearch);
+      state.arrLichTrucSearch = funcSearch(state);
     },
   },
 });
@@ -139,7 +142,6 @@ export const getAllTangByToaNhaApi = (arrtang) => {
  */
 export const getAllTangChuaCoLichTrucApi = async (dispatch) => {
   try {
-
     const result = await http.get("/TangChuaCoNhanVienTrucTrongThang");
 
     let arrDataToaNha_z = result.data.map((item) => {
@@ -164,7 +166,7 @@ export const getAllTangChuaCoLichTrucApi = async (dispatch) => {
 export const deleteLichTrucApi = (maXoa) => {
   return async (dispatch) => {
     try {
-      await http.delete(`/XoaNhanVien/${maXoa}`);
+      await http.delete(`/XoaLichTruc/${maXoa}`);
 
       dispatch(deleteLichTrucAction(maXoa));
     } catch (error) {
@@ -209,6 +211,7 @@ export const getLichTrucbyId = (id) => {
 
 // add
 export const insertLichTrucApi = (lichTruc) => {
+  console.log("🚀 ~ file: lichTrucReducer.jsx:214 ~ insertLichTrucApi ~ lichTruc:", lichTruc)
   return async (dispatch) => {
     try {
       let result = await http.post("/LuuLichTruc", lichTruc);
@@ -216,7 +219,7 @@ export const insertLichTrucApi = (lichTruc) => {
 
       //
       dispatch(insertLichTrucAction(result.data));
-      history.push("../../phan-cong/lich-truc");
+      history.push("/phan-cong/lich-truc");
     } catch (error) {
       console.log("🚀 ~ file: lichTrucReducer.jsx:65 ~ return ~ error:", error);
     }
@@ -227,11 +230,11 @@ export const insertLichTrucApi = (lichTruc) => {
 export const updateLichTrucApi = (lichTruc) => {
   return async (dispatch) => {
     try {
-      // let result = await http.put("/SuaLichTruc", lichTruc);
+      let result = await http.post("/LuuLichTruc", lichTruc);
       //
       dispatch(updateLichTrucAction(lichTruc));
 
-      history.push("../");
+      history.push("/phan-cong/lich-truc");
     } catch (error) {
       console.log("🚀 ~ file: lichTrucReducer.jsx:88 ~ return ~ error:", error);
     }

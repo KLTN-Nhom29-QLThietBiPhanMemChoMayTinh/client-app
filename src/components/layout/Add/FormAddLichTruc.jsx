@@ -5,14 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllNhanVienApi } from "../../../redux/reducers/nhanVienReducer";
 import {
   getAllTangApi,
-  getAllTangChuaCoLichTruc,
-  getAllTangbyIdToaNha,
 } from "../../../redux/reducers/tangReducer";
 import {
-  getAllToaNhaApi,
-  getAllToaNhaByLichTruc,
-} from "../../../redux/reducers/toaNhaReducer";
-import {
+  getAllLichTruc,
   getAllTangByToaNhaApi,
   getAllTangChuaCoLichTrucApi,
   insertLichTrucApi,
@@ -37,7 +32,7 @@ export default function FormAddLichTruc() {
   //arrTangByLichTruc : dsTang chưa có lich truc
   const { arrTang } = useSelector((state) => state.tangReducer);
   //
-  const { arrTangChuaCoLichTruc, arrToaNhaByChuaCoLichTruc } = useSelector(
+  const { arrLichTruc, arrTangChuaCoLichTruc, arrToaNhaByChuaCoLichTruc } = useSelector(
     (state) => state.lichTrucReducer
   );
 
@@ -49,6 +44,9 @@ export default function FormAddLichTruc() {
   });
 
   useEffect(() => {
+    if(arrLichTruc.length === 0) {
+      dispatch(getAllLichTruc)
+    }
     if (arrNhanVien.length === 0) {
       dispatch(getAllNhanVienApi);
     }
@@ -97,7 +95,7 @@ export default function FormAddLichTruc() {
         valueSelToaNha,
       } = lichTruc;
 
-      let tang = arrTangChuaCoLichTruc.find(
+      let tang = arrTang.find(
         (item) => item.maTang == valueSelTang
       );
 
@@ -127,9 +125,15 @@ export default function FormAddLichTruc() {
   //
   const handleChangeSelectToaNha = (e) => {
     let value = e.target.value; //id = idToaNha
+
+    let objTang = arrTang.find((item) => {
+      return item.toaNha.maToaNha == value;
+    });
+
     setLichTruc({
       ...lichTruc,
       valueSelToaNha: value,
+      valueSelTang: objTang.maTang,
     });
 
     if (value == -1) {
@@ -280,7 +284,7 @@ export default function FormAddLichTruc() {
                           {arrNhanVien.map((item, index) => {
                             return (
                               <option key={index} value={item.maNV}>
-                                {item.tenNV}
+                                {item.maNV} - {item.tenNV}
                               </option>
                             );
                           })}
@@ -391,7 +395,7 @@ export default function FormAddLichTruc() {
                           id="cbkAllTang"
                           onChange={(e) => {
                             let checked = e.target.checked;
-                            
+
                             if (checked) {
                               dispatch(getAllTangByToaNhaApi(arrTang));
                             } else {

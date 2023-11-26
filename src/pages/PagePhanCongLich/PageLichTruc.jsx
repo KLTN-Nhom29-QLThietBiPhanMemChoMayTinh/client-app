@@ -9,34 +9,40 @@ import Footer from "../../components/common/Footer/Footer";
 import NavTab from "../../components/common/NavTab/NavTab";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteLichTrucApi, getAllLichTruc, setArrLichTrucSearchAction } from "../../redux/reducers/lichTrucReducer";
+import {
+  deleteLichTrucApi,
+  getAllLichTruc,
+  setArrLichTrucSearchAction,
+} from "../../redux/reducers/lichTrucReducer";
 
 export default function PageLichTruc(props) {
   const dispatch = useDispatch();
 
-  const { arrLichTruc,arrLichTrucSearch } = useSelector((state) => state.lichTrucReducer);
+  const { arrLichTruc, arrLichTrucSearch, valueSearch } = useSelector(
+    (state) => state.lichTrucReducer
+  );
 
   useEffect(() => {
     if (arrLichTruc.length === 0) {
       dispatch(getAllLichTruc);
     }
   }, []);
-  // handle 
+  // handle
   const handleChangeSearch = (e) => {
-    dispatch(setArrLichTrucSearchAction(e.target.value))
-  }
+    dispatch(setArrLichTrucSearchAction(e.target.value));
+  };
   //render
   const renderDataLichTruc = () => {
     //  ===============
     return arrLichTrucSearch?.map((item, index) => {
       let tgian = new Date(item.ngayTruc);
 
-      let strThang = ''
+      let strThang = "";
 
-      if(tgian.getMonth() < 9) {
+      if (tgian.getMonth() < 9) {
         strThang = `0${tgian.getMonth() + 1}`;
-      }else {
-        strThang = tgian.getMonth() + 1
+      } else {
+        strThang = tgian.getMonth() + 1;
       }
 
       let strTgian = `tháng ${strThang} - ${tgian.getFullYear()}`;
@@ -67,9 +73,11 @@ export default function PageLichTruc(props) {
               </NavLink>
               <button
                 onClick={() => {
-                  if (window.confirm(`Bấm vào nút OK để xóa lịch trực ${item.nhanVien.tenNV} - ${item.tang.tenTang}, ${item.tang.toaNha.tenToaNha} -- Thời gian:  ${strTgian}. `)) {
-                    alert('Lỗi api xóa lịch trực.')
-                    return ;
+                  if (
+                    window.confirm(
+                      `Bấm vào nút OK để xóa lịch trực STT: ${index < 9 ? `0${index + 1}` : index + 1} - ${item.nhanVien.tenNV} - ${item.tang.tenTang}, ${item.tang.toaNha.tenToaNha} -- Thời gian:  ${strTgian}. `
+                    )
+                  ) {
                     dispatch(deleteLichTrucApi(item.maLich));
                   }
                 }}
@@ -136,6 +144,7 @@ export default function PageLichTruc(props) {
                   type="text"
                   className="form-control"
                   placeholder="tìm kiếm..."
+                  value={valueSearch}
                   onChange={handleChangeSearch}
                 />
               </div>
