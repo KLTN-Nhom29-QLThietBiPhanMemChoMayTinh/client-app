@@ -12,6 +12,7 @@ const fun_Search = (objData) => {
     valueDateTo,
     valueSelGiaoVien,
     valueSelBuoiTH,
+    valueSelPhongMay,
   } = objData;
 
   return dataSearch(
@@ -21,6 +22,7 @@ const fun_Search = (objData) => {
     valueDateTo,
     valueSelGiaoVien,
     valueSelBuoiTH,
+    valueSelPhongMay
   );
 };
 const dataSearch = (
@@ -30,6 +32,7 @@ const dataSearch = (
   valDateTo,
   valSelGiaoVien,
   valSelBuoiTH,
+  valSelPhongMay
 ) => {
   //
   let search = valSearch.toLowerCase();
@@ -72,10 +75,17 @@ const dataSearch = (
       return item.giaoVien.maGiaoVien.includes(valSelGiaoVien);
     });
   }
-  if(valSelBuoiTH != -1) {
+  //
+  if (valSelBuoiTH != -1) {
     let searchBuoiTH = valSelBuoiTH.toLowerCase();
     arrUpdate = arrUpdate.filter((item) => {
-      return item.tenCa.toLowerCase().includes(searchBuoiTH)
+      return item.tenCa.toLowerCase().includes(searchBuoiTH);
+    });
+  }
+  //
+  if (valSelPhongMay != -1) {
+    arrUpdate = arrUpdate.filter((item) => {
+      return item.phongMay.maPhong == valSelPhongMay;
     });
   }
 
@@ -92,6 +102,7 @@ const initialState = {
   valueDateTo: "",
   valueSelGiaoVien: -1,
   valueSelBuoiTH: -1,
+  valueSelPhongMay: -1,
 };
 
 const lichThucHanhReducer = createSlice({
@@ -132,6 +143,20 @@ const lichThucHanhReducer = createSlice({
       //
       state.arrCaThucHanhSearch = fun_Search(state);
     },
+    setValueSelPhongMayCaTHAction: (state, action) => {
+      state.valueSelPhongMay = action.payload;
+      //
+      state.arrCaThucHanhSearch = fun_Search(state);
+    },
+    resetValueSearchAction: (state, action) => {
+      state.valueDateFrom = "";
+      state.valueDateTo = "";
+      state.valueSelGiaoVien = -1;
+      state.valueSelBuoiTH = -1;
+      state.valueSelPhongMay = -1;
+      //
+      state.arrCaThucHanhSearch = fun_Search(state);
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -143,6 +168,8 @@ export const {
   setValueSelDateToCaTHAction,
   setValueSelGiaoVienCaTHAction,
   setvalueSelBuoiTHCaTHAction,
+  setValueSelPhongMayCaTHAction,
+  resetValueSearchAction,
 } = lichThucHanhReducer.actions;
 export default lichThucHanhReducer.reducer;
 
