@@ -4,6 +4,7 @@ import {
   setValueSelDateFromCaTHAction,
   setValueSelDateToCaTHAction,
   setValueSelGiaoVienCaTHAction,
+  setvalueSelBuoiTHCaTHAction,
 } from "../../../redux/reducers/lichThucHanhReducer";
 import { getAllGiaoVienApi } from "../../../redux/reducers/giaoVienReducer";
 
@@ -32,6 +33,10 @@ export default function ModalSearchLichThucHanh() {
   }, []);
 
   // handle
+  //
+  const handleChangeSelBuoiTH = (e) => {
+    dispatch(setvalueSelBuoiTHCaTHAction(e.target.value))
+  }
   // 
   const handleChangeSelGiaoVien = (e) => {
     dispatch(setValueSelGiaoVienCaTHAction(e.target.value))
@@ -100,7 +105,7 @@ export default function ModalSearchLichThucHanh() {
                 {/* Buổi thực hành */}
                 <div className="col-6">
                   <strong>Buổi thực hành: </strong>
-                  <select className="form-select  ms-2">
+                  <select onChange={handleChangeSelBuoiTH} className="form-select  ms-2">
                     <option value={-1}>Tất cả</option>
                     <option value="sáng">Sáng</option>
                     <option value="chiều">Chiều</option>

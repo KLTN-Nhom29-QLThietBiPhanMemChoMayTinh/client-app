@@ -11,6 +11,7 @@ const fun_Search = (objData) => {
     valueDateFrom,
     valueDateTo,
     valueSelGiaoVien,
+    valueSelBuoiTH,
   } = objData;
 
   return dataSearch(
@@ -18,7 +19,8 @@ const fun_Search = (objData) => {
     valueSearch,
     valueDateFrom,
     valueDateTo,
-    valueSelGiaoVien
+    valueSelGiaoVien,
+    valueSelBuoiTH,
   );
 };
 const dataSearch = (
@@ -26,7 +28,8 @@ const dataSearch = (
   valSearch,
   valDateFrom,
   valDateTo,
-  valSelGiaoVien
+  valSelGiaoVien,
+  valSelBuoiTH,
 ) => {
   //
   let search = valSearch.toLowerCase();
@@ -69,6 +72,12 @@ const dataSearch = (
       return item.giaoVien.maGiaoVien.includes(valSelGiaoVien);
     });
   }
+  if(valSelBuoiTH != -1) {
+    let searchBuoiTH = valSelBuoiTH.toLowerCase();
+    arrUpdate = arrUpdate.filter((item) => {
+      return item.tenCa.toLowerCase().includes(searchBuoiTH)
+    });
+  }
 
   //
   return [...arrUpdate];
@@ -82,6 +91,7 @@ const initialState = {
   valueDateFrom: "",
   valueDateTo: "",
   valueSelGiaoVien: -1,
+  valueSelBuoiTH: -1,
 };
 
 const lichThucHanhReducer = createSlice({
@@ -117,6 +127,11 @@ const lichThucHanhReducer = createSlice({
       //
       state.arrCaThucHanhSearch = fun_Search(state);
     },
+    setvalueSelBuoiTHCaTHAction: (state, action) => {
+      state.valueSelBuoiTH = action.payload;
+      //
+      state.arrCaThucHanhSearch = fun_Search(state);
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -127,6 +142,7 @@ export const {
   setValueSelDateFromCaTHAction,
   setValueSelDateToCaTHAction,
   setValueSelGiaoVienCaTHAction,
+  setvalueSelBuoiTHCaTHAction,
 } = lichThucHanhReducer.actions;
 export default lichThucHanhReducer.reducer;
 
