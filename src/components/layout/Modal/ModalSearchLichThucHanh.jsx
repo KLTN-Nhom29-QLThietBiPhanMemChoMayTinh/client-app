@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setValueSelDateFromCaTHAction, setValueSelDateToCaTHAction } from "../../../redux/reducers/lichThucHanhReducer";
 
 let date = new Date();
 let dateYear = date.getFullYear();
@@ -9,6 +11,24 @@ let strDate = `${dateYear}-${dateMonth}-${dateDay}`;
 
 //
 export default function ModalSearchLichThucHanh() {
+  // d
+  const dispatch = useDispatch();
+
+  //
+  let { valueDateFrom, valueDateTo } = useSelector(
+    (state) => state.lichThucHanhReducer
+  );
+
+  // handle
+  //
+  const handleChangeValDateTo = (e) => {
+    dispatch(setValueSelDateToCaTHAction(e.target.value))
+  }
+  //
+  const handleChangeValDateFrom = (e) => {
+    dispatch(setValueSelDateFromCaTHAction(e.target.value));
+  };
+
   return (
     <>
       {/* Modal */}
@@ -38,24 +58,60 @@ export default function ModalSearchLichThucHanh() {
                 {/* body */}
 
                 <div className="pt-2">
-                  <strong>- Thời gian thực hành: </strong> <br />
-                  <strong>Từ: 
-                  <input
-                    type="date"
-                    className="col-4 mx-2"
-                    id="dateFrom"
-                    max={strDate}
-                  /> Đến: 
-                  <input
-                    type="date"
-                    className="col-4 mx-2"
-                    id="dateTo"
-                    max={strDate}
-                    disabled={false}
-                  />
+                  <strong>Thời gian thực hành: </strong> <br />
+                  <p>
+                    Từ:
+                    <input
+                      type="date"
+                      className="col-4 mx-2 rounded border border-1 p-1"
+                      id="valDateFrom"
+                      value={valueDateFrom}
+                      onChange={handleChangeValDateFrom}
+                    />{" "}
+                    Đến:
+                    <input
+                      type="date"
+                      className="col-4 mx-2 rounded border border-1 p-1"
+                      id="valDateTo"
+                      min={valueDateFrom}
+                      value={valueDateTo}
+                      disabled={valueDateFrom.length > 0 ? 0 : 1}
+                      onChange={handleChangeValDateTo}
+                    />
+                  </p>
+                </div>
 
+                {/* Buổi thực hành */}
+                <div className="col-6">
+                  <strong>Buổi thực hành: </strong>
+                  <select class="form-select  ms-2">
+                    <option value={-1}>Tất cả</option>
+                    <option value="sáng">Sáng</option>
+                    <option value="chiều">Chiều</option>
+                    <option value="tối">Tối</option>
+                  </select>
+                </div>
 
-</strong>
+                {/* Buổi Giáo viên */}
+                <div className="col-6 pt-3">
+                  <strong>Giáo viên: </strong>
+                  <select class="form-select  ms-2">
+                    <option value={-1}>Tất cả</option>
+                    <option value="sáng">Sáng</option>
+                    <option value="chiều">Chiều</option>
+                    <option value="tối">Tối</option>
+                  </select>
+                </div>
+
+                {/* Buổi phòng máy */}
+                <div className="col-6 pt-3">
+                  <strong>Phòng máy: </strong>
+                  <select class="form-select  ms-2">
+                    <option value={-1}>Tất cả</option>
+                    <option value="sáng">Sáng</option>
+                    <option value="chiều">Chiều</option>
+                    <option value="tối">Tối</option>
+                  </select>
                 </div>
 
                 {/*  */}

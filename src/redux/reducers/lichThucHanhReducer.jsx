@@ -5,11 +5,11 @@ import { formatStringDate, http } from "../../util/config";
 
 //
 const fun_Search = (objData) => {
-  let {arrCaThucHanh, valueSearch} =objData
+  let {arrCaThucHanh, valueSearch, valueDateFrom, valueDateTo} =objData
 
-  return dataSearch(arrCaThucHanh, valueSearch)
+  return dataSearch(arrCaThucHanh, valueSearch, valueDateFrom, valueDateTo)
 }
-const dataSearch = (arrData, valSearch) => {
+const dataSearch = (arrData, valSearch, valDateFrom, valDateTo ) => {
   let search = valSearch.toLowerCase();
   
   let arrUpdate = arrData.filter((item) => {
@@ -26,15 +26,37 @@ const dataSearch = (arrData, valSearch) => {
       item.phongMay.tenPhong.toLowerCase().includes(search) 
     );
   });
-  return [...arrUpdate];
 
+  //
+  if(valDateFrom.length > 0) {
+    let dayForm = new Date(valDateFrom)
+    arrUpdate = arrUpdate.filter(item => {
+      let tgianTH = new Date(item.ngayThucHanh);
+      return tgianTH >= dayForm;
+    })
+  }
+  //
+  if(valDateTo.length > 0) {
+    let day = new Date(valDateTo)
+    arrUpdate = arrUpdate.filter(item => {
+      let tgianTH = new Date(item.ngayThucHanh);
+      return tgianTH <= day;
+    })
+  }
+
+
+
+  //
+  return [...arrUpdate];
 }
 //
 const initialState = {
   arrCaThucHanh:[],
   arrCaThucHanhSearch:[],
-  valueSearch:'',
   objDetailCaTH: {},
+  valueSearch:'',
+  valueDateFrom:'',
+  valueDateTo:'',
 };
 
 const lichThucHanhReducer = createSlice({
@@ -52,18 +74,28 @@ const lichThucHanhReducer = createSlice({
     },
     setValueSelSearchCaTHAction: (state, action) => {
       state.valueSearch = action.payload;
-
       //
       state.arrCaThucHanhSearch = fun_Search(state)
     },
-    
+    setValueSelDateFromCaTHAction: (state, action) => {
+      state.valueDateFrom = action.payload;
+      //
+      state.arrCaThucHanhSearch = fun_Search(state)
+    },
+    setValueSelDateToCaTHAction: (state, action) => {
+      state.valueDateTo = action.payload;
+      //
+      state.arrCaThucHanhSearch = fun_Search(state)
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
 export const { 
   setArrCaThucHanhAction,
   setObjDetailCaThucHanh,
-  setValueSelSearchCaTHAction
+  setValueSelSearchCaTHAction,
+  setValueSelDateFromCaTHAction,
+  setValueSelDateToCaTHAction,
  } = lichThucHanhReducer.actions;
 export default lichThucHanhReducer.reducer;
 

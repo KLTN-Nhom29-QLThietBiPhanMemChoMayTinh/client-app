@@ -123,10 +123,17 @@
     - lichTrucReducer :có api server rồi - update di - T sửa page QL vs form add rồi 
     - lichTrucReducer: api lỗi TangChuaCoNhanVienTrucTrongThang .
     - QL phần mềm chưa có event update - del
-    - PageQlMonHoc data chua ổn
+    - PageQlMonHoc - search chưa có 
     - PageQlMonHoc CRUD chua co gi
     - Page update duoc gui từ deltail thi phai sửa - lấy data theo api maID chứ không chả về page QL
 
+    # PageQlMonHoc
+    - tạo mới có so buoi vs ngày bd +> ngay kết thúc (sau Tgian thực 1 tuần)
+    - ứng vs số buổi sẽ tạo so lượng ca  của môn đó bằng so buôi (mon học)
+    - dựa theo controller DSMonHocPhanMem/maMon  đểtạo status (đợi mởi lớp (controller có length = 0 ) hay là dang học(controller có length > 0 ))
+    - dựa theo controller DSMonHocPhanMem/maMon co thể lấy số lượng ca TH dã tạo so sanh vs so buổi dể khogno cho tạo ca TH mới nữa
+
+    #
     - ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi
         + api thong báo - gửi ghi chú cùng thietbi bị lỗi  lưu data
         + btn sửa (bên cạnh textErr Thiet bị lỗi) hiên 1 modal chon cac tbi lỗi đã sủa xong cap nhật vao data;

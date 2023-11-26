@@ -140,7 +140,6 @@ export const getAllTangByToaNhaApi = (arrtang) => {
 export const getAllTangChuaCoLichTrucApi = async (dispatch) => {
   try {
 
-    console.log('api này bi lỗi - lấy ds tang đã có lịch trực');
     const result = await http.get("/TangChuaCoNhanVienTrucTrongThang");
 
     let arrDataToaNha_z = result.data.map((item) => {

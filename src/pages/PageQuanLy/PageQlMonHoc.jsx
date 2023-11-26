@@ -11,7 +11,11 @@ import Footer from "../../components/common/Footer/Footer";
 import Database from "../../util/database/Database";
 import { formatStringDate } from "../../util/config";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMonHoc, setValueSelectAction, setValueTxtSearchAction } from "../../redux/reducers/monHocReducer";
+import {
+  getAllMonHoc,
+  setValueSelectAction,
+  setValueTxtSearchAction,
+} from "../../redux/reducers/monHocReducer";
 
 export default function PageQlMonHoc() {
   const dispatch = useDispatch();
@@ -24,35 +28,29 @@ export default function PageQlMonHoc() {
     dispatch(action);
   }, []);
 
-
   //handle
   const handleChangeSearch = (e) => {
     dispatch(setValueTxtSearchAction(e.target.value.trim()));
-
   };
   const handleChangeSelectAction = (e) => {
     dispatch(setValueSelectAction(e.target.value.trim()));
-
-  }
+  };
 
   //render
   const renderDataMon = () => {
-
     return arrMonHocSearch?.map((item, index) => {
       let ngayBD = new Date(item?.ngayBatDau);
       let ngayKT = new Date(item?.ngayBatDau);
 
-      ngayKT.setDate(ngayKT.getDate() + item?.soBuoi * 7);
+      ngayKT.setDate(ngayKT.getDate() + (item?.soBuoi + 1) * 7);
 
       // render
       const renderTrangThai = () => {
-        return <td >Đang Cập nhật</td>
         let day = new Date();
         if (day > ngayKT) {
           return <td style={{ backgroundColor: "#ff6666" }}>Kết thúc</td>;
         }
         if (ngayBD > day) {
-          
           return <td style={{ backgroundColor: "#fff563" }}>Chờ mở lớp</td>;
         }
         return <td style={{ backgroundColor: "#4dff7c" }}>Đang học</td>;
@@ -65,10 +63,8 @@ export default function PageQlMonHoc() {
           <td>{item?.maMon}</td>
           <td>{item?.tenMon}</td>
           <td>{item?.soBuoi}</td>
-          <td>{formatStringDate(new Date(item.ngayBatDau))}</td>
-          <td>{formatStringDate(new Date(item.ngayKetThuc))}</td>
-          {/* <td>{formatStringDate(ngayBD)}</td>
-          <td>{formatStringDate(ngayKT)}</td> */}
+          <td>{formatStringDate(ngayBD)}</td>
+          <td>{formatStringDate(ngayKT)}</td>
           {renderTrangThai()}
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
@@ -115,16 +111,16 @@ export default function PageQlMonHoc() {
   };
   const renderSelectTrangThai = () => {
     return (
-        <div className=" col-2 m-2 ">
-          <select className="form-select " onChange={handleChangeSelectAction}>
-            <option value='0'>Toàn bộ</option>
-            <option value="1">Kết thúc</option>
-            <option value="2">Chờ mở lớp</option>
-            <option value="3">Đang học</option>
-          </select>
-        </div>
-    )
-  }
+      <div className=" col-2 m-2 ">
+        <select className="form-select " onChange={handleChangeSelectAction}>
+          <option value="0">Toàn bộ</option>
+          <option value="1">Kết thúc</option>
+          <option value="2">Chờ mở lớp</option>
+          <option value="3">Đang học</option>
+        </select>
+      </div>
+    );
+  };
 
   // Mảng quản lý data navtab
   let arrLinkNavTab = [{ name: "Quản lý môn học", link: "" }];
@@ -154,20 +150,20 @@ export default function PageQlMonHoc() {
               <div></div>
 
               {/* select - option */}
-                {renderSelectTrangThai()}
+              {renderSelectTrangThai()}
               {/* input tim kiem */}
-               <div>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id
-                    placeholder="tìm kiếm..."
-                    // value={txtSearch}
-                    onChange={handleChangeSearch}
-                  />
-                </div>
+              <div>
+                <input
+                  type="text"
+                  className="form-control"
+                  id
+                  placeholder="tìm kiếm..."
+                  // value={txtSearch}
+                  onChange={handleChangeSearch}
+                />
+              </div>
 
-                {/* Btn them */}
+              {/* Btn them */}
               <div style={{ display: "flex", alignItems: "center" }}>
                 <NavLink
                   // to="/quan-ly/tang/add"
