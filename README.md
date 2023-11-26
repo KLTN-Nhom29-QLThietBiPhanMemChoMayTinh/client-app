@@ -126,6 +126,7 @@
     - PageQlMonHoc - search chưa có 
     - PageQlMonHoc CRUD chua co gi
     - Page update duoc gui từ deltail thi phai sửa - lấy data theo api maID chứ không chả về page QL
+    - update Lich truc : loi api
 
     # PageQlMonHoc
     - tạo mới có so buoi vs ngày bd +> ngay kết thúc (sau Tgian thực 1 tuần)

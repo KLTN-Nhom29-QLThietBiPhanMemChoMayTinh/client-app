@@ -88,8 +88,10 @@ export const configs = {
     let dateYear = day.getYear() + 1900;
     let dateMonth = day.getMonth() + 1;
     let dateDay = day.getDate();
+    let strMonth = dateMonth < 10 ? `0${dateMonth}` : dateMonth;
+    let strDay = dateDay < 10 ? `0${dateDay}` : dateDay;
 
-    let strDate = `${dateYear}-${dateMonth}-${dateDay}`;
+    let strDate = `${dateYear}-${strMonth}-${strDay}`;
 
     return strDate;
   },

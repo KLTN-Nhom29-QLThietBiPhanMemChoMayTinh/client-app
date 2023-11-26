@@ -8,7 +8,7 @@ import { history } from "../..";
 //function
 
 const searchData = (arrData, valSearch, valSelect, valSelect2) => {
-  let textSearch = valSearch.toLowerCase();
+  let textSearch = valSearch.trim().toLowerCase();
   let arrUpdate = [];
   // search - text
   arrUpdate = arrData.filter((item) => {

@@ -70,7 +70,7 @@ export default phanMemReducer.reducer;
 
 // ================================================
 const searchData = (arrData, valSearch, valSelect) => {
-  let textSearch = valSearch.toLowerCase();
+  let textSearch = valSearch.trim().toLowerCase();
 
   // search - text
   let arrUpdate = arrData.filter((item) => {
@@ -81,6 +81,7 @@ const searchData = (arrData, valSearch, valSelect) => {
     return (
       (item.maPhanMem + "").toLowerCase().includes(textSearch) ||
       item.tenPhanMem.toLowerCase().includes(textSearch) ||
+      item.moTa.toLowerCase().includes(textSearch) ||
       item.phienBan.toLowerCase().includes(textSearch) ||
       (item.tuoiTho + "").toLowerCase().includes(textSearch) ||
       formatStringDate(ngaySD).toLowerCase().includes(textSearch) ||

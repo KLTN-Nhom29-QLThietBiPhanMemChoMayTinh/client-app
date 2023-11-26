@@ -79,7 +79,7 @@ export default function PageQLPhanMem() {
             return <td style={{ backgroundColor: "#4dff7c" }}>Đang sử dụng</td>;
           }
         } else {
-          return <td style={{ backgroundColor: "#ff6666" }}>Không sử dụng</td>;
+          return <td style={{ backgroundColor: "#ff6666" }}>Bị hỏng</td>;
         }
 
         // return <td className="bg-danger">Hết hạn sử dụng</td>
@@ -101,13 +101,7 @@ export default function PageQLPhanMem() {
 
           {/* <td style={{ display: "flex", justifyContent: "space-evenly" }}> */}
           <td className=" ">
-            <NavLink
-              // to={"/quan-ly/phan-mem/update"}
-              onClick={() => {
-                alert(`Update -- ${item.id} -- dang cập nhật!`);
-                // co the truyển data len redux từ đây rồi sang trang kia lấy về sau
-              }}
-            >
+            <NavLink to={`/quan-ly/phan-mem/update?id=${item.maPhanMem}`}>
               <button
                 type="button"
                 className="btn btn-primary mx-2 px-2"
@@ -151,7 +145,7 @@ export default function PageQLPhanMem() {
             Toàn bộ
           </option>
           <option selected={valueSelect == 1 ? 1 : 0} value="1">
-            Không sử dụng
+            Bị hỏng
           </option>
           <option selected={valueSelect == 2 ? 1 : 0} value="2">
             Đang sử dụng

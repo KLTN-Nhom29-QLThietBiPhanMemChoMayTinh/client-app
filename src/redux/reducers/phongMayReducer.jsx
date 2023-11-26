@@ -123,7 +123,7 @@ export default phongMayReducer.reducer;
 
 /// =================================
 const dataSearch = (arrData, valSearch, valSelectTN, valSelectTG) => {
-  let search = valSearch.toLowerCase();
+  let search = valSearch.trim().toLowerCase();
   let arrUpdate = arrData;
   if (valSelectTN != -1) {
     // console.log("toa nha != -1");

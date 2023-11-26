@@ -7,7 +7,7 @@ import { history } from "../..";
 // function
 const dataSearch = (arrData, valSearch, valSelect) => {
   // TH theo search
-  let search = valSearch.toLowerCase();
+  let search = valSearch.trim().toLowerCase();
   let arrUpdate = [];
   if (valSelect != -1) {
     arrUpdate = arrData.filter((item) => {

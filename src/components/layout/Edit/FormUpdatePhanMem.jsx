@@ -3,7 +3,11 @@ import Footer from "../../common/Footer/Footer";
 import NavTab from "../../common/NavTab/NavTab";
 import { formatStringDate, formatStringDate2 } from "../../../util/config";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPhanMemApi, insertPhanMemApi } from "../../../redux/reducers/phanMemReducer";
+import {
+  getAllPhanMemApi,
+  insertPhanMemApi,
+} from "../../../redux/reducers/phanMemReducer";
+import { useLocation, useNavigate } from "react-router-dom";
 
 let date = new Date();
 let dateYear = date.getFullYear();
@@ -14,15 +18,23 @@ let dateDay = date.getDate();
 let strDate = `${dateYear}-${dateMonth}-${dateDay}`;
 let strDateMin = `${dateYearMin}-${dateMonth}-${dateDay}`;
 
-export default function FormAddPhanMem() {
+//
+let objData_old = {};
+//
+export default function FormUpdatePhanMem() {
   //
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  // nhan data gui theo uri
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const objParam = Object.fromEntries(searchParams);
   //
   let { arrPhanMem } = useSelector((state) => state.phanMemReducer);
   //
   let objPhanMem = useRef({
     tenPhanMem: "",
-    status: "Đang sử dụng",
+    status: true, //thể hiện trang thai của phần mêm
     moTa: "",
     ngaySD: formatStringDate2(),
     tgianBaoHanh: 1,
@@ -38,19 +50,36 @@ export default function FormAddPhanMem() {
   });
   //
   useEffect(() => {
-    //
-    if (arrPhanMem.length === 0) {
-      const action = getAllPhanMemApi;
-      dispatch(action);
+    if (objParam.id == null) {
+      navigate("/quan-ly/phan-mem");
     }
     //
-    let { tgianBaoHanh, ngaySD } = objPhanMem.current;
+    if (arrPhanMem.length === 0) {
+      // get all PM
+      // dispatch(getAllPhanMemApi);
+      //
+      //tim theo api idPM
+      navigate("/quan-ly/phan-mem");
+    } else {
+      objData_old = arrPhanMem.find((item) => item.maPhanMem == objParam.id);
+    }
+    //
+    let { tenPhanMem, trangThai, moTa, phienBan, tuoiTho, ngayCaiDat } =
+      objData_old;
+
+    //
+    let ngaySD = formatStringDate2(new Date(ngayCaiDat));
+    let tgianBaoHanh = tuoiTho;
     let { status, ngayKT } = getCheckTgianKT({ tgianBaoHanh, ngaySD });
 
     objPhanMem.current = {
-      ...objPhanMem.current,
-      status,
+      tenPhanMem,
+      moTa,
+      ngaySD,
+      tgianBaoHanh,
       ngayKT,
+      status: trangThai,
+      phienBan,
     };
     setErrPhanMem({ ...errPhanMem });
   }, []);
@@ -66,7 +95,8 @@ export default function FormAddPhanMem() {
     }
     // true
 
-    let { tenPhanMem, moTa, ngaySD, phienBan, tgianBaoHanh, ngayKT } = objPhanMem.current;
+    let { tenPhanMem, moTa, ngaySD, phienBan, tgianBaoHanh, ngayKT } =
+      objPhanMem.current;
 
     let phanMemNew = {
       tenPhanMem,
@@ -99,7 +129,7 @@ export default function FormAddPhanMem() {
     setErrPhanMem({
       ...errPhanMem,
       tenPhanMem: err_tenTBi,
-      phienBan:err_phienBan,
+      phienBan: err_phienBan,
     });
 
     return check;
@@ -183,7 +213,7 @@ export default function FormAddPhanMem() {
         >
           <div style={{ height: "80vh" }}>
             <div style={{ height: "8vh" }}>
-              <NavTab itemLink={{ arrLinkNavTab, chucNang: "Tạo mới" }} />
+              <NavTab itemLink={{ arrLinkNavTab, chucNang: "Chỉnh sửa" }} />
             </div>
             <div
               className="bg-white rounded p-4 px-5"
@@ -196,7 +226,7 @@ export default function FormAddPhanMem() {
               >
                 {/* body */}
                 <div>
-                  <h2 className="mx-3 mb-3 ">Thêm phần mềm</h2>
+                  <h2 className="mx-3 mb-3 ">Chỉnh sửa phần mềm</h2>
                   <div className="row">
                     <div className="col-6">
                       {/* left */}
@@ -216,6 +246,7 @@ export default function FormAddPhanMem() {
                           className="form-control"
                           name="tenPhanMem"
                           id="tenPhanMem"
+                          value={objPhanMem.current.tenPhanMem}
                           onChange={handleChangeText}
                           aria-describedby="helpIdTenPM"
                           placeholder="Phần mềm Excel..."
@@ -237,6 +268,7 @@ export default function FormAddPhanMem() {
                           className="form-control"
                           name="phienBan"
                           id="phienBan"
+                          value={objPhanMem.current.phienBan}
                           onChange={handleChangeText}
                           aria-describedby="helpIdPhienban"
                           placeholder="2023..."
@@ -254,6 +286,7 @@ export default function FormAddPhanMem() {
                           className="form-control"
                           name="moTa"
                           id="moTa"
+                          value={objPhanMem.current.moTa}
                           onChange={handleChangeText}
                           rows={5}
                         />
@@ -268,7 +301,7 @@ export default function FormAddPhanMem() {
                           Ngày sử dụng
                           <small
                             id="helpIdNgaySD"
-                            className="form-text text-danger mx-2"
+                            className="form-text text-muted mx-2"
                           >
                             *{errPhanMem.ngaySD}
                           </small>
@@ -284,6 +317,7 @@ export default function FormAddPhanMem() {
                           min={strDateMin}
                           aria-describedby="helpIdNgaySD"
                           placeholder="01/01/2023"
+                          disabled={true}
                         />
                       </div>
 
@@ -308,6 +342,7 @@ export default function FormAddPhanMem() {
                           max={50}
                           onChange={handleChangeTgianBH}
                           aria-describedby="helpIdtgian"
+                          disabled={objPhanMem.current.status == 0 ? 1 : 0}
                         />
                       </div>
 
@@ -336,17 +371,28 @@ export default function FormAddPhanMem() {
                           Trạng thái
                           <small
                             id="helpId"
-                            className="form-text text-muted mx-2"
+                            className="form-text text-danger mx-2"
                           >
                             *
                           </small>
                         </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          disabled
-                          value={objPhanMem.current.status}
-                        />
+
+                        <select className="form-select ">
+                          <option
+                            selected={objPhanMem.current.status ? 1 : 0}
+                            value="true"
+                          >
+                            Đang sử dụng
+                          </option>
+                          <option
+                            selected={
+                              objPhanMem.current.status == 0 ? 1 : 0
+                            }
+                            value="false"
+                          >
+                          Bị hỏng
+                          </option>
+                        </select>
                       </div>
                       {/*  */}
                     </div>
@@ -355,7 +401,7 @@ export default function FormAddPhanMem() {
                 {/* footer - form */}
                 <div className="">
                   <button type="submit" className="btn btn-success mx-3">
-                    Tạo mới
+                    Chỉnh sửa
                   </button>
                   <button
                     type="reset"

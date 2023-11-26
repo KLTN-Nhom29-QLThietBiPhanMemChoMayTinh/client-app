@@ -218,7 +218,7 @@ const dataSearch = (
   valSelect3,
   valSelect4
 ) => {
-  let search = valSearch.toLowerCase();
+  let search = valSearch.trim().toLowerCase();
 
   let arrUpdate = arrData.filter((item) => {
     let ngaySD = new Date(item.ngayLapDat);

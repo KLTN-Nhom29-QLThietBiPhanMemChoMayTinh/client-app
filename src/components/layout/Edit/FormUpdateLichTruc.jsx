@@ -127,8 +127,8 @@ export default function FormUpdateLichTruc() {
         nhanVien,
         tang,
       };
-      
-      alert('update lỗi api do date của ngayTruc')
+
+      alert("update lỗi api do date của ngayTruc");
       // dispatch(updateLichTrucApi(objLichTruc));
     }
   };
@@ -395,13 +395,29 @@ export default function FormUpdateLichTruc() {
                   <button
                     type="reset"
                     onClick={() => {
+                      //
+                      let {
+                        maLich,
+                        ngayTruc,
+                        thoiGianBatDau,
+                        thoiGianKetThuc,
+                        nhanVien,
+                        tang,
+                      } = objData_old;
+
                       setLichTruc({
-                        tgian: strDate,
-                        thoiGianBatDau: 6,
-                        thoiGianKetThuc: 14,
-                        soNgayNghi: 0,
-                        nhanVien: {},
-                        tang: {},
+                        ngayTruc,
+                        thoiGianBatDau,
+                        thoiGianKetThuc,
+                        valueSelNhanVien: nhanVien.maNV,
+                        valueSelTang: tang.maTang,
+                        valueSelToaNha: tang.toaNha.maToaNha,
+                      });
+                      //
+                      setErrLTruc({
+                        nhanVien: "",
+                        toaNha: "",
+                        tang: "",
                       });
                     }}
                     className="btn btn-danger mx-3"

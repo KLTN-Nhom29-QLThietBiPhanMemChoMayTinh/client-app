@@ -13,7 +13,7 @@ import Database from "../../util/database/Database";
  * @returns 
  */
 const searchData = (arrData, valSearch, valSelect) => {
-  let textSearch = valSearch.toLowerCase();
+  let textSearch = valSearch.trim().toLowerCase();
 
   // search - text
   let arrUpdate = arrData.filter((item) => {

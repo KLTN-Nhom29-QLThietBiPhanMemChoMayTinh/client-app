@@ -89,7 +89,7 @@ export default tangReducer.reducer;
 
 // function
 const dataSearch = (arrData, valSearch, valSelect) => {
-  let search = valSearch.toLowerCase();
+  let search = valSearch.trim().toLowerCase();
   let arrUpdate = arrData.filter((item) => {
     if (valSelect == -1 || valSelect.length === 0) {
       return (

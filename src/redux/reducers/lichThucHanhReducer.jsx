@@ -35,7 +35,7 @@ const dataSearch = (
   valSelPhongMay
 ) => {
   //
-  let search = valSearch.toLowerCase();
+  let search = valSearch.trim().toLowerCase();
 
   let arrUpdate = arrData.filter((item) => {
     let tgian = new Date(item.ngayThucHanh);
