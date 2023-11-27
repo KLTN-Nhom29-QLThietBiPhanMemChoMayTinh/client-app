@@ -179,9 +179,6 @@ export default function PageLichThucHanh() {
                   {/* Btn them */}
                   <NavLink
                     to="/phan-cong/lich-thuc-hanh/add"
-                    onClick={() => {
-                      alert("Dang cap nhat!");
-                    }}
                     type="button"
                     className="btn btn-success ms-4 view_center_vertical"
                   >

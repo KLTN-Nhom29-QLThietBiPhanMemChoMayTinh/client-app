@@ -169,9 +169,9 @@ export const getAllMonHoc = async (dispatch) => {
   // call Api
   try {
     let result = await http.get("/DSMonHoc");
-    const action = setArrMonHocAction(result.data);
-    // const action = setArrMonHocAction(Database.dataMonHoc);
 
+    let arrDataMonHoc = result.data;
+    const action = setArrMonHocAction(arrDataMonHoc);
     dispatch(action);
   } catch (error) {
     console.log(

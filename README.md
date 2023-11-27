@@ -60,7 +60,7 @@
 
 ### ảnh lich Thuc HAnh
 ![lich Thuc HAnh](./AnhMinhHoa/img_pcLichThucHanh.png)
-![lich Thuc HAnh](./AnhMinhHoa/img_pcLichTruc_form.png)
+![lich Thuc HAnh](./AnhMinhHoa/img_pcLichThucHanh_form.png)
 
 ## note del
 * load lai data trang home
