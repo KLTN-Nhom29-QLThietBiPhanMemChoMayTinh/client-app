@@ -138,7 +138,7 @@ const TOKEN_CYBERSOFT = "z123456";
 
 export const http = axios.create({
   baseURL: `http://localhost:8080/api/v1`,
-  timeout: 6000, // thoi gian duy tri 600s
+  timeout: 20000, // thoi gian duy tri ???
 });
 
 // cấu hình request

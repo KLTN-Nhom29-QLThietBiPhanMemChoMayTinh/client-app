@@ -118,7 +118,8 @@ function PageQLPhongMay() {
             <button
               onClick={() => {
                 if (window.confirm("Bấm vào nút OK để xóa " + item.tenPhong)) {
-                  dispatch(deletePhongApi(item));
+                  alert('Đang cập nhật! Vui lòng quay lại sau.')
+                  // dispatch(deletePhongApi(item));
                 }
               }}
               type="button"

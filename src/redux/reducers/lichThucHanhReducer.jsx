@@ -2,6 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { formatStringDate, http } from "../../util/config";
+import { history } from "../..";
 
 //
 const fun_Search = (objData) => {
@@ -175,6 +176,40 @@ export default lichThucHanhReducer.reducer;
 
 // Call api +++++++++++++++++++++++++++++++++++++++++++++++++
 
+export const insertCaThucHanhApi = (objData) => {
+  let { tenCa, tietBatDau, tietKetThuc, giaoVien, phongMay, monHoc } = objData;
+  // ngayThucHanh - BuoiSo
+  let { soBuoi, ngayBatDau } = monHoc;
+
+  return async (dispatch) => {
+    try {
+      for (let i = 0; i < soBuoi; i++) {
+        let ngayThucHanh = new Date(ngayBatDau);
+        ngayThucHanh.setDate(ngayThucHanh.getDate() + i * 7);
+
+        let objCaTH = { ...objData, buoiSo: i + 1, ngayThucHanh };
+        await http.post("/LuuCaThucHanh", objCaTH);
+      }
+
+      dispatch(getAllCaThucHanhApi);
+
+      setTimeout(() => {
+        history.push("/phan-cong/lich-thuc-hanh");
+        alert("Tạo mới thành công!");
+      }, 3000);
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: lichThucHanhReducer.jsx:183 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
+
+/**
+ * call ALl DS CaThucHanh
+ * @param {*} dispatch
+ */
 export const getAllCaThucHanhApi = async (dispatch) => {
   try {
     let result = await http.get("/DSCaThucHanh");

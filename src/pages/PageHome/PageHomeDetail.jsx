@@ -21,6 +21,7 @@ import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 import ComponentModelDetail from "../../components/layoutHome/ComponentModelDetail";
 import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiChu";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getAllTangApi } from "../../redux/reducers/tangReducer";
 
 export default function PageHomeDetail() {
   const dispatch = useDispatch();
@@ -47,6 +48,9 @@ export default function PageHomeDetail() {
     if (arrToaNha.length === 0) {
       dispatch(getAllToaNhaApi);
     }
+    if(arrTang.length === 0 ){
+      dispatch(getAllTangApi)
+    }
     // call Tang
 
     // 3.del
@@ -63,7 +67,7 @@ export default function PageHomeDetail() {
           break;
         case "tang": {
           if (arrTang.length === 0) {
-            navigate("quan-ly/tang");
+            navigate("/quan-ly/tang");
             return;
           }
           let objTang = arrTang.find((item) => item.maTang == id);
@@ -78,7 +82,7 @@ export default function PageHomeDetail() {
         }
         case "phongmay": {
           if (arrTang.length === 0) {
-            navigate("quan-ly/tang");
+            navigate("/quan-ly/tang");
             return;
           }
           let objPhongmay = arrPhongMay.find((item) => item.maPhong == id);
@@ -101,7 +105,7 @@ export default function PageHomeDetail() {
         case "maytinh": {
           //
           if (arrTang.length === 0) {
-            navigate("quan-ly/tang");
+            navigate("/quan-ly/tang");
             return;
           }
           if (arrMayTinh.length === 0) {

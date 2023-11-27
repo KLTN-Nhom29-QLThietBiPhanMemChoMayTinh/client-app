@@ -7,6 +7,7 @@ import { getAllPhongMayApi } from "../../../redux/reducers/phongMayReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMonHoc } from "../../../redux/reducers/monHocReducer";
 import { getAllGiaoVienApi } from "../../../redux/reducers/giaoVienReducer";
+import { insertCaThucHanhApi } from "../../../redux/reducers/lichThucHanhReducer";
 
 export default function FormAddLichThucHanh() {
   //
@@ -25,6 +26,7 @@ export default function FormAddLichThucHanh() {
     valueSelTang: -1,
     valueSelPhongMay: -1,
     valueSelToaNha: -1,
+    valueSelBuoiTH: -1,
   });
   let [errCaTH, setErrCaTH] = useState({
     valueSelGiaoVien: "",
@@ -32,6 +34,7 @@ export default function FormAddLichThucHanh() {
     valueSelTang: "",
     valueSelPhongMay: "",
     valueSelToaNha: "",
+    valueSelBuoiTH: "",
   });
 
   //
@@ -56,6 +59,124 @@ export default function FormAddLichThucHanh() {
   }, []);
   //
   //handle
+  //
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!checkData()) {
+      //false
+      console.log("false");
+      return;
+    }
+    //true
+    let {
+      valueSelGiaoVien,
+      soCaTH,
+      valueSelMonHoc,
+      valueSelTang,
+      valueSelPhongMay,
+      valueSelToaNha,
+      valueSelBuoiTH,
+    } = objCaThucHanh.current;
+
+    let objMonHoc = arrMonHoc.find((item) => {
+      return item.maMon == valueSelMonHoc;
+    });
+    let objGiaoVien = arrGiaoVien.find((item) => {
+      return item.maGiaoVien == valueSelGiaoVien;
+    });
+    let objPhongMay = arrPhongMay.find((item) => {
+      return item.maPhong == valueSelPhongMay;
+    });
+    let tenCa = "";
+    let tietBatDau = "";
+    let tietKetThuc = "";
+    if (valueSelBuoiTH == 1) {
+      tenCa = "sáng";
+      tietBatDau = 1;
+      tietKetThuc = 3;
+    } else if (valueSelBuoiTH == 2) {
+      tenCa = "chiều";
+      tietBatDau = 4;
+      tietKetThuc = 6;
+    } else {
+      tenCa = "tối";
+      tietBatDau = 7;
+      tietKetThuc = 9;
+    }
+    let objData = {
+      tenCa,
+      tietBatDau,
+      tietKetThuc,
+      giaoVien:objGiaoVien,
+      phongMay:objPhongMay,
+      monHoc:objMonHoc,
+    }
+
+    console.log(objData);
+    dispatch(insertCaThucHanhApi(objData))
+  };
+  //
+  const checkData = () => {
+    let check = 1;
+    let err_valueSelGiaoVien = "";
+    let err_valueSelMonHoc = "";
+    let err_valueSelTang = "";
+    let err_valueSelPhongMay = "";
+    let err_valueSelToaNha = "";
+    let err_valueSelBuoiTH = "";
+    let err_text = "Hãy chọn thông tin!";
+    let {
+      valueSelGiaoVien,
+      soCaTH,
+      valueSelMonHoc,
+      valueSelTang,
+      valueSelPhongMay,
+      valueSelToaNha,
+      valueSelBuoiTH,
+    } = objCaThucHanh.current;
+
+    //
+    if (valueSelBuoiTH == -1) {
+      err_valueSelBuoiTH = err_text;
+      check = 0;
+    }
+    //
+    if (valueSelPhongMay == -1) {
+      err_valueSelPhongMay = err_text;
+      check = 0;
+    }
+    //
+    if (valueSelMonHoc == -1) {
+      err_valueSelMonHoc = err_text;
+      check = 0;
+    }
+    //
+    if (valueSelGiaoVien == -1) {
+      err_valueSelGiaoVien = err_text;
+      check = 0;
+    }
+
+    setErrCaTH({
+      ...errCaTH,
+      valueSelGiaoVien: err_valueSelGiaoVien,
+      valueSelMonHoc: err_valueSelMonHoc,
+      valueSelTang: err_valueSelTang,
+      valueSelPhongMay: err_valueSelPhongMay,
+      valueSelToaNha: err_valueSelToaNha,
+      valueSelBuoiTH: err_valueSelBuoiTH,
+    });
+
+    return check;
+  };
+  //
+  const handleChangeSelectBuoiTH = (e) => {
+    let { value } = e.target;
+
+    objCaThucHanh.current.valueSelBuoiTH = value;
+
+    setErrCaTH({ ...errCaTH, valueSelBuoiTH: "" });
+  };
   //
   const handleChangeSelectGiaoVien = (e) => {
     let value = e.target.value;
@@ -166,6 +287,41 @@ export default function FormAddLichThucHanh() {
   };
 
   // render
+  //
+  const renderChangeSelectBuoiTH = () => {
+    let { valueSelBuoiTH } = objCaThucHanh.current;
+    if (valueSelBuoiTH != -1) {
+      return (
+        <>
+          <option selected={valueSelBuoiTH == 1 ? 1 : 0} value={1}>
+            Sáng
+          </option>
+          <option selected={valueSelBuoiTH == 2 ? 1 : 0} value={2}>
+            Chiều
+          </option>
+          <option selected={valueSelBuoiTH == 3 ? 1 : 0} value={3}>
+            Tối
+          </option>
+        </>
+      );
+    }
+    return (
+      <>
+        <option selected={valueSelBuoiTH == -1 ? 1 : 0} value={-1}>
+          Tất cả
+        </option>
+        <option selected={valueSelBuoiTH == 1 ? 1 : 0} value={1}>
+          Sáng
+        </option>
+        <option selected={valueSelBuoiTH == 2 ? 1 : 0} value={2}>
+          Chiều
+        </option>
+        <option selected={valueSelBuoiTH == 3 ? 1 : 0} value={3}>
+          Tối
+        </option>
+      </>
+    );
+  };
   //
   const renderSelectGiaoVien = () => {
     let { valueSelGiaoVien } = objCaThucHanh.current;
@@ -345,14 +501,14 @@ export default function FormAddLichThucHanh() {
             >
               {/* Form add */}
               <form
-                // onSubmit={handleSubmit}
+                onSubmit={handleSubmit}
                 className="d-flex h-100 justify-content-between flex-column"
               >
                 <div className="">
                   <h2 className="mx-3 mb-3 ">Tạo mới lịch thực hành</h2>
                   <div className="row">
                     {/* left */}
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                       {/* MOn hoc */}
                       <div className="mb-3 col-10">
                         <label htmlFor="valSelMonHoc" className="form-label">
@@ -392,6 +548,11 @@ export default function FormAddLichThucHanh() {
                           disabled
                         />
                       </div>
+
+                      {/*  */}
+                    </div>
+                    {/* center */}
+                    <div className="col-md-4">
                       {/* Giáo viên */}
                       <div className="mb-3 col-10">
                         <label htmlFor="valSelGiaovien" className="form-label">
@@ -410,11 +571,26 @@ export default function FormAddLichThucHanh() {
                           {renderSelectGiaoVien()}
                         </select>
                       </div>
-
-                      {/*  */}
+                      {/* Buổi TH */}
+                      <div className="mb-3 col-10">
+                        <label htmlFor="valSelBuoiTH" className="form-label">
+                          Buổi thực hành
+                          <small className="form-text text-danger mx-2">
+                            *{errCaTH.valueSelBuoiTH}
+                          </small>
+                        </label>
+                        <select
+                          className="form-select "
+                          name="valSelBuoiTH"
+                          id="valSelBuoiTH"
+                          onChange={handleChangeSelectBuoiTH}
+                        >
+                          {renderChangeSelectBuoiTH()}
+                        </select>
+                      </div>
                     </div>
                     {/* right */}
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                       {/* tòa nhà */}
                       <div className="mb-3 col-10">
                         <label htmlFor="valSelToaNha" className="form-label">

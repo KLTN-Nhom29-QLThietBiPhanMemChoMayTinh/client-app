@@ -312,7 +312,10 @@ export const insertPhongMayApi = (phongMay) => {
     phongMay;
 
   let arrPhanMem = [...phanMem];
-  console.log("🚀 ~ file: phongMayReducer.jsx:315 ~ insertPhongMayApi ~ arrPhanMem:", arrPhanMem)
+  console.log(
+    "🚀 ~ file: phongMayReducer.jsx:315 ~ insertPhongMayApi ~ arrPhanMem:",
+    arrPhanMem
+  );
 
   // luu phong may
   let savePhong = {
@@ -322,7 +325,10 @@ export const insertPhongMayApi = (phongMay) => {
     tang: objTang,
     trangThai: "Trống",
   };
-  console.log("🚀 ~ file: phongMayReducer.jsx:325 ~ insertPhongMayApi ~ savePhong:", savePhong)
+  console.log(
+    "🚀 ~ file: phongMayReducer.jsx:325 ~ insertPhongMayApi ~ savePhong:",
+    savePhong
+  );
   //
   //Luu phong máy vs Phanmem
 
@@ -339,6 +345,7 @@ export const insertPhongMayApi = (phongMay) => {
           phanMem: item,
           status: true,
         };
+        
         await http.post("/LuuPhongMayPhanMem", savePhongMay_PhanMem);
       });
 
@@ -361,6 +368,7 @@ export const insertPhongMayApi = (phongMay) => {
       }
 
       arrMayTinh.forEach(async (item) => {
+        
         let resultMayTinh = await http.post("/LuuMayTinh", item);
 
         // luu maytinh vaf thiet bi
@@ -374,10 +382,12 @@ export const insertPhongMayApi = (phongMay) => {
         });
       });
 
-      dispatch(getAllPhongMayApi);
-      alert("Tạo mới thành công.");
-      dispatch(setStatusDataMoi(true)); // cap nhat trang home
-      history.push("/quan-ly/phong");
+      await dispatch(getAllPhongMayApi);
+      await dispatch(setStatusDataMoi(true)); // cap nhat trang home
+      setTimeout(() => {
+        alert("Tạo mới thành công.");
+        history.push("/quan-ly/phong");
+      }, 2000);
     } catch (error) {
       console.log(
         "🚀 ~ file: phongMayReducer.jsx:157 ~ returnasync ~ error:",
