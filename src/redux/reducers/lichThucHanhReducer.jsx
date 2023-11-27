@@ -1,7 +1,7 @@
 //rxslice
 
 import { createSlice } from "@reduxjs/toolkit";
-import { formatStringDate, http } from "../../util/config";
+import { formatStringDate, formatStringDate3, http } from "../../util/config";
 import { history } from "../..";
 
 //
@@ -44,8 +44,9 @@ const dataSearch = (
     let strTietTH = `${item.tietBatDau} - ${item.tietKetThuc}`;
 
     return (
+      (item.monHoc.maMon + "").toLowerCase().includes(search) ||
       item.monHoc.tenMon.toLowerCase().includes(search) ||
-      formatStringDate(tgian).toLowerCase().includes(search) ||
+      formatStringDate3(tgian).toLowerCase().includes(search) ||
       item.tenCa.toLowerCase().includes(search) ||
       strTietTH.toLowerCase().includes(search) ||
       item.giaoVien.maGiaoVien.toLowerCase().includes(search) ||
@@ -97,6 +98,8 @@ const dataSearch = (
 const initialState = {
   arrCaThucHanh: [],
   arrCaThucHanhSearch: [],
+  arrPhanMemByMonHoc: [],
+  arrPhongByMonHoc: [],
   objDetailCaTH: {},
   valueSearch: "",
   valueDateFrom: "",
@@ -116,6 +119,13 @@ const lichThucHanhReducer = createSlice({
 
       state.arrCaThucHanhSearch = fun_Search(state);
     },
+    serArrPhanMemByIdMonHocAction: (state, action) => {
+      state.arrPhanMemByMonHoc = action.payload;
+    },
+    serArrPhongByDSPhanMem_MonHocAction: (state, action) => {
+      state.arrPhongByMonHoc = action.payload;
+    },
+    // search
     setObjDetailCaThucHanh: (state, action) => {
       state.objDetailCaTH = action.payload;
     },
@@ -158,11 +168,14 @@ const lichThucHanhReducer = createSlice({
       //
       state.arrCaThucHanhSearch = fun_Search(state);
     },
+    //
   },
 });
 // exp nay de sử dụng theo cách 2
 export const {
   setArrCaThucHanhAction,
+  serArrPhanMemByIdMonHocAction,
+  serArrPhongByDSPhanMem_MonHocAction,
   setObjDetailCaThucHanh,
   setValueSelSearchCaTHAction,
   setValueSelDateFromCaTHAction,
@@ -173,9 +186,71 @@ export const {
   resetValueSearchAction,
 } = lichThucHanhReducer.actions;
 export default lichThucHanhReducer.reducer;
-
+//
 // Call api +++++++++++++++++++++++++++++++++++++++++++++++++
+/**
+ * 1. tìm DS phan mem của mon hoc (theo maMon hoc)
+ * 2. lấy DS Phần mềm của Phòng
+ * 3. so sánh tìm phòng hợp vs môn học ( phòng nào có đủ các PM của môn học )
+ * 4. cập nhật arr phong máy theo ar phong may mới (byMonHoc)
+ * @param {mã môn học giúp tìm ds MonHocPhanmem } maMonHoc
+ * @param {ds toàn bộ phòng (có list phần mềm)} arrPhong
+ * @returns
+ */
+export const getDSPhong_trungPM_MonHocApi = (maMonHoc, arrPhong) => {
+  return async (dispatch) => {
+    try {
+      //1.
+      let resultMonHocPhanMem = await http.get(`/DSMonHocPhanMem/${maMonHoc}`);
+      let arrPhanMemByMonHoc = [];
+      //
+      resultMonHocPhanMem.data.forEach((e) => {
+        arrPhanMemByMonHoc.push(e.phanMem);
+      });
 
+      // 2.
+
+      let arrPhongByMonHoc = [];
+
+      arrPhong.forEach((item) => {
+        let check = 0;
+        let { phanMems } = item;
+        // 3.
+        arrPhanMemByMonHoc.forEach((e) => {
+          let value = 0;
+          phanMems.forEach((e2) => {
+            console.log(
+              e2.maPhanMem,
+              e.maPhanMem,
+              e2.maPhanMem === e.maPhanMem
+            );
+            if (e2.maPhanMem === e.maPhanMem){
+              value = 1;
+            }
+          });
+          console.log(
+            "🚀 ~ file: lichThucHanhReducer.jsx:223 ~ value ~ value:",
+            value
+          );
+        });
+      });
+
+      //
+      // dispatch(serArrPhanMemByIdMonHocAction(arrPhanMemByMonHoc));
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: lichThucHanhReducer.jsx:197 ~ return ~ error:",
+        error
+      );
+    }
+  };
+};
+
+/**
+ * add 1 ca thuc hanh
+ * @param {object} objData
+ * @returns
+ */
 export const insertCaThucHanhApi = (objData) => {
   let { tenCa, tietBatDau, tietKetThuc, giaoVien, phongMay, monHoc } = objData;
   // ngayThucHanh - BuoiSo

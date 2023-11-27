@@ -7,7 +7,8 @@ import { getAllPhongMayApi } from "../../../redux/reducers/phongMayReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMonHoc } from "../../../redux/reducers/monHocReducer";
 import { getAllGiaoVienApi } from "../../../redux/reducers/giaoVienReducer";
-import { insertCaThucHanhApi } from "../../../redux/reducers/lichThucHanhReducer";
+import { getDSPhong_trungPM_MonHocApi, insertCaThucHanhApi } from "../../../redux/reducers/lichThucHanhReducer";
+import { formatStringDate3 } from "../../../util/config";
 
 export default function FormAddLichThucHanh() {
   //
@@ -22,6 +23,8 @@ export default function FormAddLichThucHanh() {
   let objCaThucHanh = useRef({
     valueSelGiaoVien: -1,
     soCaTH: 0,
+    ngayBD: "",
+    ngayKT: "",
     valueSelMonHoc: -1,
     valueSelTang: -1,
     valueSelPhongMay: -1,
@@ -108,13 +111,13 @@ export default function FormAddLichThucHanh() {
       tenCa,
       tietBatDau,
       tietKetThuc,
-      giaoVien:objGiaoVien,
-      phongMay:objPhongMay,
-      monHoc:objMonHoc,
-    }
+      giaoVien: objGiaoVien,
+      phongMay: objPhongMay,
+      monHoc: objMonHoc,
+    };
 
     console.log(objData);
-    dispatch(insertCaThucHanhApi(objData))
+    dispatch(insertCaThucHanhApi(objData));
   };
   //
   const checkData = () => {
@@ -202,6 +205,8 @@ export default function FormAddLichThucHanh() {
         ...objCaThucHanh.current,
         valueSelMonHoc: value,
         soCaTH: 0,
+        ngayBD: "",
+        ngayKT: "",
       };
 
       setErrCaTH({
@@ -210,10 +215,22 @@ export default function FormAddLichThucHanh() {
       });
     } else {
       let objDataMH = arrMonHoc.find((item) => item.maMon == value);
+      let { soBuoi, ngayBatDau, maMon } = objDataMH;
+
+      // tim PM cho mon hoc - tim phongf
+      dispatch(getDSPhong_trungPM_MonHocApi(maMon, arrPhongMay))
+
+      /// gans cho thong tin mon hoc
+      let ngayBD = new Date(ngayBatDau);
+      let ngayKT = new Date(ngayBatDau);
+      ngayKT.setDate(ngayKT.getDate() + (soBuoi + 1) * 7);
+      //
       objCaThucHanh.current = {
         ...objCaThucHanh.current,
         valueSelMonHoc: value,
-        soCaTH: objDataMH.soBuoi,
+        soCaTH: soBuoi,
+        ngayBD: formatStringDate3(ngayBD),
+        ngayKT: formatStringDate3(ngayKT),
       };
 
       setErrCaTH({
@@ -351,6 +368,65 @@ export default function FormAddLichThucHanh() {
         </option>
       );
     });
+  };
+  //
+  const renderThongTinMonHoc = () => {
+    let { valueSelMonHoc } = objCaThucHanh.current;
+    if(valueSelMonHoc == -1) {
+      return <div className="text-center col-10" style={{fontSize:'25px'}}>...</div>
+    }
+    return (
+      <>
+        {/* so CaThuc Hanh */}
+        <div className="mb-3 col-10">
+          <label htmlFor="soCaTH" className="form-label">
+            Số ca thực hành
+            <small id="helpId" className="form-text text-muted mx-2">
+              *
+            </small>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="soCaTH"
+            id="soCaTH"
+            value={objCaThucHanh.current.soCaTH}
+            aria-describedby="helpId"
+            disabled
+          />
+        </div>
+        {/* Ngay BD */}
+        <div className="mb-3 col-10">
+          <label htmlFor="ngayBD1" className="form-label">
+            Ngày bắt đầu
+            <small className="form-text text-muted mx-2">*</small>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="ngayBD1"
+            id="ngayBD1"
+            value={objCaThucHanh.current.ngayBD}
+            disabled
+          />
+        </div>
+        {/* Ngay KT */}
+        <div className="mb-3 col-10">
+          <label htmlFor="ngayKT" className="form-label">
+            Ngày kết thúc
+            <small className="form-text text-muted mx-2">*</small>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="ngayKT"
+            id="ngayKT"
+            value={objCaThucHanh.current.ngayKT}
+            disabled
+          />
+        </div>
+      </>
+    );
   };
   //
   const renderSelectPhongMay = () => {
@@ -527,27 +603,7 @@ export default function FormAddLichThucHanh() {
                           {renderSelectMonHoc()}
                         </select>
                       </div>
-                      {/* so CaThuc Hanh */}
-                      <div className="mb-3 col-10">
-                        <label htmlFor="soCaTH" className="form-label">
-                          Số ca thực hành
-                          <small
-                            id="helpId"
-                            className="form-text text-muted mx-2"
-                          >
-                            *
-                          </small>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="soCaTH"
-                          id="soCaTH"
-                          value={objCaThucHanh.current.soCaTH}
-                          aria-describedby="helpId"
-                          disabled
-                        />
-                      </div>
+                      {renderThongTinMonHoc()}
 
                       {/*  */}
                     </div>

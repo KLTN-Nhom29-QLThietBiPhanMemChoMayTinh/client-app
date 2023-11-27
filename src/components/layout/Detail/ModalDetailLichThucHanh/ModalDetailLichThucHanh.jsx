@@ -1,6 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { formatNameByHocVi, formatStringDate } from "../../../../util/config";
+import {
+  formatNameByHocVi,
+  formatStringDate,
+  formatStringDate3,
+} from "../../../../util/config";
 import { FaPencilAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -119,10 +123,13 @@ export default function ModalDetailLichThucHanh() {
     if (monHoc == null) {
       return <>Không có thông tin.</>;
     }
-    let { tenMon, ngayBatDau, ngayKetThuc } = monHoc;
-    let str = `${tenMon} ( có 2 buổi TH, ${formatStringDate(
-      new Date(ngayBatDau)
-    )} -> ${formatStringDate(new Date(ngayKetThuc))} ) `;
+    let { tenMon, ngayBatDau, soBuoi } = monHoc;
+    let ngayBD = new Date(ngayBatDau);
+    let ngayKT = new Date(ngayBatDau);
+    ngayKT.setDate(ngayKT.getDate() + (soBuoi + 1) * 7);
+    let str = `${tenMon} ( có ${soBuoi} buổi TH, ${formatStringDate3(
+      ngayBD
+    )} -> ${formatStringDate(ngayKT)} ) `;
 
     return <>{str}</>;
   };

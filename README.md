@@ -135,6 +135,7 @@
     - ứng vs số buổi sẽ tạo so lượng ca  của môn đó bằng so buôi (mon học)
     - dựa theo controller DSMonHocPhanMem/maMon  đểtạo status (đợi mởi lớp (controller có length = 0 ) hay là dang học(controller có length > 0 ))
     - dựa theo controller DSMonHocPhanMem/maMon co thể lấy số lượng ca TH dã tạo so sanh vs so buổi dể khogno cho tạo ca TH mới nữa
+    - getDSPhong_trungPM_MonHocApi() (chua hiểu giá tri ở trong) -> show PM môn hoc -> 
 
     #
     - ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi

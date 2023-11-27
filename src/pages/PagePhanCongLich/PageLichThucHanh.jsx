@@ -15,7 +15,7 @@ import {
   setValueSelSearchCaTHAction,
 } from "../../redux/reducers/lichThucHanhReducer";
 import ModalDetailLichThucHanh from "../../components/layout/Detail/ModalDetailLichThucHanh/ModalDetailLichThucHanh";
-import { formatStringDate } from "../../util/config";
+import { formatStringDate, formatStringDate3 } from "../../util/config";
 import ModalSearchLichThucHanh from "../../components/layout/Modal/ModalSearchLichThucHanh";
 
 //
@@ -56,8 +56,10 @@ export default function PageLichThucHanh() {
             <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
               {index < 9 ? `0${index + 1}` : index + 1}
             </td>
+            <td>{item.monHoc.maMon}</td>
             <td>{item.monHoc.tenMon}</td>
-            <td>{formatStringDate(tgian)}</td>
+            <td style={{textAlign:'right'}}>{item.buoiSo}</td>
+            <td>{formatStringDate3(tgian)}</td>
             <td>{item.tenCa}</td>
             <td>{strTietTH}</td>
             <td>{item.giaoVien.maGiaoVien}</td>
@@ -194,13 +196,15 @@ export default function PageLichThucHanh() {
                   <thead>
                     <tr>
                       <th>STT</th>
-                      <th style={{}}>Môn học</th>
-                      <th style={{}}>Ngày TH</th>
-                      <th style={{}}>Buổi TH</th>
-                      <th style={{}}>Tiết TH</th>
-                      <th style={{}}>Giáo viên</th>
-                      <th style={{}}>Phòng máy</th>
-                      <th style={{ minWidth: "120px" }}>Hành động</th>
+                      <th style={{width:'80px'}}>Mã MH</th>
+                      <th style={{ minWidth: "170px" }}>Môn học</th>
+                      <th style={{ minWidth: "85px" }}>Buổi TH</th>
+                      <th style={{ minWidth: "100px" }}>Ngày TH</th>
+                      <th style={{ minWidth: "70px" }}>Ca TH</th>
+                      <th style={{ minWidth: "75px" }}>Tiết TH</th>
+                      <th style={{ minWidth: "100px" }}>Giáo viên</th>
+                      <th style={{ minWidth: "110px" }}>Phòng máy</th>
+                      <th style={{ minWidth: "150px" }}>Hành động</th>
                     </tr>
                   </thead>
                   <tbody className="over_flow_auto">
