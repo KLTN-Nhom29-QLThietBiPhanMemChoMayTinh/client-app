@@ -121,15 +121,14 @@ export default function FormUpdateLichTruc() {
 
       let objLichTruc = {
         maLich: objData_old.maLich,
-        ngayTruc: new Date(ngayTruc),
+        ngayTruc: new Date(objData_old.ngayTruc),
         thoiGianBatDau,
         thoiGianKetThuc,
         nhanVien,
         tang,
       };
 
-      alert("update lỗi api do date của ngayTruc");
-      // dispatch(updateLichTrucApi(objLichTruc));
+      dispatch(updateLichTrucApi(objLichTruc));
     }
   };
   //

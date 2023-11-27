@@ -3,6 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 import { history } from "../..";
+import { setUserLoginAction } from "./userReducer";
 
 // function
 const dataSearch = (arrData, valSearch, valSelect) => {
@@ -102,7 +103,7 @@ const taiKhoanReducer = createSlice({
       });
 
       state.arrTaiKhoan[rowToChange] = objTaiKhoan;
-      state.objUser = {...state.objUser, taiKhoan:objTaiKhoan}
+      state.objUser = { ...state.objUser, taiKhoan: objTaiKhoan };
       //
       let { arrTaiKhoan, valueSearch, valueSelect } = state;
 
@@ -128,16 +129,17 @@ export default taiKhoanReducer.reducer;
 
 // -------------- Call API ---------------
 
-export const deleteTaiKhoanApi= (maTk) => {
+export const deleteTaiKhoanApi = (maTk) => {
   return async (dispatch) => {
     try {
-      
     } catch (error) {
-      console.log("🚀 ~ file: taiKhoanReducer.jsx:136 ~ return ~ error:", error)
-      
+      console.log(
+        "🚀 ~ file: taiKhoanReducer.jsx:136 ~ return ~ error:",
+        error
+      );
     }
-  }
-}
+  };
+};
 
 /**
  * update taiKhoan
@@ -148,17 +150,41 @@ export const updateTaiKhoan2 = (taiKhoan) => {
   return async (dispatch) => {
     try {
       let result = await http.post("/them_tai_khoan", taiKhoan);
-      console.log('Chua co api update taikhoan -- dang dung themTaiKhoan');
+      console.log("Chua co api update taikhoan -- dang dung themTaiKhoan");
       dispatch(updateTaiKhoanAction(taiKhoan));
 
-      alert('Thay đổi thành công!')
+      alert("Thay đổi thành công!");
     } catch (error) {
       console.log(
         "🚀 ~ file: taiKhoanReducer.jsx:121 ~ return ~ error:",
         error
       );
-      alert('Thay đổi thất bại thành công!')
-      history('/quan-ly/tai-khoan')
+      alert("Thay đổi thất bại thành công!");
+      history("/quan-ly/tai-khoan");
+    }
+  };
+};
+/**
+ * update taiKhoan - cho TK page Profile
+ * @param {*} taiKhoan
+ * @returns
+ */
+export const updateTaiKhoan3 = (userLogin) => {
+  let { taiKhoan } = userLogin;
+  return async (dispatch) => {
+    try {
+      let result = await http.post("/them_tai_khoan", taiKhoan);
+      console.log("Chua co api update taikhoan -- dang dung themTaiKhoan");
+      dispatch(updateTaiKhoanAction(taiKhoan));
+      dispatch(setUserLoginAction(userLogin));
+
+      alert("Thay đổi thành công!");
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: taiKhoanReducer.jsx:121 ~ return ~ error:",
+        error
+      );
+      alert("Thay đổi thất bại thành công!");
     }
   };
 };

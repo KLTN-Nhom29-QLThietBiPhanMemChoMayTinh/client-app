@@ -211,11 +211,9 @@ export const getLichTrucbyId = (id) => {
 
 // add
 export const insertLichTrucApi = (lichTruc) => {
-  console.log("🚀 ~ file: lichTrucReducer.jsx:214 ~ insertLichTrucApi ~ lichTruc:", lichTruc)
   return async (dispatch) => {
     try {
       let result = await http.post("/LuuLichTruc", lichTruc);
-      console.log("api OK nhung data chua okay", result);
 
       //
       dispatch(insertLichTrucAction(result.data));
@@ -232,7 +230,7 @@ export const updateLichTrucApi = (lichTruc) => {
     try {
       let result = await http.post("/LuuLichTruc", lichTruc);
       //
-      dispatch(updateLichTrucAction(lichTruc));
+      dispatch(updateLichTrucAction(result.data));
 
       history.push("/phan-cong/lich-truc");
     } catch (error) {

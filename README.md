@@ -78,56 +78,55 @@
     - ModalChangePass: gui data redux -- Call Api - z
     - FormAddPhong: chua co check data co ToaNha vs tang - z
     - FormAddGiaoVien: api add TaiKhoan Thanh cong -- api Add GV errr 500 -- update theeo server mới thử- good look = z (fix them tai khoan trong api insert cua GV)
-
-    - tìm kiếm -  detailKhuVuc chưa có gì
-    - PageQLPhongMay - can 1 search theo status
-    - Đăng nhập thêm checkbox - Đăng nhập với quyền quản lý 
-    - FormAddPhong - Formupdate- can checkbox ALL
-    - PageQLPhongMay - chua co sk  btn update - detail
-    - PageQLPhongMay - chua co ai quan ly o do
-    - PageQLPhanMem - chuc nang CRUD chua co gi
-    - PageQlMonHoc: Chuc nang CRUD chua co
-    - PageQlMonHoc can test lai cot trang thai
-    - PageQLThietBi: Chuc nang CRUD chua co
-    - PageQLNhanVien: Chuc nang CRUD chua co
-    - PageQLKhoa: Chuc nang CRUD chua co
-    - PageQLTaiKhoan: Chuc nang CRUD chua co
-    - pageHome: phai the hien duoc dang o btn naof
-    - pageHome: su dung phan trang de thay the cho over_flow_auto
-    - pageHome: chua data api local
-    - pageLogin: chua formik - api local
-    - userReducer - getDangNhapApi() chua co cookie
-    - userReducer - luu username vs token - chua luu token - xem quyen de gui di den trang cho GV || QL
-    - pageLogin - dựa username lây thông tin nguoi dung
-    - PageLichTruc: data api chua co - handleSearch chua co - select theo thang nam - update - del
-    - FormAddLichTruc: del select Tgian truc
-    - PageQlKhuVuc: Chua co Update vs APi
-    - useLocation() : chuyển component A -> b kem theo giá tri
-    - QL Tang: chua co API update
-    - QL phong may nen có người trực ở đó 
-    - QL phong may tao co the tạo kèm theo may tính
+    - tìm kiếm -  detailKhuVuc chưa có gì - z
+    - PageQLPhongMay - chua co sk  btn update - detail - z
+    - PageQLPhanMem - chuc nang CRUD chua co gi -z
+    - PageQlMonHoc can test lai cot trang thai  -z 
+    - PageQLThietBi: Chuc nang CRUD chua co - z
+    - PageQLNhanVien: Chuc nang CRUD chua co - z
+    - PageQLKhoa: Chuc nang CRUD chua co - z
+    - PageQLTaiKhoan: Chuc nang CRUD chua co - z
+    - pageHome: phai the hien duoc dang o btn naof -z
+    - PageLichTruc: data api chua co - handleSearch chua co - select theo thang nam - update - del -z
+    - FormAddLichTruc: del select Tgian truc - z
+    - pageHome: chua data api local - z
+    - pageLogin: chua formik - api local - z
+    - pageLogin - dựa username lây thông tin nguoi dung - z
+    - PageQlKhuVuc: Chua co Update vs APi - z
+    - useLocaton() : chuyển component A -> b kem theo giá tri -z
     - QL Phong khi them 1 phong chon so luong máy tính(VD 5 cai) có thế mặc định add 5 cái may tinh không? 
-    - FormAddPhong: api chua duoc
     - PageQLKhoa - update: chua biet tat model
-    -- gans valueSearch vaf valueSelect
+    - FormAddPhong: api chua duoc
     - taiKhoanReducer: chua co api update
-    --  error - select value: mối khi reset lại
-    - PageQLNhanVien: xoa NV có lịch trực bị lỗi 500
-    - PageLichTruc: xóa 1 lich truc cung bi lỗi 500
     - FormAddPhongMay: them moi  tung obj moi - add mayTinh - add phong - add phan mem vs Phong
     -- Add phong (tao phong - phanMem_Phong -mayTinh(co maPhong) - mayTinh_ThietBI)
     -- Page home: Cần hiên text red cho phòng may hay may tinh nào bị lỗi - chac cần 1 api co kèm theo status gì đó
-    - mayTinhReducer: chua toi uu duoc dataSearch()
     - QLMayTInh: finhs GUi select Phong may -> gui len redux = >datasearch -> checkTH(test) -> select trang thai -> redux -> dataSearch => test  
-    - Form add mayTinh -> subMit -> api - > update -> del
-    - QLThietbi: "Chưa có api xoa thietbi ( xóa 1 thiet bị xóa cả MaytinhThietbij liên quan )
     - lichTrucReducer :có api server rồi - update di - T sửa page QL vs form add rồi 
     - lichTrucReducer: api lỗi TangChuaCoNhanVienTrucTrongThang .
     - QL phần mềm chưa có event update - del
     - PageQlMonHoc - search chưa có 
+    - update Lich truc : loi api
+
+    - PageQLPhongMay - can 1 search theo status
+    - FormAddPhong - Formupdate- can checkbox ALL
+    - PageQLPhongMay - chua co ai quan ly o do
+    - PageQlMonHoc: Chuc nang CRUD chua co
+    - pageHome: su dung phan trang de thay the cho over_flow_auto
+    - userReducer - getDangNhapApi() chua co cookie
+    - userReducer - luu username vs token - chua luu token - xem quyen de gui di den trang cho GV || QL
+    - QL Tang: chua co API update
+    - QL phong may nen có người trực ở đó 
+    - QL phong may tao co the tạo kèm theo may tính
+    -- gans valueSearch vaf valueSelect
+    --  error - select value: mối khi reset lại
+    - PageQLNhanVien: xoa NV có lịch trực bị lỗi 500
+    - PageLichTruc: xóa 1 lich truc cung bi lỗi 500
+    - mayTinhReducer: chua toi uu duoc dataSearch()
+    - Form add mayTinh -> subMit -> api - > update -> del
+    - QLThietbi: "Chưa có api xoa thietbi ( xóa 1 thiet bị xóa cả MaytinhThietbij liên quan )
     - PageQlMonHoc CRUD chua co gi
     - Page update duoc gui từ deltail thi phai sửa - lấy data theo api maID chứ không chả về page QL
-    - update Lich truc : loi api
     - deletePhanMemApi: xoa phần mêm có kêt nối phòng máy không được
     - lên thông nhất sử dụng Bị hỏng hay không sử dụng
 

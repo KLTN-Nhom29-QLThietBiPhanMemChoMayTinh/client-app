@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTaiKhoan } from "../../redux/reducers/taiKhoanReducer";
+import { updateTaiKhoan, updateTaiKhoan2, updateTaiKhoan3 } from "../../redux/reducers/taiKhoanReducer";
 import { setUserLoginAction } from "../../redux/reducers/userReducer";
 import { REGEX_PASSWORD } from "../../util/config";
 
@@ -89,21 +89,21 @@ export default function ModalChangePass(props) {
       }
       
       console.log('Chua kieem tra duoc co dung mk cũ khog');
-      if(password.pass_old !== taiKhoan.matKhau)
-      {
-        alert("Sai mật khẩu cũ!")
-        setPassword({
-          ...password, 
-          pass_old: '',
-        })
-        return ;
-      }
+      // if(password.pass_old !== taiKhoan.matKhau)
+      // {
+      //   alert("Sai mật khẩu cũ!")
+      //   setPassword({
+      //     ...password, 
+      //     pass_old: '',
+      //   })
+      //   return ;
+      // }
       let taiKhoanUpdate = {...taiKhoan, matKhau: password.pass_new};
 
-      dispatch(setUserLoginAction({...userLogin,taiKhoan:taiKhoanUpdate }))
+      let userLogin1 = {...userLogin,taiKhoan:taiKhoanUpdate }
+      
 
-      dispatch(updateTaiKhoan(taiKhoanUpdate) );
-      alert('Đổi mật khẩu thành công.');
+      dispatch(updateTaiKhoan3(userLogin1) );
 
       setPassword({
         pass_old: "",

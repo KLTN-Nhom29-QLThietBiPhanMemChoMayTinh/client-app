@@ -8,10 +8,19 @@ import {
 
 export default function FormUpdateKhoaModal({ arrKhoa, objKhoa, keyModal }) {
   const dispatch = useDispatch();
-  const itemKhoaRef = useRef({ ...objKhoa });
+  const itemKhoaRef = useRef({});
   const [errKhoa, setErrKhoa] = useState({
     errName: "",
   });
+  useEffect(() => {
+    let { maKhoa, tenKhoa, soGiaoVien } = objKhoa;
+    itemKhoaRef.current = {
+      maKhoa,
+      tenKhoa,
+      soGiaoVien,
+    };
+    setErrKhoa({ ...errKhoa});
+  }, []);
 
   // handle
   const hangdleSubmit = (e) => {
@@ -44,7 +53,7 @@ export default function FormUpdateKhoaModal({ arrKhoa, objKhoa, keyModal }) {
   //
   const handleChangeTenKhoa = (e) => {
     let { id, value } = e.target;
-    itemKhoaRef.current.tenKhoa = value;
+    itemKhoaRef.current[id] = value;
     if (value.trim().length === 0) {
       setErrKhoa({ ...errKhoa, errName: "Hãy nhập dữ liệu!" });
     } else {
@@ -114,7 +123,11 @@ export default function FormUpdateKhoaModal({ arrKhoa, objKhoa, keyModal }) {
               <button type="reset" className="btn btn-secondary">
                 Khôi phục
               </button>
-              <button type="submit" className="btn btn-primary">
+              <button
+                type="submit"
+                data-bs-dismiss="modal"
+                className="btn btn-primary"
+              >
                 Chỉnh sửa
               </button>
             </div>

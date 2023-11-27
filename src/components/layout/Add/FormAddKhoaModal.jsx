@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { insertKhoaApi } from "../../../redux/reducers/khoaReducer";
 
-export default function FormAddKhoaModal({arrKhoa}) {
+export default function FormAddKhoaModal({ arrKhoa }) {
   const dispatch = useDispatch();
   const itemKhoaRef = useRef({
     tenKhoa: "",
@@ -102,7 +102,11 @@ export default function FormAddKhoaModal({arrKhoa}) {
               <button type="reset" className="btn btn-secondary">
                 Khôi phục
               </button>
-              <button type="submit" className="btn btn-primary">
+              <button
+                type="submit"
+                data-bs-dismiss="modal"
+                className="btn btn-primary"
+              >
                 Tạo mới
               </button>
             </div>
