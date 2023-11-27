@@ -322,6 +322,7 @@ export const insertPhongMayApi = (phongMay) => {
     tang: objTang,
     trangThai: "Trống",
   };
+  console.log("🚀 ~ file: phongMayReducer.jsx:325 ~ insertPhongMayApi ~ savePhong:", savePhong)
   //
   //Luu phong máy vs Phanmem
 

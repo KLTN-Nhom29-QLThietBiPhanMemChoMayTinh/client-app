@@ -47,6 +47,7 @@ import FormAddThietBi from "./components/layout/Add/FormAddThietBi";
 import FormUpdateThietBi from "./components/layout/Edit/FormUpdateThietBi";
 import FormAddPhanMem from "./components/layout/Add/FormAddPhanMem";
 import FormUpdatePhanMem from "./components/layout/Edit/FormUpdatePhanMem";
+import FormAddMonHoc from "./components/layout/Add/FormAddMonHoc";
 
 //
 export const history = createBrowserHistory();
@@ -93,11 +94,11 @@ root.render(
           <Route path="/quan-ly/phong" element={<PageQLPhongMay />}></Route>
           <Route path="/quan-ly/phong/add" element={<FormAddPhong />}></Route>
           <Route path="/quan-ly/phong/update" element={<FormUpdatePhong />}></Route>
-
           <Route path="/quan-ly/phan-mem" element={<PageQLPhanMem />}></Route>
           <Route path="/quan-ly/phan-mem/add" element={<FormAddPhanMem />}></Route>
           <Route path="/quan-ly/phan-mem/update" element={<FormUpdatePhanMem />}></Route>
           <Route path="/quan-ly/mon" element={<PageQlMonHoc />}></Route>
+          <Route path="/quan-ly/mon/add" element={<FormAddMonHoc />}></Route>
 
           <Route path="/quan-ly/thiet-bi" element={<PageQLThietBi />}></Route>
           <Route path="/quan-ly/thiet-bi/add" element={<FormAddThietBi />}></Route>

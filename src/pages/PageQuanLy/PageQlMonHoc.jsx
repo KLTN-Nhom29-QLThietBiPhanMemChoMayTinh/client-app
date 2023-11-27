@@ -166,10 +166,7 @@ export default function PageQlMonHoc() {
               {/* Btn them */}
               <div style={{ display: "flex", alignItems: "center" }}>
                 <NavLink
-                  // to="/quan-ly/tang/add"
-                  onClick={() => {
-                    alert(`tạo mới -- dang cập nhật!`);
-                  }}
+                  to="/quan-ly/mon/add"
                   type="button"
                   className="btn btn-success ms-4 view_center_vertical"
                 >

@@ -22,6 +22,7 @@
 
 ### ảnh quản lý môn học
 ![QL môn](./AnhMinhHoa/img_QLMon.png)
+![QL môn](./AnhMinhHoa/img_QLMon_form.png)
 
 ### ảnh quản lý Thiết bị
 ![QL Thiết bị](./AnhMinhHoa/img_QLThietbi.png)
