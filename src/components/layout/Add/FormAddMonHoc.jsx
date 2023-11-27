@@ -51,7 +51,115 @@ export default function FormAddMonHoc() {
       status,
       ngayKetThuc,
     };
+
+    setErrMon({ ...errMon });
   }, []);
+  //
+  // handle
+  //
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!checkData()) {
+      // false
+      console.log(false);
+      return;
+    }
+    //true
+
+    console.log("🚀 ~ file: FormAddMonHoc.jsx:70 ~ handleSubmit ~ objMon.current:", objMon.current)
+  };
+  const checkData = () => {
+    let check = 1;
+
+    let err_tenMon = "";
+    let err_ngayBatDau = "";
+    let err_soBuoi = "";
+    let err_phanMems = "";
+
+    let { tenMon, phanMems } = objMon.current;
+
+    if (tenMon.trim().length === 0) {
+      err_tenMon = "Hãy nhập thông tin!";
+      check = 0;
+    }
+    if (phanMems.length === 0) {
+      err_phanMems = "Hãy chọn thông tin!";
+      check = 0;
+    }
+
+    setErrMon({
+      tenMon: err_tenMon,
+      ngayBatDau: err_ngayBatDau,
+      soBuoi: err_soBuoi,
+      phanMems: err_phanMems,
+    });
+
+    return check;
+  };
+  //
+  const handleCheckPM = (e) => {
+    let { checked, value } = e.target;
+    var updateList = objMon.current.phanMems;
+    if (checked) {
+      updateList.push(arrPhanMem.find((item) => item.maPhanMem == value));
+    } else {
+      updateList = updateList.filter((item) => item.maPhanMem != value);
+    }
+
+    objMon.current.phanMems = updateList;
+
+    if (objMon.current.phanMems.length === 0) {
+      setErrMon({ ...errMon, phanMems: "Hãy chọn ứng dụng" });
+    } else {
+      setErrMon({ ...errMon, phanMems: "" });
+    }
+  };
+  //
+  const handleChangeNgayBD = (e) => {
+    let { id, value } = e.target;
+    objMon.current[id] = value;
+    //
+    let ngayBatDau = objMon.current.ngayBatDau;
+    let soBuoi = parseInt(objMon.current.soBuoi);
+    let { status, ngayKetThuc } = getCheckTgianKT({ soBuoi, ngayBatDau });
+
+    objMon.current = {
+      ...objMon.current,
+      status,
+      ngayKetThuc,
+    };
+
+    setErrMon({ ...errMon });
+  };
+  //
+  const handleChangeSoBuoi = (e) => {
+    let { id, value } = e.target;
+    objMon.current[id] = value;
+    //
+    let ngayBatDau = objMon.current.ngayBatDau;
+    let soBuoi = parseInt(objMon.current.soBuoi);
+    let { status, ngayKetThuc } = getCheckTgianKT({ soBuoi, ngayBatDau });
+
+    objMon.current = {
+      ...objMon.current,
+      status,
+      ngayKetThuc,
+    };
+
+    setErrMon({ ...errMon });
+  };
+  //
+  const handleChangeTenMon = (e) => {
+    let { id, value } = e.target;
+
+    objMon.current[id] = value;
+    if (value.trim().length === 0) {
+      setErrMon({ ...errMon, tenMon: "Hãy nhập dữ liệu!" });
+    } else {
+      setErrMon({ ...errMon, tenMon: "" });
+    }
+  };
   //
 
   //render
@@ -69,7 +177,7 @@ export default function FormAddMonHoc() {
             type="checkbox"
             value={item.maPhanMem}
             id={`${item.maPhanMem}_PM`}
-            // onChange={handleCheckPM}
+            onChange={handleCheckPM}
           />
           <label className="form-check-label" htmlFor={`${item.maPhanMem}_PM`}>
             {item.tenPhanMem}
@@ -99,7 +207,7 @@ export default function FormAddMonHoc() {
             >
               {/* Form add */}
               <form
-                // onSubmit={handleSubmit}
+                onSubmit={handleSubmit}
                 className="d-flex h-100 justify-content-between flex-column"
               >
                 {/* header */}
@@ -125,6 +233,7 @@ export default function FormAddMonHoc() {
                           id="tenMon"
                           aria-describedby="helpIdtenMon"
                           placeholder="Hệ thống thông tin"
+                          onChange={handleChangeTenMon}
                         />
                       </div>
                       {/* só buổi */}
@@ -147,6 +256,7 @@ export default function FormAddMonHoc() {
                           defaultValue={1}
                           max={50}
                           aria-describedby="helpIdsoBuoi"
+                          onChange={handleChangeSoBuoi}
                         />
                       </div>
                       {/* ngayd BD */}
@@ -168,6 +278,7 @@ export default function FormAddMonHoc() {
                           value={objMon.current.ngayBatDau}
                           min={strDateMin_BD}
                           aria-describedby="helpIDngayBatDau"
+                          onChange={handleChangeNgayBD}
                         />
                       </div>
 
@@ -198,7 +309,7 @@ export default function FormAddMonHoc() {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <div className="col-10">
+                      <div className="col-md-10">
                         <label htmlFor="soPhanMem" className="form-label">
                           Chọn ứng dụng phần mềm cho môn học
                           <small
@@ -247,7 +358,7 @@ const getCheckTgianKT = ({ soBuoi, ngayBatDau }) => {
   let ngayBD = new Date(ngayBatDau);
   let ngayKT = new Date(ngayBatDau);
 
-  ngayKT.setDate(ngayKT.getDate() + (soBuoi + 1) * 7);
+  ngayKT.setDate(ngayKT.getDate() + (soBuoi + 0) * 7);
 
   let status = "";
   let day = new Date();
