@@ -4,6 +4,7 @@ import NavTab from "../../common/NavTab/NavTab";
 import { formatStringDate, formatStringDate2 } from "../../../util/config";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPhanMemApi } from "../../../redux/reducers/phanMemReducer";
+import { insertMonHocApi } from "../../../redux/reducers/monHocReducer";
 
 let date = new Date();
 let dateYear = date.getFullYear();
@@ -20,6 +21,7 @@ export default function FormAddMonHoc() {
   const dispatch = useDispatch();
   //
   let { arrPhanMem } = useSelector((state) => state.phanMemReducer);
+  let { arrMonHoc } = useSelector((state) => state.monHocReducer);
   //
   let objMon = useRef({
     tenMon: "",
@@ -68,6 +70,8 @@ export default function FormAddMonHoc() {
     //true
 
     console.log("🚀 ~ file: FormAddMonHoc.jsx:70 ~ handleSubmit ~ objMon.current:", objMon.current)
+    
+    dispatch(insertMonHocApi(objMon.current))
   };
   const checkData = () => {
     let check = 1;

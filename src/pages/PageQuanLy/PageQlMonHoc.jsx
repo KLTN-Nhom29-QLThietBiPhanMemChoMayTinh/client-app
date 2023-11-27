@@ -20,7 +20,9 @@ import {
 export default function PageQlMonHoc() {
   const dispatch = useDispatch();
 
-  let { arrMonHocSearch } = useSelector((state) => state.monHocReducer);
+  let { arrMonHocSearch, valueTxtSearch, valueSelect } = useSelector(
+    (state) => state.monHocReducer
+  );
 
   // useEffect -- call data mon hoc
   useEffect(() => {
@@ -113,10 +115,12 @@ export default function PageQlMonHoc() {
     return (
       <div className=" col-2 m-2 ">
         <select className="form-select " onChange={handleChangeSelectAction}>
-          <option value="0">Toàn bộ</option>
-          <option value="1">Kết thúc</option>
-          <option value="2">Chờ mở lớp</option>
-          <option value="3">Đang học</option>
+          <option selected={valueSelect == -1 ? 1 : 0} value="-1">
+            Toàn bộ
+          </option>
+          <option selected={valueSelect == 1 ? 1 : 0}  value="1">Kết thúc</option>
+          <option selected={valueSelect == 2 ? 1 : 0}  value="2">Chờ mở lớp</option>
+          <option selected={valueSelect == 3 ? 1 : 0}  value="3">Đang học</option>
         </select>
       </div>
     );
@@ -156,7 +160,7 @@ export default function PageQlMonHoc() {
                 <input
                   type="text"
                   className="form-control"
-                  id
+                  value={valueTxtSearch}
                   placeholder="tìm kiếm..."
                   // value={txtSearch}
                   onChange={handleChangeSearch}

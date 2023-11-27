@@ -3,14 +3,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { formatStringDate, http } from "../../util/config";
 import Database from "../../util/database/Database";
+import { insert } from "formik";
+import { history } from "../..";
 
 // function
+const funcSearch = ({ arrMonHoc, valueTxtSearch, valueSelect }) => {
+  return searchData(arrMonHoc, valueTxtSearch, valueSelect);
+};
 /**
- * 
- * @param {list data gốc} arrData 
- * @param {text search dang co} valSearch 
- * @param {value select dang chon} valSelect 
- * @returns 
+ *
+ * @param {list data gốc} arrData
+ * @param {text search dang co} valSearch
+ * @param {value select dang chon} valSelect
+ * @returns
  */
 const searchData = (arrData, valSearch, valSelect) => {
   let textSearch = valSearch.trim().toLowerCase();
@@ -19,11 +24,11 @@ const searchData = (arrData, valSearch, valSelect) => {
   let arrUpdate = arrData.filter((item) => {
     let ngayBD = new Date(item.ngayBatDau);
     let ngayKT = new Date(item.ngayBatDau);
-    ngayKT.setDate(ngayKT.getDate() + item.soBuoi * 7);
+    ngayKT.setDate(ngayKT.getDate() + (item.soBuoi + 1) * 7);
 
     return (
-      item.idCode.toLowerCase().includes(textSearch) ||
-      item.name.toLowerCase().includes(textSearch) ||
+      (item.maMon + "").toLowerCase().includes(textSearch) ||
+      item.tenMon.toLowerCase().includes(textSearch) ||
       // item.ngayBatDau.toLowerCase().includes(textSearch)  ||
       (item.soBuoi + "").toLowerCase().includes(textSearch) ||
       formatStringDate(ngayBD).toLowerCase().includes(textSearch) ||
@@ -38,7 +43,7 @@ const searchData = (arrData, valSearch, valSelect) => {
     // Kết thúc
     arrUpdate = arrUpdate.filter((item) => {
       let ngayKT = new Date(item.ngayBatDau);
-      ngayKT.setDate(ngayKT.getDate() + item.soBuoi * 7);
+      ngayKT.setDate(ngayKT.getDate() + (item.soBuoi + 1) * 7);
 
       return ngayKT < day;
     });
@@ -54,7 +59,7 @@ const searchData = (arrData, valSearch, valSelect) => {
     arrUpdate = arrUpdate.filter((item) => {
       let ngayBD = new Date(item.ngayBatDau);
       let ngayKT = new Date(item.ngayBatDau);
-      ngayKT.setDate(ngayKT.getDate() + item.soBuoi * 7);
+      ngayKT.setDate(ngayKT.getDate() + (item.soBuoi + 1) * 7);
 
       return ngayBD < day && ngayKT > day;
     });
@@ -64,11 +69,11 @@ const searchData = (arrData, valSearch, valSelect) => {
 };
 
 const initialState = {
-  valueTxtSearch: "",
-  valueSelect: "",
   arrMonHoc: [],
   arrMonHocSearch: [],
   detailMonHoc: {},
+  valueTxtSearch: "",
+  valueSelect: -1,
 };
 
 const monHocReducer = createSlice({
@@ -78,96 +83,93 @@ const monHocReducer = createSlice({
     setValueTxtSearchAction: (state, action) => {
       state.valueTxtSearch = action.payload;
 
-      let { arrMonHoc, valueTxtSearch, valueSelect } = state;
-      state.arrMonHocSearch = searchData(arrMonHoc, valueTxtSearch, valueSelect);
+      //
+      state.arrMonHocSearch = funcSearch(state);
     },
     setValueSelectAction: (state, action) => {
       state.valueSelect = action.payload;
 
-      let { arrMonHoc, valueTxtSearch, valueSelect } = state;
-      state.arrMonHocSearch = searchData(arrMonHoc, valueTxtSearch, valueSelect);
+      //
+      state.arrMonHocSearch = funcSearch(state);
     },
     setArrMonHocAction: (state, action) => {
       state.arrMonHoc = action.payload;
-      state.arrMonHocSearch = action.payload;
+      //
+      state.arrMonHocSearch = funcSearch(state);
     },
-    /**
-     * tìm kiem theo txtSearch
-     */
-    searchArrMonHocAction: (state, action) => {
-      let textSearch = action.payload.toLowerCase();
-      let dataUpdate = state.arrMonHoc.filter((item) => {
-        let ngayBD = new Date(item.ngayBatDau);
-        let ngayKT = new Date(item.ngayBatDau);
-        ngayKT.setDate(ngayKT.getDate() + item.soBuoi * 7);
+    insertMonHocAction: (state, action) => {
+      let item = action.payload;
+      state.arrMonHoc.push(item);
 
-        return (
-          item.idCode.toLowerCase().includes(textSearch) ||
-          item.name.toLowerCase().includes(textSearch) ||
-          // item.ngayBatDau.toLowerCase().includes(textSearch)  ||
-          (item.soBuoi + "").toLowerCase().includes(textSearch) ||
-          formatStringDate(ngayBD).toLowerCase().includes(textSearch) ||
-          formatStringDate(ngayKT).toLowerCase().includes(textSearch)
-        );
-      });
-
-      state.arrMonHocSearch = [...dataUpdate];
-    },
-    /**
-     * tìm kiem theo select
-     */
-    searchArrMonHocSelectAction: (state, action) => {
-      let value = action.payload;
-      let dataUpdate = state.arrMonHocSearch;
-      let day = new Date();
-
-      if (value == 1) {
-        // Kết thúc
-        dataUpdate = dataUpdate.filter((item) => {
-          let ngayKT = new Date(item.ngayBatDau);
-          ngayKT.setDate(ngayKT.getDate() + item.soBuoi * 7);
-
-          return ngayKT < day;
-        });
-      } else if (value == 2) {
-        // Chờ mở lớp
-        dataUpdate = dataUpdate.filter((item) => {
-          let ngayBD = new Date(item.ngayBatDau);
-
-          return ngayBD > day;
-        });
-      } else if (value == 3) {
-        // Đang học
-        dataUpdate = dataUpdate.filter((item) => {
-          let ngayBD = new Date(item.ngayBatDau);
-          let ngayKT = new Date(item.ngayBatDau);
-          ngayKT.setDate(ngayKT.getDate() + item.soBuoi * 7);
-
-          return ngayBD < day && ngayKT > day;
-        });
-      }
-
-      state.arrMonHocSearch = [...dataUpdate];
+      //
+      state.arrMonHocSearch = funcSearch(state);
     },
   },
 });
 // exp nay de sử dụng theo cách 2
 export const {
   setArrMonHocAction,
-  searchArrMonHocAction,
-  searchArrMonHocSelectAction,
   setValueSelectAction,
   setValueTxtSearchAction,
+  insertMonHocAction,
 } = monHocReducer.actions;
 export default monHocReducer.reducer;
 
 // -------------- Call Api -----------------
 
+/**
+ * addd 1 mon hoc
+ * @param {Object} monHoc
+ * @returns
+ */
+export const insertMonHocApi = (monHoc) => {
+  let { tenMon, ngayBatDau, soBuoi, phanMems } = monHoc;
+  let objMonHoc = {
+    tenMon,
+    ngayBatDau,
+    soBuoi,
+  };
+  return async (dispatch) => {
+    try {
+      let result = await http.post("/LuuMonHoc", objMonHoc);
+      console.log(
+        "🚀 ~ file: monHocReducer.jsx:131 ~ returnasync ~ result:",
+        result
+      );
+      let objDataNew = result.data;
+
+      phanMems.forEach(async (item) => {
+        let objMonHocPhanMem = {
+          phanMem: item,
+          monHoc: objDataNew,
+        };
+        let result2 = await http.post("/LuuMonHocPhanMem", objMonHocPhanMem);
+        console.log(
+          "🚀 ~ file: monHocReducer.jsx:139 ~ returnasync ~ result2:",
+          result2
+        );
+      });
+
+      dispatch(insertMonHocAction(objDataNew));
+      history.push("/quan-ly/mon");
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: monHocReducer.jsx:123 ~ returnasync ~ error:",
+        error
+      );
+    }
+  };
+};
+
+/**
+ * get all ds mon hoc
+ * @param {*} dispatch
+ */
 export const getAllMonHoc = async (dispatch) => {
   // call Api
   try {
-    let result = await http.get('/DSMonHoc');
-    const action = setArrMonHocAction(result.data)
+    let result = await http.get("/DSMonHoc");
+    const action = setArrMonHocAction(result.data);
     // const action = setArrMonHocAction(Database.dataMonHoc);
 
     dispatch(action);
