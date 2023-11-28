@@ -61,7 +61,7 @@ export default function FormAddLichThucHanh() {
     if (arrPhongMay.length === 0) {
       dispatch(getAllPhongMayApi);
     }
-      
+
     if (arrMonHoc.length === 0) {
       dispatch(getAllMonHoc);
     }
@@ -71,7 +71,7 @@ export default function FormAddLichThucHanh() {
     // update arrPhongByMonHoc - gia tri ban dau là toàn bộ arrPhong
     dispatch(getAllDsPhongHocInMonHoc);
     // update Gia trij mon hoc chuaw co ca thuc hanh
-    dispatch(setArrMonHoc_CaThucHanhApi)
+    dispatch(setArrMonHoc_CaThucHanhApi);
 
     // setErrCaTH({ ...errCaTH });
   }, []);
@@ -726,7 +726,9 @@ export default function FormAddLichThucHanh() {
                           id="valSelToaNha"
                           onChange={handleChangeSelectToaNha}
                         >
-                          <option value={-1}>Tất cả</option>
+                          <option selected={
+                              objCaThucHanh.current.valueSelToaNha == -1 ? 1 : 0
+                            } value={-1}>Tất cả</option>
                           {renderSelctToaNha()}
                         </select>
                       </div>
@@ -744,7 +746,14 @@ export default function FormAddLichThucHanh() {
                           id="valSelTang"
                           onChange={handleChangeSelectTang}
                         >
-                          <option value={-1}>Tất cả</option>
+                          <option
+                            selected={
+                              objCaThucHanh.current.valueSelTang == -1 ? 1 : 0
+                            }
+                            value={-1}
+                          >
+                            Tất cả
+                          </option>
                           {renderSelectTang()}
                         </select>
                       </div>

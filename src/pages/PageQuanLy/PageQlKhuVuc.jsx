@@ -41,7 +41,7 @@ const PageQlKhuVuc = (props) => {
     return arrToaNhaSearch.map((item, index) => {
       return (
         <tr key={index}>
-          <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
+          <td scope="row" style={{ fontWeight: 600, textAlign: "center" }}>
             {index < 9 ? `0${index + 1}` : index + 1}
           </td>
           <td>{item.maToaNha}</td>

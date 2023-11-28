@@ -25,9 +25,13 @@ function PageQLPhongMay() {
   //
   const dispatch = useDispatch();
   //
-  let { arrPhongMay, arrPhongMaySearch, valueSelectToaNha, valueSelectTang,arrTangbyToaNha } = useSelector(
-    (state) => state.phongMayReducer
-  );
+  let {
+    arrPhongMay,
+    arrPhongMaySearch,
+    valueSelectToaNha,
+    valueSelectTang,
+    arrTangbyToaNha,
+  } = useSelector((state) => state.phongMayReducer);
   let { arrTang } = useSelector((state) => state.tangReducer);
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
   //
@@ -49,54 +53,64 @@ function PageQLPhongMay() {
     dispatch(setValueSearchPhongMayAction(event.target.value));
   };
   //
-  const handleChangeSelectToaNha = e => {
-    let valSelect = e.target.value
-    dispatch(setvalueSelectToaNhaPhongMayAction({valSelect, arrTang}))
-  }
+  const handleChangeSelectToaNha = (e) => {
+    let valSelect = e.target.value;
+    dispatch(setvalueSelectToaNhaPhongMayAction({ valSelect, arrTang }));
+  };
   //
-  const handleChangeSelectTang = e => {
-    let valSelect = e.target.value
-    dispatch(setvalueSelectTangPhongMayAction({valSelect}))
-  }
+  const handleChangeSelectTang = (e) => {
+    let valSelect = e.target.value;
+    dispatch(setvalueSelectTangPhongMayAction({ valSelect }));
+  };
 
   // RENDER
   const renderToaNha = () => {
     return arrToaNha?.map((item, index) => {
       return (
-        <option key={index} value={item.maToaNha}>
+        <option
+          key={index}
+          selected={valueSelectToaNha == item.maToaNha ? 1 : 0}
+          value={item.maToaNha}
+        >
           {item.tenToaNha}
         </option>
       );
-    })
+    });
   };
   //
   const renderTang = () => {
-    if(valueSelectToaNha == -1) {
+    if (valueSelectToaNha == -1) {
       return arrTang?.map((item, index) => {
         return (
-          <option key={index} value={item.maTang}>
+          <option
+            key={index}
+            selected={valueSelectTang == item.maTang ? 1 : 0}
+            value={item.maTang}
+          >
             {item.tenTang}
           </option>
         );
-      })
-    }
-    else{
+      });
+    } else {
       return arrTangbyToaNha?.map((item, index) => {
         return (
-          <option key={index} value={item.maTang}>
+          <option
+            key={index}
+            selected={valueSelectTang == item.maTang ? 1 : 0}
+            value={item.maTang}
+          >
             {item.tenTang}
           </option>
         );
-      })
+      });
     }
-    
   };
   //
   const renderDataPhongMay = () => {
     return arrPhongMaySearch.map((item, index) => {
       return (
         <tr key={index}>
-          <td scope="row" style={{ fontWeight: 600, padding: "0 15px" }}>
+          <td scope="row" style={{ fontWeight: 600, textAlign: "center" }}>
             {index < 9 ? `0${index + 1}` : index + 1}
           </td>
           <td>{item.tenPhong}</td>
@@ -118,7 +132,7 @@ function PageQLPhongMay() {
             <button
               onClick={() => {
                 if (window.confirm("Bấm vào nút OK để xóa " + item.tenPhong)) {
-                  alert('Đang cập nhật! Vui lòng quay lại sau.')
+                  alert("Đang cập nhật! Vui lòng quay lại sau.");
                   // dispatch(deletePhongApi(item));
                 }
               }}
@@ -177,8 +191,11 @@ function PageQLPhongMay() {
 
               {/* select ToaNha */}
               <div className="col-2 m-2">
-                <select className="form-select" onChange={handleChangeSelectToaNha}>
-                  <option value="-1" selected>
+                <select
+                  className="form-select"
+                  onChange={handleChangeSelectToaNha}
+                >
+                  <option selected={valueSelectToaNha == -1 ? 1 : 0} value="-1">
                     tất cả
                   </option>
                   {renderToaNha()}
@@ -187,8 +204,11 @@ function PageQLPhongMay() {
 
               {/* select Tang */}
               <div className="col-2 m-2">
-                <select className="form-select" onChange={handleChangeSelectTang}>
-                  <option value="-1" selected>
+                <select
+                  className="form-select"
+                  onChange={handleChangeSelectTang}
+                >
+                  <option selected={valueSelectTang == -1 ? 1 : 0} value="-1">
                     tất cả
                   </option>
                   {renderTang()}

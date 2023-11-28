@@ -20,15 +20,15 @@ import {
 import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 
-
 const PageQLTang = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  let { arrTang, arrTangSearch } = useSelector((state) => state.tangReducer);
+  let { arrTang, arrTangSearch, valueSearch, valueSelect } = useSelector(
+    (state) => state.tangReducer
+  );
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
-
 
   useEffect(() => {
     if (arrTangSearch.length === 0) {
@@ -51,8 +51,7 @@ const PageQLTang = () => {
   };
   const handleChangeSelect = (e) => {
     let { value } = e.target; // value == name cua obj khuvuc
-    dispatch(setValueSelectTangAction(value))
-
+    dispatch(setValueSelectTangAction(value));
   };
 
   //
@@ -60,18 +59,14 @@ const PageQLTang = () => {
     return arrTangSearch.map((item, index) => {
       return (
         <tr key={index}>
-          <td scope="row" style={{ fontWeight: 600 }}>
-            <div className="d-flex justify-content-center">
-              {index < 9 ? `0${index + 1}` : index + 1}
-            </div>
+          <td scope="row" style={{ fontWeight: 600, textAlign: "center" }}>
+            {index < 9 ? `0${index + 1}` : index + 1}
           </td>
           <td>{item.tenTang}</td>
           <td>{item.toaNha.tenToaNha}</td>
           <td>{item.soPhong}</td>
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink
-              to={`/quan-ly/tang/update?id=${item.maTang}`}
-            >
+            <NavLink to={`/quan-ly/tang/update?id=${item.maTang}`}>
               <button
                 type="button"
                 className="btn btn-primary mx-2 px-2"
@@ -81,11 +76,11 @@ const PageQLTang = () => {
               </button>
             </NavLink>
             <button
-             onClick={() => {
-              if(window.confirm("Bấm vào nút OK để xóa " + item.tenTang)){
-                dispatch(deleteTangApi(item.maTang));
-              }
-            }}
+              onClick={() => {
+                if (window.confirm("Bấm vào nút OK để xóa " + item.tenTang)) {
+                  dispatch(deleteTangApi(item.maTang));
+                }
+              }}
               type="button"
               className="btn btn-danger mx-2 px-2"
               style={{ padding: "2px" }}
@@ -95,7 +90,7 @@ const PageQLTang = () => {
             <button
               // `../quan-ly/phong`
               onClick={() => {
-                navigate(`/home-detail?id=${item.maTang}&key=tang`)
+                navigate(`/home-detail?id=${item.maTang}&key=tang`);
               }}
               type="button"
               className="btn btn-info mx-2 px-2"
@@ -112,16 +107,17 @@ const PageQLTang = () => {
   const renderSelectTheoKhuVuc = () => {
     return (
       <div className="col-2 m-2">
-        <select
-          className="form-select"
-          onChange={handleChangeSelect}
-        >
-          <option value="-1" selected>
+        <select className="form-select" onChange={handleChangeSelect}>
+          <option selected={valueSelect == -1 ? 1 : 0} value="-1" >
             tất cả
           </option>
           {arrToaNha?.map((item, index) => {
             return (
-              <option key={index} value={item.maToaNha}>
+              <option
+                key={index}
+                selected={valueSelect == item.maToaNha ? 1 : 0}
+                value={item.maToaNha}
+              >
                 {item.tenToaNha}
               </option>
             );
@@ -168,6 +164,7 @@ const PageQLTang = () => {
                   <input
                     type="text"
                     className="form-control"
+                    value={valueSearch}
                     placeholder="tìm kiếm..."
                     onChange={handleSearchChange}
                   />

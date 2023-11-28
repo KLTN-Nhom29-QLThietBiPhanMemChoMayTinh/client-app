@@ -53,10 +53,8 @@ export default function PageQlMayTinh() {
 
       return (
         <tr key={index}>
-          <td scope="row" style={{ fontWeight: 600 }}>
-            <div className="d-flex justify-content-center">
-              {index < 9 ? `0${index + 1}` : index + 1}
-            </div>
+          <td scope="row" style={{ fontWeight: 600, textAlign: "center" }}>
+            {index < 9 ? `0${index + 1}` : index + 1}
           </td>
           <td>{item.moTa}</td>
           <td className="text-end">{item.thietBiMays.length}</td>

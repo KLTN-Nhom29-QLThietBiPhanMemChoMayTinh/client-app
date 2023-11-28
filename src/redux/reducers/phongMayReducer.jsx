@@ -345,7 +345,7 @@ export const insertPhongMayApi = (phongMay) => {
           phanMem: item,
           status: true,
         };
-        
+
         await http.post("/LuuPhongMayPhanMem", savePhongMay_PhanMem);
       });
 
@@ -368,7 +368,6 @@ export const insertPhongMayApi = (phongMay) => {
       }
 
       arrMayTinh.forEach(async (item) => {
-        
         let resultMayTinh = await http.post("/LuuMayTinh", item);
 
         // luu maytinh vaf thiet bi
@@ -382,9 +381,9 @@ export const insertPhongMayApi = (phongMay) => {
         });
       });
 
-      await dispatch(getAllPhongMayApi);
-      await dispatch(setStatusDataMoi(true)); // cap nhat trang home
       setTimeout(() => {
+        dispatch(getAllPhongMayApi);
+        dispatch(setStatusDataMoi(true)); // cap nhat trang home
         alert("Tạo mới thành công.");
         history.push("/quan-ly/phong");
       }, 2000);

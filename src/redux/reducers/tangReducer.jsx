@@ -11,7 +11,7 @@ const initialState = {
   arrTangSearch: [],
   arrTangByLichTruc: [], //arrTang dung ở form LichTruc
   valueSearch: "",
-  valueSelect: "",
+  valueSelect: -1,
 };
 
 const tangReducer = createSlice({

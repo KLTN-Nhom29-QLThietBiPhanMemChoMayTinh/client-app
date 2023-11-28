@@ -1,7 +1,7 @@
 //rxslice
 
 import { createSlice } from "@reduxjs/toolkit";
-import { formatStringDate, http } from "../../util/config";
+import { formatStringDate, formatStringDate3, http } from "../../util/config";
 import Database from "../../util/database/Database";
 import { insert } from "formik";
 import { history } from "../..";
@@ -31,8 +31,8 @@ const searchData = (arrData, valSearch, valSelect) => {
       item.tenMon.toLowerCase().includes(textSearch) ||
       // item.ngayBatDau.toLowerCase().includes(textSearch)  ||
       (item.soBuoi + "").toLowerCase().includes(textSearch) ||
-      formatStringDate(ngayBD).toLowerCase().includes(textSearch) ||
-      formatStringDate(ngayKT).toLowerCase().includes(textSearch)
+      formatStringDate3(ngayBD).toLowerCase().includes(textSearch) ||
+      formatStringDate3(ngayKT).toLowerCase().includes(textSearch)
     );
   });
 
@@ -132,10 +132,7 @@ export const insertMonHocApi = (monHoc) => {
   return async (dispatch) => {
     try {
       let result = await http.post("/LuuMonHoc", objMonHoc);
-      console.log(
-        "🚀 ~ file: monHocReducer.jsx:131 ~ returnasync ~ result:",
-        result
-      );
+      
       let objDataNew = result.data;
 
       phanMems.forEach(async (item) => {
@@ -143,15 +140,15 @@ export const insertMonHocApi = (monHoc) => {
           phanMem: item,
           monHoc: objDataNew,
         };
-        let result2 = await http.post("/LuuMonHocPhanMem", objMonHocPhanMem);
-        console.log(
-          "🚀 ~ file: monHocReducer.jsx:139 ~ returnasync ~ result2:",
-          result2
-        );
+        await http.post("/LuuMonHocPhanMem", objMonHocPhanMem);
+        
       });
 
-      dispatch(insertMonHocAction(objDataNew));
-      history.push("/quan-ly/mon");
+      setTimeout(() => {
+        alert('Tạo thành công!')
+        dispatch(insertMonHocAction(objDataNew));
+        history.push("/quan-ly/mon");
+      }, 2000)
     } catch (error) {
       console.log(
         "🚀 ~ file: monHocReducer.jsx:123 ~ returnasync ~ error:",

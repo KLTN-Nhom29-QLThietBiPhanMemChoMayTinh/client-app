@@ -9,7 +9,7 @@ import { BiSolidDetail } from "react-icons/bi";
 import NavTab from "../../components/common/NavTab/NavTab";
 import Footer from "../../components/common/Footer/Footer";
 import Database from "../../util/database/Database";
-import { formatStringDate } from "../../util/config";
+import { formatStringDate, formatStringDate3 } from "../../util/config";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllMonHoc,
@@ -65,8 +65,8 @@ export default function PageQlMonHoc() {
           <td>{item?.maMon}</td>
           <td>{item?.tenMon}</td>
           <td>{item?.soBuoi}</td>
-          <td>{formatStringDate(ngayBD)}</td>
-          <td>{formatStringDate(ngayKT)}</td>
+          <td>{formatStringDate3(ngayBD)}</td>
+          <td>{formatStringDate3(ngayKT)}</td>
           {renderTrangThai()}
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
@@ -85,7 +85,7 @@ export default function PageQlMonHoc() {
                 <FaPencilAlt color="white" size={16} />
               </button>
             </NavLink>
-            <button
+            {/* <button
               onClick={() => {
                 alert(`Del -- ${item.id} -- dang cập nhật!`);
               }}
@@ -94,8 +94,8 @@ export default function PageQlMonHoc() {
               style={{ padding: "2px" }}
             >
               <ImBin2 color="white" size={16} />
-            </button>
-            <NavLink
+            </button> */}
+            {/* <NavLink
               // to={`../quan-ly/phong`}
               onClick={() => {
                 alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
@@ -105,7 +105,7 @@ export default function PageQlMonHoc() {
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink>
+            </NavLink> */}
           </td>
         </tr>
       );

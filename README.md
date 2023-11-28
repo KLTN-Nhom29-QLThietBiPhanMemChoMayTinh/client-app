@@ -138,7 +138,6 @@
     - getDSPhong_trungPM_MonHocApi() (chua hiểu giá tri ở trong) -> show PM môn hoc -> 
     - 
 
-    -- 28-11 stop : setArrMonHoc_CaThucHanhApi() - reducer
 
     #
     - ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi
