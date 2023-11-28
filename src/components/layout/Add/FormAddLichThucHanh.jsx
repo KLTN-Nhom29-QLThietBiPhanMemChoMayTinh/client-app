@@ -61,9 +61,7 @@ export default function FormAddLichThucHanh() {
     if (arrPhongMay.length === 0) {
       dispatch(getAllPhongMayApi);
     }
-    if(arrMonHoc_CaTH.length === 0) {
-      dispatch(setArrMonHoc_CaThucHanhApi)
-    }
+      
     if (arrMonHoc.length === 0) {
       dispatch(getAllMonHoc);
     }
@@ -71,9 +69,9 @@ export default function FormAddLichThucHanh() {
       dispatch(getAllGiaoVienApi);
     }
     // update arrPhongByMonHoc - gia tri ban dau là toàn bộ arrPhong
-    if (arrPhongByMonHoc.length === 0) {
-      dispatch(getAllDsPhongHocInMonHoc);
-    }
+    dispatch(getAllDsPhongHocInMonHoc);
+    // update Gia trij mon hoc chuaw co ca thuc hanh
+    dispatch(setArrMonHoc_CaThucHanhApi)
 
     // setErrCaTH({ ...errCaTH });
   }, []);
@@ -381,7 +379,7 @@ export default function FormAddLichThucHanh() {
   //
   const renderSelectMonHoc = () => {
     let { valueSelMonHoc } = objCaThucHanh.current;
-    return arrMonHoc.map((item, index) => {
+    return arrMonHoc_CaTH?.map((item, index) => {
       return (
         <option
           key={index}

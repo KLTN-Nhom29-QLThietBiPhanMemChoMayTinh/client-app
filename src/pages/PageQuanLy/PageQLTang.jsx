@@ -144,7 +144,10 @@ const PageQLTang = () => {
         style={{ height: "100vh" }}
       >
         <div style={{ height: "80vh" }}>
-          
+          {/*  */}
+          <div style={{ height: "8vh" }}>
+            <NavTab itemLink={{ arrLinkNavTab, chucNang: "Danh sách" }} />
+          </div>
           {/* table data */}
           <div className="bg-white rounded p-3" style={{ height: "82vh" }}>
             {/* Phần top với tiêu đề và thanh tìm kiếm - btn thêm */}

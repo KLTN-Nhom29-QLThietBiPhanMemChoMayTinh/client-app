@@ -198,25 +198,27 @@ export default lichThucHanhReducer.reducer;
  * 2. lays DS ca cuar mon hoc (theo ma)
  * 3. thif dsCa cua mon hoc nào không có gtri thì dưa vào arrData_MH
  * arrData_MH: ds môn học chua co ca
- * @param {*} dispatch 
+ * @param {*} dispatch
  */
 export const setArrMonHoc_CaThucHanhApi = async (dispatch) => {
   try {
     let result_dsMonHoc = await http.get("/DSMonHoc");
 
-    let arrData_MH = result_dsMonHoc.data.filter(async (item) => {
-      let check = 1;
-
+    let arrData_MH = [];
+    result_dsMonHoc.data.forEach(async (item) => {
       let result_CaTH_IdMonHoc = await http.get(
         `/DSCaThucHanhTheoMonHoc/${item.maMon}`
       );
 
-      return (check = 1);
+      if (result_CaTH_IdMonHoc.data.length === 0) {
+        arrData_MH.push(item);
+      }
     });
-    console.log(
-      "🚀 ~ file: lichThucHanhReducer.jsx:205 ~ constsetArrMonHoc_CaThucHanhApi= ~ arrData_MH:",
-      arrData_MH
-    );
+
+    //
+    setTimeout(() => {
+      dispatch(setArrMonHoc_CaThucHanhAction([...arrData_MH]));
+    }, 2000);
   } catch (error) {
     console.log("🚀 ~ file: lichThucHanhReducer.jsx:200 ~ error:", error);
   }
