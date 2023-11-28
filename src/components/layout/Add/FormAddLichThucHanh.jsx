@@ -7,13 +7,23 @@ import { getAllPhongMayApi } from "../../../redux/reducers/phongMayReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMonHoc } from "../../../redux/reducers/monHocReducer";
 import { getAllGiaoVienApi } from "../../../redux/reducers/giaoVienReducer";
-import { getDSPhong_trungPM_MonHocApi, insertCaThucHanhApi } from "../../../redux/reducers/lichThucHanhReducer";
+import {
+  getAllDsPhongHocInMonHoc,
+  getDSPhong_trungPM_MonHocApi,
+  insertCaThucHanhApi,
+  serArrPhongByDSPhanMem_MonHocAction,
+  setArrMonHoc_CaThucHanhApi,
+  setThongtinKhiSelMonHoc_All,
+} from "../../../redux/reducers/lichThucHanhReducer";
 import { formatStringDate3 } from "../../../util/config";
 
 export default function FormAddLichThucHanh() {
   //
   const dispatch = useDispatch();
   //
+  let { arrPhanMemByMonHoc, arrPhongByMonHoc, arrMonHoc_CaTH } = useSelector(
+    (state) => state.lichThucHanhReducer
+  );
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
   let { arrTang } = useSelector((state) => state.tangReducer);
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
@@ -51,11 +61,18 @@ export default function FormAddLichThucHanh() {
     if (arrPhongMay.length === 0) {
       dispatch(getAllPhongMayApi);
     }
+    if(arrMonHoc_CaTH.length === 0) {
+      dispatch(setArrMonHoc_CaThucHanhApi)
+    }
     if (arrMonHoc.length === 0) {
       dispatch(getAllMonHoc);
     }
     if (arrGiaoVien.length === 0) {
       dispatch(getAllGiaoVienApi);
+    }
+    // update arrPhongByMonHoc - gia tri ban dau là toàn bộ arrPhong
+    if (arrPhongByMonHoc.length === 0) {
+      dispatch(getAllDsPhongHocInMonHoc);
     }
 
     // setErrCaTH({ ...errCaTH });
@@ -208,6 +225,7 @@ export default function FormAddLichThucHanh() {
         ngayBD: "",
         ngayKT: "",
       };
+      dispatch(setThongtinKhiSelMonHoc_All(arrPhongMay));
 
       setErrCaTH({
         ...errCaTH,
@@ -218,7 +236,7 @@ export default function FormAddLichThucHanh() {
       let { soBuoi, ngayBatDau, maMon } = objDataMH;
 
       // tim PM cho mon hoc - tim phongf
-      dispatch(getDSPhong_trungPM_MonHocApi(maMon, arrPhongMay))
+      dispatch(getDSPhong_trungPM_MonHocApi(maMon, arrPhongMay));
 
       /// gans cho thong tin mon hoc
       let ngayBD = new Date(ngayBatDau);
@@ -228,6 +246,9 @@ export default function FormAddLichThucHanh() {
       objCaThucHanh.current = {
         ...objCaThucHanh.current,
         valueSelMonHoc: value,
+        valueSelPhongMay: -1,
+        valueSelToaNha: -1,
+        valueSelTang: -1,
         soCaTH: soBuoi,
         ngayBD: formatStringDate3(ngayBD),
         ngayKT: formatStringDate3(ngayKT),
@@ -236,6 +257,9 @@ export default function FormAddLichThucHanh() {
       setErrCaTH({
         ...errCaTH,
         valueSelMonHoc: "",
+        valueSelPhongMay: "",
+        valueSelToaNha: "",
+        valueSelTang: "",
       });
     }
   };
@@ -372,8 +396,12 @@ export default function FormAddLichThucHanh() {
   //
   const renderThongTinMonHoc = () => {
     let { valueSelMonHoc } = objCaThucHanh.current;
-    if(valueSelMonHoc == -1) {
-      return <div className="text-center col-10" style={{fontSize:'25px'}}>...</div>
+    if (valueSelMonHoc == -1) {
+      return (
+        <div className="text-center col-10" style={{ fontSize: "25px" }}>
+          ...
+        </div>
+      );
     }
     return (
       <>
@@ -428,6 +456,41 @@ export default function FormAddLichThucHanh() {
       </>
     );
   };
+  const renderThongtinPM_inMonHoc = () => {
+    if (arrPhanMemByMonHoc.length === 0) {
+      return (
+        <div className="text-center col-10" style={{ fontSize: "25px" }}>
+          ...
+        </div>
+      );
+    }
+    return (
+      <>
+        <div className="mb-3 col-10">
+          <label htmlFor="soPhanMem" className="form-label">
+            Danh sách phần mềm cần thiết
+            <small id="errSoPhanMem" className="form-text  mx-2 text-muted">
+              *
+            </small>
+          </label>
+          <div
+            className="over_flow_auto"
+            style={{
+              height: "160px",
+              paddingLeft: "10px",
+              paddingBottom: "15px",
+            }}
+          >
+            <ul>
+              {arrPhanMemByMonHoc.map((item, index) => {
+                return <li>{item.tenPhanMem}</li>;
+              })}
+            </ul>
+          </div>
+        </div>
+      </>
+    );
+  };
   //
   const renderSelectPhongMay = () => {
     let { valueSelToaNha, valueSelTang, valueSelPhongMay } =
@@ -436,7 +499,7 @@ export default function FormAddLichThucHanh() {
       if (valueSelTang == -1) {
         // select tang khong co gia tri
         // toa nha khong co giatri
-        return arrPhongMay.map((item, index) => {
+        return arrPhongByMonHoc.map((item, index) => {
           return (
             <option
               key={index}
@@ -451,7 +514,7 @@ export default function FormAddLichThucHanh() {
       } else {
         // select tang co gia tri
         // toa nha khong co giatri
-        return arrPhongMay.map((item, index) => {
+        return arrPhongByMonHoc.map((item, index) => {
           if (item.tang.maTang == valueSelTang) {
             return (
               <option
@@ -470,7 +533,7 @@ export default function FormAddLichThucHanh() {
       if (valueSelTang == -1) {
         // select tang khong co gia tri
         // toa nha co giatri
-        return arrPhongMay.map((item, index) => {
+        return arrPhongByMonHoc.map((item, index) => {
           if (item.tang.toaNha.maToaNha == valueSelToaNha) {
             return (
               <option
@@ -644,6 +707,10 @@ export default function FormAddLichThucHanh() {
                           {renderChangeSelectBuoiTH()}
                         </select>
                       </div>
+                      {/* Phần mềm caanfn thiết */}
+
+                      {renderThongtinPM_inMonHoc()}
+                      {/*  */}
                     </div>
                     {/* right */}
                     <div className="col-md-4">

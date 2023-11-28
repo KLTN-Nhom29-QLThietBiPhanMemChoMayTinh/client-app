@@ -100,6 +100,7 @@ const initialState = {
   arrCaThucHanhSearch: [],
   arrPhanMemByMonHoc: [],
   arrPhongByMonHoc: [],
+  arrMonHoc_CaTH: [], // ds mon hoc maf chuaw cos ca thuc hanh
   objDetailCaTH: {},
   valueSearch: "",
   valueDateFrom: "",
@@ -124,6 +125,9 @@ const lichThucHanhReducer = createSlice({
     },
     serArrPhongByDSPhanMem_MonHocAction: (state, action) => {
       state.arrPhongByMonHoc = action.payload;
+    },
+    setArrMonHoc_CaThucHanhAction: (state, action) => {
+      state.arrMonHoc_CaTH = action.payload;
     },
     // search
     setObjDetailCaThucHanh: (state, action) => {
@@ -176,6 +180,7 @@ export const {
   setArrCaThucHanhAction,
   serArrPhanMemByIdMonHocAction,
   serArrPhongByDSPhanMem_MonHocAction,
+  setArrMonHoc_CaThucHanhAction,
   setObjDetailCaThucHanh,
   setValueSelSearchCaTHAction,
   setValueSelDateFromCaTHAction,
@@ -188,6 +193,60 @@ export const {
 export default lichThucHanhReducer.reducer;
 //
 // Call api +++++++++++++++++++++++++++++++++++++++++++++++++
+/**
+ * 1. lay Ds mon hoc
+ * 2. lays DS ca cuar mon hoc (theo ma)
+ * 3. thif dsCa cua mon hoc nào không có gtri thì dưa vào arrData_MH
+ * arrData_MH: ds môn học chua co ca
+ * @param {*} dispatch 
+ */
+export const setArrMonHoc_CaThucHanhApi = async (dispatch) => {
+  try {
+    let result_dsMonHoc = await http.get("/DSMonHoc");
+
+    let arrData_MH = result_dsMonHoc.data.filter(async (item) => {
+      let check = 1;
+
+      let result_CaTH_IdMonHoc = await http.get(
+        `/DSCaThucHanhTheoMonHoc/${item.maMon}`
+      );
+
+      return (check = 1);
+    });
+    console.log(
+      "🚀 ~ file: lichThucHanhReducer.jsx:205 ~ constsetArrMonHoc_CaThucHanhApi= ~ arrData_MH:",
+      arrData_MH
+    );
+  } catch (error) {
+    console.log("🚀 ~ file: lichThucHanhReducer.jsx:200 ~ error:", error);
+  }
+};
+/**
+ * upload laij data PM vs PHong mays theo monHOc
+ * @param {*} arrPhong
+ * @returns
+ */
+export const setThongtinKhiSelMonHoc_All = (arrPhong) => {
+  return async (dispatch) => {
+    dispatch(serArrPhongByDSPhanMem_MonHocAction(arrPhong));
+    dispatch(serArrPhanMemByIdMonHocAction([]));
+  };
+};
+/**
+ * call all DsPhong
+ * @param {*} dispatch
+ */
+export const getAllDsPhongHocInMonHoc = async (dispatch) => {
+  try {
+    let result = await http.get("/DSPhongMay");
+    dispatch(serArrPhongByDSPhanMem_MonHocAction(result.data));
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: lichThucHanhReducer.jsx:195 ~ getAllDsPhongHocInMonHoc ~ error:",
+      error
+    );
+  }
+};
 /**
  * 1. tìm DS phan mem của mon hoc (theo maMon hoc)
  * 2. lấy DS Phần mềm của Phòng
@@ -212,31 +271,30 @@ export const getDSPhong_trungPM_MonHocApi = (maMonHoc, arrPhong) => {
 
       let arrPhongByMonHoc = [];
 
-      arrPhong.forEach((item) => {
-        let check = 0;
-        let { phanMems } = item;
+      arrPhongByMonHoc = arrPhong.filter((item) => {
+        let check = 1; // true : thoa man; false không trùng PM
+        let { phanMems } = item; // dsPhan mêm trong Mon hoc
         // 3.
         arrPhanMemByMonHoc.forEach((e) => {
-          let value = 0;
-          phanMems.forEach((e2) => {
-            console.log(
-              e2.maPhanMem,
-              e.maPhanMem,
-              e2.maPhanMem === e.maPhanMem
-            );
-            if (e2.maPhanMem === e.maPhanMem){
-              value = 1;
-            }
-          });
-          console.log(
-            "🚀 ~ file: lichThucHanhReducer.jsx:223 ~ value ~ value:",
-            value
-          );
+          let maPMByMonHoc = e.maPhanMem;
+
+          // tìm từng PM 1 trong DS Phan mem By Phong; trùng trả về gtri >= 0
+          let value = phanMems.findIndex((x) => x.maPhanMem === maPMByMonHoc);
+
+          // nếu gtri < 0 thi trong DS Phan mem By Phong không có môn học cần tìm
+          if (value < 0) {
+            check = 0; // cập nhật check =0 để khong them phongf vao ds phongf  có PM trùng cs PM Môn học
+          }
         });
+
+        if (check == 1) {
+          return check == 1; // filter - tra ve item co check = 1
+        }
       });
 
       //
-      // dispatch(serArrPhanMemByIdMonHocAction(arrPhanMemByMonHoc));
+      dispatch(serArrPhanMemByIdMonHocAction(arrPhanMemByMonHoc));
+      dispatch(serArrPhongByDSPhanMem_MonHocAction(arrPhongByMonHoc));
     } catch (error) {
       console.log(
         "🚀 ~ file: lichThucHanhReducer.jsx:197 ~ return ~ error:",
