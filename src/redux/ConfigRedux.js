@@ -16,25 +16,27 @@ import phanMemReducer from "./reducers/phanMemReducer";
 import chucVuReducer from "./reducers/chucVuReducer";
 import mayTinhReducer from "./reducers/mayTinhReducer";
 import lichThucHanhReducer from "./reducers/lichThucHanhReducer";
+import home2Reducer from "./reducers/home2Reducer";
 
 export const store = configureStore({
-    reducer: {
-      lichThucHanhReducer: lichThucHanhReducer,
-      mayTinhReducer:mayTinhReducer,
-      chucVuReducer:chucVuReducer,
-      phanMemReducer:phanMemReducer,
-      phongMayReducer:phongMayReducer,
-      homeReducer:homeReducer,
-      lichTrucReducer:lichTrucReducer,
-      tangReducer:tangReducer,
-      toaNhaReducer:toaNhaReducer,
-      userReducer:userReducer,
-      taiKhoanReducer:taiKhoanReducer,
-      giaoVienReducer:giaoVienReducer,
-      khoaReducer:khoaReducer,
-      nhanVienReducer:nhanVienReducer,
-      number: numberReducer,
-      monHocReducer: monHocReducer,
-      thietBiReducer:thietBiReducer,
-    },
-  });
+  reducer: {
+    home2Reducer: home2Reducer,
+    lichThucHanhReducer: lichThucHanhReducer,
+    mayTinhReducer: mayTinhReducer,
+    chucVuReducer: chucVuReducer,
+    phanMemReducer: phanMemReducer,
+    phongMayReducer: phongMayReducer,
+    homeReducer: homeReducer,
+    lichTrucReducer: lichTrucReducer,
+    tangReducer: tangReducer,
+    toaNhaReducer: toaNhaReducer,
+    userReducer: userReducer,
+    taiKhoanReducer: taiKhoanReducer,
+    giaoVienReducer: giaoVienReducer,
+    khoaReducer: khoaReducer,
+    nhanVienReducer: nhanVienReducer,
+    number: numberReducer,
+    monHocReducer: monHocReducer,
+    thietBiReducer: thietBiReducer,
+  },
+});

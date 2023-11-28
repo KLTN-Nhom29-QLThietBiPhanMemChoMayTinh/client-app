@@ -1,25 +1,31 @@
-import React, { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { insertGhiChuApi, setObjThongTinGhiChu } from "../../redux/reducers/home2Reducer";
 
 export default function ComponentModalGhiChu() {
   //
+  const dispatch = useDispatch();
+  //
   let { objThongTin } = useSelector((state) => state.homeReducer);
+  let { objThongTinGhiChu } = useSelector((state) => state.home2Reducer);
 
   //
   let { arrPhanMem, arrThietBi } = objThongTin;
 
+  let { arrTbi, arrPM, txtGhiChu } = objThongTinGhiChu;
   //
-  const objGhiChu = useRef({
-    arrTbi: [],
-    arrPM: [],
-    txtGhiChu: "",
-  });
+  // const objGhiChu = useRef({
+  //   arrTbi: [],
+  //   arrPM: [],
+  //   txtGhiChu: "",
+  // });
 
   const [errGhiChu, setErrGhiChu] = useState({
     arrTbi: "",
     arrPM: "",
     txtGhiChu: "",
   });
+  //
   //handle
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,8 +44,8 @@ export default function ComponentModalGhiChu() {
     }
 
     // true
-    alert('Đang cập nhật!')
-    console.log(objGhiChu.current);
+    
+    dispatch(insertGhiChuApi({ objThongTin, objThongTinGhiChu }))
 
   };
   //
@@ -49,7 +55,7 @@ export default function ComponentModalGhiChu() {
     let err_arrPM = "";
     let err_txtGhiChu = "";
 
-    let { arrPM, arrTbi, txtGhiChu } = objGhiChu.current;
+    let { arrPM, arrTbi, txtGhiChu } = objThongTinGhiChu;
     //
     if (arrPM.length === 0) {
       err_arrPM = "Hãy nhập thông tin!";
@@ -58,7 +64,7 @@ export default function ComponentModalGhiChu() {
       err_arrPM = "";
     }
     //
-    if (arrTbi.length === 0 && arrThietBi.length !== 0 ) {
+    if (arrTbi.length === 0 && arrThietBi.length !== 0) {
       err_arrTbi = "Hãy nhập thông tin!";
       result = 0;
     } else {
@@ -85,7 +91,7 @@ export default function ComponentModalGhiChu() {
   const handleChangSelectPM = (e) => {
     let { checked, value } = e.target;
 
-    let arrUpdate = objGhiChu.current.arrPM;
+    let arrUpdate = [...arrPM];
 
     if (checked) {
       arrUpdate.push(
@@ -96,9 +102,15 @@ export default function ComponentModalGhiChu() {
     } else {
       arrUpdate = arrUpdate.filter((item) => item.maPhanMem != value);
     }
+    let objData = {
+      arrPM: [...arrUpdate],
+      arrTbi,
+      txtGhiChu,
+    };
+
+    dispatch(setObjThongTinGhiChu(objData));
     //
-    objGhiChu.current.arrPM = [...arrUpdate];
-    if (objGhiChu.current.arrPM.length === 0) {
+    if (arrUpdate.length === 0) {
       setErrGhiChu({ ...errGhiChu, arrPM: "Hãy chọn phần mềm!" });
     } else {
       setErrGhiChu({ ...errGhiChu, arrPM: "" });
@@ -108,7 +120,7 @@ export default function ComponentModalGhiChu() {
   const handleChangSelectTbi = (e) => {
     let { checked, value } = e.target;
 
-    let arrUpdate = objGhiChu.current.arrTbi;
+    let arrUpdate = [...arrTbi];
 
     if (checked) {
       arrUpdate.push(
@@ -119,12 +131,17 @@ export default function ComponentModalGhiChu() {
     } else {
       arrUpdate = arrUpdate.filter((item) => item.maThietBi != value);
     }
+    let objData = {
+      arrPM,
+      arrTbi: [...arrUpdate],
+      txtGhiChu,
+    };
 
-    objGhiChu.current.arrTbi = [...arrUpdate];
+    dispatch(setObjThongTinGhiChu(objData));
 
     //
-    objGhiChu.current.arrTbi = [...arrUpdate];
-    if (objGhiChu.current.arrTbi.length === 0) {
+
+    if (arrUpdate.length === 0) {
       setErrGhiChu({ ...errGhiChu, arrTbi: "Hãy chọn thiết bị!" });
     } else {
       setErrGhiChu({ ...errGhiChu, arrTbi: "" });
@@ -134,7 +151,14 @@ export default function ComponentModalGhiChu() {
   const handleChangeTextGhiChu = (e) => {
     let { id, value } = e.target;
 
-    objGhiChu.current[id] = value;
+    let objData = {
+      arrPM,
+      arrTbi,
+      txtGhiChu : value,
+    };
+
+    dispatch(setObjThongTinGhiChu(objData));
+
     if (value.trim().length === 0) {
       setErrGhiChu({ ...errGhiChu, [id]: "Hãy ghi chú ở đây!" });
     } else {
@@ -148,6 +172,11 @@ export default function ComponentModalGhiChu() {
       return <span className="mx-2">Không có thông tin.</span>;
     }
     return arrPhanMem?.map((item, index) => {
+      let check1 = arrPM.findIndex((e) => e.maPhanMem === item.maPhanMem);
+      let check_status = 0;
+      if (check1 >= 0) {
+        check_status = 1;
+      }
       return (
         <div className="form-check ms-2" key={index}>
           <input
@@ -155,6 +184,7 @@ export default function ComponentModalGhiChu() {
             type="checkbox"
             value={item.maPhanMem}
             id={`${item.maPhanMem}_PM`}
+            checked={check_status}
             onChange={handleChangSelectPM}
           />
           <label
@@ -172,6 +202,11 @@ export default function ComponentModalGhiChu() {
   const renderCheckBoxThietBi = () => {
     if (arrThietBi?.length !== 0 && arrThietBi != null) {
       return arrThietBi?.map((item, index) => {
+        let check1 = arrTbi.findIndex((e) => e.maThietBi === item.maThietBi);
+        let check_status = 0;
+        if (check1 >= 0) {
+          check_status = 1;
+        }
         return (
           <div className="form-check ms-2" key={index}>
             <input
@@ -179,6 +214,7 @@ export default function ComponentModalGhiChu() {
               type="checkbox"
               value={item.maThietBi}
               id={`${item.maThietBi}_Tbi`}
+              checked={check_status}
               onChange={handleChangSelectTbi}
             />
             <label
@@ -273,7 +309,7 @@ export default function ComponentModalGhiChu() {
                     <br />
                     <div
                       className="over_flow_auto"
-                      style={{ maxHeight: "150px" }}
+                      style={{ maxHeight: "200px" }}
                     >
                       {renderCheckBoxPhanMem()}
                     </div>
@@ -286,7 +322,7 @@ export default function ComponentModalGhiChu() {
                     <br />
                     <div
                       className="over_flow_auto"
-                      style={{ maxHeight: "150px" }}
+                      style={{ maxHeight: "200px" }}
                     >
                       {renderCheckBoxThietBi()}
                     </div>
@@ -306,7 +342,7 @@ export default function ComponentModalGhiChu() {
                     name="txtGhiChu"
                     id="txtGhiChu"
                     rows={5}
-                    defaultValue={""}
+                    value={txtGhiChu}
                     onChange={handleChangeTextGhiChu}
                   />
                 </div>

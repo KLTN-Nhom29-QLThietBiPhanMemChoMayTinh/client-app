@@ -12,6 +12,7 @@ import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
 import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 import ComponentModelDetail from "../../components/layoutHome/ComponentModelDetail";
 import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiChu";
+import { setThongTinObjGhiChuRedux } from "../../redux/reducers/home2Reducer";
 
 export default function PageHome() {
   const dispatch = useDispatch();
@@ -102,6 +103,10 @@ export default function PageHome() {
               data-bs-toggle="modal"
               data-bs-target="#modalIdGhiChu"
               type="button"
+              onClick={() => {
+                // let { arrPhanMem, arrThietBi } = objThongTin;
+                dispatch(setThongTinObjGhiChuRedux(objThongTin))
+              }}
               className="btn btn-primary"
             >
               Ghi chú
