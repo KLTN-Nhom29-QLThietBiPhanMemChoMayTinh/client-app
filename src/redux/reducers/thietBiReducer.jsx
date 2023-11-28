@@ -216,13 +216,14 @@ export default thietBiReducer.reducer;
 export const deleteThietBiApi = (maXoa) => {
   return async (dispatch) => {
     try {
-      // await http.post("/XoaThietBiMay", maXoa);
+      await http.delete(`/XoaThietBiMay/${maXoa}`);
       console.log(
         "Chưa có api xoa thietbi ( xóa 1 thiet bị xóa cả MaytinhThietbij liên quan )"
       );
 
       dispatch(deleteThietBiAction(maXoa));
     } catch (error) {
+      alert('Thiết bị đang dược sử dụng tại 1 phòng học. không thể xóa.')
       console.log(
         "🚀 ~ file: thietBiReducer.jsx:203 ~ returnasync ~ error:",
         error

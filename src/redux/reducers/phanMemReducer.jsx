@@ -170,6 +170,7 @@ export const deletePhanMemApi = (maXoa) => {
  * @returns
  */
 export const updatePhanMemApi = (phanMem) => {
+  console.log("🚀 ~ file: phanMemReducer.jsx:173 ~ updatePhanMemApi ~ phanMem:", phanMem)
   return async (dispatch) => {
     try {
       let result = await http.post("/LuuPhanMem", phanMem);

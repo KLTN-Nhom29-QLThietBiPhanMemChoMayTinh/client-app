@@ -108,7 +108,6 @@ export default function FormUpdateThietBi() {
       loaiThietBi,
     };
     //
-    console.log(thietBiNew);
 
     dispatch(updateThietbiApi(thietBiNew));
   };

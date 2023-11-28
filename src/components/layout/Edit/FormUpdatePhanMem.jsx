@@ -96,13 +96,13 @@ export default function FormUpdatePhanMem() {
     }
     // true
 
-    let { tenPhanMem, moTa, ngaySD, phienBan, tgianBaoHanh, ngayKT } =
+    let { tenPhanMem, moTa, status, ngaySD, phienBan, tgianBaoHanh, ngayKT } =
       objPhanMem.current;
 
     let phanMemNew = {
       maPhanMem: objData_old.maPhanMem,
       tenPhanMem,
-      trangThai: true,
+      trangThai: status,
       moTa,
       phienBan,
       tuoiTho: tgianBaoHanh,
@@ -427,7 +427,42 @@ export default function FormUpdatePhanMem() {
                   </button>
                   <button
                     type="reset"
-                    onClick={() => {}}
+                    onClick={() => {
+                      //
+                      let {
+                        tenPhanMem,
+                        trangThai,
+                        moTa,
+                        phienBan,
+                        tuoiTho,
+                        ngayCaiDat,
+                      } = objData_old;
+
+                      //
+                      let ngaySD = formatStringDate2(new Date(ngayCaiDat));
+                      let tgianBaoHanh = tuoiTho;
+                      let { status, ngayKT } = getCheckTgianKT({
+                        tgianBaoHanh,
+                        ngaySD,
+                      });
+
+                      objPhanMem.current = {
+                        tenPhanMem,
+                        moTa,
+                        ngaySD,
+                        tgianBaoHanh,
+                        ngayKT,
+                        status: trangThai,
+                        phienBan,
+                      };
+                      setErrPhanMem({
+                        tenPhanMem: "",
+                        moTa: "",
+                        ngaySD: "",
+                        tgianBaoHanh: "",
+                        phienBan: "",
+                      });
+                    }}
                     className="btn btn-danger mx-3"
                   >
                     Khôi phục
