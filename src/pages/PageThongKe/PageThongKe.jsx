@@ -1,74 +1,97 @@
-import React from "react";
-import ComponentThongKe from "./ComponentThongKe";
+import React, { useState } from "react";
+import ComponentThongKe from "../../components/layout/ThongKe/ComponentThongKe";
+import ThongKeToaNha from "../../components/layout/ThongKe/ThongkeToaNha/ThongKeToaNha";
+import ThongKeTang from "../../components/layout/ThongKe/ThongKeTang/ThongKeTang";
 
 export default function PageThongKe() {
+  let [valBtnTK, setValBtnTK] = useState("tk_toaNha");
+
+  // handle
+  const handleClickBtnThongke = (e) => {
+    let { id } = e.target;
+    console.log("🚀 ~ file: PageThongKe.jsx:12 ~ handleClickBtnThongke ~ id:", id)
+    
+    switch (id) {
+      case "tk_toaNha":
+        break;
+
+      case "tk_tang":
+        break;
+
+      default:
+        break;
+    }
+
+    setValBtnTK(id);
+  };
+  // render
+  const renderDataThongKe = () => {
+    switch (valBtnTK) {
+      case "tk_toaNha":
+        return <ThongKeToaNha />;
+
+      case "tk_tang":
+        return <ThongKeTang />;
+
+      default:
+        return <ThongKeToaNha />;
+    }
+  };
+
+  //
   return (
-    <div className="w-100  " style={{ height: "100vh", margin: "0px" }}>
-      <div className="row h-100 bg-white rounded ">
+    <div className="w-100" style={{ margin: "0px", padding: "0px" }}>
+      <div
+        className="row bg-white rounded "
+        style={{ minHeight: "100vh", margin: "0px", padding: "0px" }}
+      >
         {/* btn Thong ke */}
-        <div className="col-3  h-100 border-end">
+        <div className="col-3  " style={{ maxHeight: "100vh" }}>
           <div className="p-3 d-flex flex-column">
-            <button type="button" className="btn btn-primary mt-2">
-              Button
+            <button
+              onClick={handleClickBtnThongke}
+              id="tk_toaNha"
+              type="button"
+              className={`btn ${
+                valBtnTK.includes("tk_toaNha")
+                  ? " btn-primary"
+                  : "btn-outline-primary"
+              } mt-2`}
+            >
+              Thống kê tòa nhà
+            </button>
+            <button
+              type="button"
+              id="tk_tang"
+              onClick={handleClickBtnThongke}
+              className={`btn ${
+                valBtnTK.includes("tk_tang")
+                  ? " btn-primary"
+                  : "btn-outline-primary"
+              } mt-2`}
+            >
+              Thống kê tầng
             </button>
             <button type="button" className="btn btn-outline-primary mt-2">
-              Button
+              Thống kê phòng
             </button>
             <button type="button" className="btn btn-outline-primary mt-2">
-              Button
+              Thống kê máy tính
             </button>
             <button type="button" className="btn btn-outline-primary mt-2">
-              Button
+              Thống kê nhân viên
             </button>
             <button type="button" className="btn btn-outline-primary mt-2">
-              Button
+              Thống kê giáo viên
             </button>
             <button type="button" className="btn btn-outline-primary mt-2">
-              Button
-            </button>
-            <button type="button" className="btn btn-outline-primary mt-2">
-              Button
+              Thống kê môn học
             </button>
           </div>
         </div>
 
         {/* Thong tin */}
-        <div className="col-9  h-100">
-          <div className="d-flex flex-column bd-highlight h-100">
-            <div className="p-2 flex-shrink-1 bd-highlight">
-              {/* top */}
-              <div class="d-flex bd-highlight border rounded">
-                {/* left */}
-                <div
-                  class="p-2 w-100 bd-highlight"
-                  style={{ fontSize: "15px" }}
-                >
-                  <div className="col-3">
-                    <label htmlFor="SelA" className="form-label">
-                      City
-                    </label>
-                    <select className="form-select p-1 py-1" name="SelA" id="SelA">
-                      <option selected>Select one</option>
-                      <option value>New Delhi</option>
-                      <option value>Istanbul</option>
-                      <option value>Jakarta</option>
-                    </select>
-                  </div>
-                </div>
-                {/* right */}
-                <div class="p-2 flex-shrink-1 bd-highlight ">
-                  <button type="button" className="btn btn-primary ">
-                    Xuất file
-                  </button>
-                </div>
-              </div>
-            </div>
-            {/* body */}
-            <div className="p-2 h-100 bd-highlight bg-danger ">
-                <ComponentThongKe />
-            </div>
-          </div>
-        </div>
+        <div className="col-9  border-start">{renderDataThongKe()}</div>
       </div>
     </div>
   );

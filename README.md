@@ -161,6 +161,8 @@
 * useLocation() - [link](https://medium.com/@stheodorejohn/exploring-react-router-dom-understanding-the-uselocation-hook-f67742e71c0c)
 * Lấy giá trị tham số từ chuối truy vấn? [link](https://www.javascripttutorial.net/es-next/javascript-object-fromentries/)
 * sort js - [link](https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value)
+* HOOC Thống kê - [link](https://viblo.asia/p/ve-bieu-do-trong-reactjs-that-de-dang-voi-recharts-gDVK2j4vKLj)
+* HOOC Thống kê 2 - Recharts - [link](https://recharts.org/en-US/examples/CustomActiveShapePieChart)
 
     
 ## error
