@@ -166,7 +166,7 @@ export const setObjThongTinByPhongMay = (valPhong) => {
 
       //
       let objThongTin = {
-        phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
+        phong: { maPhong, tang, tenPhong, moTa, soMay: mayTinhs.length },
         tang,
         mayTinh: {},
         arrPhanMem,
@@ -212,7 +212,7 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
 
       //
       console.log("Chua co api lay list Phong theo maTang");
-      // let resultArrPhong = await http.get("/DSPhongMay");
+      // let resultArrPhong = await http.get("/DSPhongMay2");
 
       // duyet tim phong trong ds co maTang dang chonj
       // arrPhongH = resultArrPhong.data.filter((item) => {
@@ -221,11 +221,13 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
       });
 
       if (arrPhongH.length !== 0) {
-        let { maPhong, tenPhong, moTa, mayTinhs } = arrPhongH[0];
+        let { maPhong, tenPhong, moTa, tang, mayTinhs } = arrPhongH[0];
 
         // Api lay arr phanMem
         let arrPhanMem = [];
-        let resultPM = await http.get(`/DSPhongMayPhanMemTheoMaPhong/${maPhong}`);
+        let resultPM = await http.get(
+          `/DSPhongMayPhanMemTheoMaPhong/${maPhong}`
+        );
         if (resultPM.data.length !== 0) {
           arrPhanMem = resultPM.data.map((item) => {
             return { ...item.phanMem, trangThaiPM: item.status };
@@ -234,7 +236,7 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
         // gans gtri phong dau tien vao obj gtri chon
         objThongTin = {
           ...objThongTin,
-          phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
+          phong: { maPhong, tang, tenPhong, moTa, soMay: mayTinhs.length },
           arrPhanMem,
         };
         // arr may Tinh
@@ -292,7 +294,7 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
 
         //
         console.log("Chua co api lay list Phong theo maTang");
-        // let resultArrPhong = await http.get("/DSPhongMay");
+        // let resultArrPhong = await http.get("/DSPhongMay2");
 
         // duyet tim phong trong ds co maTang dang chonj
         arrPhongH = arrPhongMay.filter((item) => {
@@ -300,11 +302,13 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
         });
 
         if (arrPhongH.length !== 0) {
-          let { maPhong, tenPhong, moTa, mayTinhs } = arrPhongH[0];
+          let { maPhong, tenPhong, tang, moTa, mayTinhs } = arrPhongH[0];
 
           // Api lay arr phanMem
           let arrPhanMem = [];
-          let resultPM = await http.get(`/DSPhongMayPhanMemTheoMaPhong/${maPhong}`);
+          let resultPM = await http.get(
+            `/DSPhongMayPhanMemTheoMaPhong/${maPhong}`
+          );
           if (resultPM.data.length !== 0) {
             arrPhanMem = resultPM.data.map((item) => {
               return { ...item.phanMem, trangThaiPM: item.status };
@@ -313,7 +317,7 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
           // gans gtri phong dau tien vao obj gtri chon
           objThongTin = {
             ...objThongTin,
-            phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
+            phong: { maPhong, tang, tenPhong, moTa, soMay: mayTinhs.length },
             arrPhanMem,
           };
           // arr may Tinh
@@ -346,7 +350,7 @@ export const getPhongByFirst = async (dispatch) => {
   try {
     //
     console.log("Chua co api lay list Phong theo maTang");
-    let resultArrPhong = await http.get("/DSPhongMay");
+    let resultArrPhong = await http.get("/DSPhongMay2");
 
     let objPhongFirst = { ...resultArrPhong.data[0] };
     let { maPhong, tenPhong, moTa, tang, mayTinhs } = objPhongFirst;
@@ -359,7 +363,7 @@ export const getPhongByFirst = async (dispatch) => {
 
     //
     console.log("Chua co api lay list Phong theo maTang");
-    // let resultArrPhong = await http.get("/DSPhongMay");
+    // let resultArrPhong = await http.get("/DSPhongMay2");
 
     let arrPhongH = resultArrPhong.data.filter((item) => {
       return item.tang.maTang === tang.maTang;
@@ -376,7 +380,7 @@ export const getPhongByFirst = async (dispatch) => {
 
     //
     let objThongTin = {
-      phong: { maPhong, tenPhong, moTa, soMay: mayTinhs.length },
+      phong: { maPhong, tang, tenPhong, moTa, soMay: mayTinhs.length },
       tang,
       mayTinh: {},
       arrThietBi: [],

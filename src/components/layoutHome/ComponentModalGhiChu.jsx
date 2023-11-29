@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { insertGhiChuApi, setObjThongTinGhiChu } from "../../redux/reducers/home2Reducer";
+import {
+  insertGhiChuApi,
+  setObjThongTinGhiChu,
+} from "../../redux/reducers/home2Reducer";
 
 export default function ComponentModalGhiChu() {
   //
@@ -44,32 +47,30 @@ export default function ComponentModalGhiChu() {
     }
 
     // true
-    
-    // dispatch(insertGhiChuApi({ objThongTin, objThongTinGhiChu }))
 
+    dispatch(insertGhiChuApi({ objThongTin, objThongTinGhiChu }));
+    // $('#modalIdGhiChu').modal('hide');
+    // document.querySelector("#modalIdGhiChu").modal("hide");
   };
   //
   const checkData = () => {
     let result = 1;
+    let err_arrTbao = "";
+    let err_txtGhiChu = "";
     let err_arrTbi = "";
     let err_arrPM = "";
-    let err_txtGhiChu = "";
 
     let { arrPM, arrTbi, txtGhiChu } = objThongTinGhiChu;
     //
-    if (arrPM.length === 0) {
-      err_arrPM = "Hãy nhập thông tin!";
-      result = 0;
-    } else {
-      err_arrPM = "";
-    }
-    //
-    if (arrTbi.length === 0 && arrThietBi.length !== 0) {
-      err_arrTbi = "Hãy nhập thông tin!";
+    if (arrTbi.length === 0 && arrPM.length === 0) {
+      err_arrTbi = "Hãy chọn thiết bị";
+      err_arrPM = "Hãy chọn thiết bị";
       result = 0;
     } else {
       err_arrTbi = "";
+      err_arrPM = "";
     }
+
     //
     if (txtGhiChu.trim().length === 0) {
       err_txtGhiChu = "Hãy nhập thông tin!";
@@ -80,8 +81,8 @@ export default function ComponentModalGhiChu() {
 
     //
     setErrGhiChu({
-      arrPM: err_arrPM,
       arrTbi: err_arrTbi,
+      arrPM: err_arrPM,
       txtGhiChu: err_txtGhiChu,
     });
 
@@ -110,11 +111,7 @@ export default function ComponentModalGhiChu() {
 
     dispatch(setObjThongTinGhiChu(objData));
     //
-    if (arrUpdate.length === 0) {
-      setErrGhiChu({ ...errGhiChu, arrPM: "Hãy chọn phần mềm!" });
-    } else {
-      setErrGhiChu({ ...errGhiChu, arrPM: "" });
-    }
+    setErrGhiChu({ ...errGhiChu, arrPM: "" });
   };
   //
   const handleChangSelectTbi = (e) => {
@@ -141,11 +138,7 @@ export default function ComponentModalGhiChu() {
 
     //
 
-    if (arrUpdate.length === 0) {
-      setErrGhiChu({ ...errGhiChu, arrTbi: "Hãy chọn thiết bị!" });
-    } else {
-      setErrGhiChu({ ...errGhiChu, arrTbi: "" });
-    }
+    setErrGhiChu({ ...errGhiChu, arrTbi: "" });
   };
   //
   const handleChangeTextGhiChu = (e) => {
@@ -154,7 +147,7 @@ export default function ComponentModalGhiChu() {
     let objData = {
       arrPM,
       arrTbi,
-      txtGhiChu : value,
+      txtGhiChu: value,
     };
 
     dispatch(setObjThongTinGhiChu(objData));
@@ -349,20 +342,6 @@ export default function ComponentModalGhiChu() {
               </div>
             </div>
             <div className="modal-footer">
-              <button
-                onChange={() => {
-                  //
-                  setErrGhiChu({
-                    arrPM: "",
-                    arrTbi: "",
-                    txtGhiChu: "",
-                  });
-                }}
-                type="reset"
-                className="btn btn-secondary"
-              >
-                Làm mới
-              </button>
               <button type="submit" className="btn btn-primary">
                 Ghi chú
               </button>

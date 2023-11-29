@@ -2,6 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
+import { setObjThongTinByMay, setObjThongTinByPhongMay } from "./homeReducer";
 //phuc vụ cho ghi chú
 const initialState = {
   objThongTinGhiChu: {
@@ -41,14 +42,16 @@ export const insertGhiChuApi = ({ objThongTin, objThongTinGhiChu }) => {
     ngaySua: "",
     phongMay: phong,
   };
-  console.log(
-    "🚀 ~ file: home2Reducer.jsx:44 ~ insertGhiChuApi ~ objDataGhiChu:",
-    objDataGhiChu
-  );
+
   return async (dispatch) => {
     try {
+      // 1. luu ghi chú
       let result_saveGhiChu = await http.post("/LuuGhiChu", objDataGhiChu);
 
+      //2. duyệt Ds PM có trong phòng
+      // 3. duyệt DS PM được check trong modal Ghi chu
+      // tìm PM nào check thì update vs status false (khog hỏng) - ngược lại true( bị hỏng)
+      //
       arrPhanMem.forEach(async (item) => {
         let index = arrPM.findIndex((e) => e.maPhanMem === item.maPhanMem);
         let savePhongMay_PhanMem = {};
@@ -70,9 +73,19 @@ export const insertGhiChuApi = ({ objThongTin, objThongTinGhiChu }) => {
         }
 
         await http.post("/LuuPhongMayPhanMem", savePhongMay_PhanMem);
-        console.log(savePhongMay_PhanMem);
       });
       //
+      if (arrTbi.length === 0) {
+        //4.khi người dùng đứng ở chon phòng (chưa chọn máy tính)
+        setTimeout(async () => {
+          // giups reload laij page home
+          let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
+          dispatch(setObjThongTinByPhongMay(objUpdate.data));
+        }, 1000);
+        alert("Ghi chú thành công.");
+        return;
+      }
+      // duyệt tường tụ PM
       arrThietBi.forEach(async (item) => {
         let index = arrTbi.findIndex((e) => e.maThietBi === item.maThietBi);
         let saveMayTinh_ThietBi = {};
@@ -94,11 +107,18 @@ export const insertGhiChuApi = ({ objThongTin, objThongTinGhiChu }) => {
         }
 
         await http.post("/LuuMayTinhThietBi", saveMayTinh_ThietBi);
-        console.log(saveMayTinh_ThietBi);
       });
 
-      
+      let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
+      setTimeout(async () => {
+        // giups reload laij page home
+        dispatch(setObjThongTinByPhongMay(objUpdate.data));
+
+        dispatch(setObjThongTinByMay(mayTinh));
+      }, 1000);
+      alert("Ghi chú thành công.");
     } catch (error) {
+      alert("Ghi chú không thành công - lỗi kết nối. Vui lòng quay lại sau.");
       console.log("🚀 ~ file: home2Reducer.jsx:39 ~ return ~ error:", error);
     }
   };

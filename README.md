@@ -136,7 +136,7 @@
     - dựa theo controller DSMonHocPhanMem/maMon  đểtạo status (đợi mởi lớp (controller có length = 0 ) hay là dang học(controller có length > 0 ))
     - dựa theo controller DSMonHocPhanMem/maMon co thể lấy số lượng ca TH dã tạo so sanh vs so buổi dể khogno cho tạo ca TH mới nữa
     - getDSPhong_trungPM_MonHocApi() (chua hiểu giá tri ở trong) -> show PM môn hoc -> 
-    - QLCaThucHanh chuaw co form update
+    - QLCaThucHanh chuaw co form update - del chưa co
 
 
     #
