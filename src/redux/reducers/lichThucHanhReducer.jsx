@@ -297,6 +297,8 @@ export const getDSPhong_trungPM_MonHocApi = (maMonHoc, arrPhong) => {
       //
       dispatch(serArrPhanMemByIdMonHocAction(arrPhanMemByMonHoc));
       dispatch(serArrPhongByDSPhanMem_MonHocAction(arrPhongByMonHoc));
+
+      return arrPhongByMonHoc[0];
     } catch (error) {
       console.log(
         "🚀 ~ file: lichThucHanhReducer.jsx:197 ~ return ~ error:",
@@ -304,6 +306,55 @@ export const getDSPhong_trungPM_MonHocApi = (maMonHoc, arrPhong) => {
       );
     }
   };
+};
+
+export const getDSPhong_trungPM_MonHocApi2 = async (maMonHoc, arrPhong) => {
+  try {
+    //1.
+    let resultMonHocPhanMem = await http.get(`/DSMonHocPhanMem/${maMonHoc}`);
+    let arrPhanMemByMonHoc = [];
+    //
+    resultMonHocPhanMem.data.forEach((e) => {
+      arrPhanMemByMonHoc.push(e.phanMem);
+    });
+
+    // 2.
+
+    let arrPhongByMonHoc = [];
+
+    arrPhongByMonHoc = arrPhong.filter((item) => {
+      let check = 1; // true : thoa man; false không trùng PM
+      let { phanMems } = item; // dsPhan mêm trong Mon hoc
+      // 3.
+      arrPhanMemByMonHoc.forEach((e) => {
+        let maPMByMonHoc = e.maPhanMem;
+
+        // tìm từng PM 1 trong DS Phan mem By Phong; trùng trả về gtri >= 0
+        let value = phanMems.findIndex((x) => x.maPhanMem === maPMByMonHoc);
+
+        // nếu gtri < 0 thi trong DS Phan mem By Phong không có môn học cần tìm
+        if (value < 0) {
+          check = 0; // cập nhật check =0 để khong them phongf vao ds phongf  có PM trùng cs PM Môn học
+        }
+      });
+
+      if (check == 1) {
+        return check == 1; // filter - tra ve item co check = 1
+      }
+    });
+
+    //
+    // dispatch(serArrPhanMemByIdMonHocAction(arrPhanMemByMonHoc));
+    // dispatch(serArrPhongByDSPhanMem_MonHocAction(arrPhongByMonHoc));
+
+    return arrPhongByMonHoc[0];
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: lichThucHanhReducer.jsx:197 ~ return ~ error:",
+      error
+    );
+  }
+  return {};
 };
 
 /**

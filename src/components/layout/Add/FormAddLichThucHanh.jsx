@@ -10,7 +10,9 @@ import { getAllGiaoVienApi } from "../../../redux/reducers/giaoVienReducer";
 import {
   getAllDsPhongHocInMonHoc,
   getDSPhong_trungPM_MonHocApi,
+  getDSPhong_trungPM_MonHocApi2,
   insertCaThucHanhApi,
+  serArrPhanMemByIdMonHocAction,
   serArrPhongByDSPhanMem_MonHocAction,
   setArrMonHoc_CaThucHanhApi,
   setThongtinKhiSelMonHoc_All,
@@ -39,7 +41,7 @@ export default function FormAddLichThucHanh() {
     valueSelTang: -1,
     valueSelPhongMay: -1,
     valueSelToaNha: -1,
-    valueSelBuoiTH: -1,
+    valueSelBuoiTH: 1,
   });
   let [errCaTH, setErrCaTH] = useState({
     valueSelGiaoVien: "",
@@ -67,12 +69,15 @@ export default function FormAddLichThucHanh() {
     }
     if (arrGiaoVien.length === 0) {
       dispatch(getAllGiaoVienApi);
+    } else {
+      objCaThucHanh.current.valueSelGiaoVien = arrGiaoVien[0].maGiaoVien;
     }
     // update arrPhongByMonHoc - gia tri ban dau là toàn bộ arrPhong
     dispatch(getAllDsPhongHocInMonHoc);
     // update Gia trij mon hoc chuaw co ca thuc hanh
     dispatch(setArrMonHoc_CaThucHanhApi);
-
+    // update ds PM can theit
+    dispatch (serArrPhanMemByIdMonHocAction([]))
     // setErrCaTH({ ...errCaTH });
   }, []);
   //
@@ -131,7 +136,6 @@ export default function FormAddLichThucHanh() {
       monHoc: objMonHoc,
     };
 
-    console.log(objData);
     dispatch(insertCaThucHanhApi(objData));
   };
   //
@@ -213,7 +217,7 @@ export default function FormAddLichThucHanh() {
     }
   };
   //
-  const handleChangeSelectMonHoc = (e) => {
+  const handleChangeSelectMonHoc = async (e) => {
     let value = e.target.value;
     if (value == -1) {
       objCaThucHanh.current = {
@@ -236,6 +240,16 @@ export default function FormAddLichThucHanh() {
       // tim PM cho mon hoc - tim phongf
       dispatch(getDSPhong_trungPM_MonHocApi(maMon, arrPhongMay));
 
+      let objPhongFirst = await getDSPhong_trungPM_MonHocApi2(
+        maMon,
+        arrPhongMay
+      );
+
+      let maPhong = -1;
+      if (objPhongFirst != null) {
+        maPhong = objPhongFirst.maPhong;
+      }
+
       /// gans cho thong tin mon hoc
       let ngayBD = new Date(ngayBatDau);
       let ngayKT = new Date(ngayBatDau);
@@ -247,6 +261,7 @@ export default function FormAddLichThucHanh() {
         valueSelPhongMay: -1,
         valueSelToaNha: -1,
         valueSelTang: -1,
+        valueSelPhongMay: maPhong,
         soCaTH: soBuoi,
         ngayBD: formatStringDate3(ngayBD),
         ngayKT: formatStringDate3(ngayKT),
@@ -258,6 +273,7 @@ export default function FormAddLichThucHanh() {
         valueSelPhongMay: "",
         valueSelToaNha: "",
         valueSelTang: "",
+        valueSelPhongMay: "",
       });
     }
   };
@@ -288,7 +304,7 @@ export default function FormAddLichThucHanh() {
     objCaThucHanh.current = {
       ...objCaThucHanh.current,
       valueSelTang: value,
-      valueSelPhongMay: -1,
+      // valueSelPhongMay: -1,
     };
     if (value == -1) {
       setErrCaTH({
@@ -310,7 +326,7 @@ export default function FormAddLichThucHanh() {
       ...objCaThucHanh.current,
       valueSelToaNha: value,
       valueSelTang: -1,
-      valueSelPhongMay: -1,
+      // valueSelPhongMay: -1,
     };
     if (value == -1) {
       setErrCaTH({
@@ -364,6 +380,24 @@ export default function FormAddLichThucHanh() {
   //
   const renderSelectGiaoVien = () => {
     let { valueSelGiaoVien } = objCaThucHanh.current;
+    if (valueSelGiaoVien == -1) {
+      return (
+        <>
+          <option value={-1}>Tất cả</option>
+          {arrGiaoVien.map((item, index) => {
+            return (
+              <option
+                key={index}
+                selected={valueSelGiaoVien == item.maGiaoVien ? 1 : 0}
+                value={item.maGiaoVien}
+              >
+                {item.maGiaoVien} - {item.hoTen}
+              </option>
+            );
+          })}
+        </>
+      );
+    }
     return arrGiaoVien.map((item, index) => {
       return (
         <option
@@ -491,8 +525,13 @@ export default function FormAddLichThucHanh() {
   };
   //
   const renderSelectPhongMay = () => {
-    let { valueSelToaNha, valueSelTang, valueSelPhongMay } =
+    let { valueSelToaNha, valueSelTang, valueSelPhongMay, valueSelMonHoc } =
       objCaThucHanh.current;
+    // <option value={-1}>Tất cả</option>
+
+    if (valueSelMonHoc != -1 && valueSelPhongMay == -1) {
+      return <option value={-1}>Không có phòng thỏa mãn</option>;
+    }
     if (valueSelToaNha == -1) {
       if (valueSelTang == -1) {
         // select tang khong co gia tri
@@ -684,7 +723,6 @@ export default function FormAddLichThucHanh() {
                           id="valSelGiaovien"
                           onChange={handleChangeSelectGiaoVien}
                         >
-                          <option value={-1}>Tất cả</option>
                           {renderSelectGiaoVien()}
                         </select>
                       </div>
@@ -726,9 +764,14 @@ export default function FormAddLichThucHanh() {
                           id="valSelToaNha"
                           onChange={handleChangeSelectToaNha}
                         >
-                          <option selected={
+                          <option
+                            selected={
                               objCaThucHanh.current.valueSelToaNha == -1 ? 1 : 0
-                            } value={-1}>Tất cả</option>
+                            }
+                            value={-1}
+                          >
+                            Tất cả
+                          </option>
                           {renderSelctToaNha()}
                         </select>
                       </div>
@@ -771,7 +814,6 @@ export default function FormAddLichThucHanh() {
                           id="valSelPhongMay"
                           onChange={handleChangeSelectPhongMay}
                         >
-                          <option value={-1}>Tất cả</option>
                           {renderSelectPhongMay()}
                         </select>
                       </div>

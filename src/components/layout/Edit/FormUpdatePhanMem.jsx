@@ -184,7 +184,6 @@ export default function FormUpdatePhanMem() {
     objPhanMem.current = {
       ...objPhanMem.current,
       tgianBaoHanh,
-      status,
       ngayKT,
     };
 
@@ -204,7 +203,6 @@ export default function FormUpdatePhanMem() {
     objPhanMem.current = {
       ...objPhanMem.current,
       ngaySD,
-      status,
       ngayKT,
     };
 

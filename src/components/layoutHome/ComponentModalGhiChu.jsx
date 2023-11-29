@@ -45,7 +45,7 @@ export default function ComponentModalGhiChu() {
 
     // true
     
-    dispatch(insertGhiChuApi({ objThongTin, objThongTinGhiChu }))
+    // dispatch(insertGhiChuApi({ objThongTin, objThongTinGhiChu }))
 
   };
   //
