@@ -22,6 +22,7 @@ import ComponentModelDetail from "../../components/layoutHome/ComponentModelDeta
 import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiChu";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAllTangApi } from "../../redux/reducers/tangReducer";
+import { setThongTinObjGhiChuRedux } from "../../redux/reducers/home2Reducer";
 
 export default function PageHomeDetail() {
   const dispatch = useDispatch();
@@ -48,8 +49,8 @@ export default function PageHomeDetail() {
     if (arrToaNha.length === 0) {
       dispatch(getAllToaNhaApi);
     }
-    if(arrTang.length === 0 ){
-      dispatch(getAllTangApi)
+    if (arrTang.length === 0) {
+      dispatch(getAllTangApi);
     }
     // call Tang
 
@@ -147,8 +148,7 @@ export default function PageHomeDetail() {
           setTimeout(() => {
             console.log("chú ý - 0.5s");
             dispatch(setObjThongTinByMayAction({ objMay, arrThietBi }));
-
-          }, 500)
+          }, 500);
 
           // dispatch(setObjThongTinByMay(objMayTinh));
         }
@@ -227,6 +227,10 @@ export default function PageHomeDetail() {
               data-bs-target="#modalIdGhiChu"
               type="button"
               className="btn btn-primary"
+              onClick={() => {
+                // let { arrPhanMem, arrThietBi } = objThongTin;
+                dispatch(setThongTinObjGhiChuRedux(objThongTin));
+              }}
             >
               Ghi chú
             </button>

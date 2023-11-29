@@ -61,8 +61,8 @@ const SubMenuLogout = ({ item }) => {
     <>
       <SidebarLink to={item.path} onClick={handleLogout}>
         <div>
-          {/* {item.icon} */}
-          {item.SidebarLinkicon}
+          {item.icon}
+          {/* {item.SidebarLinkicon} */}
           <SidebarLabel>{item.title}</SidebarLabel>
         </div>
       </SidebarLink>

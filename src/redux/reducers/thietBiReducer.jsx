@@ -185,7 +185,7 @@ const thietBiReducer = createSlice({
       let arrUpdate = state.arrThietBi.filter((item) => {
         return item.maThietBi !== maXoa;
       });
-      state.arrNhanVien = [...arrUpdate];
+      state.arrThietBi = [...arrUpdate];
       //
       let { valueTxtSearch, arrThietBi, valSelect, valueSelectLoaiTBi } = state;
 

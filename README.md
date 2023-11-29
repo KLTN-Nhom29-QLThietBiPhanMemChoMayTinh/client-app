@@ -137,8 +137,9 @@
     - dựa theo controller DSMonHocPhanMem/maMon co thể lấy số lượng ca TH dã tạo so sanh vs so buổi dể khogno cho tạo ca TH mới nữa
     - getDSPhong_trungPM_MonHocApi() (chua hiểu giá tri ở trong) -> show PM môn hoc -> 
     - QLCaThucHanh chuaw co form update - del chưa co
+    - QLHome btn Sửa PM Tbi() khi click ở btnSua chua có sk
 
-
+    
     #
     - ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi
         + api thong báo - gửi ghi chú cùng thietbi bị lỗi  lưu data

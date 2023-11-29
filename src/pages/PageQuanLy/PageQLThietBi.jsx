@@ -148,7 +148,7 @@ export default function PageQLThietBi() {
             >
               <ImBin2 color="white" size={16} />
             </button>
-            <NavLink
+            {/* <NavLink
               // to={`../quan-ly/phong`}
               onClick={() => {
                 alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
@@ -158,7 +158,7 @@ export default function PageQLThietBi() {
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink>
+            </NavLink> */}
           </td>
         </tr>
       );

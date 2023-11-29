@@ -49,6 +49,7 @@ import FormAddPhanMem from "./components/layout/Add/FormAddPhanMem";
 import FormUpdatePhanMem from "./components/layout/Edit/FormUpdatePhanMem";
 import FormAddMonHoc from "./components/layout/Add/FormAddMonHoc";
 import FormAddLichThucHanh from "./components/layout/Add/FormAddLichThucHanh";
+import PageThongKe from "./pages/PageThongKe/PageThongKe";
 
 //
 export const history = createBrowserHistory();
@@ -127,6 +128,7 @@ root.render(
             element={<FormUpdateLichTruc />}
           ></Route>
           <Route path="/account" element={<PageProfile />}></Route>
+          <Route path="/thong-ke" element={<PageThongKe />}></Route>
           <Route path="*" element={<Page404 />}></Route>
         </Route>
         <Route path="/login" element={<PageLogin />}></Route>

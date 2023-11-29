@@ -146,8 +146,8 @@ export const SidebarData = [
     ],
   },
   {
-    title: "Thời khóa biểu",
-    path: "/thoi-khoa-bieu",
+    title: "Thống kê",
+    path: "/thong-ke",
     valQuyen: 1,
     icon: (
       <PiArticleNyTimesLight
