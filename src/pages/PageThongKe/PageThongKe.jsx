@@ -9,6 +9,9 @@ import ComponentGraphTang from "../../components/layout/ThongKe/ThongKeTang/Comp
 import ComponentTableTang from "../../components/layout/ThongKe/ThongKeTang/Component/ComponentTableTang";
 import HOOK_ThongKe from "../../components/layout/ThongKe/HOOK_ThongKe";
 import { set_tk_TheoTang_arr_Api } from "../../redux/reducers/ThongKe/thongkeTangReducer";
+import ComponentSortPhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentSortPhong";
+import ComponentGraphPhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentGraphPhong";
+import ComponentTablePhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentTablePhong";
 
 export default function PageThongKe() {
   //
@@ -34,7 +37,7 @@ export default function PageThongKe() {
         break;
 
       case "tk_tang":
-        dispatch(set_tk_TheoTang_arr_Api)
+        dispatch(set_tk_TheoTang_arr_Api);
         break;
       case "tk_phong":
         break;
@@ -55,29 +58,37 @@ export default function PageThongKe() {
   };
   // render
   const renderDataThongKe = () => {
-    
     switch (valBtnTK) {
       case "tk_toaNha":
         return <ThongKeToaNha />;
 
-      case "tk_tang":
+      case "tk_tang": {
         let value = {
-          title: 'Thống kê theo Tầng',
+          title: "Thống kê theo tầng",
           ComponentSort: ComponentSortTang,
           ComponentGraph: ComponentGraphTang,
-          ComponentTable: ComponentTableTang
+          ComponentTable: ComponentTableTang,
         };
         return <HOOK_ThongKe data={value} />;
-      case "tk_phong":
-        return <ComponentThongKe />;
+      }
+      case "tk_phong": {
+        let value = {
+          title: "Thống kê theo phòng",
+          ComponentSort: ComponentSortPhong,
+          ComponentGraph: ComponentGraphPhong,
+          ComponentTable: ComponentTablePhong,
+        };
+        return <HOOK_ThongKe data={value} />;
+      }
+
       case "tk_mayTinh":
-        break;
+        return <ComponentThongKe />;
       case "tk_nhanVien":
-        break;
+        return <ComponentThongKe />;
       case "tk_giaoVien":
-        break;
+        return <ComponentThongKe />;
       case "tk_monHoc":
-        break;
+        return <ComponentThongKe />;
 
       default:
         return <ThongKeToaNha />;
