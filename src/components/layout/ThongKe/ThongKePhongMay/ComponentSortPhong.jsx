@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { getAllToaNhaApi } from "../../../../redux/reducers/toaNhaReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllTangApi } from "../../../../redux/reducers/tangReducer";
-import { set_tk_valueSelectTang_Action, set_tk_valueSelectToaNha_Action } from "../../../../redux/reducers/ThongKe/thongkePhongReducer";
+import {
+  set_tk_valueSearch_Action,
+  set_tk_valueSelectTang_Action,
+  set_tk_valueSelectToaNha_Action,
+} from "../../../../redux/reducers/ThongKe/thongkePhongReducer";
 
 export default function ComponentSortPhong() {
   //
@@ -22,15 +26,19 @@ export default function ComponentSortPhong() {
       dispatch(getAllTangApi);
     }
   }, []);
-  // handle 
+  // handle
   //
-  const handleChangeSelectTang = (e) =>{
+  const handleChangeSelectTang = (e) => {
     dispatch(set_tk_valueSelectTang_Action(e.target.value));
-  }
+  };
   //
-  const handleChangeSelectToaNha = (e) =>{
+  const handleChangeSelectToaNha = (e) => {
     dispatch(set_tk_valueSelectToaNha_Action(e.target.value));
-  }
+  };
+  //
+  const handleValueSearch = (e) => {
+    dispatch(set_tk_valueSearch_Action(e.target.value));
+  };
   // render
   //
   const renderSelectTang = () => {
@@ -59,6 +67,7 @@ export default function ComponentSortPhong() {
       }
     });
   };
+
   //
   const renderSelectToaNha = () => {
     return arrToaNha?.map((item, index) => {
@@ -85,7 +94,7 @@ export default function ComponentSortPhong() {
                 Tìm theo tòa nhà
               </label>
               <select
-                 onChange={handleChangeSelectToaNha}
+                onChange={handleChangeSelectToaNha}
                 className="form-select p-1 py-1"
                 name="SelA"
                 id="SelA"
@@ -99,7 +108,7 @@ export default function ComponentSortPhong() {
                 Tìm theo tầng
               </label>
               <select
-                 onChange={handleChangeSelectTang}
+                onChange={handleChangeSelectTang}
                 className="form-select p-1 py-1"
                 name="SelA"
                 id="SelA"
@@ -107,6 +116,22 @@ export default function ComponentSortPhong() {
                 <option value={-1}>Tất cả</option>
                 {renderSelectTang()}
               </select>
+            </div>
+            <div className="col-3">
+              <div>
+                <label htmlFor="txtSearch" className="form-label">
+                  Tìm theo tên
+                </label>
+                <input
+                  type="text"
+                  className="form-control p-1"
+                  name="txtSearch"
+                  id="txtSearch"
+                  onChange={handleValueSearch}
+                  aria-describedby="helpId"
+                  placeholder="tìm kiếm ..."
+                />
+              </div>
             </div>
           </div>
         </div>
