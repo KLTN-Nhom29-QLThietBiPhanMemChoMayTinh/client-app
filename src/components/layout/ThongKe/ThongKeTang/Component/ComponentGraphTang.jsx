@@ -12,16 +12,6 @@ import {
   Legend,
 } from "recharts";
 
-let data = [
-  { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
-  { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
-  { name: "Page C", uv: 2000, pv: 11800, amt: 2290 },
-  { name: "Page D", uv: 2780, pv: 3908, amt: 2000 },
-  { name: "Page E", uv: 1890, pv: 4800, amt: 2181 },
-  { name: "Page F", uv: 2390, pv: 3800, amt: 2500 },
-  { name: "Page G", uv: 3490, pv: 4300, amt: 2100 },
-];
-
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
   const {
@@ -95,7 +85,7 @@ const renderActiveShape = (props) => {
   );
 };
 
-class GraphTKToaNha extends PureComponent {
+class GraphTKTang extends PureComponent {
   state = {
     activeIndex: 0,
   };
@@ -132,18 +122,18 @@ class GraphTKToaNha extends PureComponent {
 }
 
 export default function ComponentGraphTang() {
-  const { tk_ToaNha_SoTang, tk_TheoToaNha_arr, tk_ToaNha_status_mayTinh } =
-    useSelector((state) => state.thongkeToaNhaReducer);
+  const { tk_TheoTang_arr } = useSelector((state) => state.thongkeTangReducer);
 
   //
   // let { name_title, data_table } = tk_ToaNha_SoTang;
   //
   //render
   const renderGraph_ToaNha = () => {
-    return tk_TheoToaNha_arr.map((item, index) => {
+    return tk_TheoTang_arr.map((item, index) => {
       let { name_title, data_table } = item;
       return (
-        <GraphTKToaNha key={index} data={data_table} nameTitle={name_title} />
+        // <GraphTKTang key={index} data={data_table} nameTitle={name_title} />
+        <GraphTKTang_SimpleBarChart data={item} />
       );
     });
   };
@@ -152,18 +142,59 @@ export default function ComponentGraphTang() {
     <div className="mb-5">
       <div className="d-flex justify-content-around flex-wrap">
         {renderGraph_ToaNha()}
-        {/* <GraphTKToaNha data={data_table} nameTitle={name_title} />
-        <GraphTKToaNha data={data} name={"2: thống kê tòa nhà theo số phòng"} />
-        <GraphTKToaNha data={data} name={"2: thống kê tòa nhà theo số máy"} /> */}
+        
       </div>
       <div className="d-flex justify-content-around flex-wrap">
-        <GraphTKToaNhaTheoTrangThai_SimpleBarChart
+        {/* <GraphTKToaNhaTheoTrangThai_SimpleBarChart
           data={tk_ToaNha_status_mayTinh}
-        />
+        /> */}
       </div>
     </div>
   );
 }
+
+//
+const GraphTKTang_SimpleBarChart = (props) => {
+  let { index, sum, data_table, text_name, name_title } = props.data;
+  let nameGiatri = "";
+
+  let arrData = data_table.map((item) => {
+    let { name, value } = item;
+    if (text_name.includes("phòng")) {
+      nameGiatri = "Số phòng";
+      return { name, "Số phòng": value };
+    } else if (text_name.includes("máy")) {
+      nameGiatri = "Số máy";
+      return { name, "Số máy": value };
+    }
+    return { name, value };
+  });
+  return (
+    <ResponsiveContainer className="col-md-8 mt-5" width={'100%'} height={400}>
+      <BarChart
+        data={arrData}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar
+          dataKey={nameGiatri}
+          fill="#8884d8"
+          activeBar={<Rectangle fill="pink" stroke="blue" />}
+        />
+      </BarChart>
+      <p className="text-center w-100">Biểu đồ {name_title}</p>
+    </ResponsiveContainer>
+  );
+};
 
 // SimpleBarChart -- bieu do  cot
 const GraphTKToaNhaTheoTrangThai_SimpleBarChart = (props) => {

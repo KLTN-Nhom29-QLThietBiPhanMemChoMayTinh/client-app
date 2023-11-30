@@ -2,23 +2,22 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 export default function ComponentTableTang() {
-  const { tk_ToaNha_SoTang, tk_TheoToaNha_arr, tk_ToaNha_status_mayTinh } =
-    useSelector((state) => state.thongkeToaNhaReducer);
+  const { tk_TheoTang_arr } = useSelector((state) => state.thongkeTangReducer);
   //render
 
   return (
     <div>
-      {tk_TheoToaNha_arr?.map((item, index) => {
+      {tk_TheoTang_arr?.map((item, index) => {
         let data = { ...item, index };
-        return <TableTKToaNha data={data} />;
+        return <TableTKTang data={data} />;
       })}
-      <TableTKToaNha_TrangThaiMay data={tk_ToaNha_status_mayTinh} />
+      {/* <TableTKToaNha_TrangThaiMay data={tk_ToaNha_status_mayTinh} /> */}
     </div>
   );
 }
 
 //
-const TableTKToaNha = (props) => {
+const TableTKTang = (props) => {
   let { index, sum, data_table, text_name, name_title } = props.data;
 
   return (
@@ -28,7 +27,7 @@ const TableTKToaNha = (props) => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Tên tòa nha</th>
+            <th>Tên tầng</th>
             <th>Số {text_name}</th>
             <th>Tỉ lệ</th>
           </tr>
@@ -134,7 +133,9 @@ const TableTKToaNha_TrangThaiMay = (props) => {
             <td className="text-center fw-bold">
               {sum} ({text_name})
             </td>
-            <td className="text-center fw-bold">{sum_biHong} ({text_name})</td>
+            <td className="text-center fw-bold">
+              {sum_biHong} ({text_name})
+            </td>
             <td className="text-center fw-bold">
               {((sum_biHong * 100) / sum).toFixed(2)}%
             </td>

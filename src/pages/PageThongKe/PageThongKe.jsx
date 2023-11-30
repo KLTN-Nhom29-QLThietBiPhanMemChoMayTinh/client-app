@@ -8,6 +8,7 @@ import ComponentSortTang from "../../components/layout/ThongKe/ThongKeTang/Compo
 import ComponentGraphTang from "../../components/layout/ThongKe/ThongKeTang/Component/ComponentGraphTang";
 import ComponentTableTang from "../../components/layout/ThongKe/ThongKeTang/Component/ComponentTableTang";
 import HOOK_ThongKe from "../../components/layout/ThongKe/HOOK_ThongKe";
+import { set_tk_TheoTang_arr_Api } from "../../redux/reducers/ThongKe/thongkeTangReducer";
 
 export default function PageThongKe() {
   //
@@ -33,6 +34,7 @@ export default function PageThongKe() {
         break;
 
       case "tk_tang":
+        dispatch(set_tk_TheoTang_arr_Api)
         break;
       case "tk_phong":
         break;

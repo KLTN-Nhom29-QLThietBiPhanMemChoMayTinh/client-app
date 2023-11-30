@@ -99,7 +99,6 @@ export const set_tk_TheoToaNha_arr_Api = async (dispatch) => {
     });
 
     // data3 ToaNha_MayTinh
-    
     sum = 0;
     let arrData4 = result.data.map((item, index) => {
       let soMayTinh = 0;
