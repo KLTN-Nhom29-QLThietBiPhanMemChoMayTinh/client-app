@@ -138,7 +138,7 @@
     - getDSPhong_trungPM_MonHocApi() (chua hiểu giá tri ở trong) -> show PM môn hoc -> 
     - QLCaThucHanh chuaw co form update - del chưa co
     - QLHome btn Sửa PM Tbi() khi click ở btnSua chua có sk
-    - CustomActiveShapePieChart
+    - tk_ToaNha_status_mayTinh - có data hỏng - hay hiện nó lên
     
     #
     - ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi

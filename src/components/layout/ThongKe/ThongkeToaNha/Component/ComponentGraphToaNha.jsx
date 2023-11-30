@@ -1,12 +1,25 @@
 import React, { PureComponent, useState } from "react";
 import { useSelector } from "react-redux";
 import { ResponsiveContainer, PieChart, Pie, Sector } from "recharts";
+import {
+  BarChart,
+  Bar,
+  Rectangle,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
-const data = [
-  { name: "Tòa nhà A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
+let data = [
+  { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
+  { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
+  { name: "Page C", uv: 2000, pv: 11800, amt: 2290 },
+  { name: "Page D", uv: 2780, pv: 3908, amt: 2000 },
+  { name: "Page E", uv: 1890, pv: 4800, amt: 2181 },
+  { name: "Page F", uv: 2390, pv: 3800, amt: 2500 },
+  { name: "Page G", uv: 3490, pv: 4300, amt: 2100 },
 ];
 
 const renderActiveShape = (props) => {
@@ -119,9 +132,8 @@ class GraphTKToaNha extends PureComponent {
 }
 
 export default function ComponentGraphToaNha() {
-  const { tk_ToaNha_SoTang, tk_TheoToaNha_arr } = useSelector(
-    (state) => state.thongkeToaNhaReducer
-  );
+  const { tk_ToaNha_SoTang, tk_TheoToaNha_arr, tk_ToaNha_status_mayTinh } =
+    useSelector((state) => state.thongkeToaNhaReducer);
 
   //
   // let { name_title, data_table } = tk_ToaNha_SoTang;
@@ -130,16 +142,71 @@ export default function ComponentGraphToaNha() {
   const renderGraph_ToaNha = () => {
     return tk_TheoToaNha_arr.map((item, index) => {
       let { name_title, data_table } = item;
-      return <GraphTKToaNha key={index} data={data_table} nameTitle={name_title} />;
+      return (
+        <GraphTKToaNha key={index} data={data_table} nameTitle={name_title} />
+      );
     });
   };
   //
   return (
-    <div className="d-flex justify-content-around flex-wrap">
-      {renderGraph_ToaNha()}
-      {/* <GraphTKToaNha data={data_table} nameTitle={name_title} />
-      <GraphTKToaNha data={data} name={"2: thống kê tòa nhà theo số phòng"} />
-      <GraphTKToaNha data={data} name={"2: thống kê tòa nhà theo số máy"} /> */}
+    <div className="mb-5">
+      <div className="d-flex justify-content-around flex-wrap">
+        {renderGraph_ToaNha()}
+        {/* <GraphTKToaNha data={data_table} nameTitle={name_title} />
+        <GraphTKToaNha data={data} name={"2: thống kê tòa nhà theo số phòng"} />
+        <GraphTKToaNha data={data} name={"2: thống kê tòa nhà theo số máy"} /> */}
+      </div>
+      <div className="d-flex justify-content-around flex-wrap">
+        <GraphTKToaNhaTheoTrangThai_SimpleBarChart
+          data={tk_ToaNha_status_mayTinh}
+        />
+      </div>
     </div>
   );
 }
+
+// SimpleBarChart -- bieu do  cot
+const GraphTKToaNhaTheoTrangThai_SimpleBarChart = (props) => {
+  let { index, sum, data_table, text_name, name_title } = props.data;
+  console.log(
+    "🚀 ~ file: ComponentGraphToaNha.jsx:170 ~ data_table:",
+    data_table
+  );
+  let arrData = data_table.map((item) => {
+    let { name, soMay_dangSD, soMay_biHong } = item;
+    return { name, "Đang sử dụng": soMay_dangSD, "Bị hỏng": soMay_biHong };
+  });
+  // let { soMay_dangSD, soMay_biHong } = item;
+  return (
+    <ResponsiveContainer className="col-md-8 mt-5" width={700} height={300}>
+      <BarChart
+        width={500}
+        height={300}
+        data={arrData}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar
+          dataKey="Đang sử dụng"
+          fill="#8884d8"
+          activeBar={<Rectangle fill="pink" stroke="blue" />}
+        />
+        <Bar
+          dataKey="Bị hỏng"
+          fill="#82ca9d"
+          activeBar={<Rectangle fill="gold" stroke="purple" />}
+        />
+      </BarChart>
+      <p className="text-center w-100">Biểu đồ {name_title}</p>
+    </ResponsiveContainer>
+  );
+};
