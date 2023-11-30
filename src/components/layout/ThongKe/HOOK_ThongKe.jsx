@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import ComponentThongKe from "../ComponentThongKe";
-import ComponentGraphTang from "./Component/ComponentGraphTang";
-import ComponentTableTang from "./Component/ComponentTableTang";
-import ComponentSortTang from "./Component/ComponentSortTang";
 
-export default function ThongKeTang() {
+export default function HOOK_ThongKe(props) {
+  console.log("🚀 ~ file: HOOK_ThongKe.jsx:4 ~ HOOK_ThongKe ~ props:", props);
+  let { title, ComponentSort, ComponentGraph, ComponentTable } = props.data;
+  //
   let [btnChangeTableOrGraph, setBtnChangeTableOrGraph] = useState(true);
 
   // handle
@@ -17,22 +16,24 @@ export default function ThongKeTang() {
     }
     setBtnChangeTableOrGraph(value);
   };
-  // render
+  //render
   const renderDataThongKe = () => {
-    if (!btnChangeTableOrGraph) return <ComponentGraphTang />;
-    return <ComponentTableTang />;
+    if (!btnChangeTableOrGraph) return <ComponentGraph />;
+    return <ComponentTable />;
   };
+  //
+
   return (
     <>
       <div className="d-flex flex-column bd-highlight">
         <div className="p-2 flex-shrink-1 bd-highlight">
           {/* top */}
-          <ComponentSortTang />
+          <ComponentSort />
         </div>
         {/* body */}
         <div className="p-2 bd-highlight pb-5 ">
           <div>
-            <h2 className="text-center pt-3"> Thống kê theo Tầng</h2>
+            <h2 className="text-center pt-3"> {title}</h2>
             <div className="d-flex justify-content-end">
               <button
                 type="button"

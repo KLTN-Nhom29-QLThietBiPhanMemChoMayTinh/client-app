@@ -4,6 +4,10 @@ import ThongKeToaNha from "../../components/layout/ThongKe/ThongkeToaNha/ThongKe
 import ThongKeTang from "../../components/layout/ThongKe/ThongKeTang/ThongKeTang";
 import { useDispatch } from "react-redux";
 import { set_tk_TheoToaNha_arr_Api } from "../../redux/reducers/ThongKe/thongkeToaNhaReducer ";
+import ComponentSortTang from "../../components/layout/ThongKe/ThongKeTang/Component/ComponentSortTang";
+import ComponentGraphTang from "../../components/layout/ThongKe/ThongKeTang/Component/ComponentGraphTang";
+import ComponentTableTang from "../../components/layout/ThongKe/ThongKeTang/Component/ComponentTableTang";
+import HOOK_ThongKe from "../../components/layout/ThongKe/HOOK_ThongKe";
 
 export default function PageThongKe() {
   //
@@ -30,6 +34,16 @@ export default function PageThongKe() {
 
       case "tk_tang":
         break;
+      case "tk_phong":
+        break;
+      case "tk_mayTinh":
+        break;
+      case "tk_nhanVien":
+        break;
+      case "tk_giaoVien":
+        break;
+      case "tk_monHoc":
+        break;
 
       default:
         break;
@@ -39,12 +53,29 @@ export default function PageThongKe() {
   };
   // render
   const renderDataThongKe = () => {
+    
     switch (valBtnTK) {
       case "tk_toaNha":
         return <ThongKeToaNha />;
 
       case "tk_tang":
-        return <ThongKeTang />;
+        let value = {
+          title: 'Thống kê theo Tầng',
+          ComponentSort: ComponentSortTang,
+          ComponentGraph: ComponentGraphTang,
+          ComponentTable: ComponentTableTang
+        };
+        return <HOOK_ThongKe data={value} />;
+      case "tk_phong":
+        return <ComponentThongKe />;
+      case "tk_mayTinh":
+        break;
+      case "tk_nhanVien":
+        break;
+      case "tk_giaoVien":
+        break;
+      case "tk_monHoc":
+        break;
 
       default:
         return <ThongKeToaNha />;
@@ -74,9 +105,9 @@ export default function PageThongKe() {
               Thống kê tòa nhà
             </button>
             <button
-              type="button"
-              id="tk_tang"
               onClick={handleClickBtnThongke}
+              id="tk_tang"
+              type="button"
               className={`btn ${
                 valBtnTK.includes("tk_tang")
                   ? " btn-primary"
@@ -85,19 +116,64 @@ export default function PageThongKe() {
             >
               Thống kê tầng
             </button>
-            <button type="button" className="btn btn-outline-primary mt-2">
+            <button
+              onClick={handleClickBtnThongke}
+              id="tk_phong"
+              type="button"
+              className={`btn ${
+                valBtnTK.includes("tk_phong")
+                  ? " btn-primary"
+                  : "btn-outline-primary"
+              } mt-2`}
+            >
               Thống kê phòng
             </button>
-            <button type="button" className="btn btn-outline-primary mt-2">
+            <button
+              onClick={handleClickBtnThongke}
+              id="tk_mayTinh"
+              type="button"
+              className={`btn ${
+                valBtnTK.includes("tk_mayTinh")
+                  ? " btn-primary"
+                  : "btn-outline-primary"
+              } mt-2`}
+            >
               Thống kê máy tính
             </button>
-            <button type="button" className="btn btn-outline-primary mt-2">
+            <button
+              onClick={handleClickBtnThongke}
+              id="tk_nhanVien"
+              type="button"
+              className={`btn ${
+                valBtnTK.includes("tk_nhanVien")
+                  ? " btn-primary"
+                  : "btn-outline-primary"
+              } mt-2`}
+            >
               Thống kê nhân viên
             </button>
-            <button type="button" className="btn btn-outline-primary mt-2">
+            <button
+              onClick={handleClickBtnThongke}
+              id="tk_giaoVien"
+              type="button"
+              className={`btn ${
+                valBtnTK.includes("tk_giaoVien")
+                  ? " btn-primary"
+                  : "btn-outline-primary"
+              } mt-2`}
+            >
               Thống kê giáo viên
             </button>
-            <button type="button" className="btn btn-outline-primary mt-2">
+            <button
+              onClick={handleClickBtnThongke}
+              id="tk_monHoc"
+              type="button"
+              className={`btn ${
+                valBtnTK.includes("tk_monHoc")
+                  ? " btn-primary"
+                  : "btn-outline-primary"
+              } mt-2`}
+            >
               Thống kê môn học
             </button>
           </div>

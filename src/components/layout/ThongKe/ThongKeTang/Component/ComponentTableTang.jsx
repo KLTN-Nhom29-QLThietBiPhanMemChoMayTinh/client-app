@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-export default function ComponentTableToaNha() {
+export default function ComponentTableTang() {
   const { tk_ToaNha_SoTang, tk_TheoToaNha_arr, tk_ToaNha_status_mayTinh } =
     useSelector((state) => state.thongkeToaNhaReducer);
   //render
