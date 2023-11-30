@@ -17,7 +17,7 @@ export default function PageThongKe() {
   //
   const dispatch = useDispatch();
   //
-  let [valBtnTK, setValBtnTK] = useState("tk_toaNha");
+  let [valBtnTK, setValBtnTK] = useState("tk_phong");
 
   useEffect(() => {
     dispatch(set_tk_TheoToaNha_arr_Api);
@@ -26,10 +26,6 @@ export default function PageThongKe() {
   // handle
   const handleClickBtnThongke = (e) => {
     let { id } = e.target;
-    console.log(
-      "🚀 ~ file: PageThongKe.jsx:12 ~ handleClickBtnThongke ~ id:",
-      id
-    );
 
     switch (id) {
       case "tk_toaNha":
