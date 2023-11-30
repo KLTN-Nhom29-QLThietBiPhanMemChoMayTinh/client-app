@@ -129,7 +129,7 @@
     - Page update duoc gui từ deltail thi phai sửa - lấy data theo api maID chứ không chả về page QL
     - deletePhanMemApi: xoa phần mêm có kêt nối phòng máy không được
     - lên thông nhất sử dụng Bị hỏng hay không sử dụng
-
+    - kẹt bên thongkePhongReducer - set_obj_TKPhong_Action -
     # PageQlMonHoc
     - tạo mới có so buoi vs ngày bd +> ngay kết thúc (sau Tgian thực 1 tuần)
     - ứng vs số buổi sẽ tạo so lượng ca  của môn đó bằng so buôi (mon học)

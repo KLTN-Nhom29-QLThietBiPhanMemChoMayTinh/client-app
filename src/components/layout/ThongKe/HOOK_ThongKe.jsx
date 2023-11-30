@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function HOOK_ThongKe(props) {
-  console.log("🚀 ~ file: HOOK_ThongKe.jsx:4 ~ HOOK_ThongKe ~ props:", props);
+
   let { title, ComponentSort, ComponentGraph, ComponentTable } = props.data;
   //
   let [btnChangeTableOrGraph, setBtnChangeTableOrGraph] = useState(true);

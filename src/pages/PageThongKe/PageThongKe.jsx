@@ -12,6 +12,7 @@ import { set_tk_TheoTang_arr_Api } from "../../redux/reducers/ThongKe/thongkeTan
 import ComponentSortPhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentSortPhong";
 import ComponentGraphPhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentGraphPhong";
 import ComponentTablePhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentTablePhong";
+import { getData_TkPhong_Api } from "../../redux/reducers/ThongKe/thongkePhongReducer";
 
 export default function PageThongKe() {
   //
@@ -20,7 +21,7 @@ export default function PageThongKe() {
   let [valBtnTK, setValBtnTK] = useState("tk_phong");
 
   useEffect(() => {
-    dispatch(set_tk_TheoToaNha_arr_Api);
+    dispatch(getData_TkPhong_Api);
   }, []);
 
   // handle

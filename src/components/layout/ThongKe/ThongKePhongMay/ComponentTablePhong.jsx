@@ -2,7 +2,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 export default function ComponentTablePhong() {
-  // const { tk_TheoTang_arr } = useSelector((state) => state.thongkeTangReducer);
+  const { thongkePhongReducer } = useSelector(
+    (state) => state.thongkePhongReducer
+  );
+  console.log(
+    "🚀 ~ file: ComponentTablePhong.jsx:6 ~ ComponentTablePhong ~ thongkePhongReducer:",
+    thongkePhongReducer
+  );
   //render
 
   return (
