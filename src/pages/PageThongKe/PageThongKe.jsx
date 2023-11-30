@@ -1,18 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ComponentThongKe from "../../components/layout/ThongKe/ComponentThongKe";
 import ThongKeToaNha from "../../components/layout/ThongKe/ThongkeToaNha/ThongKeToaNha";
 import ThongKeTang from "../../components/layout/ThongKe/ThongKeTang/ThongKeTang";
+import { useDispatch } from "react-redux";
+import { set_tk_TheoToaNha_arr_Api } from "../../redux/reducers/ThongKe/thongkeToaNhaReducer ";
 
 export default function PageThongKe() {
+  //
+  const dispatch = useDispatch();
+  //
   let [valBtnTK, setValBtnTK] = useState("tk_toaNha");
+
+  useEffect(() => {
+    dispatch(set_tk_TheoToaNha_arr_Api);
+  }, []);
 
   // handle
   const handleClickBtnThongke = (e) => {
     let { id } = e.target;
-    console.log("🚀 ~ file: PageThongKe.jsx:12 ~ handleClickBtnThongke ~ id:", id)
-    
+    console.log(
+      "🚀 ~ file: PageThongKe.jsx:12 ~ handleClickBtnThongke ~ id:",
+      id
+    );
+
     switch (id) {
       case "tk_toaNha":
+        dispatch(set_tk_TheoToaNha_arr_Api);
         break;
 
       case "tk_tang":

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { PureComponent, useState } from "react";
+import { useSelector } from "react-redux";
 import { ResponsiveContainer, PieChart, Pie, Sector } from "recharts";
 
 const data = [
-  { name: "Group A", value: 400 },
+  { name: "Tòa nhà A", value: 400 },
   { name: "Group B", value: 300 },
   { name: "Group C", value: 300 },
   { name: "Group D", value: 200 },
@@ -63,53 +64,82 @@ const renderActiveShape = (props) => {
       />
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
       <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        x={ex + (cos >= 0 ? 1 : -1) * 6}
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`PV ${value}`}</text>
+      >{`SL ${value}`}</text>
       <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        x={ex + (cos >= 0 ? 1 : -1) * 6}
         y={ey}
         dy={18}
         textAnchor={textAnchor}
         fill="#999"
       >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+        {`(Tỉ lệ ${(percent * 100).toFixed(2)}%)`}
       </text>
     </g>
   );
 };
 
-export default function ComponentGraphToaNha() {
-  const onPieEnter = (_, index) => {
-    setState({
+class GraphTKToaNha extends PureComponent {
+  state = {
+    activeIndex: 0,
+  };
+
+  onPieEnter = (_, index) => {
+    this.setState({
       activeIndex: index,
     });
   };
 
-  let [state, setState] = useState({
-    activeIndex: 0,
-  });
+  render() {
+    return (
+      <div key={this.props.key} className="col-md-5">
+        <ResponsiveContainer width={"100%"} height={300}>
+          <PieChart width={"100%"} height={300}>
+            <Pie
+              activeIndex={this.state.activeIndex}
+              activeShape={renderActiveShape}
+              data={this.props.data}
+              cx="50%"
+              cy="50%"
+              innerRadius={60}
+              outerRadius={80}
+              fill="#308aff"
+              dataKey="value"
+              onMouseEnter={this.onPieEnter}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+        <p className="text-center w-100">Biểu đồ {this.props.nameTitle}</p>
+      </div>
+    );
+  }
+}
 
+export default function ComponentGraphToaNha() {
+  const { tk_ToaNha_SoTang, tk_TheoToaNha_arr } = useSelector(
+    (state) => state.thongkeToaNhaReducer
+  );
+
+  //
+  // let { name_title, data_table } = tk_ToaNha_SoTang;
+  //
+  //render
+  const renderGraph_ToaNha = () => {
+    return tk_TheoToaNha_arr.map((item, index) => {
+      let { name_title, data_table } = item;
+      return <GraphTKToaNha key={index} data={data_table} nameTitle={name_title} />;
+    });
+  };
+  //
   return (
-    <>
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart width={400} height={400}>
-          <Pie
-            activeIndex={state.activeIndex}
-            activeShape={renderActiveShape}
-            data={data}
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-            // onMouseEnter={onPieEnter}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-    </>
+    <div className="d-flex justify-content-around flex-wrap">
+      {renderGraph_ToaNha()}
+      {/* <GraphTKToaNha data={data_table} nameTitle={name_title} />
+      <GraphTKToaNha data={data} name={"2: thống kê tòa nhà theo số phòng"} />
+      <GraphTKToaNha data={data} name={"2: thống kê tòa nhà theo số máy"} /> */}
+    </div>
   );
 }

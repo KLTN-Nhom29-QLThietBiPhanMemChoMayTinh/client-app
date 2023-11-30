@@ -31,8 +31,9 @@ export default function ThongKeToaNha() {
           <ComponentSortToaNha />
         </div>
         {/* body */}
-        <div className="p-2 bd-highlight  ">
+        <div className="p-2 bd-highlight pb-5 ">
           <div>
+            <h2 className="text-center pt-3"> Thống kê theo tòa nhà</h2>
             <div className="d-flex justify-content-end">
               <button
                 type="button"

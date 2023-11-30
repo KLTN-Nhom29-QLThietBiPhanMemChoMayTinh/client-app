@@ -3,10 +3,10 @@ import React from "react";
 export default function ComponentSortToaNha() {
   return (
     <>
-      <div class="d-flex bd-highlight border rounded">
+      <div className="d-flex bd-highlight border rounded">
         {/* left */}
-        <div class="p-2 w-100 bd-highlight" style={{ fontSize: "15px" }}>
-          <h2 className="text-center pt-3"> Thống kê theo tòa nhà</h2>
+        <div className="p-2 w-100 bd-highlight" style={{ fontSize: "15px" }}>
+          
           
           {/* <div className="col-3">
             <label htmlFor="SelA" className="form-label">
@@ -21,8 +21,10 @@ export default function ComponentSortToaNha() {
           </div> */}
         </div>
         {/* right */}
-        <div class="p-2 flex-shrink-1 bd-highlight ">
-          <button type="button" className="btn btn-primary ">
+        <div className="p-2 flex-shrink-1 bd-highlight ">
+          <button type="button" onClick={() => {
+            alert('Đang cập nhật! Vui lòng quay lại sau.')
+          }} className="btn btn-primary ">
             Xuất file
           </button>
         </div>
