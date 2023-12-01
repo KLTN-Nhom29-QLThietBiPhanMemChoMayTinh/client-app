@@ -21,9 +21,11 @@ import thongkeReducer from "./reducers/ThongKe/thongkeReducer";
 import thongkeToaNhaReducer from "./reducers/ThongKe/thongkeToaNhaReducer ";
 import thongkeTangReducer from "./reducers/ThongKe/thongkeTangReducer";
 import thongkePhongReducer from "./reducers/ThongKe/thongkePhongReducer";
+import thongkeMayTinhReducer from "./reducers/ThongKe/thongkeMayTinhReducer";
 
 export const store = configureStore({
   reducer: {
+    thongkeMayTinhReducer: thongkeMayTinhReducer,
     thongkePhongReducer: thongkePhongReducer,
     thongkeTangReducer:thongkeTangReducer,
     thongkeToaNhaReducer:thongkeToaNhaReducer,

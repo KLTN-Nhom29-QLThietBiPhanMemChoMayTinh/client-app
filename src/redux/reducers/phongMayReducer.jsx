@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 import { history } from "../..";
 import { setStatusDataMoi } from "./homeReducer";
+import { getAllMayTinhApi } from "./mayTinhReducer";
 
 const initialState = {
   arrPhongMay: [],
@@ -208,6 +209,7 @@ export const deletePhongApi = (phongMay) => {
       dispatch(deletePhongAction(phongMay.maPhong));
       // reload data
       dispatch(setStatusDataMoi(true));
+      dispatch(getAllMayTinhApi);
     } catch (error) {
       console.log(
         "🚀 ~ file: phongMayReducer.jsx:177 ~ deletePhongApi ~ error:",
@@ -386,6 +388,7 @@ export const insertPhongMayApi = (phongMay) => {
         dispatch(setStatusDataMoi(true)); // cap nhat trang home
         alert("Tạo mới thành công.");
         history.push("/quan-ly/phong");
+        dispatch(getAllMayTinhApi);
       }, 2000);
     } catch (error) {
       console.log(

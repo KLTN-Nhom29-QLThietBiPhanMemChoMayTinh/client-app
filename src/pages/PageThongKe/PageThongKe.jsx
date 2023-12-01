@@ -13,12 +13,15 @@ import ComponentSortPhong from "../../components/layout/ThongKe/ThongKePhongMay/
 import ComponentGraphPhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentGraphPhong";
 import ComponentTablePhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentTablePhong";
 import { getData_TkPhong_Api } from "../../redux/reducers/ThongKe/thongkePhongReducer";
+import ComponentSortMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentSortMayTinh";
+import ComponentGraphMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentGraphMayTinh";
+import ComponentTableMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentTableMayTinh";
 
 export default function PageThongKe() {
   //
   const dispatch = useDispatch();
   //
-  let [valBtnTK, setValBtnTK] = useState("tk_phong");
+  let [valBtnTK, setValBtnTK] = useState("tk_mayTinh");
 
   useEffect(() => {
     dispatch(getData_TkPhong_Api);
@@ -70,7 +73,7 @@ export default function PageThongKe() {
       }
       case "tk_phong": {
         let value = {
-          title: "Thống kê theo phòng",
+          title: "Thống kê theo phòng máy",
           ComponentSort: ComponentSortPhong,
           ComponentGraph: ComponentGraphPhong,
           ComponentTable: ComponentTablePhong,
@@ -79,7 +82,13 @@ export default function PageThongKe() {
       }
 
       case "tk_mayTinh":
-        return <ComponentThongKe />;
+        let value = {
+          title: "Thống kê theo máy tính",
+          ComponentSort: ComponentSortMayTinh,
+          ComponentGraph: ComponentGraphMayTinh,
+          ComponentTable: ComponentTableMayTinh,
+        };
+        return <HOOK_ThongKe data={value} />;
       case "tk_nhanVien":
         return <ComponentThongKe />;
       case "tk_giaoVien":

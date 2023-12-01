@@ -4,6 +4,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { http } from "../../util/config";
 import { history } from "../..";
 import { setStatusDataMoi } from "./homeReducer";
+import { getAllTangApi } from "./tangReducer";
+import { getAllPhongMayApi } from "./phongMayReducer";
+import { getAllMayTinhApi } from "./mayTinhReducer";
 
 const initialState = {
   arrToaNha: [],
@@ -112,6 +115,9 @@ export const deleteToaNha = (idXoa) => {
       //
       dispatch(setStatusDataMoi(true))
       dispatch(deleteToaNhaAction(idXoa));
+      dispatch(getAllTangApi)
+      dispatch(getAllPhongMayApi)
+      dispatch(getAllMayTinhApi)
     } catch (error) {
       console.log("🚀 ~ file: toaNhaReducer.jsx:73 ~ return ~ error:", error);
     }

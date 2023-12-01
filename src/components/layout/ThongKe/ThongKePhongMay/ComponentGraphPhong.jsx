@@ -122,7 +122,7 @@ export default function ComponentGraphPhong() {
             activeBar={<Rectangle fill="gold" stroke="purple" />}
           />
         </BarChart>
-        <p className="text-center w-100">
+        <p className="text-center w-100"> 
           Biểu đồ 2: Thống kê phòng theo số phần mềm quản lý
         </p>
       </ResponsiveContainer>
