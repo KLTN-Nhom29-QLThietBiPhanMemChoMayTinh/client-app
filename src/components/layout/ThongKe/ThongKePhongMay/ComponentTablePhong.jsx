@@ -89,6 +89,8 @@ export default function ComponentTablePhong() {
   //
   const renderNhanXet = () => {
     let arrNhanXet = [...arrNhanXet_MT, ...arrNhanXet_PM];
+    if (arrNhanXet.length === 0)
+      return <li>Không tìm thấy vấn dề nghiêm trọng.</li>;
     return arrNhanXet?.map((item, index) => {
       let { title, name, tile, soLuong_err } = item;
       let str = `${name} có ${soLuong_err} ${title} bị hỏng, chiếm ${tile}% tổng số ${title}`;
@@ -140,8 +142,8 @@ export default function ComponentTablePhong() {
               </th>
             </tr>
           </thead>
-          <tbody>
-            {renderDataTK_Phong()}
+          <tbody>{renderDataTK_Phong()}</tbody>
+          <tfoot>
             <tr>
               <td colSpan={3} className="text-center fw-bold">
                 Tổng
@@ -154,8 +156,7 @@ export default function ComponentTablePhong() {
                 {((sumMayTinh_err * 100) / sumMayTinh).toFixed(2)}% )
               </td>
             </tr>
-          </tbody>
-          <tfoot />
+          </tfoot>
         </table>
         <div className="row">
           <div className="col-5" style={{ fontSize: "14px" }}>

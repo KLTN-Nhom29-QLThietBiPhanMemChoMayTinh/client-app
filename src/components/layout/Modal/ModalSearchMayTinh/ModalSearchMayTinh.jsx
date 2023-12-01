@@ -58,7 +58,7 @@ export default function ModalSearchMayTinh() {
         return arrPhongMay.map((item, index) => {
           return (
             <option key={index} selected={valueSelPhongMay == item.maPhong ? 1 : 0} value={item.maPhong}>
-              {item.tenPhong} - {item.tang.tenTang} -{" "}
+              {item.tenPhong} - {item.tang.tenTang} -
               {item.tang.toaNha.tenToaNha}
             </option>
           );
