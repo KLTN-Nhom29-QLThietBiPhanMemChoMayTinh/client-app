@@ -16,6 +16,7 @@ import { getData_TkPhong_Api } from "../../redux/reducers/ThongKe/thongkePhongRe
 import ComponentSortMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentSortMayTinh";
 import ComponentGraphMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentGraphMayTinh";
 import ComponentTableMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentTableMayTinh";
+import { getData_TKMayTinhApi } from "../../redux/reducers/ThongKe/thongkeMayTinhReducer";
 
 export default function PageThongKe() {
   //
@@ -24,7 +25,7 @@ export default function PageThongKe() {
   let [valBtnTK, setValBtnTK] = useState("tk_mayTinh");
 
   useEffect(() => {
-    dispatch(getData_TkPhong_Api);
+    dispatch(getData_TKMayTinhApi);
   }, []);
 
   // handle
@@ -40,8 +41,10 @@ export default function PageThongKe() {
         dispatch(set_tk_TheoTang_arr_Api);
         break;
       case "tk_phong":
+        dispatch(getData_TkPhong_Api);
         break;
       case "tk_mayTinh":
+        dispatch(getData_TKMayTinhApi);
         break;
       case "tk_nhanVien":
         break;
