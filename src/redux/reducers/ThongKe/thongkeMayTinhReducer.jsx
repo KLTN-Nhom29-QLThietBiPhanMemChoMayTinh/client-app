@@ -34,6 +34,12 @@ const thongkeMayTinhReducer = createSlice({
     },
     set_tk_valueSort_err_MT_Action: (state, action) => {
       state.valueSort_err = action.payload;
+      //
+      let { arrDataTK_MayTinhSearch_err, valueSort_err } = state;
+      state.arrDataTK_MayTinhSearch_err = dataSort(
+        arrDataTK_MayTinhSearch_err,
+        valueSort_err
+      );
     },
     set_tk_sum_Tbi_MT_Action: (state, action) => {
       state.sum_Tbi = action.payload;

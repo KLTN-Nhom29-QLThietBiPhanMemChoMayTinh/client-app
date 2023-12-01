@@ -88,12 +88,19 @@ export default function ComponentTablePhong() {
   };
   //
   const renderNhanXet = () => {
+    let rowData = 0;
     let arrNhanXet = [...arrNhanXet_MT, ...arrNhanXet_PM];
     if (arrNhanXet.length === 0)
       return <li>Không tìm thấy vấn dề nghiêm trọng.</li>;
     return arrNhanXet?.map((item, index) => {
+      rowData++;
+      if ((rowData == 8)) {
+        return <li>...</li>;
+      } else if (rowData > 8) {
+        return <></>;
+      }
       let { title, name, tile, soLuong_err } = item;
-      let str = `${name} có ${soLuong_err} ${title} bị hỏng, chiếm ${tile}% tổng số ${title}`;
+      let str = `${name} có ${soLuong_err} ${title} bị hỏng, chiếm ${tile}% tổng số ${title}.`;
       return <li key={index}>{str}</li>;
     });
   };
