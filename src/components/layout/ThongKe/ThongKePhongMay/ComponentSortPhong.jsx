@@ -12,7 +12,7 @@ export default function ComponentSortPhong() {
   //
   const dispatch = useDispatch();
   //
-  let { valueSelectToaNha, valueSelectTang } = useSelector(
+  let { valueSelectToaNha, valueSelectTang, valueSearch } = useSelector(
     (state) => state.thongkePhongReducer
   );
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
@@ -127,6 +127,7 @@ export default function ComponentSortPhong() {
                   className="form-control p-1"
                   name="txtSearch"
                   id="txtSearch"
+                  value={valueSearch}
                   onChange={handleValueSearch}
                   aria-describedby="helpId"
                   placeholder="tìm kiếm ..."
