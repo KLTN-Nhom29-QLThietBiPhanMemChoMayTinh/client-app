@@ -213,7 +213,7 @@ export default function ComponentSortMayTinh() {
                 Tìm theo phòng máy
               </label>
               <select
-                className="form-select  "
+                className="form-select p-1 "
                 name="searchPhongMay"
                 id="searchPhongMay"
                 onChange={handleChangeSelectPhongMay}

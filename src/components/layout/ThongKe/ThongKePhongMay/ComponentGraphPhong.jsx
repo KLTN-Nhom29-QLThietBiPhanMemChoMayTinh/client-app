@@ -29,6 +29,10 @@ export default function ComponentGraphPhong() {
     (state) => state.thongkePhongReducer
   );
   //
+  if (arrTK_DataPhong.length === 0) {
+    return <>Đang tìm số liệu.</>;
+  }
+  //
 
   // render
   const renderTK_Phong_MayTinh = () => {
@@ -90,7 +94,11 @@ export default function ComponentGraphPhong() {
       rowItem++;
       if (rowItem >= 9) return;
       let { tenPhong, soPhanMem, soPM_err } = item;
-      arrGraph.push({ tenPhong, "Số phần mềm": soPhanMem, "Số PM bị lỗi": soPM_err });
+      arrGraph.push({
+        tenPhong,
+        "Số phần mềm": soPhanMem,
+        "Số PM bị lỗi": soPM_err,
+      });
     });
 
     return (
@@ -122,7 +130,7 @@ export default function ComponentGraphPhong() {
             activeBar={<Rectangle fill="gold" stroke="purple" />}
           />
         </BarChart>
-        <p className="text-center w-100"> 
+        <p className="text-center w-100">
           Biểu đồ 2: Thống kê phòng theo số phần mềm quản lý
         </p>
       </ResponsiveContainer>
@@ -135,15 +143,15 @@ export default function ComponentGraphPhong() {
       <>{renderTK_Phong_MayTinh()}</>
       {/*  */}
       <>{renderTK_Phong_PhanMem()}</>
-      
-      
+
       <div className="col-5 mt-5">
         <strong>Ghi Chú</strong>
         <ul>
           <li>PM: phần mềm</li>
           <li>Biểu đồ đo theo thời gian hiện tại</li>
           <li>
-            Biểu đồ được bị ảnh hưởng số liệu theo bảng 1 bên số liệu ( thống kê theo phòng )
+            Biểu đồ được bị ảnh hưởng số liệu theo bảng 1 bên số liệu ( thống kê
+            theo phòng )
           </li>
         </ul>
       </div>
@@ -151,9 +159,4 @@ export default function ComponentGraphPhong() {
   );
 }
 
-//
-const sort_soMayTinh = (a, b) => {
-  let valuea = a.soMayTinh;
-  let valueb = b.soMayTinh;
-  return valueb - valuea;
-};
+

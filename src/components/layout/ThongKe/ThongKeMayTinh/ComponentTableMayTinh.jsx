@@ -15,6 +15,9 @@ export default function ComponentTableMayTinh() {
     arrDataTK_MayTinhSearch,
     arrDataTK_MayTinhSearch_err,
   } = useSelector((state) => state.thongkeMayTinhReducer);
+  if (arrDataTK_MayTinh.length === 0) {
+    return <>Đang tìm số liệu.</>;
+  }
   // render
 
   let sumThieBi_err = 0;
@@ -26,6 +29,11 @@ export default function ComponentTableMayTinh() {
   let arrNhanXet_Tbi_Bang2 = [];
 
   const renderDataTK_MayTinh_bang1 = () => {
+    if (arrDataTK_MayTinhSearch_err.length === 0) {
+      return <>Không có thông tin.</>;
+    }
+
+    //
     let valueRow = 0;
     return arrDataTK_MayTinhSearch?.map((item, index) => {
       valueRow++;
@@ -77,6 +85,11 @@ export default function ComponentTableMayTinh() {
   };
   //
   const renderDataTK_MayTinh_bang2 = () => {
+    if (arrDataTK_MayTinhSearch_err.length === 0) {
+      return <>Không có thông tin.</>;
+    }
+
+    //
     let valueRow = 0;
     return arrDataTK_MayTinhSearch_err?.map((item, index) => {
       valueRow++;
@@ -134,7 +147,7 @@ export default function ComponentTableMayTinh() {
     }
     return arrNhanXet_Tbi_Bang1?.map((item, index) => {
       rowData++;
-      if ((rowData == 8)) {
+      if (rowData == 8) {
         return <li>...</li>;
       } else if (rowData > 8) {
         return <></>;
@@ -152,7 +165,7 @@ export default function ComponentTableMayTinh() {
     }
     return arrNhanXet_Tbi_Bang2?.map((item, index) => {
       rowData++;
-      if ((rowData == 8)) {
+      if (rowData == 8) {
         return <li>...</li>;
       } else if (rowData > 8) {
         return <></>;
@@ -224,7 +237,7 @@ export default function ComponentTableMayTinh() {
             </ul>
           </div>
           <div className="col-7">
-            <strong>Nhận Xét: </strong>
+            <strong>Nhận xét: </strong>
             <ul>{renderNhanXet_Bang1()}</ul>
           </div>
         </div>
@@ -287,7 +300,7 @@ export default function ComponentTableMayTinh() {
             </ul>
           </div>
           <div className="col-7">
-            <strong>Nhận Xét: </strong>
+            <strong>Nhận xét: </strong>
             <ul>{renderNhanXet_Bang2()}</ul>
           </div>
         </div>

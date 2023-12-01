@@ -10,6 +10,11 @@ export default function ComponentTablePhong() {
   const { arrTK_DataPhong, sum_PM, arrTK_DataPhong_Search } = useSelector(
     (state) => state.thongkePhongReducer
   );
+  //
+  if (arrTK_DataPhong.length === 0) {
+    return <>Đang tìm số liệu.</>;
+  }
+  //
   let sumMayTinh = 0;
   let sumMayTinh_err = 0;
   let sumPM_err = 0;
@@ -20,6 +25,11 @@ export default function ComponentTablePhong() {
 
   //render
   const renderDataTK_Phong = () => {
+    if(arrTK_DataPhong_Search.length === 0) {
+      return <>Không có thông tin.</>
+    }
+
+    //
     return arrTK_DataPhong_Search?.map((item, index) => {
       valueRow++;
 
@@ -88,10 +98,11 @@ export default function ComponentTablePhong() {
   };
   //
   const renderNhanXet = () => {
-    let rowData = 0;
     let arrNhanXet = [...arrNhanXet_MT, ...arrNhanXet_PM];
     if (arrNhanXet.length === 0)
-      return <li>Không tìm thấy vấn dề nghiêm trọng.</li>;
+    return <li>Không tìm thấy vấn dề nghiêm trọng.</li>;
+    //
+    let rowData = 0;
     return arrNhanXet?.map((item, index) => {
       rowData++;
       if ((rowData == 8)) {
@@ -180,7 +191,7 @@ export default function ComponentTablePhong() {
             </ul>
           </div>
           <div className="col-7">
-            <strong>Nhận Xét: </strong>
+            <strong>Nhận xét: </strong>
             <ul>{renderNhanXet()}</ul>
           </div>
         </div>
