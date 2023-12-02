@@ -82,7 +82,6 @@ export default function ComponentGraphMayTinh() {
     <div className="col-5 mt-5">
         <strong>Ghi Chú</strong>
         <ul>
-          <li>PM: phần mềm</li>
           <li>Biểu đồ đo theo thời gian hiện tại</li>
           <li>
             Biểu đồ được bị ảnh hưởng số liệu theo bảng 1 bên số liệu ( thống kê

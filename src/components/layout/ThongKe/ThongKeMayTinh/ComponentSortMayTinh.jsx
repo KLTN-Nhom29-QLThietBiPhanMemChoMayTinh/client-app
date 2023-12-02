@@ -189,7 +189,9 @@ export default function ComponentSortMayTinh() {
                 name="SelA"
                 id="SelA"
               >
-                <option value={-1}>Tất cả</option>
+                <option selected={valueSelectToaNha == -1 ? 1 : 0} value={-1}>
+                  Tất cả
+                </option>
                 {renderSelectToaNha()}
               </select>
             </div>
@@ -203,7 +205,9 @@ export default function ComponentSortMayTinh() {
                 name="SelA"
                 id="SelA"
               >
-                <option value={-1}>Tất cả</option>
+                <option selected={valueSelectTang == -1 ? 1 : 0} value={-1}>
+                  Tất cả
+                </option>
                 {renderSelectTang()}
               </select>
             </div>
@@ -218,7 +222,9 @@ export default function ComponentSortMayTinh() {
                 id="searchPhongMay"
                 onChange={handleChangeSelectPhongMay}
               >
-                <option value={-1}>Tất cả</option>
+                <option selected={valueSelectPhongMay == -1 ? 1 : 0} value={-1}>
+                  Tất cả
+                </option>
                 {renderSelectPhongMay()}
               </select>
             </div>

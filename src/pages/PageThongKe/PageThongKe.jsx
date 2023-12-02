@@ -17,15 +17,19 @@ import ComponentSortMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh
 import ComponentGraphMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentGraphMayTinh";
 import ComponentTableMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentTableMayTinh";
 import { getData_TKMayTinhApi } from "../../redux/reducers/ThongKe/thongkeMayTinhReducer";
+import ComponentSortNhanVien from "../../components/layout/ThongKe/ThongkeNhanVien/ComponentSortNhanVien";
+import ComponentGraphNhanVien from "../../components/layout/ThongKe/ThongkeNhanVien/ComponentGraphNhanVien";
+import ComponentTableNhanVien from "../../components/layout/ThongKe/ThongkeNhanVien/ComponentTableNhanVien";
+import { getData_TKNhanVienApi } from "../../redux/reducers/ThongKe/thongkeNhanVienReducer";
 
 export default function PageThongKe() {
   //
   const dispatch = useDispatch();
   //
-  let [valBtnTK, setValBtnTK] = useState("tk_mayTinh");
+  let [valBtnTK, setValBtnTK] = useState("tk_nhanVien");
 
   useEffect(() => {
-    dispatch(getData_TKMayTinhApi);
+    dispatch(getData_TKNhanVienApi);
   }, []);
 
   // handle
@@ -47,6 +51,7 @@ export default function PageThongKe() {
         dispatch(getData_TKMayTinhApi);
         break;
       case "tk_nhanVien":
+        dispatch(getData_TKNhanVienApi)
         break;
       case "tk_giaoVien":
         break;
@@ -84,7 +89,7 @@ export default function PageThongKe() {
         return <HOOK_ThongKe data={value} />;
       }
 
-      case "tk_mayTinh":
+      case "tk_mayTinh": {
         let value = {
           title: "Thống kê theo máy tính",
           ComponentSort: ComponentSortMayTinh,
@@ -92,8 +97,16 @@ export default function PageThongKe() {
           ComponentTable: ComponentTableMayTinh,
         };
         return <HOOK_ThongKe data={value} />;
-      case "tk_nhanVien":
-        return <ComponentThongKe />;
+      }
+      case "tk_nhanVien": {
+        let value = {
+          title: "Thống kê theo nhân viên",
+          ComponentSort: ComponentSortNhanVien,
+          ComponentGraph: ComponentGraphNhanVien,
+          ComponentTable: ComponentTableNhanVien,
+        };
+        return <HOOK_ThongKe data={value} />;
+      }
       case "tk_giaoVien":
         return <ComponentThongKe />;
       case "tk_monHoc":
