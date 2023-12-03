@@ -145,14 +145,33 @@
         + api thong báo - gửi ghi chú cùng thietbi bị lỗi  lưu data
         + btn sửa (bên cạnh textErr Thiet bị lỗi) hiên 1 modal chon cac tbi lỗi đã sủa xong cap nhật vao data;
         + chú ý cần cập nhật status ở mayTinhTHietbi và PhongMayPhanmem
-        + thông báo: 
+
+
+        + Ghi chú phong may: 
             - ma
-            - noteGhi err
-            - người ghi
-            - tgian ghi
-            - noteGhi sửa 
-            - người Sửa
-            - Tgian sửa
+            - phòng máy (mã phòng máy)
+            - nội dung 
+            - tgian lỗi
+            - người báo ( cái này là mã Tài khoản báo)
+            - tgian sửa
+            - người Sửa  ( cái này là mã Tài khoản sửa)
+            - DSPhanMem lỗi (list<PhanMem> )
+
+            
+        + Ghi chú May tính: 
+            - ma
+            - Máy tính (mã Máy tính)
+            - nội dung 
+            - tgian lỗi
+            - người báo ( cái này là mã Tài khoản báo)
+            - tgian sửa
+            - người Sửa  ( cái này là mã Tài khoản sửa)
+            - DSThieBi lỗi (list<ThietBiMay> )
+        
+        + note: 
+            - bên bảng phần mềm không cần hiện bảng ghi chú này
+            - bên bảng thiết bị không cần hiện bảng ghi chú này
+
 
 
 

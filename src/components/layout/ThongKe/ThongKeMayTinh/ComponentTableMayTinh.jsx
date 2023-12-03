@@ -29,7 +29,7 @@ export default function ComponentTableMayTinh() {
   let arrNhanXet_Tbi_Bang2 = [];
 
   const renderDataTK_MayTinh_bang1 = () => {
-    if (arrDataTK_MayTinhSearch_err.length === 0) {
+    if (arrDataTK_MayTinhSearch.length === 0) {
       return <>Không có thông tin.</>;
     }
 
