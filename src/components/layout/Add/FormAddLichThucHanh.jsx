@@ -120,12 +120,12 @@ export default function FormAddLichThucHanh() {
       tietKetThuc = 3;
     } else if (valueSelBuoiTH == 2) {
       tenCa = "chiều";
-      tietBatDau = 4;
-      tietKetThuc = 6;
-    } else {
-      tenCa = "tối";
       tietBatDau = 7;
       tietKetThuc = 9;
+    } else {
+      tenCa = "tối";
+      tietBatDau = 13;
+      tietKetThuc = 15;
     }
     let objData = {
       tenCa,

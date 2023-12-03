@@ -1,7 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { set_tk_valueSort_NV_Action } from "../../../../redux/reducers/ThongKe/thongkeNhanVienReducer";
 
 export default function ComponentTableNhanVien() {
+  const dispatch = useDispatch();
   //
   let { arrDataTK_NhanVien, arrDataTK_NhanVienSearch } = useSelector(
     (state) => state.thongkeNhanVienReducer
@@ -86,7 +88,7 @@ export default function ComponentTableNhanVien() {
               <th
                 className="btn_moune"
                 onClick={() => {
-                  //   dispatch(set_tk_valueSort_MT_Action(1));
+                  dispatch(set_tk_valueSort_NV_Action(1));
                 }}
               >
                 Số ca lịch trực

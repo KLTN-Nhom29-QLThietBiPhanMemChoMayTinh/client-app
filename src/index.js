@@ -50,6 +50,7 @@ import FormUpdatePhanMem from "./components/layout/Edit/FormUpdatePhanMem";
 import FormAddMonHoc from "./components/layout/Add/FormAddMonHoc";
 import FormAddLichThucHanh from "./components/layout/Add/FormAddLichThucHanh";
 import PageThongKe from "./pages/PageThongKe/PageThongKe";
+import FormUpdateLichThucHanh from "./components/layout/Edit/FormUpdateLichThucHanh";
 
 //
 export const history = createBrowserHistory();
@@ -68,9 +69,13 @@ root.render(
             </Route>
           </Route> */}
 
+          //
           <Route path="/home" element={<PageHome />}></Route>
+          //
           <Route path="/home-detail" element={<PageHomeDetail />}></Route>
+          //
           <Route path="/quan-ly" element={<PageQlKhuVuc />}></Route>
+          //
           <Route path="/quan-ly/khu-vuc" element={<PageQlKhuVuc />}></Route>
           <Route
             path="/quan-ly/khu-vuc/add"
@@ -84,6 +89,7 @@ root.render(
           <Route path="/quan-ly/khu-vuc/detail">
             <Route path=":id" element={<DetailKhuVuc />}></Route>
           </Route>
+          //
           <Route path="/quan-ly/tang" element={<PageQLTang />}></Route>
           <Route path="/quan-ly/tang/add" element={<FormAddTang />}></Route>
           <Route
@@ -93,42 +99,51 @@ root.render(
           <Route path="/quan-ly/tang/detail">
             <Route path=":id" element={<DetailKhuVuc />}></Route>
           </Route>
+          //
           <Route path="/quan-ly/phong" element={<PageQLPhongMay />}></Route>
           <Route path="/quan-ly/phong/add" element={<FormAddPhong />}></Route>
           <Route path="/quan-ly/phong/update" element={<FormUpdatePhong />}></Route>
+          //
           <Route path="/quan-ly/phan-mem" element={<PageQLPhanMem />}></Route>
           <Route path="/quan-ly/phan-mem/add" element={<FormAddPhanMem />}></Route>
           <Route path="/quan-ly/phan-mem/update" element={<FormUpdatePhanMem />}></Route>
+          //
           <Route path="/quan-ly/mon" element={<PageQlMonHoc />}></Route>
           <Route path="/quan-ly/mon/add" element={<FormAddMonHoc />}></Route>
 
+          //
           <Route path="/quan-ly/thiet-bi" element={<PageQLThietBi />}></Route>
           <Route path="/quan-ly/thiet-bi/add" element={<FormAddThietBi />}></Route>
           <Route path="/quan-ly/thiet-bi/update" element={<FormUpdateThietBi />}></Route>
+          //
           <Route path="/quan-ly/nhan-vien" element={<PageQLNhanVien />}></Route>
           <Route path="/quan-ly/nhan-vien/add" element={<FormAddNhanVien />}></Route>
           <Route path="/quan-ly/nhan-vien/update" element={<FormUpdateNhanVien />}></Route>
+          //
           <Route path="/quan-ly/khoa" element={<PageQLKhoa />}></Route>
+          //
           <Route path="/quan-ly/giao-vien" element={<PageQLGiaoVien />}></Route>
           <Route path="/quan-ly/giao-vien/add" element={<FormAddGiaoVien />}></Route>
           <Route path="/quan-ly/giao-vien/update" element={<FormUpdateGiaoVien />}></Route>
+          //
           <Route path="/quan-ly/tai-khoan" element={<PageQLTaiKhoan />}></Route>
+          //
           <Route path="/quan-ly/may-tinh" element={<PageQlMayTinh />}></Route>
           <Route path="/quan-ly/may-tinh/add" element={<FormAddMayTinh />}></Route>
           <Route path="/quan-ly/may-tinh/update" element={<FormUpdateMayTinh />}></Route>
+          //
           <Route path="/phan-cong/lich-thuc-hanh" element={<PageLichThucHanh />}></Route>
           <Route path="/phan-cong/lich-thuc-hanh/add" element={<FormAddLichThucHanh />}></Route>
+          <Route path="/phan-cong/lich-thuc-hanh/update" element={<FormUpdateLichThucHanh />}></Route>
+          //
           <Route path="/phan-cong/lich-truc" element={<PageLichTruc />}></Route>
-          <Route
-            path="/phan-cong/lich-truc/add"
-            element={<FormAddLichTruc />}
-          ></Route>
-          <Route
-            path="/phan-cong/lich-truc/update/:id"
-            element={<FormUpdateLichTruc />}
-          ></Route>
+          <Route path="/phan-cong/lich-truc/add" element={<FormAddLichTruc />} ></Route>
+          <Route path="/phan-cong/lich-truc/update/:id" element={<FormUpdateLichTruc />} ></Route>
+          //
           <Route path="/account" element={<PageProfile />}></Route>
+          //
           <Route path="/thong-ke" element={<PageThongKe />}></Route>
+          //
           <Route path="*" element={<Page404 />}></Route>
         </Route>
         <Route path="/login" element={<PageLogin />}></Route>

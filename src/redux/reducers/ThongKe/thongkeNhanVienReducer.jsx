@@ -8,7 +8,7 @@ const initialState = {
   arr_tk_TgianTruc: [],
   arrDataTK_NhanVien: [],
   arrDataTK_NhanVienSearch: [],
-  valueSelTgianTruc: "-1",
+  valueSelTgianTruc: formatDate_MM_YYYY(new Date()),
   valueSelCaTruc: -1, //1 : 6h-14h ---- 2: 14h-22h
   valueSearch: "",
   valueSort: 1,
@@ -23,9 +23,9 @@ const thongkeNhanVienReducer = createSlice({
     },
     set_tk_arrDataTK_NhanVien_NV_Action: (state, action) => {
       state.arrDataTK_NhanVien = action.payload;
-      state.arrDataTK_NhanVienSearch = action.payload;
+      // state.arrDataTK_NhanVienSearch = action.payload;
       //
-      // state.arrDataTK_NhanVienSearch = dataSearch(state);
+      state.arrDataTK_NhanVienSearch = dataSearch(state);
     },
     set_tk_arr_tk_TgianTruc_NV_Action: (state, action) => {
       state.arr_tk_TgianTruc = action.payload;
@@ -46,6 +46,11 @@ const thongkeNhanVienReducer = createSlice({
       //
       state.arrDataTK_NhanVienSearch = dataSearch(state);
     },
+    set_tk_valueSort_NV_Action: (state, action) => {
+      state.valueSort = action.payload;
+      //
+      state.arrDataTK_NhanVienSearch = dataSort(state);
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -56,6 +61,8 @@ export const {
   set_tk_valueSelTgianTruc_NV_Action,
   set_tk_valueSelCaTruc_NV_Action,
   set_tk_valueSearch_NV_Action,
+  //
+  set_tk_valueSort_NV_Action,
 } = thongkeNhanVienReducer.actions;
 export default thongkeNhanVienReducer.reducer;
 
@@ -73,22 +80,80 @@ const dataSearch = (state) => {
   ///
   if (!valueSelTgianTruc.includes("-1")) {
     arrUpdate = arrUpdate.map((item) => {
-      console.log(
-        "🚀 ~ file: thongkeNhanVienReducer.jsx:76 ~ arrUpdate=arrUpdate.filter ~ item:",
-        item
-      );
       let { arrLichTruc } = item;
       let arrLT_new = arrLichTruc.filter((e) => {
         let strNgayTruc = formatDate_MM_YYYY(new Date(e.ngayTruc));
-        console.log(strNgayTruc.includes(valueSelTgianTruc));
         return strNgayTruc.includes(valueSelTgianTruc);
       });
       return { ...item, arrLichTruc: arrLT_new };
     });
   }
+  //
+  if (valueSelCaTruc != -1) {
+    arrUpdate = arrUpdate.map((item) => {
+      let { arrLichTruc } = item;
+      let arrLT_new = [];
+      if (valueSelCaTruc == 1) {
+        arrLT_new = arrLichTruc.filter((e) => {
+          let { thoiGianBatDau, thoiGianKetThuc } = e;
+
+          return parseInt(thoiGianBatDau) === 6;
+        });
+      } else if (valueSelCaTruc == 2) {
+        arrLT_new = arrLichTruc.filter((e) => {
+          let { thoiGianBatDau, thoiGianKetThuc } = e;
+
+          return parseInt(thoiGianBatDau) !== 6;
+        });
+      }
+
+      return { ...item, arrLichTruc: arrLT_new };
+    });
+  }
+  //
+  if (valueSearch.length !== 0) {
+    arrUpdate = arrUpdate.filter((item) => {
+      let search = valueSearch.trim().toLowerCase();
+      return (
+        item.tenNV.toLowerCase().includes(search) ||
+        item.maNV.toLowerCase().includes(search)
+      );
+    });
+  }
+  if (valueSort != 0) {
+    switch (valueSort) {
+      case 1:
+        arrUpdate.sort(sortSoLichTruc);
+        break;
+
+      default:
+        break;
+    }
+  }
 
   return [...arrUpdate];
 };
+//
+const dataSort = (state) => {
+  let { arrDataTK_NhanVienSearch, valueSort } = state;
+  let arrUpdate = arrDataTK_NhanVienSearch;
+  if (valueSort != 0) {
+    switch (valueSort) {
+      case 1:
+        arrUpdate.sort(sortSoLichTruc);
+        break;
+
+      default:
+        break;
+    }
+  }
+  return [...arrUpdate];
+};
+// sort
+const sortSoLichTruc = (a, b) => {
+  return b.arrLichTruc.length - a.arrLichTruc.length;
+};
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 export const getData_TKNhanVienApi = async (dispatch) => {

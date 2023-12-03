@@ -69,15 +69,15 @@ export default function PageLichThucHanh() {
               <button
                 type="button"
                 onClick={() => {
-                  alert("Đang cập nhật!");
-                  // navigate(`/phan-cong/lich-thuc-hanh/update/${item.maLich}`);
+                  // alert("Đang cập nhật!");
+                  navigate(`/phan-cong/lich-thuc-hanh/update?id=${item.maCa}`);
                 }}
                 className="btn btn-primary mx-2 px-2"
                 style={{ padding: "2px" }}
               >
                 <FaPencilAlt color="white" size={16} />
               </button>
-              <button
+              {/* <button
                 onClick={() => {
                   if (
                     window.confirm(
@@ -96,7 +96,7 @@ export default function PageLichThucHanh() {
                 style={{ padding: "2px" }}
               >
                 <ImBin2 color="white" size={16} />
-              </button>
+              </button> */}
               <button
                 onClick={() => {
                   dispatch(setObjDetailCaThucHanh(item));

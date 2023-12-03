@@ -46,6 +46,7 @@ const dataSearch = (
     return (
       (item.monHoc.maMon + "").toLowerCase().includes(search) ||
       item.monHoc.tenMon.toLowerCase().includes(search) ||
+      (item.buoiSo + "").toLowerCase().includes(search) ||
       formatStringDate3(tgian).toLowerCase().includes(search) ||
       item.tenCa.toLowerCase().includes(search) ||
       strTietTH.toLowerCase().includes(search) ||
@@ -172,7 +173,7 @@ const lichThucHanhReducer = createSlice({
       //
       state.arrCaThucHanhSearch = fun_Search(state);
     },
-    //
+    //update
   },
 });
 // exp nay de sử dụng theo cách 2
@@ -193,6 +194,31 @@ export const {
 export default lichThucHanhReducer.reducer;
 //
 // Call api +++++++++++++++++++++++++++++++++++++++++++++++++
+//
+export const getDsNgayTH = async (maMon) => {
+  let arrData = [];
+  try {
+    let result = await http.get(`/DSCaThucHanhTheoMonHoc/${maMon}`);
+    result.data.forEach((item) => {
+      let { maCa, buoiSo, ngayThucHanh, tenCa, tietBatDau, tietKetThuc } = item;
+      arrData.push({
+        maCa,
+        buoiSo,
+        ngayThucHanh,
+        tenCa,
+        tietBatDau,
+        tietKetThuc,
+      });
+    });
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: lichThucHanhReducer.jsx:202 ~ getDsNgayTH ~ error:",
+      error
+    );
+  }
+  return [...arrData];
+};
+//
 /**
  * 1. lay Ds mon hoc
  * 2. lays DS ca cuar mon hoc (theo ma)
