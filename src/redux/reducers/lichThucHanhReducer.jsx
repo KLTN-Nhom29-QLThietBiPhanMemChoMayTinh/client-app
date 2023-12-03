@@ -194,7 +194,26 @@ export const {
 export default lichThucHanhReducer.reducer;
 //
 // Call api +++++++++++++++++++++++++++++++++++++++++++++++++
-//
+
+export const updateLichThucHanh = (obj_lichTH) => {
+  return async (dispatch) => {
+    try {
+      await http.post("/LuuCaThucHanh", obj_lichTH);
+      dispatch(getAllCaThucHanhApi);
+
+      //
+      history.push("/phan-cong/lich-thuc-hanh");
+    } catch (error) {
+      alert('Lỗi server! Vui lòng quay lại sau.')
+      console.log(
+        "🚀 ~ file: lichThucHanhReducer.jsx:202 ~ updateLichThucHanh ~ error:",
+        error
+      );
+    }
+  };
+};
+
+// cai này dư
 export const getDsNgayTH = async (maMon) => {
   let arrData = [];
   try {
@@ -340,7 +359,7 @@ export const getDSPhong_trungPM_MonHocApi3 = (maMonHoc) => {
       //1.
       let resultMonHocPhanMem = await http.get(`/DSMonHocPhanMem/${maMonHoc}`);
       let arrPhanMemByMonHoc = [];
-      let result_arrPhongMay  = await http.get('/DSPhongMay2')
+      let result_arrPhongMay = await http.get("/DSPhongMay2");
       //
       resultMonHocPhanMem.data.forEach((e) => {
         arrPhanMemByMonHoc.push(e.phanMem);
@@ -374,7 +393,6 @@ export const getDSPhong_trungPM_MonHocApi3 = (maMonHoc) => {
       //
       dispatch(serArrPhanMemByIdMonHocAction(arrPhanMemByMonHoc));
       dispatch(serArrPhongByDSPhanMem_MonHocAction(arrPhongByMonHoc));
-
     } catch (error) {
       console.log(
         "🚀 ~ file: lichThucHanhReducer.jsx:197 ~ return ~ error:",

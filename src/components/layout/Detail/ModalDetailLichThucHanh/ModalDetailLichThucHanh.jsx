@@ -13,6 +13,10 @@ export default function ModalDetailLichThucHanh() {
   const navigate = useNavigate();
   //
   let { objDetailCaTH } = useSelector((state) => state.lichThucHanhReducer);
+ 
+  if(objDetailCaTH == null || Object.keys(objDetailCaTH).length === 0) {
+    return <></>
+  }
 
   let {
     ngayThucHanh,

@@ -13,6 +13,7 @@ import {
   getAllDsPhongHocInMonHoc,
   getDSPhong_trungPM_MonHocApi3,
   getDsNgayTH,
+  updateLichThucHanh,
 } from "../../../redux/reducers/lichThucHanhReducer";
 
 //
@@ -118,8 +119,6 @@ export default function FormUpdateLichThucHanh() {
     }
     if (arrGiaoVien.length === 0) {
       dispatch(getAllGiaoVienApi);
-    } else {
-      objCaThucHanh.current.valueSelGiaoVien = arrGiaoVien[0].maGiaoVien;
     }
     // update arrPhongByMonHoc - gia tri ban dau là toàn bộ arrPhong
     // dispatch(getAllDsPhongHocInMonHoc);
@@ -136,6 +135,51 @@ export default function FormUpdateLichThucHanh() {
   }, []);
   //
   // handle
+  //
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    //
+    let {
+      txtSoBuoiTH,
+      txtTietBD,
+      txtTietKT,
+      txtMonHoc,
+      valueSelGiaoVien,
+      valueSelTang,
+      valueSelPhongMay,
+      valueSelToaNha,
+      valueSelCaTH,
+      txtNgayTH,
+    } = objCaThucHanh.current;
+    //
+    let objMonHoc = objData_old.monHoc;
+    let objGiaoVien = arrGiaoVien.find((item) => {
+      return item.maGiaoVien == valueSelGiaoVien;
+    });
+    let objPhongMay = arrPhongMay.find((item) => {
+      return item.maPhong == valueSelPhongMay;
+    });
+    let tenCa = valueSelCaTH;
+    let tietBatDau = txtTietBD;
+    let tietKetThuc = txtTietKT;
+    let objData = {
+      maCa: objData_old.maCa,
+      ngayThucHanh: new Date(txtNgayTH),
+      tenCa,
+      tietBatDau,
+      tietKetThuc,
+      buoiSo: objData_old.buoiSo,
+      giaoVien: objGiaoVien,
+      phongMay: objPhongMay,
+      monHoc: objMonHoc,
+    };
+
+    // console.log(objCaThucHanh.current);
+    // console.log(objData);
+
+    dispatch(updateLichThucHanh(objData));
+  };
   //
   const handleChangeSelectPhongMay = (e) => {
     let value = e.target.value;
@@ -216,7 +260,36 @@ export default function FormUpdateLichThucHanh() {
   };
   ///
   const handleChangeSelectCaTH = (e) => {
-    objCaThucHanh.current.valueSelCaTH = e.target.value;
+    let { value } = e.target;
+
+    switch (value) {
+      case "sáng":
+        objCaThucHanh.current = {
+          ...objCaThucHanh.current,
+          valueSelCaTH: value,
+          txtTietBD: 1,
+          txtTietKT: 3,
+        };
+        break;
+      case "chiều":
+        objCaThucHanh.current = {
+          ...objCaThucHanh.current,
+          valueSelCaTH: value,
+          txtTietBD: 7,
+          txtTietKT: 9,
+        };
+        break;
+      case "tối":
+        objCaThucHanh.current = {
+          ...objCaThucHanh.current,
+          valueSelCaTH: value,
+          txtTietBD: 13,
+          txtTietKT: 15,
+        };
+        break;
+      default:
+        break;
+    }
 
     let text_err = "";
     if (checkDataTrungCa(objCaThucHanh.current, arrCaThucHanh)) {
@@ -466,7 +539,7 @@ export default function FormUpdateLichThucHanh() {
             >
               {/* Form add */}
               <form
-                // onSubmit={handleSubmit}
+                onSubmit={handleSubmit}
                 className="d-flex h-100 justify-content-between flex-column"
               >
                 {/* body */}
@@ -724,10 +797,10 @@ export default function FormUpdateLichThucHanh() {
                 {/* footer - form */}
                 <div className="">
                   <button type="reset" className="btn btn-danger mx-3">
-                    Chỉnh sửa
+                    Khôi phục
                   </button>
                   <button type="submit" className="btn btn-success mx-3">
-                    Tạo mới
+                    Chỉnh sửa
                   </button>
                 </div>
               </form>
@@ -781,13 +854,7 @@ const checkDataTrungCa = (objCaTH, arrCaThucHanh) => {
     } = e;
     let date_item_CaTH = new Date(ngayThucHanh);
     let sum_TietHoc_item = parseInt(tietKetThuc) - parseInt(tietBatDau);
-    console.log(
-      date_item_CaTH.getTime() === day_objCaTH.getTime() &&
-        tietBatDau == txtTietBD &&
-        sum_TietHoc_item === sum_TietHoc &&
-        giaoVien.maGiaoVien.includes(valueSelGiaoVien) &&
-        phongMay.maPhong === parseInt(valueSelPhongMay)
-    );
+
     if (
       date_item_CaTH.getTime() === day_objCaTH.getTime() &&
       tietBatDau == txtTietBD &&
