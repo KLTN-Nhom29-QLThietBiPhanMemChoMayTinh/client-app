@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { formatStringDate2 } from "../../../util/config";
 import {
   getAllDsPhongHocInMonHoc,
+  getDSPhong_trungPM_MonHocApi3,
   getDsNgayTH,
 } from "../../../redux/reducers/lichThucHanhReducer";
 
@@ -18,7 +19,6 @@ import {
 let objData_old = {};
 let regex_date_min = "";
 let regex_date_max = "";
-let arr_dsNgayTH = [];
 //
 export default function FormUpdateLichThucHanh() {
   //
@@ -80,37 +80,13 @@ export default function FormUpdateLichThucHanh() {
         phongMay,
         monHoc,
       } = objData_old;
+
       //
       let { soBuoi, ngayBatDau } = monHoc;
       regex_date_min = new Date(ngayBatDau);
       regex_date_max = new Date(ngayBatDau);
 
       regex_date_max.setDate(regex_date_max.getDate() + (soBuoi + 1) * 7);
-
-      //
-      let maMonHoc = monHoc.maMon;
-
-      arrCaThucHanh.forEach((e) => {
-        let {
-          maCa,
-          buoiSo,
-          ngayThucHanh,
-          tenCa,
-          tietBatDau,
-          tietKetThuc,
-          monHoc,
-        } = e;
-        if (maMonHoc === monHoc.maMon) {
-          arr_dsNgayTH.push({
-            maCa,
-            buoiSo,
-            ngayThucHanh,
-            tenCa,
-            tietBatDau,
-            tietKetThuc,
-          });
-        }
-      });
 
       //
       objCaThucHanh.current = {
@@ -146,19 +122,134 @@ export default function FormUpdateLichThucHanh() {
       objCaThucHanh.current.valueSelGiaoVien = arrGiaoVien[0].maGiaoVien;
     }
     // update arrPhongByMonHoc - gia tri ban dau là toàn bộ arrPhong
-    dispatch(getAllDsPhongHocInMonHoc);
+    // dispatch(getAllDsPhongHocInMonHoc);
     // update Gia trij mon hoc chuaw co ca thuc hanh
     // dispatch(setArrMonHoc_CaThucHanhApi);
     // update ds PM can theit
     // dispatch (serArrPhanMemByIdMonHocAction([]))
     // setErrCaTH({ ...errCaTH });
 
+    // tim PM cho mon hoc - tim phongf
+    dispatch(getDSPhong_trungPM_MonHocApi3(objData_old.monHoc.maMon));
+
     setErrCaTH({ ...setErrCaTH });
   }, []);
   //
+  // handle
+  //
+  const handleChangeSelectPhongMay = (e) => {
+    let value = e.target.value;
+    objCaThucHanh.current = {
+      ...objCaThucHanh.current,
+      valueSelPhongMay: value,
+    };
+    //
+    let text_err = "";
+    if (checkDataTrungCa(objCaThucHanh.current, arrCaThucHanh)) {
+      text_err = "Buổi học đang trùng với một ca khác!";
+    }
+    setErrCaTH({
+      txtNgayTH: "",
+      valueSelGiaoVien: "",
+      valueSelCaTH: text_err,
+      txtTietTH: "",
+      valueSelToaNha: "",
+      valueSelTang: "",
+      valueSelPhongMay: "",
+    });
+  };
+  //
+  const handleChangeSelectTang = (e) => {
+    let value = e.target.value;
+    objCaThucHanh.current = {
+      ...objCaThucHanh.current,
+      valueSelTang: value,
+      // valueSelPhongMay: -1,
+    };
+    if (value == -1) {
+      setErrCaTH({
+        ...errCaTH,
+        valueSelTang: "Hãy chọn tầng!",
+      });
+    } else {
+      setErrCaTH({
+        ...errCaTH,
+        valueSelTang: "",
+        valueSelToaNha: "",
+      });
+    }
+  };
+  //
+  const handleChangeSelectToaNha = (e) => {
+    let value = e.target.value;
+    objCaThucHanh.current = {
+      ...objCaThucHanh.current,
+      valueSelToaNha: value,
+      valueSelTang: -1,
+      // valueSelPhongMay: -1,
+    };
+    if (value == -1) {
+      setErrCaTH({
+        ...errCaTH,
+        valueSelToaNha: "Hãy chọn tòa nhà!",
+      });
+    } else {
+      setErrCaTH({
+        ...errCaTH,
+        valueSelToaNha: "",
+      });
+    }
+  };
+  //
+  const handleChangTietHocTo = (e) => {
+    let { value } = e.target;
+    objCaThucHanh.current.txtTietKT = value;
+
+    setErrCaTH({ ...errCaTH });
+  };
+  //
+  const handleChangTietHocFrom = (e) => {
+    let { value } = e.target;
+    objCaThucHanh.current.txtTietBD = value;
+
+    setErrCaTH({ ...errCaTH });
+  };
+  ///
+  const handleChangeSelectCaTH = (e) => {
+    objCaThucHanh.current.valueSelCaTH = e.target.value;
+
+    let text_err = "";
+    if (checkDataTrungCa(objCaThucHanh.current, arrCaThucHanh)) {
+      text_err = "Buổi học đang trùng với một ca khác!";
+    }
+    setErrCaTH({
+      txtNgayTH: "",
+      valueSelGiaoVien: "",
+      valueSelCaTH: text_err,
+      txtTietTH: "",
+      valueSelToaNha: "",
+      valueSelTang: "",
+      valueSelPhongMay: "",
+    });
+  };
   //
   const handleChangeSelectGiaoVien = (e) => {
     let { value } = e.target;
+    objCaThucHanh.current.valueSelGiaoVien = value;
+
+    let text_err = "";
+    if (checkDataTrungCa(objCaThucHanh.current, arrCaThucHanh)) {
+      text_err = "Buổi học đang trùng với một ca khác!";
+    }
+    setErrCaTH({
+      txtNgayTH: "",
+      valueSelGiaoVien: text_err,
+      valueSelCaTH: "",
+      txtTietTH: "",
+      valueSelToaNha: "",
+      valueSelTang: "",
+      valueSelPhongMay: "",
+    });
   };
   //
   const handleChangeNgayTH = (e) => {
@@ -167,10 +258,18 @@ export default function FormUpdateLichThucHanh() {
     objCaThucHanh.current.txtNgayTH = value;
     let text_err = "";
 
-    if (checkDataTrungCa(objCaThucHanh.current)) {
+    if (checkDataTrungCa(objCaThucHanh.current, arrCaThucHanh)) {
       text_err = "Buổi học đang trùng với một ca khác!";
     }
-    setErrCaTH({ ...errCaTH, txtNgayTH: text_err });
+    setErrCaTH({
+      txtNgayTH: text_err,
+      valueSelGiaoVien: "",
+      valueSelCaTH: "",
+      txtTietTH: "",
+      valueSelToaNha: "",
+      valueSelTang: "",
+      valueSelPhongMay: "",
+    });
   };
   //
 
@@ -467,7 +566,7 @@ export default function FormUpdateLichThucHanh() {
                           className="form-select "
                           name="valSelCaTH"
                           id="valSelCaTH"
-                          //   onChange={handleChangeSelectBuoiTH}
+                          onChange={handleChangeSelectCaTH}
                         >
                           {renderChangeSelectCaTH()}
                         </select>
@@ -490,6 +589,7 @@ export default function FormUpdateLichThucHanh() {
                               name="txtTietHocForm"
                               id="txtTietHocForm"
                               value={objCaThucHanh.current.txtTietBD}
+                              onChange={handleChangTietHocFrom}
                               max={
                                 objCaThucHanh.current.valueSelCaTH.includes(
                                   "sáng"
@@ -520,6 +620,7 @@ export default function FormUpdateLichThucHanh() {
                               name="txtTietHocTo"
                               id="txtTietHocTo"
                               value={objCaThucHanh.current.txtTietKT}
+                              onChange={handleChangTietHocTo}
                               max={
                                 objCaThucHanh.current.valueSelCaTH.includes(
                                   "sáng"
@@ -562,7 +663,7 @@ export default function FormUpdateLichThucHanh() {
                           className="form-select  "
                           name="valSelToaNha"
                           id="valSelToaNha"
-                          //   onChange={handleChangeSelectToaNha}
+                          onChange={handleChangeSelectToaNha}
                         >
                           <option
                             selected={
@@ -587,7 +688,7 @@ export default function FormUpdateLichThucHanh() {
                           className="form-select  "
                           name="valSelTang"
                           id="valSelTang"
-                          //   onChange={handleChangeSelectTang}
+                          onChange={handleChangeSelectTang}
                         >
                           <option
                             selected={
@@ -612,7 +713,7 @@ export default function FormUpdateLichThucHanh() {
                           className="form-select  "
                           name="valSelPhongMay"
                           id="valSelPhongMay"
-                          // onChange={handleChangeSelectPhongMay}
+                          onChange={handleChangeSelectPhongMay}
                         >
                           {renderSelectPhongMay()}
                         </select>
@@ -641,8 +742,78 @@ export default function FormUpdateLichThucHanh() {
 }
 
 /// function
-const checkDataTrungCa = (objCaTH) => {
-  let check = 1;
-  let { txtTietBD, txtTietKT, valueSelCaTH, txtNgayTH } = objCaTH;
+/**
+ *
+ * @param {data dang co trong form} objCaTH
+ * @param {ds caThucHanh} arrCaThucHanh
+ * @returns true: timf tháy trùng | false : không trùng
+ */
+const checkDataTrungCa = (objCaTH, arrCaThucHanh) => {
+  let check = 0;
+  let {
+    // txtSoBuoiTH,
+    txtTietBD,
+    txtTietKT,
+    // txtMonHoc,
+    valueSelGiaoVien,
+    // valueSelTang,
+    valueSelPhongMay,
+    // valueSelToaNha,
+    // valueSelCaTH,
+    txtNgayTH,
+  } = objCaTH;
+
+  let day_objCaTH = new Date(txtNgayTH);
+  let sum_TietHoc = parseInt(txtTietKT) - parseInt(txtTietBD);
+
+  //
+  arrCaThucHanh.forEach((e) => {
+    let {
+      // maCa,
+      ngayThucHanh,
+      // tenCa,
+      tietBatDau,
+      tietKetThuc,
+      // buoiSo,
+      giaoVien,
+      phongMay,
+      monHoc,
+    } = e;
+    let date_item_CaTH = new Date(ngayThucHanh);
+    let sum_TietHoc_item = parseInt(tietKetThuc) - parseInt(tietBatDau);
+    console.log(
+      date_item_CaTH.getTime() === day_objCaTH.getTime() &&
+        tietBatDau == txtTietBD &&
+        sum_TietHoc_item === sum_TietHoc &&
+        giaoVien.maGiaoVien.includes(valueSelGiaoVien) &&
+        phongMay.maPhong === parseInt(valueSelPhongMay)
+    );
+    if (
+      date_item_CaTH.getTime() === day_objCaTH.getTime() &&
+      tietBatDau == txtTietBD &&
+      sum_TietHoc_item === sum_TietHoc &&
+      giaoVien.maGiaoVien.includes(valueSelGiaoVien) &&
+      phongMay.maPhong === parseInt(valueSelPhongMay)
+    ) {
+      check = 1;
+    }
+  });
+
+  // data chinh sửa
+  let date_item_CaTH_old = new Date(objData_old.ngayThucHanh);
+  let sum_TietHoc_item_old =
+    parseInt(objData_old.tietKetThuc) - parseInt(objData_old.tietBatDau);
+
+  if (
+    date_item_CaTH_old.getTime() === day_objCaTH.getTime() &&
+    objData_old.tietBatDau == txtTietBD &&
+    sum_TietHoc_item_old === sum_TietHoc &&
+    objData_old.giaoVien.maGiaoVien.includes(valueSelGiaoVien) &&
+    objData_old.phongMay.maPhong === parseInt(valueSelPhongMay)
+  ) {
+    check = 0;
+  }
+
   return check;
 };
+//
