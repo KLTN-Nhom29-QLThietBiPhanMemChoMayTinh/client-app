@@ -29,6 +29,85 @@ export const { setObjThongTinGhiChu } = home2Reducer.actions;
 export default home2Reducer.reducer;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/**
+ * Chi chu may tinh va thiet bị
+ * @param {*} param0
+ * @returns
+ */
+export const insertGhiChuApi_MayTinh_Tbi = ({
+  userLogin,
+  objThongTin,
+  objTTGhiChu,
+}) => {
+  let { arrPhanMem, arrThietBi, phong, mayTinh } = objThongTin;
+
+  let { arrTbi, arrPM, txtTextGhiChu_Tbi, txtTextGhiChu_PM } = objTTGhiChu;
+
+  //
+  let objDataGhiChu_MayTinh_Tbi = {
+    noiDung: txtTextGhiChu_Tbi,
+    mayTinh: mayTinh,
+    ngayBaoLoi: new Date(),
+    maTKBaoLoi: userLogin.taiKhoan.maTK,
+    ngaySua: "",
+    nguoiSuaLoi: "",
+  };
+
+  return async (dispatch) => {
+    try {
+      //2. duyệt Ds PM có trong phòng
+      // 3. duyệt DS PM được check trong modal Ghi chu
+      // tìm PM nào check thì update vs status false (khog hỏng) - ngược lại true( bị hỏng)
+      //
+      let result_saveGhiChu_MayTinh = await http.post(
+        "/LuuGhiChuMayTinh",
+        objDataGhiChu_MayTinh_Tbi
+      );
+
+      // duyệt tường tụ PM
+      arrThietBi.forEach(async (item) => {
+        let index = arrTbi.findIndex((e) => e.maThietBi === item.maThietBi);
+        let saveMayTinh_ThietBi = {};
+        if (index >= 0) {
+          // luu
+          saveMayTinh_ThietBi = {
+            mayTinh,
+            thietBi: item,
+            status: false,
+          };
+        } else {
+          // update hong
+          // luu
+          saveMayTinh_ThietBi = {
+            mayTinh,
+            thietBi: item,
+            status: true,
+          };
+        }
+
+        await http.post("/LuuMayTinhThietBi", saveMayTinh_ThietBi);
+      });
+
+      // let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
+      setTimeout(async () => {
+        // giups reload laij page home
+        // dispatch(setObjThongTinByPhongMay(objUpdate.data));
+
+        dispatch(setObjThongTinByMay(mayTinh));
+      }, 1000);
+      alert("Ghi chú thành công.");
+    } catch (error) {
+      alert("Ghi chú không thành công - lỗi kết nối. Vui lòng quay lại sau.");
+      console.log("🚀 ~ file: home2Reducer.jsx:39 ~ return ~ error:", error);
+    }
+  };
+};
+/**
+ * Ghi chu phong may phan mem
+ *
+ * @param {*} param0
+ * @returns
+ */
 export const insertGhiChu_PhongMay_Api = ({
   userLogin,
   objThongTin,

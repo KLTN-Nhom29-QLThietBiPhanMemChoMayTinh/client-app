@@ -14,6 +14,7 @@ import ComponentModelDetail from "../../components/layoutHome/ComponentModelDeta
 import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiChu";
 import { setThongTinObjGhiChuRedux } from "../../redux/reducers/home2Reducer";
 import ComponentModalGhiChuPhong from "../../components/layoutHome/ComponentModalGhiChuPhong";
+import ComponentModalGhiChuMayTinh from "../../components/layoutHome/ComponentModalGhiChuMayTinh";
 
 export default function PageHome() {
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ export default function PageHome() {
       {/* modal Ghi chu */}
       <ComponentModalGhiChu />
       <ComponentModalGhiChuPhong />
+      <ComponentModalGhiChuMayTinh />
 
       {/*1. col Toa nha -- Tang */}
       <div className="col-2  flex-column d-flex justify-content-between px-1">
@@ -116,7 +118,7 @@ export default function PageHome() {
 
             <button
               data-bs-toggle="modal"
-              data-bs-target="#modalIdGhiChu"
+              data-bs-target="#modalIdGhiChuMayTinh"
               type="button"
               onClick={() => {
                 // let { arrPhanMem, arrThietBi } = objThongTin;
