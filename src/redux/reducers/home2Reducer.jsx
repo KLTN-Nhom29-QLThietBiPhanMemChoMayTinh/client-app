@@ -29,7 +29,80 @@ export const { setObjThongTinGhiChu } = home2Reducer.actions;
 export default home2Reducer.reducer;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const insertGhiChu_PhongMay_Api = ({
+  userLogin,
+  objThongTin,
+  objTTGhiChu,
+}) => {
+  let { arrPhanMem, arrThietBi, phong, mayTinh } = objThongTin;
 
+  let { arrTbi, arrPM, txtTextGhiChu_Tbi, txtTextGhiChu_PM } = objTTGhiChu;
+
+  //
+  let objDataGhiChu_PhongMay_PM = {
+    noiDung: txtTextGhiChu_PM,
+    ngayBaoLoi: new Date(),
+    phongMay: phong,
+    maTKBaoLoi: userLogin.taiKhoan.maTK,
+    nguoiSuaLoi: "",
+    ngaySua: "",
+  };
+
+  return async (dispatch) => {
+    try {
+      // 1. luu ghi chú
+      let result_saveGhiChu_PhongMay = await http.post(
+        "/LuuGhiChuPhongMay",
+        objDataGhiChu_PhongMay_PM
+      );
+
+      //2. duyệt Ds PM có trong phòng
+      // 3. duyệt DS PM được check trong modal Ghi chu
+      // tìm PM nào check thì update vs status false (khog hỏng) - ngược lại true( bị hỏng)
+      //
+      arrPhanMem.forEach(async (item) => {
+        let index = arrPM.findIndex((e) => e.maPhanMem === item.maPhanMem);
+        let savePhongMay_PhanMem = {};
+        if (index >= 0) {
+          // luu
+          savePhongMay_PhanMem = {
+            phongMay: phong,
+            phanMem: item,
+            status: false,
+          };
+        } else {
+          // update hong
+          // luu
+          savePhongMay_PhanMem = {
+            phongMay: phong,
+            phanMem: item,
+            status: true,
+          };
+        }
+
+        await http.post("/LuuPhongMayPhanMem", savePhongMay_PhanMem);
+      });
+      //
+      //4.khi người dùng đứng ở chon phòng (chưa chọn máy tính)
+      setTimeout(async () => {
+        // giups reload laij page home
+        let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
+        dispatch(setObjThongTinByPhongMay(objUpdate.data));
+      }, 1000);
+      alert("Ghi chú thành công.");
+      return;
+    } catch (error) {
+      alert("Ghi chú không thành công - lỗi kết nối. Vui lòng quay lại sau.");
+      console.log("🚀 ~ file: home2Reducer.jsx:39 ~ return ~ error:", error);
+    }
+  };
+};
+
+/**
+ * tao mọt ghi chu ={ userLogin, objThongTin, objTTGhiChu }
+ * @param {*} param0
+ * @returns
+ */
 export const insertGhiChuApi = ({ userLogin, objThongTin, objTTGhiChu }) => {
   let { arrPhanMem, arrThietBi, phong, mayTinh } = objThongTin;
 

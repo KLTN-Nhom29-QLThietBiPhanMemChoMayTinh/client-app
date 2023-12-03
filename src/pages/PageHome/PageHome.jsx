@@ -13,6 +13,7 @@ import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 import ComponentModelDetail from "../../components/layoutHome/ComponentModelDetail";
 import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiChu";
 import { setThongTinObjGhiChuRedux } from "../../redux/reducers/home2Reducer";
+import ComponentModalGhiChuPhong from "../../components/layoutHome/ComponentModalGhiChuPhong";
 
 export default function PageHome() {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ export default function PageHome() {
 
       {/* modal Ghi chu */}
       <ComponentModalGhiChu />
+      <ComponentModalGhiChuPhong />
 
       {/*1. col Toa nha -- Tang */}
       <div className="col-2  flex-column d-flex justify-content-between px-1">
@@ -101,6 +103,19 @@ export default function PageHome() {
 
             <button
               data-bs-toggle="modal"
+              data-bs-target="#modalIdGhiChuPhong"
+              type="button"
+              onClick={() => {
+                // let { arrPhanMem, arrThietBi } = objThongTin;
+                dispatch(setThongTinObjGhiChuRedux(objThongTin))
+              }}
+              className="btn btn-primary"
+            >
+              Ghi chú phòng
+            </button>
+
+            <button
+              data-bs-toggle="modal"
               data-bs-target="#modalIdGhiChu"
               type="button"
               onClick={() => {
@@ -109,7 +124,7 @@ export default function PageHome() {
               }}
               className="btn btn-primary"
             >
-              Ghi chú
+              Ghi chú MT
             </button>
           </div>
         </div>
