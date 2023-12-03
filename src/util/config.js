@@ -137,6 +137,48 @@ export const configs = {
     }/${year + 1900}`;
     return strDate;
   },
+  /**
+   * Format Date -> String
+   * hh:mm Th DD/MM/YYYY
+   * @returns String
+   */
+  formatStringDate4: (day = new Date()) => {
+    var date = day.getDate();
+    var month = day.getMonth() + 1;
+    var year = day.getYear();
+
+    var current_day = day.getDay();
+    // Biến lưu tên của thứ
+    var day_name = "";
+    // Lấy tên thứ của ngày hiện tại
+    switch (current_day) {
+      case 0:
+        day_name = "CN";
+        break;
+      case 1:
+        day_name = "Th2";
+        break;
+      case 2:
+        day_name = "Th3";
+        break;
+      case 3:
+        day_name = "Th4";
+        break;
+      case 4:
+        day_name = "Th5";
+        break;
+      case 5:
+        day_name = "Th6";
+        break;
+      case 6:
+        day_name = "Th7";
+    }
+    var time = day.getHours() + ":" + day.getMinutes() + ":" + day.getSeconds();
+    let strDate = `${day_name} ${date < 10 ? "0" + date : date}/${
+      month < 10 ? "0" + month : month
+    }/${year + 1900} ${time}`;
+    return strDate;
+  },
   formatNameByHocVi: (giaoVien) => {
     let str = "";
     switch (giaoVien.hocVi) {
@@ -170,6 +212,7 @@ export const {
   formatStringDate,
   formatStringDate2,
   formatStringDate3,
+  formatStringDate4,
   formatNameByHocVi,
   ACCESS_TOKEN,
   USER_LOGIN,

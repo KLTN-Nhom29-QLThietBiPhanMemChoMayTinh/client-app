@@ -77,7 +77,7 @@ export const getDangNhapApi = (userLogin, ckbRemeber) => {
         error
       );
 
-      console.log(error.request.responseText)
+      // console.log(error.request.responseText)
 
       alert("Đăng nhập không thành công. Sai thông tin");
       history.push("/login");

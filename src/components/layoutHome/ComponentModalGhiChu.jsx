@@ -4,6 +4,11 @@ import {
   insertGhiChuApi,
   setObjThongTinGhiChu,
 } from "../../redux/reducers/home2Reducer";
+import {
+  formatNameByHocVi,
+  formatStringDate3,
+  formatStringDate4,
+} from "../../util/config";
 
 export default function ComponentModalGhiChu() {
   //
@@ -11,7 +16,7 @@ export default function ComponentModalGhiChu() {
   //
   let { objThongTin } = useSelector((state) => state.homeReducer);
   let { objThongTinGhiChu } = useSelector((state) => state.home2Reducer);
-
+  let { userLogin } = useSelector((state) => state.userReducer);
   //
   let { arrPhanMem, arrThietBi } = objThongTin;
 
@@ -23,6 +28,7 @@ export default function ComponentModalGhiChu() {
   //   txtGhiChu: "",
   // });
 
+  // del
   const [errGhiChu, setErrGhiChu] = useState({
     arrTbi: "",
     arrPM: "",
@@ -47,8 +53,18 @@ export default function ComponentModalGhiChu() {
     }
 
     // true
+    let txtTextGhiChu_PM = setTextShow_PM(objThongTinGhiChu, userLogin);
+    let txtTextGhiChu_Tbi = setTextShow_Tbi(objThongTinGhiChu, userLogin);
+    // alert(txtTextGhiChu_PM + " \n " + txtTextGhiChu_Tbi);
 
-    dispatch(insertGhiChuApi({ objThongTin, objThongTinGhiChu }));
+    let objTTGhiChu = {
+      ...objThongTinGhiChu,
+      txtTextGhiChu_PM,
+      txtTextGhiChu_Tbi,
+    };
+
+    dispatch(insertGhiChuApi({ userLogin, objThongTin, objTTGhiChu }));
+
     // $('#modalIdGhiChu').modal('hide');
     // document.querySelector("#modalIdGhiChu").modal("hide");
   };
@@ -152,6 +168,7 @@ export default function ComponentModalGhiChu() {
 
     dispatch(setObjThongTinGhiChu(objData));
 
+    //
     if (value.trim().length === 0) {
       setErrGhiChu({ ...errGhiChu, [id]: "Hãy ghi chú ở đây!" });
     } else {
@@ -352,3 +369,84 @@ export default function ComponentModalGhiChu() {
     </>
   );
 }
+
+///
+const setTextShow_Tbi = (objData, userLogin) => {
+  let { arrPM, arrTbi, txtGhiChu } = objData;
+  let strGhiChu = "";
+  let str_TaiKhoan = thongtinTaiKhoan(userLogin);
+  let str_Tbi = "";
+  if (arrTbi.length !== 0) {
+    str_Tbi += "\n  +\t Thiết bị lỗi: \n \t";
+
+    for (let i = 0; i < arrTbi.length; i++) {
+      let { loaiThietBi, tenThietBi } = arrTbi[i];
+      str_Tbi += `${loaiThietBi.tenLoai} ${tenThietBi}`;
+
+      if (i < arrTbi.length - 1) {
+        str_Tbi += "\n \t";
+      } else {
+        str_Tbi += "";
+      }
+    }
+  }
+
+  let str_Mota = "";
+  if (txtGhiChu.length !== 0) {
+    str_Mota += "\n  +\t Mô tả: " + txtGhiChu;
+  }
+
+  strGhiChu = `- ${formatStringDate4()} - ${str_TaiKhoan}: ${str_Tbi} ${str_Mota}`;
+  return strGhiChu;
+};
+///
+const setTextShow_PM = (objData, userLogin) => {
+  let { arrPM, arrTbi, txtGhiChu } = objData;
+  let strGhiChu = "";
+  let str_TaiKhoan = thongtinTaiKhoan(userLogin);
+  let str_PM = "";
+  if (arrPM.length !== 0) {
+    str_PM += "\n \b  +\t Phần mềm lỗi: \n \t";
+
+    for (let i = 0; i < arrPM.length; i++) {
+      let { tenPhanMem, phienBan } = arrPM[i];
+      str_PM += `${tenPhanMem} ( ${phienBan} )`;
+
+      if (i < arrPM.length - 1) {
+        str_PM += "\n \t";
+      } else {
+        str_PM += "";
+      }
+    }
+  }
+
+  let str_Mota = "";
+  if (txtGhiChu.length !== 0) {
+    str_Mota += "\n  +\t Mô tả: " + txtGhiChu;
+  }
+
+  strGhiChu = `- ${formatStringDate4()} - ${str_TaiKhoan}: ${str_PM} ${str_Mota}`;
+  return strGhiChu;
+};
+const thongtinTaiKhoan = (userLogin) => {
+  let { quyen, maTK } = userLogin.taiKhoan;
+  let str_TaiKhoan = "";
+
+  if (quyen.tenQuyen.toLowerCase().includes("Giáo viên".toLowerCase())) {
+    let gv = {
+      hocVi: userLogin.hocVi,
+      name: userLogin.hoTen,
+    };
+    str_TaiKhoan = formatNameByHocVi(gv);
+  } else {
+    if (
+      userLogin.chucVu.tenCV.toLowerCase().includes("quản lý".toLowerCase())
+    ) {
+      str_TaiKhoan = "QL. " + userLogin.tenNV;
+    } else {
+      str_TaiKhoan = "NV. " + userLogin.tenNV;
+    }
+  }
+
+  return `${str_TaiKhoan} (${maTK})`;
+};

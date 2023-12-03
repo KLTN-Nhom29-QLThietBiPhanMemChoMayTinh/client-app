@@ -30,23 +30,37 @@ export default home2Reducer.reducer;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-export const insertGhiChuApi = ({ objThongTin, objThongTinGhiChu }) => {
+export const insertGhiChuApi = ({ userLogin, objThongTin, objTTGhiChu }) => {
   let { arrPhanMem, arrThietBi, phong, mayTinh } = objThongTin;
 
-  let { arrTbi, arrPM, txtGhiChu } = objThongTinGhiChu;
+  let { arrTbi, arrPM, txtTextGhiChu_Tbi, txtTextGhiChu_PM } = objTTGhiChu;
 
   //
-  let objDataGhiChu = {
-    noiDung: txtGhiChu,
+  let objDataGhiChu_PhongMay_PM = {
+    noiDung: txtTextGhiChu_PM,
     ngayBaoLoi: new Date(),
-    ngaySua: "",
     phongMay: phong,
+    maTKBaoLoi: userLogin.taiKhoan.maTK,
+    nguoiSuaLoi: "",
+    ngaySua: "",
+  };
+  //
+  let objDataGhiChu_MayTinh_Tbi = {
+    noiDung: txtTextGhiChu_Tbi,
+    mayTinh: mayTinh,
+    ngayBaoLoi: new Date(),
+    maTKBaoLoi: userLogin.taiKhoan.maTK,
+    ngaySua: "",
+    nguoiSuaLoi: "",
   };
 
   return async (dispatch) => {
     try {
       // 1. luu ghi chú
-      let result_saveGhiChu = await http.post("/LuuGhiChu", objDataGhiChu);
+      let result_saveGhiChu_PhongMay = await http.post(
+        "/LuuGhiChuPhongMay",
+        objDataGhiChu_PhongMay_PM
+      );
 
       //2. duyệt Ds PM có trong phòng
       // 3. duyệt DS PM được check trong modal Ghi chu
@@ -85,6 +99,13 @@ export const insertGhiChuApi = ({ objThongTin, objThongTinGhiChu }) => {
         alert("Ghi chú thành công.");
         return;
       }
+
+      //
+      let result_saveGhiChu_MayTinh = await http.post(
+        "/LuuGhiChuMayTinh",
+        objDataGhiChu_MayTinh_Tbi
+      );
+
       // duyệt tường tụ PM
       arrThietBi.forEach(async (item) => {
         let index = arrTbi.findIndex((e) => e.maThietBi === item.maThietBi);
