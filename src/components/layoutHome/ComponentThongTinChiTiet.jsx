@@ -26,6 +26,12 @@ export default function ComponentThongTinChiTiet() {
     monHoc,
   } = objThongTin;
 
+  /// handle 
+  const handleClick_btnSuaTbi_mayTinh = (item) => {
+    console.log(item);
+  }
+
+
   // render
   const renderThongTinTheoPhong = () => {
     if (Object.keys(phong).length === 0) {
@@ -121,7 +127,7 @@ export default function ComponentThongTinChiTiet() {
                 className="btn btn-outline-primary mx-2 px-2"
                 style={{ padding: "2px" }}
                 onClick={() => {
-                  alert("dang cập nhật - Tb đã sửa - ");
+                  handleClick_btnSuaTbi_mayTinh(item)
                 }}
               >
                 <BiEditAlt size={20} />

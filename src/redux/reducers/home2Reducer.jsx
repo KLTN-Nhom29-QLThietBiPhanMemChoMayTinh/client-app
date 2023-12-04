@@ -1,7 +1,7 @@
 //rxslice
 
 import { createSlice } from "@reduxjs/toolkit";
-import { http } from "../../util/config";
+import { formatStringDate2, http } from "../../util/config";
 import { setObjThongTinByMay, setObjThongTinByPhongMay } from "./homeReducer";
 //phuc vụ cho ghi chú
 const initialState = {
@@ -33,16 +33,21 @@ export default home2Reducer.reducer;
  * cap nhat ghi chu - xac nhan da suawr
  * cap nhat tgian sua- noi dung - nguoi sua
  * @param {GhiChuMayTinh} objDataNew
+ * @param {phong dang ở dể có the reload lại} phong
  */
-export const updateGhiChu_MayTinh_Tbi = (objDataNew) => {
+export const updateGhiChu_MayTinh_Tbi = (objDataNew, phong) => {
   return async (dispatch) => {
     try {
       let result_saveGhiChu_MayTinh = await http.post(
         "/LuuGhiChuMayTinh",
         objDataNew
       );
+      let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
 
+      // giups reload laij page home
+      dispatch(setObjThongTinByPhongMay(objUpdate.data));
       dispatch(setObjThongTinByMay(objDataNew.mayTinh));
+
       console.log("z");
     } catch (error) {
       alert("Lỗi hệ thống! Vui lòng quay lại sau.");
@@ -76,15 +81,45 @@ export const insertGhiChuApi_MayTinh_Tbi = ({
 
   return async (dispatch) => {
     try {
+      //
+      let result_DsGhiChuNgayHOmNay = await http.get(
+        `/DSGhiChuMayTinhTheoNgayBaoLoi/${formatStringDate2()}`
+      );
+
+      //
+      let objGhiChu = result_DsGhiChuNgayHOmNay.data.find((e) => {
+        if (e.mayTinh.maMay === objDataGhiChu_MayTinh_Tbi.mayTinh.maMay) {
+        }
+        return e.mayTinh.maMay === objDataGhiChu_MayTinh_Tbi.mayTinh.maMay;
+      });
+
+      if (objGhiChu != null) {
+        // da co ghi chu
+        let noiDungNew =
+          objGhiChu.noiDung + "\n" + objDataGhiChu_MayTinh_Tbi.noiDung;
+
+        let objNew = {
+          ...objGhiChu,
+          noiDung: noiDungNew,
+          ngayBaoLoi: new Date(),
+          maTKBaoLoi: userLogin.taiKhoan.maTK,
+        };
+        let result_saveGhiChu_MayTinh = await http.post(
+          "/LuuGhiChuMayTinh",
+          objNew
+        );
+      } else {
+        // chua co ghi chu
+        let result_saveGhiChu_MayTinh = await http.post(
+          "/LuuGhiChuMayTinh",
+          objDataGhiChu_MayTinh_Tbi
+        );
+      }
+
       //2. duyệt Ds PM có trong phòng
       // 3. duyệt DS PM được check trong modal Ghi chu
       // tìm PM nào check thì update vs status false (khog hỏng) - ngược lại true( bị hỏng)
       //
-      let result_saveGhiChu_MayTinh = await http.post(
-        "/LuuGhiChuMayTinh",
-        objDataGhiChu_MayTinh_Tbi
-      );
-
       // duyệt tường tụ PM
       arrThietBi.forEach(async (item) => {
         let index = arrTbi.findIndex((e) => e.maThietBi === item.maThietBi);
@@ -113,7 +148,6 @@ export const insertGhiChuApi_MayTinh_Tbi = ({
       setTimeout(async () => {
         // giups reload laij page home
         dispatch(setObjThongTinByPhongMay(objUpdate.data));
-
         dispatch(setObjThongTinByMay(mayTinh));
       }, 1000);
       alert("Ghi chú thành công.");

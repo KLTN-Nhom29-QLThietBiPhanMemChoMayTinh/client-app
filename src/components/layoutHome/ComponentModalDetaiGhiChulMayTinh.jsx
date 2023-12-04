@@ -57,8 +57,9 @@ export default function ComponentModalDetaiGhiChulMayTinh() {
       ngaySua: new Date(),
       noiDung: noiDungNew,
     };
+    let {phong} = objThongTin;
 
-    dispatch(updateGhiChu_MayTinh_Tbi(objData));
+    dispatch(updateGhiChu_MayTinh_Tbi(objData,phong));
   };
 
   // render thonog tin
