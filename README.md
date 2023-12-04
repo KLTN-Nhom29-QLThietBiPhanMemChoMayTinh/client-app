@@ -140,6 +140,7 @@
     - QLHome btn Sửa PM Tbi() khi click ở btnSua chua có sk
     - tk_ToaNha_status_mayTinh - có data hỏng - hay hiện nó lên
     -FormUpdateLichThucHanh - GUI finish - handle chưa xong
+    - page home - dsPhong - btnSuaTbi -btn suaPM
 
     #
     - ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi

@@ -135,12 +135,20 @@ export const setObjThongTinByPhongMay = (valPhong) => {
       let { maPhong, tenPhong, moTa, tang, mayTinhs } = valPhong;
       // phong: { maPhong,tenPhong,moTa},
 
-      let arrMayTinh = [];
+      let arrMayTinhH = [];
       // arr may Tinh
       if (mayTinhs.length !== 0) {
         // gan ds may tinh vao arr
         // ds may tinh nay pha thuoc ma phong duoc chon
-        arrMayTinh = mayTinhs;
+
+        // lay dsGhiChu
+        mayTinhs.forEach(async (item) => {
+          let result_GhiChu = await http.get(
+            `/DSGhiChuMayTinhTheoMayTinh/${item.maMay}`
+          );
+
+          arrMayTinhH.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
+        });
       }
 
       // Api lay arr phanMem
@@ -176,12 +184,15 @@ export const setObjThongTinByPhongMay = (valPhong) => {
         monHoc: {},
       };
       //
-      await dispatch(
+      dispatch(
         setObjThongTinByPhongAction({
           objThongTin,
-          arrMayTinh,
+          arrMayTinh: [...arrMayTinhH],
         })
       );
+      // setTimeout(() => {
+
+      // }, 500);
     } catch (error) {
       console.log("🚀 ~ file: homeReducer.jsx:136 ~ return ~ error:", error);
     }
@@ -208,7 +219,7 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
       };
       //
       let arrPhongH = [];
-      let arrMayTinh = [];
+      const arrMayTinhH = [];
 
       //
       console.log("Chua co api lay list Phong theo maTang");
@@ -239,23 +250,44 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
           phong: { maPhong, tang, tenPhong, moTa, soMay: mayTinhs.length },
           arrPhanMem,
         };
+
         // arr may Tinh
         if (mayTinhs.length !== 0) {
           // gan ds may tinh vao arr
           // ds may tinh nay pha thuoc ma phong duoc chon
-          arrMayTinh = mayTinhs;
+
+          // lay dsGhiChu
+          mayTinhs.forEach(async (item) => {
+            let result_GhiChu = await http.get(
+              `/DSGhiChuMayTinhTheoMayTinh/${item.maMay}`
+            );
+
+            arrMayTinhH.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
+          });
+
+         
         }
       }
 
       //
-      //
-      dispatch(
-        setObjThongTinByTangAction({
-          objThongTin,
-          arrPhongH,
-          arrMayTinh,
-        })
-      );
+      // //
+      // console.log(arrMayTinh);
+      // dispatch(
+      //   setObjThongTinByTangAction({
+      //     objThongTin,
+      //     arrPhongH,
+      //     arrMayTinh,
+      //   })
+      // );
+      setTimeout(() => {
+        dispatch(
+          setObjThongTinByTangAction({
+            objThongTin,
+            arrPhongH,
+            arrMayTinh:[...arrMayTinhH],
+          })
+        );
+      }, 200)
     } catch (error) {
       console.log("🚀 ~ file: homeReducer.jsx:202 ~ return ~ error:", error);
     }
@@ -324,20 +356,30 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
           if (mayTinhs.length !== 0) {
             // gan ds may tinh vao arr
             // ds may tinh nay pha thuoc ma phong duoc chon
-            arrMayTinh = mayTinhs;
+
+            // lay dsGhiChu
+            mayTinhs.forEach(async (item) => {
+              let result_GhiChu = await http.get(
+                `/DSGhiChuMayTinhTheoMayTinh/${item.maMay}`
+              );
+
+              arrMayTinh.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
+            });
           }
         }
       }
       //
       //
-      dispatch(
-        setObjThongTinByToaNhaAction({
-          arrTangH,
-          objThongTin,
-          arrPhongH,
-          arrMayTinh,
-        })
-      );
+      setTimeout(() => {
+        dispatch(
+          setObjThongTinByToaNhaAction({
+            arrTangH,
+            objThongTin,
+            arrPhongH,
+            arrMayTinh,
+          })
+        );
+      }, 500);
     } catch (error) {
       console.log("🚀 ~ file: homeReducer.jsx:277 ~ return ~ error:", error);
     }
@@ -355,6 +397,25 @@ export const getPhongByFirst = async (dispatch) => {
     let objPhongFirst = { ...resultArrPhong.data[0] };
     let { maPhong, tenPhong, moTa, tang, mayTinhs } = objPhongFirst;
 
+    //
+    let arrMayTinhH = []
+    
+        // arr may Tinh
+        if (mayTinhs.length !== 0) {
+          // gan ds may tinh vao arr
+          // ds may tinh nay pha thuoc ma phong duoc chon
+
+          // lay dsGhiChu
+          mayTinhs.forEach(async (item) => {
+            let result_GhiChu = await http.get(
+              `/DSGhiChuMayTinhTheoMayTinh/${item.maMay}`
+            );
+
+            arrMayTinhH.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
+          });
+
+         
+        }
     //
     let resultArrTang = await http.get(
       `/TangTheoToaNha/${tang.toaNha.maToaNha}`
@@ -394,7 +455,7 @@ export const getPhongByFirst = async (dispatch) => {
       setObjPhongFirstAction({
         arrTangH,
         arrPhongH,
-        mayTinhs,
+        mayTinhs: [...arrMayTinhH],
         objThongTin,
       })
     );

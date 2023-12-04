@@ -15,6 +15,9 @@ import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiC
 import { setThongTinObjGhiChuRedux } from "../../redux/reducers/home2Reducer";
 import ComponentModalGhiChuPhong from "../../components/layoutHome/ComponentModalGhiChuPhong";
 import ComponentModalGhiChuMayTinh from "../../components/layoutHome/ComponentModalGhiChuMayTinh";
+import ComponentModalDetaiGhiChulMayTinh from "../../components/layoutHome/ComponentModalDetaiGhiChulMayTinh";
+import { getAllGiaoVienApi } from "../../redux/reducers/giaoVienReducer";
+import { getAllNhanVienApi } from "../../redux/reducers/nhanVienReducer";
 
 export default function PageHome() {
   const dispatch = useDispatch();
@@ -24,7 +27,9 @@ export default function PageHome() {
 
   // 3.
   let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
-
+  // 4
+  let { arrGiaoVien } = useSelector((state) => state.giaoVienReducer);
+  let { arrNhanVien } = useSelector((state) => state.nhanVienReducer);
   useEffect(() => {
     //
     if (status) {
@@ -44,6 +49,15 @@ export default function PageHome() {
     if (arrPhongMay.length === 0) {
       dispatch(getAllPhongMayApi);
     }
+
+    // ghichu
+    if(arrGiaoVien.length === 0) {
+      dispatch(getAllGiaoVienApi)
+    }
+    // 
+    if(arrNhanVien.length === 0) {
+      dispatch(getAllNhanVienApi)
+    }
   }, []);
 
   //
@@ -59,6 +73,9 @@ export default function PageHome() {
       <ComponentModalGhiChu />
       <ComponentModalGhiChuPhong />
       <ComponentModalGhiChuMayTinh />
+
+       {/* modal detail ghichu */}
+       <ComponentModalDetaiGhiChulMayTinh />
 
       {/*1. col Toa nha -- Tang */}
       <div className="col-2  flex-column d-flex justify-content-between px-1">

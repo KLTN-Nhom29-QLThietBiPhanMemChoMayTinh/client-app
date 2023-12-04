@@ -30,6 +30,27 @@ export default home2Reducer.reducer;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /**
+ * cap nhat ghi chu - xac nhan da suawr
+ * cap nhat tgian sua- noi dung - nguoi sua
+ * @param {GhiChuMayTinh} objDataNew
+ */
+export const updateGhiChu_MayTinh_Tbi = (objDataNew) => {
+  return async (dispatch) => {
+    try {
+      let result_saveGhiChu_MayTinh = await http.post(
+        "/LuuGhiChuMayTinh",
+        objDataNew
+      );
+
+      dispatch(setObjThongTinByMay(objDataNew.mayTinh));
+      console.log("z");
+    } catch (error) {
+      alert("Lỗi hệ thống! Vui lòng quay lại sau.");
+      console.log("🚀 ~ file: home2Reducer.jsx:42 ~ return ~ error:", error);
+    }
+  };
+};
+/**
  * Chi chu may tinh va thiet bị
  * @param {*} param0
  * @returns
@@ -88,10 +109,10 @@ export const insertGhiChuApi_MayTinh_Tbi = ({
         await http.post("/LuuMayTinhThietBi", saveMayTinh_ThietBi);
       });
 
-      // let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
+      let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
       setTimeout(async () => {
         // giups reload laij page home
-        // dispatch(setObjThongTinByPhongMay(objUpdate.data));
+        dispatch(setObjThongTinByPhongMay(objUpdate.data));
 
         dispatch(setObjThongTinByMay(mayTinh));
       }, 1000);
@@ -282,13 +303,13 @@ export const insertGhiChuApi = ({ userLogin, objThongTin, objTTGhiChu }) => {
         await http.post("/LuuMayTinhThietBi", saveMayTinh_ThietBi);
       });
 
-      let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
+      // let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
       setTimeout(async () => {
         // giups reload laij page home
-        dispatch(setObjThongTinByPhongMay(objUpdate.data));
+        // dispatch(setObjThongTinByPhongMay(objUpdate.data));
 
         dispatch(setObjThongTinByMay(mayTinh));
-      }, 1000);
+      }, 500);
       alert("Ghi chú thành công.");
     } catch (error) {
       alert("Ghi chú không thành công - lỗi kết nối. Vui lòng quay lại sau.");

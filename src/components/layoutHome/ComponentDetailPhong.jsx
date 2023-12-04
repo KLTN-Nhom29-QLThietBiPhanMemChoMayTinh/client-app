@@ -15,14 +15,27 @@ export default function ComponentDetailPhong() {
   };
   //render
   const renderArrMayTinh = () => {
+    if (arrMayTinhH.length === 0) {
+      return <>Chưa có thông tin</>;
+    }
     return arrMayTinhH?.map((item, index) => {
+      let { dsGhiChu } = item;
       let colorText = "black";
+      let colorBorder = "";
+
+      if (dsGhiChu.length > 0) {
+        dsGhiChu.forEach((e) => {
+          if (e.ngaySua == null) {
+            colorBorder = "border-danger";
+          }
+        });
+      }
+
       if (
         !item.trangThai.toLowerCase().includes("Đang hoạt động".toLowerCase())
       ) {
         colorText = "red";
       }
-      let colorBorder = "";
 
       let { mayTinh } = objThongTin;
       if (mayTinh != null && item.maMay === mayTinh.maMay) {
