@@ -30,6 +30,62 @@ export default home2Reducer.reducer;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /**
+ *
+ * @param {can ma thiete bij de cap nhatj MayTInhThietbi} thietBi
+ * @param {maMay tinh de updat eghi chu - update MayTinhThietBI} mayTinh
+ * @param {reload lại page home} phong
+ * @returns
+ */
+export const updateGhiChu_MayTinh_Tbi_btnSuaTbi = (
+  maTK,
+  txtNoiDung,
+  thietBi,
+  mayTinh,
+  phong
+) => {
+  return async (dispatch) => {
+    try {
+      let result_ObjGhiChuGanNhat_maMay = await http.get(
+        `/GhiChuGanNhatTheoPhongMay/${mayTinh.maMay}`
+      );
+
+      let objGhiChu = { ...result_ObjGhiChuGanNhat_maMay.data };
+
+      let noidungNew = objGhiChu.noiDung + txtNoiDung;
+
+      // cap nhat laij ghi chu
+      let objGhiChuNew = {
+        ...objGhiChu,
+        noiDung: noidungNew,
+        ngaySua: new Date(),
+        nguoiSuaLoi: maTK,
+      };
+      await http.post("/LuuGhiChuMayTinh", objGhiChuNew);
+
+      //cap nhat MayTinhThietBI
+      let saveMayTinh_ThietBi = {
+        mayTinh,
+        thietBi,
+        status: true,
+      };
+      http.post("/LuuMayTinhThietBi", saveMayTinh_ThietBi);
+
+      //
+
+      let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
+      // giups reload laij page home
+
+      dispatch(setObjThongTinByPhongMay(objUpdate.data));
+      dispatch(setObjThongTinByMay(mayTinh));
+
+      console.log("z");
+    } catch (error) {
+      alert("Lỗi hệ thống! Vui lòng quay lại sau.");
+      console.log("🚀 ~ file: home2Reducer.jsx:42 ~ return ~ error:", error);
+    }
+  };
+};
+/**
  * cap nhat ghi chu - xac nhan da suawr
  * cap nhat tgian sua- noi dung - nguoi sua
  * @param {GhiChuMayTinh} objDataNew

@@ -1,12 +1,18 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaPencilAlt } from "react-icons/fa";
 import { BiEditAlt, BiSolidDetail } from "react-icons/bi";
 import ComponentModalDetaiGhiChulMayTinh from "./ComponentModalDetaiGhiChulMayTinh";
+import { updateGhiChu_MayTinh_Tbi_btnSuaTbi } from "../../redux/reducers/home2Reducer";
+import { formatNameByHocVi, formatStringDate4 } from "../../util/config";
 
 export default function ComponentThongTinChiTiet() {
   //
+  const dispatch = useDispatch();
+  //
   let { objThongTin } = useSelector((state) => state.homeReducer);
+  let { userLogin } = useSelector((state) => state.userReducer);
+  //
   if (
     Object.keys(objThongTin).length === 0 ||
     objThongTin.tang == null ||
@@ -26,11 +32,18 @@ export default function ComponentThongTinChiTiet() {
     monHoc,
   } = objThongTin;
 
-  /// handle 
+  /// handle
   const handleClick_btnSuaTbi_mayTinh = (item) => {
-    console.log(item);
-  }
+    let str_TaiKhoan = thongtinTaiKhoan(userLogin);
+    let noiDungNew = `\n- ${formatStringDate4()} - ${str_TaiKhoan} sửa thiết bị: ${
+      item.tenThietBi
+    }`;
+    let maTK = userLogin.taiKhoan.maTK;
 
+    dispatch(
+      updateGhiChu_MayTinh_Tbi_btnSuaTbi(maTK, noiDungNew, item, mayTinh, phong)
+    );
+  };
 
   // render
   const renderThongTinTheoPhong = () => {
@@ -127,7 +140,16 @@ export default function ComponentThongTinChiTiet() {
                 className="btn btn-outline-primary mx-2 px-2"
                 style={{ padding: "2px" }}
                 onClick={() => {
-                  handleClick_btnSuaTbi_mayTinh(item)
+                  if (
+                    window.confirm(
+                      "Bấm vào nút OK để xác nhận đã sửa. " +
+                        loaiThietBi.tenLoai +
+                        ": " +
+                        item.tenThietBi
+                    )
+                  ) {
+                    handleClick_btnSuaTbi_mayTinh(item);
+                  }
                 }}
               >
                 <BiEditAlt size={20} />
@@ -157,12 +179,11 @@ export default function ComponentThongTinChiTiet() {
     const renderBtnDSGhiChu = () => {
       let { dsGhiChu } = mayTinh;
 
-      if (dsGhiChu == null ||dsGhiChu.length === 0) {
+      if (dsGhiChu == null || dsGhiChu.length === 0) {
         return <></>;
       }
       return (
         <div>
-         
           <span style={{ fontWeight: 600 }}>- Danh sách ghi chú: </span>
           <button
             type="button"
@@ -211,3 +232,27 @@ export default function ComponentThongTinChiTiet() {
     </div>
   );
 }
+
+//
+const thongtinTaiKhoan = (userLogin) => {
+  let { quyen, maTK } = userLogin.taiKhoan;
+  let str_TaiKhoan = "";
+
+  if (quyen.tenQuyen.toLowerCase().includes("Giáo viên".toLowerCase())) {
+    let gv = {
+      hocVi: userLogin.hocVi,
+      name: userLogin.hoTen,
+    };
+    str_TaiKhoan = formatNameByHocVi(gv);
+  } else {
+    if (
+      userLogin.chucVu.tenCV.toLowerCase().includes("quản lý".toLowerCase())
+    ) {
+      str_TaiKhoan = "QL. " + userLogin.tenNV;
+    } else {
+      str_TaiKhoan = "NV. " + userLogin.tenNV;
+    }
+  }
+
+  return `${str_TaiKhoan} (${maTK})`;
+};
