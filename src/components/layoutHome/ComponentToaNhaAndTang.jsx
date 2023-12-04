@@ -19,19 +19,21 @@ export default function ComponentToaNhaAndTang() {
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
 
   // 3.del
-  let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
+  let { arrPhongMay, arrPhongMay_GhiChu } = useSelector(
+    (state) => state.phongMayReducer
+  );
 
   const numberNextPageTang = useRef(1);
 
   // handle
   const handleChangeToaNha = (e) => {
     // 3.del -arrPhongMay
-    dispatch(setObjThongTinByToaNha(e.target.value, arrPhongMay));
+    dispatch(setObjThongTinByToaNha(e.target.value, arrPhongMay_GhiChu));
     // dispatch(setObjThongTinByToaNha(e.target.value));
   };
   const handleBtnTang = (val) => {
     // 3.del
-    dispatch(setObjThongTinByTang(val, arrPhongMay));
+    dispatch(setObjThongTinByTang(val, arrPhongMay_GhiChu));
     // dispatch(setObjThongTinByTang(val));
   };
 
@@ -44,7 +46,10 @@ export default function ComponentToaNhaAndTang() {
         </option>
       );
     }
-    if (objThongTin.tang == null || Object.keys(objThongTin.tang).length === 0) {
+    if (
+      objThongTin.tang == null ||
+      Object.keys(objThongTin.tang).length === 0
+    ) {
       return arrToaNha?.map((item, index) => {
         return (
           <option key={index} value={item.maToaNha}>
@@ -71,7 +76,10 @@ export default function ComponentToaNhaAndTang() {
   //
   const renderArrTangH = () => {
     return arrTangH?.map((item, index) => {
-      if (objThongTin?.tang != null && item.maTang === objThongTin?.tang.maTang) {
+      if (
+        objThongTin?.tang != null &&
+        item.maTang === objThongTin?.tang.maTang
+      ) {
         return (
           <button
             type="button"

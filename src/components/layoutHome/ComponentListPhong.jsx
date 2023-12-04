@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setObjThongTinByPhongMay } from "../../redux/reducers/homeReducer";
 
 export default function ComponentListPhong() {
-
   const dispatch = useDispatch();
 
   //
@@ -18,16 +17,28 @@ export default function ComponentListPhong() {
 
   //handle
   const handleBtnPhongMay = (valPhong) => {
-    dispatch(setObjThongTinByPhongMay(valPhong))
-  } 
+    dispatch(setObjThongTinByPhongMay(valPhong));
+  };
 
   // render
   const renderArrPhongHome = () => {
-    if(objThongTin.phong == null) {
-      return <></>
+    if (objThongTin.phong == null) {
+      return <></>;
     }
     //
     return arrPhongH?.map((item, index) => {
+      let { dsGhiChuPM } = item;
+
+      let value_border = "";
+      if (dsGhiChuPM?.length !== 0) {
+        dsGhiChuPM.forEach((e) => {
+          if (e.ngaySua == null) {
+            value_border = "border border-danger";
+          }
+        });
+      }
+
+      //render
       const renderBtnClickPhong = () => {
         if (item.maPhong === objThongTin.phong.maPhong) {
           return <FaHandPointRight className="ms-2" size={15} />;
@@ -39,7 +50,7 @@ export default function ComponentListPhong() {
       return (
         <div
           key={index}
-          className="bg-success rounded   my-2 ms-2 "
+          className={`bg-success rounded my-2 ms-2 ${value_border}`}
           style={{ minHeight: "89px" }}
         >
           <div className="d-flex flex-column justify-content-between h-100">
@@ -56,7 +67,9 @@ export default function ComponentListPhong() {
             <button
               className="btn btn-success border-top border-0  rounded-0 rounded-bottom border-dark m-0 "
               style={{ fontSize: "13px", padding: "5px" }}
-              onClick={() => {handleBtnPhongMay(item)}}
+              onClick={() => {
+                handleBtnPhongMay(item);
+              }}
             >
               Chi tiết
               {renderBtnClickPhong()}

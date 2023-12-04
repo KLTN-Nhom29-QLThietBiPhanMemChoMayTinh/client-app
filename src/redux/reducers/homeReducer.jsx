@@ -135,6 +135,11 @@ export const setObjThongTinByPhongMay = (valPhong) => {
       let { maPhong, tenPhong, moTa, tang, mayTinhs } = valPhong;
       // phong: { maPhong,tenPhong,moTa},
 
+      // ds Ghi chu Phong may - phan mem
+      let result_DsGhiChu = await http.get(
+        `/DSGhiChuPhongMayTheoPhongMay/${maPhong}`
+      );
+
       let arrMayTinhH = [];
       // arr may Tinh
       if (mayTinhs.length !== 0) {
@@ -174,7 +179,14 @@ export const setObjThongTinByPhongMay = (valPhong) => {
 
       //
       let objThongTin = {
-        phong: { maPhong, tang, tenPhong, moTa, soMay: mayTinhs.length },
+        phong: {
+          maPhong,
+          tang,
+          tenPhong,
+          moTa,
+          soMay: mayTinhs.length,
+          dsGhiChuPM: [...result_DsGhiChu.data],
+        },
         tang,
         mayTinh: {},
         arrPhanMem,
@@ -201,6 +213,7 @@ export const setObjThongTinByPhongMay = (valPhong) => {
 
 /**
  * thay doi data trang home khi click ở btn Tang
+ * // co the thay ep ds ghi chu ở arrPhongMay - để bớt việc trong func này
  * */
 export const setObjThongTinByTang = (valTang, arrPhongMay) => {
   // valTang = {} tang duoc chon
@@ -218,7 +231,7 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
         monHoc: {},
       };
       //
-      let arrPhongH = [];
+      const arrPhongH = [];
       const arrMayTinhH = [];
 
       //
@@ -227,67 +240,83 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
 
       // duyet tim phong trong ds co maTang dang chonj
       // arrPhongH = resultArrPhong.data.filter((item) => {
-      arrPhongH = arrPhongMay.filter((item) => {
-        return item.tang.maTang === objThongTin.tang.maTang;
+
+      // tim ds ghi chu
+      // arrPhongMay.forEach(async (item) => {
+      //   let result_DsGhiChuPM = await http.get(
+      //     `/DSGhiChuPhongMayTheoPhongMay/${item.maPhong}`
+      //   );
+
+      //   if (item.tang.maTang === objThongTin.tang.maTang) {
+      //     arrPhongH.push({ ...item, dsGhiChuPM: [...result_DsGhiChuPM.data] });
+      //   }
+      // });
+      //
+      arrPhongMay.forEach((item) => {
+        if (item.tang.maTang === objThongTin.tang.maTang) {
+          arrPhongH.push({...item});
+        }
       });
 
-      if (arrPhongH.length !== 0) {
-        let { maPhong, tenPhong, moTa, tang, mayTinhs } = arrPhongH[0];
-
-        // Api lay arr phanMem
-        let arrPhanMem = [];
-        let resultPM = await http.get(
-          `/DSPhongMayPhanMemTheoMaPhong/${maPhong}`
-        );
-        if (resultPM.data.length !== 0) {
-          arrPhanMem = resultPM.data.map((item) => {
-            return { ...item.phanMem, trangThaiPM: item.status };
-          });
-        }
-        // gans gtri phong dau tien vao obj gtri chon
-        objThongTin = {
-          ...objThongTin,
-          phong: { maPhong, tang, tenPhong, moTa, soMay: mayTinhs.length },
-          arrPhanMem,
-        };
-
-        // arr may Tinh
-        if (mayTinhs.length !== 0) {
-          // gan ds may tinh vao arr
-          // ds may tinh nay pha thuoc ma phong duoc chon
-
-          // lay dsGhiChu
-          mayTinhs.forEach(async (item) => {
-            let result_GhiChu = await http.get(
-              `/DSGhiChuMayTinhTheoMayTinh/${item.maMay}`
-            );
-
-            arrMayTinhH.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
-          });
-
-         
-        }
-      }
-
       //
-      // //
-      // console.log(arrMayTinh);
-      // dispatch(
-      //   setObjThongTinByTangAction({
-      //     objThongTin,
-      //     arrPhongH,
-      //     arrMayTinh,
-      //   })
-      // );
+      setTimeout(async () => {
+        if (arrPhongH.length !== 0) {
+          let { maPhong, tenPhong, moTa, tang, mayTinhs, dsGhiChuPM } =
+            arrPhongH[0];
+
+          // Api lay arr phanMem
+          let arrPhanMem = [];
+          let resultPM = await http.get(
+            `/DSPhongMayPhanMemTheoMaPhong/${maPhong}`
+          );
+          if (resultPM.data.length !== 0) {
+            arrPhanMem = resultPM.data.map((item) => {
+              return { ...item.phanMem, trangThaiPM: item.status };
+            });
+          }
+          // gans gtri phong dau tien vao obj gtri chon
+          objThongTin = {
+            ...objThongTin,
+            phong: {
+              maPhong,
+              tang,
+              tenPhong,
+              moTa,
+              soMay: mayTinhs.length,
+              dsGhiChuPM,
+            },
+            arrPhanMem,
+          };
+          // arr may Tinh
+          if (mayTinhs.length !== 0) {
+            // gan ds may tinh vao arr
+            // ds may tinh nay pha thuoc ma phong duoc chon
+
+            // lay dsGhiChu
+            mayTinhs.forEach(async (item) => {
+              let result_GhiChu = await http.get(
+                `/DSGhiChuMayTinhTheoMayTinh/${item.maMay}`
+              );
+
+              arrMayTinhH.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
+            });
+          }
+        }
+      }, 200);
+      //
       setTimeout(() => {
+        console.log(objThongTin);
+        console.log(arrPhongH);
+        console.log(arrMayTinhH);
+
         dispatch(
           setObjThongTinByTangAction({
             objThongTin,
-            arrPhongH,
-            arrMayTinh:[...arrMayTinhH],
+            arrPhongH: [...arrPhongH],
+            arrMayTinh: [...arrMayTinhH],
           })
         );
-      }, 200)
+      }, 500);
     } catch (error) {
       console.log("🚀 ~ file: homeReducer.jsx:202 ~ return ~ error:", error);
     }
@@ -334,7 +363,8 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
         });
 
         if (arrPhongH.length !== 0) {
-          let { maPhong, tenPhong, tang, moTa, mayTinhs } = arrPhongH[0];
+          let { maPhong, tenPhong, tang, moTa, mayTinhs, dsGhiChuPM } =
+            arrPhongH[0];
 
           // Api lay arr phanMem
           let arrPhanMem = [];
@@ -349,7 +379,14 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
           // gans gtri phong dau tien vao obj gtri chon
           objThongTin = {
             ...objThongTin,
-            phong: { maPhong, tang, tenPhong, moTa, soMay: mayTinhs.length },
+            phong: {
+              maPhong,
+              tang,
+              tenPhong,
+              moTa,
+              soMay: mayTinhs.length,
+              dsGhiChuPM,
+            },
             arrPhanMem,
           };
           // arr may Tinh
@@ -398,24 +435,27 @@ export const getPhongByFirst = async (dispatch) => {
     let { maPhong, tenPhong, moTa, tang, mayTinhs } = objPhongFirst;
 
     //
-    let arrMayTinhH = []
-    
-        // arr may Tinh
-        if (mayTinhs.length !== 0) {
-          // gan ds may tinh vao arr
-          // ds may tinh nay pha thuoc ma phong duoc chon
+    let result_GhiChuPhongMay = await http.get(
+      `/DSGhiChuPhongMayTheoPhongMay/${maPhong}`
+    );
+    let dsGhiChuPM = [ ...result_GhiChuPhongMay.data];
+    //
+    let arrMayTinhH = [];
 
-          // lay dsGhiChu
-          mayTinhs.forEach(async (item) => {
-            let result_GhiChu = await http.get(
-              `/DSGhiChuMayTinhTheoMayTinh/${item.maMay}`
-            );
+    // arr may Tinh
+    if (mayTinhs.length !== 0) {
+      // gan ds may tinh vao arr
+      // ds may tinh nay pha thuoc ma phong duoc chon
 
-            arrMayTinhH.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
-          });
+      // lay dsGhiChu
+      mayTinhs.forEach(async (item) => {
+        let result_GhiChu = await http.get(
+          `/DSGhiChuMayTinhTheoMayTinh/${item.maMay}`
+        );
 
-         
-        }
+        arrMayTinhH.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
+      });
+    }
     //
     let resultArrTang = await http.get(
       `/TangTheoToaNha/${tang.toaNha.maToaNha}`
@@ -425,9 +465,20 @@ export const getPhongByFirst = async (dispatch) => {
     //
     console.log("Chua co api lay list Phong theo maTang");
     // let resultArrPhong = await http.get("/DSPhongMay2");
+    let arrPhongH = [];
+    // let arrPhongH = resultArrPhong.data.filter((item) => {
+    //   return item.tang.maTang === tang.maTang;
+    // });
 
-    let arrPhongH = resultArrPhong.data.filter((item) => {
-      return item.tang.maTang === tang.maTang;
+    // tim ds ghi chu
+    resultArrPhong.data.forEach(async (item) => {
+      let result_DsGhiChuPM = await http.get(
+        `/DSGhiChuPhongMayTheoPhongMay/${item.maPhong}`
+      );
+
+      if (item.tang.maTang === tang.maTang) {
+        arrPhongH.push({ ...item, dsGhiChuPM: [...result_DsGhiChuPM.data] });
+      }
     });
 
     // Api lay arr phanMem
@@ -440,27 +491,36 @@ export const getPhongByFirst = async (dispatch) => {
     }
 
     //
-    let objThongTin = {
-      phong: { maPhong, tang, tenPhong, moTa, soMay: mayTinhs.length },
-      tang,
-      mayTinh: {},
-      arrThietBi: [],
-      arrPhanMem,
-      giaoVien: {},
-      nhanVien: {},
-      monHoc: {},
-    };
+    setTimeout(() => {
+      let objThongTin = {
+        phong: {
+          maPhong,
+          tang,
+          tenPhong,
+          moTa,
+          soMay: mayTinhs.length,
+          dsGhiChuPM,
+        },
+        tang,
+        mayTinh: {},
+        arrThietBi: [],
+        arrPhanMem,
+        giaoVien: {},
+        nhanVien: {},
+        monHoc: {},
+      };
 
-    dispatch(
-      setObjPhongFirstAction({
-        arrTangH,
-        arrPhongH,
-        mayTinhs: [...arrMayTinhH],
-        objThongTin,
-      })
-    );
+      dispatch(
+        setObjPhongFirstAction({
+          arrTangH,
+          arrPhongH: [...arrPhongH],
+          mayTinhs: [...arrMayTinhH],
+          objThongTin,
+        })
+      );
 
-    dispatch(setStatusDataMoi(false));
+      dispatch(setStatusDataMoi(false));
+    }, 350);
     // dispatch(setArrTangHomeAction(resultTang.data));
   } catch (error) {
     console.log(

@@ -88,6 +88,30 @@ export const updateGhiChu_MayTinh_Tbi_btnSuaTbi = (
 /**
  * cap nhat ghi chu - xac nhan da suawr
  * cap nhat tgian sua- noi dung - nguoi sua
+ * @param {GhiChuPhanMem} objDataNew
+ * @param {phong dang ở dể có the reload lại} phong
+ */
+export const updateGhiChu_MayTinh_PM = (objDataNew, phong) => {
+  return async (dispatch) => {
+    try {
+      let result_saveGhiChu_PhongMay = await http.post(
+        "/LuuGhiChuPhongMay",
+        objDataNew
+      );
+      let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
+
+      // giups reload laij page home
+      dispatch(setObjThongTinByPhongMay(objUpdate.data));
+
+    } catch (error) {
+      alert("Lỗi hệ thống! Vui lòng quay lại sau.");
+      console.log("🚀 ~ file: home2Reducer.jsx:42 ~ return ~ error:", error);
+    }
+  };
+};
+/**
+ * cap nhat ghi chu - xac nhan da suawr
+ * cap nhat tgian sua- noi dung - nguoi sua
  * @param {GhiChuMayTinh} objDataNew
  * @param {phong dang ở dể có the reload lại} phong
  */

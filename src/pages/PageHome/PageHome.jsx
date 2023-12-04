@@ -8,7 +8,10 @@ import ComponentThongTinChiTiet from "../../components/layoutHome/ComponentThong
 import ComponentToaNhaAndTang from "../../components/layoutHome/ComponentToaNhaAndTang";
 import ComponentListPhong from "../../components/layoutHome/ComponentListPhong";
 import ComponentDetailPhong from "../../components/layoutHome/ComponentDetailPhong";
-import { getAllPhongMayApi } from "../../redux/reducers/phongMayReducer";
+import {
+  getAllPhongMayApi,
+  getAllPhongMay_GhiChuApi,
+} from "../../redux/reducers/phongMayReducer";
 import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 import ComponentModelDetail from "../../components/layoutHome/ComponentModelDetail";
 import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiChu";
@@ -20,6 +23,7 @@ import { getAllGiaoVienApi } from "../../redux/reducers/giaoVienReducer";
 import { getAllNhanVienApi } from "../../redux/reducers/nhanVienReducer";
 import { getAllThietBiApi } from "../../redux/reducers/thietBiReducer";
 import { getAllPhanMemApi } from "../../redux/reducers/phanMemReducer";
+import ComponentModalDetaiGhiChuPhanMem from "../../components/layoutHome/ComponentModalDetaiGhiChuPhanMem";
 
 export default function PageHome() {
   const dispatch = useDispatch();
@@ -28,7 +32,9 @@ export default function PageHome() {
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
 
   // 3.
-  let { arrPhongMay } = useSelector((state) => state.phongMayReducer);
+  let { arrPhongMay, arrPhongMay_GhiChu } = useSelector(
+    (state) => state.phongMayReducer
+  );
   // 4
   let { arrGiaoVien } = useSelector((state) => state.giaoVienReducer);
   let { arrNhanVien } = useSelector((state) => state.nhanVienReducer);
@@ -52,6 +58,9 @@ export default function PageHome() {
     // 3.del
     if (arrPhongMay.length === 0) {
       dispatch(getAllPhongMayApi);
+    }
+    if (arrPhongMay_GhiChu.length === 0) {
+      dispatch(getAllPhongMay_GhiChuApi);
     }
 
     // ghichu
@@ -88,6 +97,7 @@ export default function PageHome() {
 
       {/* modal detail ghichu */}
       <ComponentModalDetaiGhiChulMayTinh />
+      <ComponentModalDetaiGhiChuPhanMem />
 
       {/*1. col Toa nha -- Tang */}
       <div className="col-2  flex-column d-flex justify-content-between px-1">

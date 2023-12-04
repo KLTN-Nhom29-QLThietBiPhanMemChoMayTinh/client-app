@@ -8,6 +8,7 @@ import { getAllMayTinhApi } from "./mayTinhReducer";
 
 const initialState = {
   arrPhongMay: [],
+  arrPhongMay_GhiChu: [],
   arrPhongMaySearch: [],
   arrTangbyToaNha: [],
   valueSearch: "",
@@ -19,6 +20,9 @@ const phongMayReducer = createSlice({
   name: "phongMayReducer",
   initialState,
   reducers: {
+    setArrPhongMay_GhiChuAction: (state, action) => {
+      state.arrPhongMay_GhiChu = action.payload;
+    },
     setArrPhongMayAction: (state, action) => {
       state.arrPhongMay = action.payload;
       state.arrPhongMaySearch = action.payload;
@@ -114,6 +118,7 @@ const phongMayReducer = createSlice({
 // exp nay de sử dụng theo cách 2
 export const {
   setArrPhongMayAction,
+  setArrPhongMay_GhiChuAction,
   setValueSearchPhongMayAction,
   setvalueSelectToaNhaPhongMayAction,
   setvalueSelectTangPhongMayAction,
@@ -188,7 +193,29 @@ const dataSearch = (arrData, valSearch, valSelectTN, valSelectTG) => {
 };
 
 // CAll APi++++++++++++++++++++++++++++++++++++++
+export const getAllPhongMay_GhiChuApi = async (dispatch) => {
+  // setArrPhongMay_GhiChuAction
+  try {
+    let result = await http.get("/DSPhongMay2");
 
+    let arrData = [];
+
+    result.data.forEach(async (item) => {
+      let result_DsGhiChuPM = await http.get(
+        `/DSGhiChuPhongMayTheoPhongMay/${item.maPhong}`
+      );
+      arrData.push({ ...item, dsGhiChuPM: [...result_DsGhiChuPM.data] });
+    });
+    setTimeout(() => {
+      dispatch(setArrPhongMay_GhiChuAction([...arrData]));
+    }, 100);
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: phongMayReducer.jsx:30 ~ getAllPhongMayApi ~ error:",
+      error
+    );
+  }
+};
 /**
  * - del PhongMayPHanMem theo phanMems<arr>
  * del phong theo idPhong

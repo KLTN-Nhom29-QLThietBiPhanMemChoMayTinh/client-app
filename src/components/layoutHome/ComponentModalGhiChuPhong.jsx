@@ -302,7 +302,7 @@ const setTextShow_PM = (objData, userLogin) => {
   let str_TaiKhoan = thongtinTaiKhoan(userLogin);
   let str_PM = "";
   if (arrPM.length !== 0) {
-    str_PM += "\n \b  +\t Phần mềm lỗi: \n \t";
+    str_PM += "\n  +\t Phần mềm lỗi: \n \t";
 
     for (let i = 0; i < arrPM.length; i++) {
       let { tenPhanMem, phienBan } = arrPM[i];

@@ -84,12 +84,34 @@ export default function ComponentThongTinChiTiet() {
       });
     };
     //
+    const renderBtnDSGhiChuPM = ( ) => {
+      let { dsGhiChuPM } = phong;
+      if (dsGhiChuPM == null || dsGhiChuPM.length === 0) {
+        return <></>;
+      }
+      return (
+        <div>
+          <span style={{ fontWeight: 600 }}>- Danh sách ghi chú: </span>
+          <button
+            type="button"
+            className="btn btn-outline-primary mx-2 px-2"
+            style={{ padding: "2px" }}
+            data-bs-toggle="modal"
+            data-bs-target="#modalIdDetailDSGhiChuPM"
+          >
+            <BiSolidDetail size={20} />
+          </button>
+        </div>
+      );
+    }
+    //
     return (
       <>
         <div className="pt-2">
           <span className="h5" style={{ fontWeight: 600 }}>
             Phòng: {phong.tenPhong}
           </span>
+          {renderBtnDSGhiChuPM()}
           <div>
             <span style={{ fontWeight: 600 }}>- Số lượng máy: </span>
             <span> {phong.soMay}</span>
