@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaPencilAlt } from "react-icons/fa";
 import { BiEditAlt, BiSolidDetail } from "react-icons/bi";
 import ComponentModalDetaiGhiChulMayTinh from "./ComponentModalDetaiGhiChulMayTinh";
-import { updateGhiChu_MayTinh_Tbi_btnSuaTbi } from "../../redux/reducers/home2Reducer";
+import { updateGhiChu_MayTinh_Tbi_btnSuaTbi, updateGhiChu_PhongMay_PM_btnSuaPM } from "../../redux/reducers/home2Reducer";
 import { formatNameByHocVi, formatStringDate4 } from "../../util/config";
 
 export default function ComponentThongTinChiTiet() {
@@ -12,6 +12,7 @@ export default function ComponentThongTinChiTiet() {
   //
   let { objThongTin } = useSelector((state) => state.homeReducer);
   let { userLogin } = useSelector((state) => state.userReducer);
+  let { arrPhongMay_GhiChu } = useSelector((state) => state.phongMayReducer);
   //
   if (
     Object.keys(objThongTin).length === 0 ||
@@ -44,6 +45,24 @@ export default function ComponentThongTinChiTiet() {
       updateGhiChu_MayTinh_Tbi_btnSuaTbi(maTK, noiDungNew, item, mayTinh, phong)
     );
   };
+  //
+  const handleClick_btnSuaPM_phongMay = (item) => {
+    let str_TaiKhoan = thongtinTaiKhoan(userLogin);
+    let noiDungNew = `\n- ${formatStringDate4()} - ${str_TaiKhoan} sửa phần mềm: ${
+      item.tenPhanMem
+    } (${item.phienBan})`;
+    let maTK = userLogin.taiKhoan.maTK;
+    dispatch(
+      updateGhiChu_PhongMay_PM_btnSuaPM(
+        maTK,
+        noiDungNew,
+        item,
+        arrPhongMay_GhiChu,
+        phong,
+        tang
+      )
+    );
+  };
 
   // render
   const renderThongTinTheoPhong = () => {
@@ -68,7 +87,15 @@ export default function ComponentThongTinChiTiet() {
                 className="btn btn-outline-primary mx-2 px-2"
                 style={{ padding: "2px" }}
                 onClick={() => {
-                  alert("dang cập nhật - Tb đã sửa - ");
+                  if (
+                    window.confirm(
+                      "Bấm vào nút OK để xác nhận đã sửa. " +
+                        item.tenPhanMem +
+                        `( ${item.phienBan} )`
+                    )
+                  ) {
+                    handleClick_btnSuaPM_phongMay(item);
+                  }
                 }}
               >
                 <BiEditAlt size={20} />
@@ -84,7 +111,7 @@ export default function ComponentThongTinChiTiet() {
       });
     };
     //
-    const renderBtnDSGhiChuPM = ( ) => {
+    const renderBtnDSGhiChuPM = () => {
       let { dsGhiChuPM } = phong;
       if (dsGhiChuPM == null || dsGhiChuPM.length === 0) {
         return <></>;
@@ -103,7 +130,7 @@ export default function ComponentThongTinChiTiet() {
           </button>
         </div>
       );
-    }
+    };
     //
     return (
       <>

@@ -142,6 +142,7 @@
     -FormUpdateLichThucHanh - GUI finish - handle chưa xong
     - page home - dsPhong - btnSuaTbi -btn suaPM
     - graph phong theo ghi chú
+    -insertGhiChu_PhongMay_Api: cần cập nhật arrPhongMay_GhiChu - hiện tổng số trang ở MOdaldetailGhiChu
 
     #
     - ComponentModalGhiChu: err check box trùng value (mavalue) - lấy thông tin - xác nhận gửi

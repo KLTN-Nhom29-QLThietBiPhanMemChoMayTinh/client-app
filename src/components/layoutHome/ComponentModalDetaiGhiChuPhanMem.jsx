@@ -9,7 +9,10 @@ import {
   formatStringDate3,
   formatStringDate4,
 } from "../../util/config";
-import { updateGhiChu_MayTinh_PM, updateGhiChu_MayTinh_Tbi } from "../../redux/reducers/home2Reducer";
+import {
+  updateGhiChu_MayTinh_PM,
+  updateGhiChu_MayTinh_Tbi,
+} from "../../redux/reducers/home2Reducer";
 
 //
 let arrGhiChu = [];
@@ -22,6 +25,7 @@ export default function ComponentModalDetaiGhiChuPhanMem() {
   let { arrGiaoVien } = useSelector((state) => state.giaoVienReducer);
   let { arrNhanVien } = useSelector((state) => state.nhanVienReducer);
   let { userLogin } = useSelector((state) => state.userReducer);
+  let { arrPhongMay_GhiChu } = useSelector((state) => state.phongMayReducer);
   //
   let [rowArrGhiChuPM, setRowArrGhiChuPM] = useState(0);
   let value_check_sua = 0; // check data da sửa chua: 1 đã sửa -- 0 chưa
@@ -35,8 +39,7 @@ export default function ComponentModalDetaiGhiChuPhanMem() {
   ) {
     return <></>;
   } else {
-    console.log(objThongTin.phong.dsGhiChuPM);
-    arrGhiChu = objThongTin.phong.dsGhiChuPM;
+    arrGhiChu = [...objThongTin.phong.dsGhiChuPM];
     arrGhiChu.sort((a, b) => {
       let val_a = new Date(a.ngayBaoLoi);
       let val_b = new Date(b.ngayBaoLoi);
@@ -58,9 +61,9 @@ export default function ComponentModalDetaiGhiChuPhanMem() {
       ngaySua: new Date(),
       noiDung: noiDungNew,
     };
-    let { phong } = objThongTin;
+    let { phong, tang } = objThongTin;
     //
-    dispatch(updateGhiChu_MayTinh_PM(objData,phong));
+    dispatch(updateGhiChu_MayTinh_PM(objData, phong, tang, arrPhongMay_GhiChu));
   };
 
   // render thonog tin

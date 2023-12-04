@@ -2,7 +2,12 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { formatStringDate2, http } from "../../util/config";
-import { setObjThongTinByMay, setObjThongTinByPhongMay } from "./homeReducer";
+import {
+  setObjThongTinByMay,
+  setObjThongTinByPhongMay,
+  setObjThongTinByTang,
+} from "./homeReducer";
+import { setArrPhongMay_GhiChuAction } from "./phongMayReducer";
 //phuc vụ cho ghi chú
 const initialState = {
   objThongTinGhiChu: {
@@ -29,6 +34,81 @@ export const { setObjThongTinGhiChu } = home2Reducer.actions;
 export default home2Reducer.reducer;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/**
+ *
+ * @param {can ma thiete bij de cap nhatj phongMayPhanMem} phanMem
+ * @param {maphong de update ghi chu - update PhanmemThietBI} phong
+ * @param {reload lại page home} phong
+ * @returns
+ */
+export const updateGhiChu_PhongMay_PM_btnSuaPM = (
+  maTK,
+  txtNoiDung,
+  phanMem,
+  arrPhongMay_GhiChu,
+  phong,
+  tang
+) => {
+  console.log(maTK, txtNoiDung, phanMem, arrPhongMay_GhiChu, phong, tang);
+  return async (dispatch) => {
+    try {
+      let result_ObjGhiChuGanNhat_maPhong = await http.get(
+        `/GhiChuPhongMayGanNhatTheoPhongMay/${phong.maPhong}`
+      );
+      console.log(result_ObjGhiChuGanNhat_maPhong.data);
+
+      let objGhiChu = { ...result_ObjGhiChuGanNhat_maPhong.data };
+
+      let noidungNew = objGhiChu.noiDung + txtNoiDung;
+
+      // // cap nhat laij ghi chu
+      let objGhiChuNew = {
+        ...objGhiChu,
+        noiDung: noidungNew,
+        ngaySua: new Date(),
+        nguoiSuaLoi: maTK,
+      };
+      console.log(objGhiChuNew);
+      await http.post("/LuuGhiChuPhongMay", objGhiChuNew);
+
+      // //cap nhat PhongMayPhanMem
+      let savePhongMay_PhanMem = {
+        phongMay: phong,
+        phanMem: phanMem,
+        status: true,
+      };
+      console.log(savePhongMay_PhanMem);
+      await http.post("/LuuPhongMayPhanMem", savePhongMay_PhanMem);
+
+      // //
+
+      // let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
+      // // giups reload laij page home
+
+      // dispatch(setObjThongTinByPhongMay(objUpdate.data));
+      // dispatch(setObjThongTinByMay(mayTinh));
+
+      let arrPhongMayNew = arrPhongMay_GhiChu.map((item) => {
+        if (item.maPhong === phong.maPhong) {
+          let { dsGhiChuPM } = item;
+
+          let dsGhiChuPMNew = dsGhiChuPM.map((item) => {
+            if (item.maGhiChu === objGhiChu.maGhiChu) return objGhiChuNew;
+            return item;
+          });
+          return { ...item, dsGhiChuPM: [...dsGhiChuPMNew] };
+        }
+        return item;
+      });
+      dispatch(setArrPhongMay_GhiChuAction([...arrPhongMayNew]));
+      // giups reload laij page home
+      dispatch(setObjThongTinByTang(tang, arrPhongMayNew));
+    } catch (error) {
+      alert("Lỗi hệ thống! Vui lòng quay lại sau.");
+      console.log("🚀 ~ file: home2Reducer.jsx:42 ~ return ~ error:", error);
+    }
+  };
+};
 /**
  *
  * @param {can ma thiete bij de cap nhatj MayTInhThietbi} thietBi
@@ -68,7 +148,7 @@ export const updateGhiChu_MayTinh_Tbi_btnSuaTbi = (
         thietBi,
         status: true,
       };
-      http.post("/LuuMayTinhThietBi", saveMayTinh_ThietBi);
+      await http.post("/LuuMayTinhThietBi", saveMayTinh_ThietBi);
 
       //
 
@@ -91,18 +171,33 @@ export const updateGhiChu_MayTinh_Tbi_btnSuaTbi = (
  * @param {GhiChuPhanMem} objDataNew
  * @param {phong dang ở dể có the reload lại} phong
  */
-export const updateGhiChu_MayTinh_PM = (objDataNew, phong) => {
+export const updateGhiChu_MayTinh_PM = (
+  objDataNew,
+  phong,
+  tang,
+  arrPhongMay_GhiChu
+) => {
   return async (dispatch) => {
     try {
       let result_saveGhiChu_PhongMay = await http.post(
         "/LuuGhiChuPhongMay",
         objDataNew
       );
-      let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
+      let arrPhongMayNew = arrPhongMay_GhiChu.map((item) => {
+        if (item.maPhong === phong.maPhong) {
+          let { dsGhiChuPM } = item;
 
+          let dsGhiChuPMNew = dsGhiChuPM.map((item) => {
+            if (item.maGhiChu === objDataNew.maGhiChu) return objDataNew;
+            return item;
+          });
+          return { ...item, dsGhiChuPM: [...dsGhiChuPMNew] };
+        }
+        return item;
+      });
+      dispatch(setArrPhongMay_GhiChuAction([...arrPhongMayNew]));
       // giups reload laij page home
-      dispatch(setObjThongTinByPhongMay(objUpdate.data));
-
+      dispatch(setObjThongTinByTang(tang, arrPhongMayNew));
     } catch (error) {
       alert("Lỗi hệ thống! Vui lòng quay lại sau.");
       console.log("🚀 ~ file: home2Reducer.jsx:42 ~ return ~ error:", error);
@@ -304,7 +399,7 @@ export const insertGhiChu_PhongMay_Api = ({
         // giups reload laij page home
         let objUpdate = await http.get(`/PhongMay/${phong.maPhong}`);
         dispatch(setObjThongTinByPhongMay(objUpdate.data));
-      }, 1000);
+      }, 500);
       alert("Ghi chú thành công.");
       return;
     } catch (error) {

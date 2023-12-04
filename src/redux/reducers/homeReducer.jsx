@@ -305,9 +305,6 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
       }, 200);
       //
       setTimeout(() => {
-        console.log(objThongTin);
-        console.log(arrPhongH);
-        console.log(arrMayTinhH);
 
         dispatch(
           setObjThongTinByTangAction({

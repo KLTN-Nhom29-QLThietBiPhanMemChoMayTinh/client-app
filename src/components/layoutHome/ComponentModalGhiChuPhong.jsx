@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   insertGhiChuApi,
+  insertGhiChu_PhongMay_Api,
   setObjThongTinGhiChu,
 } from "../../redux/reducers/home2Reducer";
 import {
@@ -61,7 +62,7 @@ export default function ComponentModalGhiChuPhong() {
       txtTextGhiChu_PM,
     };
 
-    dispatch(insertGhiChuApi({ userLogin, objThongTin, objTTGhiChu }));
+    dispatch(insertGhiChu_PhongMay_Api({ userLogin, objThongTin, objTTGhiChu }));
 
     // $('#modalIdGhiChu').modal('hide');
     // document.querySelector("#modalIdGhiChu").modal("hide");
