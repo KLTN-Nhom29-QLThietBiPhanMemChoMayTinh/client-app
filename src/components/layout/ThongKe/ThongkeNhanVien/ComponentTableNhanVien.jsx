@@ -51,6 +51,7 @@ export default function ComponentTableNhanVien() {
       } else if (valueRow > 11) {
         return <></>;
       }
+      let row_caTruc = 0;
       return (
         <tr key={index}>
           <td className="text-center">
@@ -61,6 +62,12 @@ export default function ComponentTableNhanVien() {
           <td>
             <ul>
               {arrLichTruc.map((item, index) => {
+                row_caTruc++;
+                if ((row_caTruc == 5)) {
+                  return <li key={index}>...</li>;
+                } else if (row_caTruc > 5) {
+                  return;
+                }
                 let { tang, thoiGianBatDau, thoiGianKetThuc } = item;
                 let strCaTruc = `${thoiGianBatDau}h - ${thoiGianKetThuc}h`;
                 let str = `${tang.tenTang} - ${tang.toaNha.tenToaNha}( ${strCaTruc} )`;

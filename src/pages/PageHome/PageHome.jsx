@@ -18,6 +18,8 @@ import ComponentModalGhiChuMayTinh from "../../components/layoutHome/ComponentMo
 import ComponentModalDetaiGhiChulMayTinh from "../../components/layoutHome/ComponentModalDetaiGhiChulMayTinh";
 import { getAllGiaoVienApi } from "../../redux/reducers/giaoVienReducer";
 import { getAllNhanVienApi } from "../../redux/reducers/nhanVienReducer";
+import { getAllThietBiApi } from "../../redux/reducers/thietBiReducer";
+import { getAllPhanMemApi } from "../../redux/reducers/phanMemReducer";
 
 export default function PageHome() {
   const dispatch = useDispatch();
@@ -30,6 +32,8 @@ export default function PageHome() {
   // 4
   let { arrGiaoVien } = useSelector((state) => state.giaoVienReducer);
   let { arrNhanVien } = useSelector((state) => state.nhanVienReducer);
+  let { arrThietBi } = useSelector((state) => state.thietBiReducer);
+  let { arrPhanMem } = useSelector((state) => state.phanMemReducer);
   useEffect(() => {
     //
     if (status) {
@@ -51,12 +55,20 @@ export default function PageHome() {
     }
 
     // ghichu
-    if(arrGiaoVien.length === 0) {
-      dispatch(getAllGiaoVienApi)
+    if (arrGiaoVien.length === 0) {
+      dispatch(getAllGiaoVienApi);
     }
-    // 
-    if(arrNhanVien.length === 0) {
-      dispatch(getAllNhanVienApi)
+    //
+    if (arrNhanVien.length === 0) {
+      dispatch(getAllNhanVienApi);
+    }
+
+    // btn update
+    if (arrThietBi.length === 0) {
+      dispatch(getAllThietBiApi);
+    }
+    if (arrPhanMem.length === 0) {
+      dispatch(getAllPhanMemApi);
     }
   }, []);
 
@@ -74,8 +86,8 @@ export default function PageHome() {
       <ComponentModalGhiChuPhong />
       <ComponentModalGhiChuMayTinh />
 
-       {/* modal detail ghichu */}
-       <ComponentModalDetaiGhiChulMayTinh />
+      {/* modal detail ghichu */}
+      <ComponentModalDetaiGhiChulMayTinh />
 
       {/*1. col Toa nha -- Tang */}
       <div className="col-2  flex-column d-flex justify-content-between px-1">
@@ -126,7 +138,7 @@ export default function PageHome() {
               type="button"
               onClick={() => {
                 // let { arrPhanMem, arrThietBi } = objThongTin;
-                dispatch(setThongTinObjGhiChuRedux(objThongTin))
+                dispatch(setThongTinObjGhiChuRedux(objThongTin));
               }}
               className="btn btn-primary"
             >
@@ -139,7 +151,7 @@ export default function PageHome() {
               type="button"
               onClick={() => {
                 // let { arrPhanMem, arrThietBi } = objThongTin;
-                dispatch(setThongTinObjGhiChuRedux(objThongTin))
+                dispatch(setThongTinObjGhiChuRedux(objThongTin));
               }}
               className="btn btn-primary"
             >

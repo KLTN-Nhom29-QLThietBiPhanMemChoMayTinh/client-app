@@ -129,6 +129,7 @@ export const insertGhiChuApi_MayTinh_Tbi = ({
   let objDataGhiChu_MayTinh_Tbi = {
     noiDung: txtTextGhiChu_Tbi,
     mayTinh: mayTinh,
+    soThietBi: arrTbi.length,
     ngayBaoLoi: new Date(),
     maTKBaoLoi: userLogin.taiKhoan.maTK,
     ngaySua: "",
@@ -231,6 +232,7 @@ export const insertGhiChu_PhongMay_Api = ({
   //
   let objDataGhiChu_PhongMay_PM = {
     noiDung: txtTextGhiChu_PM,
+    soPhanMem: arrPM.length,
     ngayBaoLoi: new Date(),
     phongMay: phong,
     maTKBaoLoi: userLogin.taiKhoan.maTK,
@@ -301,6 +303,7 @@ export const insertGhiChuApi = ({ userLogin, objThongTin, objTTGhiChu }) => {
   //
   let objDataGhiChu_PhongMay_PM = {
     noiDung: txtTextGhiChu_PM,
+    soPhanMem: arrPM.length,
     ngayBaoLoi: new Date(),
     phongMay: phong,
     maTKBaoLoi: userLogin.taiKhoan.maTK,
@@ -311,6 +314,7 @@ export const insertGhiChuApi = ({ userLogin, objThongTin, objTTGhiChu }) => {
   let objDataGhiChu_MayTinh_Tbi = {
     noiDung: txtTextGhiChu_Tbi,
     mayTinh: mayTinh,
+    soThietBi: arrTbi.length,
     ngayBaoLoi: new Date(),
     maTKBaoLoi: userLogin.taiKhoan.maTK,
     ngaySua: "",
