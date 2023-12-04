@@ -23,6 +23,9 @@ import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiC
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAllTangApi } from "../../redux/reducers/tangReducer";
 import { setThongTinObjGhiChuRedux } from "../../redux/reducers/home2Reducer";
+import ComponentModalGhiChuPhong from "../../components/layoutHome/ComponentModalGhiChuPhong";
+import ComponentModalGhiChuMayTinh from "../../components/layoutHome/ComponentModalGhiChuMayTinh";
+import ComponentModalDetaiGhiChulMayTinh from "../../components/layoutHome/ComponentModalDetaiGhiChulMayTinh";
 
 export default function PageHomeDetail() {
   const dispatch = useDispatch();
@@ -178,6 +181,11 @@ export default function PageHomeDetail() {
 
       {/* modal Ghi chu */}
       <ComponentModalGhiChu />
+      <ComponentModalGhiChuPhong />
+      <ComponentModalGhiChuMayTinh />
+
+      {/* modal detail ghichu */}
+      <ComponentModalDetaiGhiChulMayTinh />
 
       {/*1. col Toa nha -- Tang */}
       <div className="col-2  flex-column d-flex justify-content-between px-1">
@@ -224,15 +232,28 @@ export default function PageHomeDetail() {
 
             <button
               data-bs-toggle="modal"
-              data-bs-target="#modalIdGhiChu"
+              data-bs-target="#modalIdGhiChuPhong"
               type="button"
-              className="btn btn-primary"
               onClick={() => {
                 // let { arrPhanMem, arrThietBi } = objThongTin;
                 dispatch(setThongTinObjGhiChuRedux(objThongTin));
               }}
+              className="btn btn-primary"
             >
-              Ghi chú
+              Ghi chú phòng
+            </button>
+
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#modalIdGhiChuMayTinh"
+              type="button"
+              onClick={() => {
+                // let { arrPhanMem, arrThietBi } = objThongTin;
+                dispatch(setThongTinObjGhiChuRedux(objThongTin));
+              }}
+              className="btn btn-primary"
+            >
+              Ghi chú MT
             </button>
           </div>
         </div>

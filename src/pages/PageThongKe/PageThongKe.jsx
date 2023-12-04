@@ -12,7 +12,10 @@ import { set_tk_TheoTang_arr_Api } from "../../redux/reducers/ThongKe/thongkeTan
 import ComponentSortPhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentSortPhong";
 import ComponentGraphPhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentGraphPhong";
 import ComponentTablePhong from "../../components/layout/ThongKe/ThongKePhongMay/ComponentTablePhong";
-import { getData_TkPhong_Api } from "../../redux/reducers/ThongKe/thongkePhongReducer";
+import {
+  getData_TkPhong_Api,
+  getData_arrTK_DataPhong_ghiChu_api,
+} from "../../redux/reducers/ThongKe/thongkePhongReducer";
 import ComponentSortMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentSortMayTinh";
 import ComponentGraphMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentGraphMayTinh";
 import ComponentTableMayTinh from "../../components/layout/ThongKe/ThongKeMayTinh/ComponentTableMayTinh";
@@ -26,10 +29,11 @@ export default function PageThongKe() {
   //
   const dispatch = useDispatch();
   //
-  let [valBtnTK, setValBtnTK] = useState("tk_nhanVien");
+  let [valBtnTK, setValBtnTK] = useState("tk_phong");
 
   useEffect(() => {
-    dispatch(getData_TKNhanVienApi);
+    dispatch(getData_TkPhong_Api);
+    dispatch(getData_arrTK_DataPhong_ghiChu_api);
   }, []);
 
   // handle
@@ -46,12 +50,13 @@ export default function PageThongKe() {
         break;
       case "tk_phong":
         dispatch(getData_TkPhong_Api);
+        dispatch(getData_arrTK_DataPhong_ghiChu_api);
         break;
       case "tk_mayTinh":
         dispatch(getData_TKMayTinhApi);
         break;
       case "tk_nhanVien":
-        dispatch(getData_TKNhanVienApi)
+        dispatch(getData_TKNhanVienApi);
         break;
       case "tk_giaoVien":
         break;
