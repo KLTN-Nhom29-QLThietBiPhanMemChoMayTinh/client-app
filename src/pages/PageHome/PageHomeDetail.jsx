@@ -16,7 +16,10 @@ import ComponentThongTinChiTiet from "../../components/layoutHome/ComponentThong
 import ComponentToaNhaAndTang from "../../components/layoutHome/ComponentToaNhaAndTang";
 import ComponentListPhong from "../../components/layoutHome/ComponentListPhong";
 import ComponentDetailPhong from "../../components/layoutHome/ComponentDetailPhong";
-import { getAllPhongMayApi, getAllPhongMay_GhiChuApi } from "../../redux/reducers/phongMayReducer";
+import {
+  getAllPhongMayApi,
+  getAllPhongMay_GhiChuApi,
+} from "../../redux/reducers/phongMayReducer";
 import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
 import ComponentModelDetail from "../../components/layoutHome/ComponentModelDetail";
 import ComponentModalGhiChu from "../../components/layoutHome/ComponentModalGhiChu";
@@ -46,7 +49,9 @@ export default function PageHomeDetail() {
   // arrmayTinh dung cho detail
   let { arrMayTinh } = useSelector((state) => state.mayTinhReducer);
   // 3.
-  let { arrPhongMay,arrPhongMay_GhiChu } = useSelector((state) => state.phongMayReducer);
+  let { arrPhongMay, arrPhongMay_GhiChu } = useSelector(
+    (state) => state.phongMayReducer
+  );
 
   useEffect(() => {
     //
@@ -62,8 +67,8 @@ export default function PageHomeDetail() {
     if (arrPhongMay.length === 0) {
       dispatch(getAllPhongMayApi);
     }
-    if(arrPhongMay_GhiChu.length ===0 ){
-      dispatch(getAllPhongMay_GhiChuApi)
+    if (arrPhongMay_GhiChu.length === 0) {
+      dispatch(getAllPhongMay_GhiChuApi);
     }
     //
 
@@ -93,7 +98,9 @@ export default function PageHomeDetail() {
             navigate("/quan-ly/tang");
             return;
           }
-          let objPhongmay = arrPhongMay_GhiChu.find((item) => item.maPhong == id);
+          let objPhongmay = arrPhongMay_GhiChu.find(
+            (item) => item.maPhong == id
+          );
           // update ds tang Home
           let arrTangH = arrTang.filter(
             (item) => item.toaNha.maToaNha == objPhongmay.tang.toaNha.maToaNha
@@ -112,6 +119,7 @@ export default function PageHomeDetail() {
         //
         case "maytinh": {
           //
+          console.log(arrTang);
           if (arrTang.length === 0) {
             navigate("/quan-ly/tang");
             return;
@@ -125,7 +133,10 @@ export default function PageHomeDetail() {
           let idPhong = objMayTinh.phongMay.maPhong;
 
           //
-          let objPhongmay = arrPhongMay_GhiChu.find((item) => item.maPhong == idPhong);
+          let objPhongmay = arrPhongMay_GhiChu.find(
+            (item) => item.maPhong === idPhong
+          );
+          
           // update ds tang Home
           let arrTangH = arrTang.filter(
             (item) => item.toaNha.maToaNha == objPhongmay.tang.toaNha.maToaNha

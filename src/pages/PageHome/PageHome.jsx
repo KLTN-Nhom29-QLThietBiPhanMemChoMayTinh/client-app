@@ -24,12 +24,14 @@ import { getAllNhanVienApi } from "../../redux/reducers/nhanVienReducer";
 import { getAllThietBiApi } from "../../redux/reducers/thietBiReducer";
 import { getAllPhanMemApi } from "../../redux/reducers/phanMemReducer";
 import ComponentModalDetaiGhiChuPhanMem from "../../components/layoutHome/ComponentModalDetaiGhiChuPhanMem";
+import { getAllTangApi } from "../../redux/reducers/tangReducer";
 
 export default function PageHome() {
   const dispatch = useDispatch();
 
   let { objThongTin, status } = useSelector((state) => state.homeReducer);
   let { arrToaNha } = useSelector((state) => state.toaNhaReducer);
+  let { arrTang } = useSelector((state) => state.tangReducer);
 
   // 3.
   let { arrPhongMay, arrPhongMay_GhiChu } = useSelector(
@@ -61,6 +63,9 @@ export default function PageHome() {
     }
     if (arrPhongMay_GhiChu.length === 0) {
       dispatch(getAllPhongMay_GhiChuApi);
+    }
+    if(arrTang.length === 0) {
+      dispatch(getAllTangApi)
     }
 
     // ghichu

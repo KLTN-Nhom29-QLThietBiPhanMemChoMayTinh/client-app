@@ -51,6 +51,7 @@ import FormAddMonHoc from "./components/layout/Add/FormAddMonHoc";
 import FormAddLichThucHanh from "./components/layout/Add/FormAddLichThucHanh";
 import PageThongKe from "./pages/PageThongKe/PageThongKe";
 import FormUpdateLichThucHanh from "./components/layout/Edit/FormUpdateLichThucHanh";
+import FormUpdateMonHoc from "./components/layout/Edit/FormUpdateMonHoc";
 
 //
 export const history = createBrowserHistory();
@@ -110,6 +111,7 @@ root.render(
           //
           <Route path="/quan-ly/mon" element={<PageQlMonHoc />}></Route>
           <Route path="/quan-ly/mon/add" element={<FormAddMonHoc />}></Route>
+          <Route path="/quan-ly/mon/update" element={<FormUpdateMonHoc />}></Route>
 
           //
           <Route path="/quan-ly/thiet-bi" element={<PageQLThietBi />}></Route>

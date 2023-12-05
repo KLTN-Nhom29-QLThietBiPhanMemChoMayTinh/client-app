@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 //
 import { FaPencilAlt } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
@@ -12,12 +12,15 @@ import Database from "../../util/database/Database";
 import { formatStringDate, formatStringDate3 } from "../../util/config";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteMonHocApi,
   getAllMonHoc,
+  getDSPhanmem_idMonhoc,
   setValueSelectAction,
   setValueTxtSearchAction,
 } from "../../redux/reducers/monHocReducer";
 
 export default function PageQlMonHoc() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   let { arrMonHocSearch, valueTxtSearch, valueSelect } = useSelector(
@@ -47,15 +50,104 @@ export default function PageQlMonHoc() {
       ngayKT.setDate(ngayKT.getDate() + (item?.soBuoi + 1) * 7);
 
       // render
-      const renderTrangThai = () => {
+      const renderTrangThai = (item) => {
+        let { dsCaThucHanh, soBuoi, ngayBatDau } = item;
+        let ngayBD = new Date(ngayBatDau);
+        let ngayKT = new Date(ngayBatDau);
+        ngayKT.setDate(ngayKT.getDate() + (soBuoi + 1) * 7);
         let day = new Date();
-        if (day > ngayKT) {
-          return <td style={{ backgroundColor: "#ff6666" }}>Kết thúc</td>;
+
+        if (dsCaThucHanh.length === 0) {
+          if (day > ngayKT) {
+            return <td style={{ backgroundColor: "#ff6666" }}>Kết thúc</td>;
+          }
+          return <td style={{ backgroundColor: "#fff563" }}>Chờ mở lớp</td>;
+        }
+        //
+        if (day > ngayBD && day < ngayKT) {
+          return <td style={{ backgroundColor: "#4dff7c" }}>Đang học</td>;
         }
         if (ngayBD > day) {
           return <td style={{ backgroundColor: "#fff563" }}>Chờ mở lớp</td>;
         }
-        return <td style={{ backgroundColor: "#4dff7c" }}>Đang học</td>;
+
+        return <td style={{ backgroundColor: "#ff6666" }}>Kết thúc</td>;
+      };
+      // render btn sua
+      const renderBtnSua = (item) => {
+        let { soBuoi, ngayBatDau } = item;
+        let ngayKT = new Date(ngayBatDau);
+        ngayKT.setDate(ngayKT.getDate() + (soBuoi + 1) * 7);
+        let day = new Date();
+        if (day > ngayKT) {
+          return <></>;
+        }
+
+        return (
+          <NavLink
+            
+            onClick={() => {
+              dispatch(getDSPhanmem_idMonhoc(item.maMon));
+
+              setTimeout(() => {
+                navigate(`/quan-ly/mon/update?id=${item.maMon}`);
+              }, 200);
+            }}
+          >
+            <button
+              type="button"
+              className="btn btn-primary mx-2 px-2"
+              style={{ padding: "2px" }}
+            >
+              <FaPencilAlt color="white" size={16} />
+            </button>
+          </NavLink>
+        );
+      };
+      // render btnXoa
+      const renderBtnXoa = (item) => {
+        let { dsCaThucHanh } = item;
+
+        if (dsCaThucHanh.length !== 0) {
+          return <></>;
+        } else {
+          return (
+            <button
+              onClick={() => {
+                if (window.confirm("Bấm vào nút OK để xóa " + item.tenMon)) {
+                  dispatch(deleteMonHocApi(item.maMon));
+                }
+              }}
+              type="button"
+              className="btn btn-danger mx-2 px-2"
+              style={{ padding: "2px" }}
+            >
+              <ImBin2 color="white" size={16} />
+            </button>
+          );
+        }
+      };
+      // render btnChitiet
+      const renderBtnChiTiet = (item) => {
+        let { dsCaThucHanh } = item;
+
+        if (dsCaThucHanh.length === 0) {
+          return <></>;
+        } else {
+          return (
+            <NavLink
+              // to={`../quan-ly/phong`}
+              onClick={() => {
+                alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
+              }}
+              type="button"
+              className="btn btn-info mx-2 px-2"
+              style={{ padding: "2px" }}
+            >
+              <BiSolidDetail color="white" size={16} />
+            </NavLink>
+          );
+        }
       };
       return (
         <tr key={index}>
@@ -67,10 +159,11 @@ export default function PageQlMonHoc() {
           <td>{item?.soBuoi}</td>
           <td>{formatStringDate3(ngayBD)}</td>
           <td>{formatStringDate3(ngayKT)}</td>
-          {renderTrangThai()}
+          {renderTrangThai(item)}
 
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink
+            {renderBtnSua(item)}
+            {/* <NavLink
               // to={"/quan-ly/phan-mem/update"}
               onClick={() => {
                 alert(`Update -- ${item.id} -- dang cập nhật!`);
@@ -84,7 +177,9 @@ export default function PageQlMonHoc() {
               >
                 <FaPencilAlt color="white" size={16} />
               </button>
-            </NavLink>
+            </NavLink> */}
+            {renderBtnXoa(item)}
+
             {/* <button
               onClick={() => {
                 alert(`Del -- ${item.id} -- dang cập nhật!`);
@@ -95,6 +190,7 @@ export default function PageQlMonHoc() {
             >
               <ImBin2 color="white" size={16} />
             </button> */}
+            {renderBtnChiTiet(item)}
             {/* <NavLink
               // to={`../quan-ly/phong`}
               onClick={() => {
@@ -118,9 +214,15 @@ export default function PageQlMonHoc() {
           <option selected={valueSelect == -1 ? 1 : 0} value="-1">
             Toàn bộ
           </option>
-          <option selected={valueSelect == 1 ? 1 : 0}  value="1">Kết thúc</option>
-          <option selected={valueSelect == 2 ? 1 : 0}  value="2">Chờ mở lớp</option>
-          <option selected={valueSelect == 3 ? 1 : 0}  value="3">Đang học</option>
+          <option selected={valueSelect == 1 ? 1 : 0} value="1">
+            Kết thúc
+          </option>
+          <option selected={valueSelect == 2 ? 1 : 0} value="2">
+            Chờ mở lớp
+          </option>
+          <option selected={valueSelect == 3 ? 1 : 0} value="3">
+            Đang học
+          </option>
         </select>
       </div>
     );

@@ -4,7 +4,11 @@ import NavTab from "../../common/NavTab/NavTab";
 import { formatStringDate, formatStringDate2 } from "../../../util/config";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPhanMemApi } from "../../../redux/reducers/phanMemReducer";
-import { insertMonHocApi } from "../../../redux/reducers/monHocReducer";
+import {
+  insertMonHocApi,
+  updateMonHocApi,
+} from "../../../redux/reducers/monHocReducer";
+import { useLocation, useNavigate } from "react-router-dom";
 
 let date = new Date();
 let dateYear = date.getFullYear();
@@ -15,13 +19,23 @@ let dateMonthMin = date.getMonth();
 
 let strDate = `${dateYear}-${dateMonth}-${dateDay}`;
 let strDateMin_BD = `${dateYear}-${dateMonthMin}-${dateDay}`;
-
-export default function FormAddMonHoc() {
+//
+let objData_old = {};
+//
+export default function FormUpdateMonHoc() {
   //
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  // nhan data gui theo uri
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const objParam = Object.fromEntries(searchParams);
+  //
   //
   let { arrPhanMem } = useSelector((state) => state.phanMemReducer);
-  let { arrMonHoc } = useSelector((state) => state.monHocReducer);
+  let { arrMonHoc, arrPhanmemUpdate } = useSelector(
+    (state) => state.monHocReducer
+  );
   //
   let objMon = useRef({
     tenMon: "",
@@ -31,6 +45,7 @@ export default function FormAddMonHoc() {
     ngayKetThuc: "",
     status: "Đang học",
   });
+  console.log(objMon.current);
   let [errMon, setErrMon] = useState({
     tenMon: "",
     ngayBatDau: "",
@@ -39,20 +54,35 @@ export default function FormAddMonHoc() {
   });
   //
   useEffect(() => {
+    if (objParam.id == null) {
+      navigate("/quan-ly/mon");
+    }
+    if (arrMonHoc.length === 0) {
+      navigate("/quan-ly/mon");
+    } else {
+      objData_old = arrMonHoc.find(
+        (item) => item.maMon === parseInt(objParam.id)
+      );
+
+      let { dsCaThucHanh, maMon, tenMon, ngayBatDau, soBuoi } = objData_old;
+      let { status, ngayKetThuc } = getCheckTgianKT({ soBuoi, ngayBatDau });
+
+      objMon.current = {
+        ...objMon.current,
+        status,
+        ngayKetThuc,
+        soBuoi,
+        ngayBatDau,
+        tenMon,
+        phanMems: arrPhanmemUpdate,
+      };
+    }
     //
     if (arrPhanMem.length === 0) {
       const action = getAllPhanMemApi;
       dispatch(action);
     }
     //
-    let { soBuoi, ngayBatDau } = objMon.current;
-    let { status, ngayKetThuc } = getCheckTgianKT({ soBuoi, ngayBatDau });
-
-    objMon.current = {
-      ...objMon.current,
-      status,
-      ngayKetThuc,
-    };
 
     setErrMon({ ...errMon });
   }, []);
@@ -68,8 +98,13 @@ export default function FormAddMonHoc() {
       return;
     }
     //true
+    let objData = {
+      ...objMon.current,
+      maMon: objData_old.maMon,
+      dsCaThucHanh: objData_old.dsCaThucHanh
+    };
 
-    dispatch(insertMonHocApi(objMon.current))
+    dispatch(updateMonHocApi(objData, arrPhanMem));
   };
   const checkData = () => {
     let check = 1;
@@ -102,14 +137,14 @@ export default function FormAddMonHoc() {
   //
   const handleCheckPM = (e) => {
     let { checked, value } = e.target;
-    var updateList = objMon.current.phanMems;
+    let updateList = [...objMon.current.phanMems];
     if (checked) {
       updateList.push(arrPhanMem.find((item) => item.maPhanMem == value));
     } else {
       updateList = updateList.filter((item) => item.maPhanMem != value);
     }
 
-    objMon.current.phanMems = updateList;
+    objMon.current.phanMems = [...updateList];
 
     if (objMon.current.phanMems.length === 0) {
       setErrMon({ ...errMon, phanMems: "Hãy chọn ứng dụng" });
@@ -167,10 +202,18 @@ export default function FormAddMonHoc() {
   //render
   //
   const renderCheckBox_PM = () => {
+    let { phanMems } = objMon.current;
+
     return arrPhanMem?.map((item, index) => {
       if (!item.trangThai) {
         // trang thai hong se khogn hien owr day
         return <></>;
+      }
+
+      let value_check = false;
+      let check_row = phanMems.findIndex((e) => e.maPhanMem === item.maPhanMem);
+      if (check_row >= 0) {
+        value_check = true;
       }
       return (
         <div key={index} className="form-check">
@@ -178,6 +221,7 @@ export default function FormAddMonHoc() {
             className="form-check-input"
             type="checkbox"
             value={item.maPhanMem}
+            checked={value_check}
             id={`${item.maPhanMem}_PM`}
             onChange={handleCheckPM}
           />
@@ -201,7 +245,7 @@ export default function FormAddMonHoc() {
         >
           <div style={{ height: "80vh" }}>
             <div style={{ height: "8vh" }}>
-              <NavTab itemLink={{ arrLinkNavTab, chucNang: "Tạo mới" }} />
+              <NavTab itemLink={{ arrLinkNavTab, chucNang: "Chỉnh sửa" }} />
             </div>
             <div
               className="bg-white rounded p-4 px-5"
@@ -214,7 +258,7 @@ export default function FormAddMonHoc() {
               >
                 {/* header */}
                 <div className="">
-                  <h2 className="mx-3 mb-3 ">Thêm môn học</h2>
+                  <h2 className="mx-3 mb-3 ">Chỉnh sửa môn học</h2>
                   <div className="row">
                     <div className="col-md-6 ">
                       {/* ten mon */}
@@ -233,6 +277,7 @@ export default function FormAddMonHoc() {
                           className="form-control"
                           name="tenMon"
                           id="tenMon"
+                          value={objMon.current.tenMon}
                           aria-describedby="helpIdtenMon"
                           placeholder="Hệ thống thông tin"
                           onChange={handleChangeTenMon}
@@ -254,6 +299,7 @@ export default function FormAddMonHoc() {
                           className="form-control"
                           name="soBuoi"
                           id="soBuoi"
+                          value={objMon.current.soBuoi}
                           min={1}
                           defaultValue={1}
                           max={50}
@@ -277,7 +323,9 @@ export default function FormAddMonHoc() {
                           className="form-control"
                           name="ngayBatDau"
                           id="ngayBatDau"
-                          value={objMon.current.ngayBatDau}
+                          value={formatStringDate2(
+                            new Date(objMon.current.ngayBatDau)
+                          )}
                           min={strDateMin_BD}
                           aria-describedby="helpIDngayBatDau"
                           onChange={handleChangeNgayBD}
@@ -337,11 +385,39 @@ export default function FormAddMonHoc() {
                 </div>
                 {/* footer - form */}
                 <div className="">
-                  <button type="reset" className="btn btn-danger mx-3">
+                  <button
+                    type="reset"
+                    onClick={() => {
+                      let { dsCaThucHanh, maMon, tenMon, ngayBatDau, soBuoi } =
+                        objData_old;
+                      let { status, ngayKetThuc } = getCheckTgianKT({
+                        soBuoi,
+                        ngayBatDau,
+                      });
+
+                      objMon.current = {
+                        ...objMon.current,
+                        status,
+                        ngayKetThuc,
+                        soBuoi,
+                        ngayBatDau,
+                        tenMon,
+                        phanMems: arrPhanmemUpdate,
+                      };
+                      //
+                      setErrMon({
+                        tenMon: "",
+                        ngayBatDau: "",
+                        soBuoi: "",
+                        phanMems: "",
+                      });
+                    }}
+                    className="btn btn-danger mx-3"
+                  >
                     Khôi phục
                   </button>
                   <button type="submit" className="btn btn-success mx-3">
-                    Tạo mới
+                    Chỉnh sửa
                   </button>
                 </div>
               </form>

@@ -71,6 +71,7 @@ const searchData = (arrData, valSearch, valSelect) => {
 const initialState = {
   arrMonHoc: [],
   arrMonHocSearch: [],
+  arrPhanmemUpdate: [],
   detailMonHoc: {},
   valueTxtSearch: "",
   valueSelect: -1,
@@ -80,6 +81,9 @@ const monHocReducer = createSlice({
   name: "monHocReducer",
   initialState,
   reducers: {
+    setArrPhanmemUpdateAction: (state, action) => {
+      state.arrPhanmemUpdate = action.payload;
+    },
     setValueTxtSearchAction: (state, action) => {
       state.valueTxtSearch = action.payload;
 
@@ -104,19 +108,121 @@ const monHocReducer = createSlice({
       //
       state.arrMonHocSearch = funcSearch(state);
     },
+    updateMOnhocAction: (state, action) => {
+      let object = action.payload;
+
+      let rowToChange = state.arrMonHoc.findIndex(
+        (item) => item.maMon === object.maMon
+      );
+      state.arrMonHoc[rowToChange] = object;
+
+      //
+      state.arrMonHocSearch = funcSearch(state);
+    },
+    deleteMonHocAction: (state, action) => {
+      let maXoa = action.payload;
+
+      let arrUpdate = state.arrMonHoc.filter((item) => {
+        return item.maMon !== maXoa;
+      });
+
+      state.arrMonHoc = [...arrUpdate];
+      //
+      state.arrMonHocSearch = funcSearch(state);
+    },
   },
 });
 // exp nay de sử dụng theo cách 2
 export const {
   setArrMonHocAction,
+  setArrPhanmemUpdateAction,
   setValueSelectAction,
   setValueTxtSearchAction,
   insertMonHocAction,
+  updateMOnhocAction,
+  deleteMonHocAction,
 } = monHocReducer.actions;
 export default monHocReducer.reducer;
 
 // -------------- Call Api -----------------
+export const deleteMonHocApi = (maMon) => {
+  return async (dispatch) => {
+    try {
+      await http.delete(`/XoaMonHoc/${maMon}`);
 
+      dispatch(deleteMonHocAction(maMon));
+    } catch (error) {
+      console.log("🚀 ~ file: monHocReducer.jsx:141 ~ return ~ error:", error);
+    }
+  };
+};
+//
+export const updateMonHocApi = (monHoc, arrPhanMem) => {
+  let { maMon, tenMon, ngayBatDau, soBuoi, phanMems, dsCaThucHanh } = monHoc;
+  return async (dispatch) => {
+    try {
+      let objMonHoc = {
+        maMon,
+        tenMon,
+        ngayBatDau,
+        soBuoi,
+        dsCaThucHanh,
+      };
+      let result = await http.post("/LuuMonHoc", objMonHoc);
+
+      //
+      arrPhanMem.forEach(async (item) => {
+        let rowCheck = phanMems.findIndex(
+          (e) => e.maPhanMem === item.maPhanMem
+        );
+
+        if (rowCheck >= 0) {
+          let objMonHocPhanMem = {
+            phanMem: item,
+            monHoc: objMonHoc,
+          };
+          await http.post("/LuuMonHocPhanMem", objMonHocPhanMem);
+        } else {
+          //@DeleteMapping("/XoaMonHocPhanMem/{maMon}/{maPhanMem}")
+          await http.delete(`/XoaMonHocPhanMem/${maMon}/${item.maPhanMem}`);
+        }
+      });
+
+      setTimeout(() => {
+        dispatch(updateMOnhocAction(objMonHoc));
+
+        history.push("/quan-ly/mon");
+        alert("chỉnh sửa thành công.");
+      }, 200);
+    } catch (error) {
+      console.log("🚀 ~ file: monHocReducer.jsx:129 ~ return ~ error:", error);
+    }
+  };
+};
+
+// ds phan mem theo ma mon hoc
+export const getDSPhanmem_idMonhoc = (maMon) => {
+  return async (dispatch) => {
+    try {
+      //@GetMapping("/DSMonHocPhanMem/{maMon}")
+      let result = await http.get(`/DSMonHocPhanMem/${maMon}`);
+
+      let arrPhanmemUpdate = [];
+
+      result.data.forEach((item) => {
+        console.log(
+          "🚀 ~ file: monHocReducer.jsx:133 ~ result.data.forEach ~ item:",
+          item
+        );
+        arrPhanmemUpdate.push(item.phanMem);
+      });
+
+      dispatch(setArrPhanmemUpdateAction([...arrPhanmemUpdate]));
+    } catch (error) {
+      console.log("🚀 ~ file: monHocReducer.jsx:123 ~ error:", error);
+    }
+  };
+};
 /**
  * addd 1 mon hoc
  * @param {Object} monHoc
@@ -132,7 +238,7 @@ export const insertMonHocApi = (monHoc) => {
   return async (dispatch) => {
     try {
       let result = await http.post("/LuuMonHoc", objMonHoc);
-      
+
       let objDataNew = result.data;
 
       phanMems.forEach(async (item) => {
@@ -141,14 +247,13 @@ export const insertMonHocApi = (monHoc) => {
           monHoc: objDataNew,
         };
         await http.post("/LuuMonHocPhanMem", objMonHocPhanMem);
-        
       });
 
       setTimeout(() => {
-        alert('Tạo thành công!')
-        dispatch(insertMonHocAction(objDataNew));
+        alert("Tạo thành công!");
+        dispatch(getAllMonHoc);
         history.push("/quan-ly/mon");
-      }, 2000)
+      }, 1000);
     } catch (error) {
       console.log(
         "🚀 ~ file: monHocReducer.jsx:123 ~ returnasync ~ error:",
@@ -165,11 +270,21 @@ export const insertMonHocApi = (monHoc) => {
 export const getAllMonHoc = async (dispatch) => {
   // call Api
   try {
-    let result = await http.get("/DSMonHoc");
+    let result_dsMonHoc = await http.get("/DSMonHoc");
+    let arrData_MH = [];
+    result_dsMonHoc.data.forEach(async (item) => {
+      let result_CaTH_IdMonHoc = await http.get(
+        `/DSCaThucHanhTheoMonHoc/${item.maMon}`
+      );
 
-    let arrDataMonHoc = result.data;
-    const action = setArrMonHocAction(arrDataMonHoc);
-    dispatch(action);
+      arrData_MH.push({ ...item, dsCaThucHanh: result_CaTH_IdMonHoc.data });
+    });
+
+    //
+    setTimeout(() => {
+      const action = setArrMonHocAction([...arrData_MH]);
+      dispatch(action);
+    }, 500);
   } catch (error) {
     console.log(
       "🚀 ~ file: monHocReducer.jsx:37 ~ getAllMonHoc ~ error:",

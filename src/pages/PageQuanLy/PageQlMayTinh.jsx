@@ -16,6 +16,7 @@ import {
 import { formatStringDate } from "../../util/config";
 import { formatToaNhaAndTang } from "../../util/formatString";
 import ModalSearchMayTinh from "../../components/layout/Modal/ModalSearchMayTinh/ModalSearchMayTinh";
+import { getAllPhongMay_GhiChuApi } from "../../redux/reducers/phongMayReducer";
 //
 
 export default function PageQlMayTinh() {
@@ -26,10 +27,16 @@ export default function PageQlMayTinh() {
   let { arrMayTinh, arrMayTinhSearch, valueSearch } = useSelector(
     (state) => state.mayTinhReducer
   );
+  let { arrPhongMay, arrPhongMay_GhiChu } = useSelector(
+    (state) => state.phongMayReducer
+  );
 
   useEffect(() => {
     if (arrMayTinh.length === 0) {
       dispatch(getAllMayTinhApi);
+    }
+    if (arrPhongMay_GhiChu.length === 0) {
+      dispatch(getAllPhongMay_GhiChuApi);
     }
   }, []);
   // handle
@@ -65,9 +72,7 @@ export default function PageQlMayTinh() {
 
           {/*  */}
           <td style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <NavLink
-            to={`/quan-ly/may-tinh/update?id=${item.maMay}`}
-            >
+            <NavLink to={`/quan-ly/may-tinh/update?id=${item.maMay}`}>
               <button
                 type="button"
                 className="btn btn-primary mx-2 px-2"
@@ -78,7 +83,14 @@ export default function PageQlMayTinh() {
             </NavLink>
             <button
               onClick={() => {
-                if (window.confirm("Bấm vào nút OK để xóa " + item.moTa + ' - '+ item.phongMay.tenPhong)) {
+                if (
+                  window.confirm(
+                    "Bấm vào nút OK để xóa " +
+                      item.moTa +
+                      " - " +
+                      item.phongMay.tenPhong
+                  )
+                ) {
                   dispatch(deleteMayTinhApi(item));
                 }
               }}
@@ -91,7 +103,7 @@ export default function PageQlMayTinh() {
             <button
               // `../quan-ly/phong`
               onClick={() => {
-                navigate(`/home-detail?id=${item.maMay}&key=maytinh`)
+                navigate(`/home-detail?id=${item.maMay}&key=maytinh`);
               }}
               type="button"
               className="btn btn-info mx-2 px-2"
