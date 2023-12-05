@@ -17,7 +17,9 @@ import {
   getDSPhanmem_idMonhoc,
   setValueSelectAction,
   setValueTxtSearchAction,
+  setdetailMonHocAction,
 } from "../../redux/reducers/monHocReducer";
+import ModalDetailMonHoc from "../../components/layout/Detail/DetailMonHoc/ModalDetailMonHoc";
 
 export default function PageQlMonHoc() {
   const navigate = useNavigate();
@@ -80,12 +82,22 @@ export default function PageQlMonHoc() {
         ngayKT.setDate(ngayKT.getDate() + (soBuoi + 1) * 7);
         let day = new Date();
         if (day > ngayKT) {
-          return <></>;
+          return (
+            <button
+              onClick={() => {
+                alert("Môn học đã kết thúc! không thể chỉnh sửa.");
+              }}
+              type="button"
+              className="btn btn-primary mx-2 px-2"
+              style={{ padding: "2px" }}
+            >
+              <FaPencilAlt color="white" size={16} />
+            </button>
+          );
         }
 
         return (
           <NavLink
-            
             onClick={() => {
               dispatch(getDSPhanmem_idMonhoc(item.maMon));
 
@@ -132,20 +144,32 @@ export default function PageQlMonHoc() {
         let { dsCaThucHanh } = item;
 
         if (dsCaThucHanh.length === 0) {
-          return <></>;
+          return (
+            <button
+              type="button"
+              className="btn btn-info mx-2 px-2"
+              style={{ padding: "2px" }}
+              onClick={() => {
+                alert("Chưa có lịch thực hành!");
+              }}
+            >
+              <BiSolidDetail color="white" size={16} />
+            </button>
+          );
         } else {
           return (
-            <NavLink
-              // to={`../quan-ly/phong`}
-              onClick={() => {
-                alert(`Chi tiết -- ${item.id} -- dang cập nhật!`);
-              }}
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#modalIdDetailMonHoc"
               type="button"
+              onClick={() => {
+                dispatch(setdetailMonHocAction(item));
+              }}
               className="btn btn-info mx-2 px-2"
               style={{ padding: "2px" }}
             >
               <BiSolidDetail color="white" size={16} />
-            </NavLink>
+            </button>
           );
         }
       };
@@ -233,6 +257,10 @@ export default function PageQlMonHoc() {
   //
   return (
     <div className="container " style={{ height: "100vh" }}>
+
+      {/*  */}
+      <ModalDetailMonHoc />
+
       <div
         className="d-flex flex-column justify-content-between "
         style={{ height: "100vh" }}

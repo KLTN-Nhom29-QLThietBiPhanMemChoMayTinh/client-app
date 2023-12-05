@@ -81,6 +81,9 @@ const monHocReducer = createSlice({
   name: "monHocReducer",
   initialState,
   reducers: {
+    setdetailMonHocAction: (state, action) => {
+      state.detailMonHoc = action.payload;
+    },
     setArrPhanmemUpdateAction: (state, action) => {
       state.arrPhanmemUpdate = action.payload;
     },
@@ -136,8 +139,11 @@ const monHocReducer = createSlice({
 export const {
   setArrMonHocAction,
   setArrPhanmemUpdateAction,
+  setdetailMonHocAction,
+  //
   setValueSelectAction,
   setValueTxtSearchAction,
+  //
   insertMonHocAction,
   updateMOnhocAction,
   deleteMonHocAction,
