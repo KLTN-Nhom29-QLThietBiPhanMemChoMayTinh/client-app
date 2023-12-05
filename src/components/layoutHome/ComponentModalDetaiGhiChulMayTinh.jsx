@@ -57,9 +57,9 @@ export default function ComponentModalDetaiGhiChulMayTinh() {
       ngaySua: new Date(),
       noiDung: noiDungNew,
     };
-    let {phong} = objThongTin;
+    let { phong } = objThongTin;
 
-    dispatch(updateGhiChu_MayTinh_Tbi(objData,phong));
+    dispatch(updateGhiChu_MayTinh_Tbi(objData, phong));
   };
 
   // render thonog tin
@@ -213,6 +213,7 @@ export default function ComponentModalDetaiGhiChulMayTinh() {
                     >
                       <MdOutlineKeyboardDoubleArrowRight size={28} />
                     </button>
+                    {` ( có ${arrGhiChu.length} trang )`}
                   </div>
                 </div>
                 <button

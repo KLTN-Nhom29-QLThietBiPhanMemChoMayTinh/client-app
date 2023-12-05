@@ -78,7 +78,7 @@ export default function ComponentGraphPhong() {
           />
         </BarChart>
         <p className="text-center w-100">
-          Biểu đồ 1: Thống kê phòng theo số máy quản lý
+          Biểu đồ 2: Thống kê phòng theo số máy quản lý
         </p>
       </ResponsiveContainer>
     );
@@ -131,7 +131,7 @@ export default function ComponentGraphPhong() {
           />
         </BarChart>
         <p className="text-center w-100">
-          Biểu đồ 2: Thống kê phòng theo số phần mềm quản lý
+          Biểu đồ 3: Thống kê phòng theo số phần mềm quản lý
         </p>
       </ResponsiveContainer>
     );
@@ -150,7 +150,7 @@ export default function ComponentGraphPhong() {
           <li>PM: phần mềm</li>
           <li>Biểu đồ đo theo thời gian hiện tại</li>
           <li>
-            Biểu đồ được bị ảnh hưởng số liệu theo bảng 1 bên số liệu ( thống kê
+            Biểu đồ 2, biểu đồ 3: được bị ảnh hưởng số liệu theo bảng 2 bên số liệu ( thống kê
             theo phòng )
           </li>
         </ul>

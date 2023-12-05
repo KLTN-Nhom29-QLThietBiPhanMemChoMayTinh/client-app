@@ -63,7 +63,7 @@ export default function ComponentTableNhanVien() {
             <ul>
               {arrLichTruc.map((item, index) => {
                 row_caTruc++;
-                if ((row_caTruc == 5)) {
+                if (row_caTruc == 5) {
                   return <li key={index}>...</li>;
                 } else if (row_caTruc > 5) {
                   return;
@@ -115,13 +115,12 @@ export default function ComponentTableNhanVien() {
         <div className="row">
           <div className="col-5">
             <strong>Ghi chú: </strong>
-            {/* <ul style={{ fontSize: "14px" }}>
-              <li>Thông tin trên được thống kê ở thời điểm hiện tại.</li>
-              <li>Tổng số thiết bị: là tổng số thiết bị có trong hệ thống.</li>
+            <ul style={{ fontSize: "14px" }}>
               <li>
-                Tổng số thiết bị lỗi là tổng số thiết bị có trong danh sách.
+                Tổng số ca lịch trực: là tổng số ca lịch trực có trong danh
+                sách.
               </li>
-            </ul> */}
+            </ul>
           </div>
           <div className="col-7">
             <strong>Nhận xét: </strong>

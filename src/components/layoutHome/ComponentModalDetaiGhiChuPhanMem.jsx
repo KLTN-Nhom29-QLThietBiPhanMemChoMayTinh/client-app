@@ -217,6 +217,7 @@ export default function ComponentModalDetaiGhiChuPhanMem() {
                     >
                       <MdOutlineKeyboardDoubleArrowRight size={28} />
                     </button>
+                      {` ( có ${arrGhiChu.length} trang )`}
                   </div>
                 </div>
                 <button

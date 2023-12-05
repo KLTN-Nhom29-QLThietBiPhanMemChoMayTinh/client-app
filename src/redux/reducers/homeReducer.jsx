@@ -302,7 +302,7 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
             });
           }
         }
-      }, 200);
+      }, 400);
       //
       setTimeout(() => {
 
@@ -313,7 +313,7 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
             arrMayTinh: [...arrMayTinhH],
           })
         );
-      }, 500);
+      }, 600);
     } catch (error) {
       console.log("🚀 ~ file: homeReducer.jsx:202 ~ return ~ error:", error);
     }

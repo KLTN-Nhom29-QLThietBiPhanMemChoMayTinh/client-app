@@ -163,10 +163,10 @@ export const SidebarData = [
       <MdManageAccounts style={{ marginBottom: "6px", fontSize: "25px" }} />
     ),
   },
-  {
-    title: "Support",
-    path: "/support",
-    valQuyen: 1,
-    icon: <IoMdHelpCircle style={{ marginBottom: "6px", fontSize: "25px" }} />,
-  },
+  // {
+  //   title: "Support",
+  //   path: "/support",
+  //   valQuyen: 1,
+  //   icon: <IoMdHelpCircle style={{ marginBottom: "6px", fontSize: "25px" }} />,
+  // },
 ];

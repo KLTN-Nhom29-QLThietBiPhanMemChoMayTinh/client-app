@@ -264,8 +264,8 @@ export const insertGhiChuApi_MayTinh_Tbi = ({
 
       //
       let objGhiChu = result_DsGhiChuNgayHOmNay.data.find((e) => {
-        if (e.mayTinh.maMay === objDataGhiChu_MayTinh_Tbi.mayTinh.maMay) {
-        }
+        // if (e.mayTinh.maMay === objDataGhiChu_MayTinh_Tbi.mayTinh.maMay) {
+        // }
         return e.mayTinh.maMay === objDataGhiChu_MayTinh_Tbi.mayTinh.maMay;
       });
 
@@ -361,11 +361,40 @@ export const insertGhiChu_PhongMay_Api = ({
 
   return async (dispatch) => {
     try {
-      // 1. luu ghi chú
-      let result_saveGhiChu_PhongMay = await http.post(
-        "/LuuGhiChuPhongMay",
-        objDataGhiChu_PhongMay_PM
+      //
+      let result_DsGhiChuNgayHOmNay = await http.get(
+        `/DSGhiChuPhongMayTheoNgayBaoLoi/${formatStringDate2()}`
       );
+      //
+      let objGhiChu = result_DsGhiChuNgayHOmNay.data.find((e) => {
+        // if (e.phongMay.maPhong === objDataGhiChu_PhongMay_PM.phongMay.maPhong) {
+        // }
+        return (
+          e.phongMay.maPhong === objDataGhiChu_PhongMay_PM.phongMay.maPhong
+        );
+      });
+
+      if (objGhiChu != null) {
+        // da co ghi chu
+        let noiDungNew =
+          objGhiChu.noiDung + "\n" + objDataGhiChu_PhongMay_PM.noiDung;
+        let objNew = {
+          ...objGhiChu,
+          noiDung: noiDungNew,
+          ngayBaoLoi: new Date(),
+          maTKBaoLoi: userLogin.taiKhoan.maTK,
+        };
+        let result_saveGhiChu_PhongMay = await http.post(
+          "/LuuGhiChuPhongMay",
+          objNew
+        );
+      } else {
+        // 1. luu ghi chú
+        let result_saveGhiChu_PhongMay = await http.post(
+          "/LuuGhiChuPhongMay",
+          objDataGhiChu_PhongMay_PM
+        );
+      }
 
       //2. duyệt Ds PM có trong phòng
       // 3. duyệt DS PM được check trong modal Ghi chu

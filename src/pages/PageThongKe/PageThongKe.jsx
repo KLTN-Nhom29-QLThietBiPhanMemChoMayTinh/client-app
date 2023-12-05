@@ -192,7 +192,7 @@ export default function PageThongKe() {
             >
               Thống kê nhân viên
             </button>
-            <button
+            {/* <button
               onClick={handleClickBtnThongke}
               id="tk_giaoVien"
               type="button"
@@ -203,8 +203,8 @@ export default function PageThongKe() {
               } mt-2`}
             >
               Thống kê giáo viên
-            </button>
-            <button
+            </button> */}
+            {/* <button
               onClick={handleClickBtnThongke}
               id="tk_monHoc"
               type="button"
@@ -215,7 +215,7 @@ export default function PageThongKe() {
               } mt-2`}
             >
               Thống kê môn học
-            </button>
+            </button> */}
           </div>
         </div>
 
