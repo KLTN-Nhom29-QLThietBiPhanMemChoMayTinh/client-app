@@ -84,7 +84,7 @@ export default function ComponentTableNhanVien() {
   return (
     <>
       <div className="table-responsive-md mt-5 ">
-        <strong>Bảng 1: Thống kê theo nhân viên </strong>
+        <strong>Bảng 1: Thống kê nhân viên theo lịch trực </strong>
         <table className="table table-striped table-hover table-bordered">
           <thead>
             <tr>

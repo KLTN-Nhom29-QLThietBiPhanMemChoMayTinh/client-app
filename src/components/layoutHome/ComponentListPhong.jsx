@@ -22,11 +22,19 @@ export default function ComponentListPhong() {
 
   // render
   const renderArrPhongHome = () => {
-    if (objThongTin.phong == null) {
+    if (arrPhongH == null) {
       return <></>;
     }
     //
-    return arrPhongH?.map((item, index) => {
+    let arrData = [...arrPhongH];
+    arrData?.sort((a, b) => {
+      let val_a = a.tenPhong.toLowerCase();
+      let val_b = b.tenPhong.toLowerCase();
+      return val_a < val_b ? -1 : val_a > val_b ? 1 : 0;
+    });
+    //
+    //
+    return arrData?.map((item, index) => {
       let { dsGhiChuPM } = item;
 
       let value_border = "";

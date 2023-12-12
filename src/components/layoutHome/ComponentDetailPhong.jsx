@@ -18,7 +18,15 @@ export default function ComponentDetailPhong() {
     if (arrMayTinhH.length === 0) {
       return <>Chưa có thông tin</>;
     }
-    return arrMayTinhH?.map((item, index) => {
+    //
+    let arrData = [...arrMayTinhH];
+    arrData?.sort((a, b) => {
+      let val_a = a.moTa.toLowerCase();
+      let val_b = b.moTa.toLowerCase();
+      return val_a < val_b ? -1 : val_a > val_b ? 1 : 0;
+    });
+    //
+    return arrData?.map((item, index) => {
       let { dsGhiChu } = item;
       let colorText = "black";
       let colorBorder = "";
