@@ -25,6 +25,7 @@ import { getAllThietBiApi } from "../../redux/reducers/thietBiReducer";
 import { getAllPhanMemApi } from "../../redux/reducers/phanMemReducer";
 import ComponentModalDetaiGhiChuPhanMem from "../../components/layoutHome/ComponentModalDetaiGhiChuPhanMem";
 import { getAllTangApi } from "../../redux/reducers/tangReducer";
+import { getAllMayTinhApi } from "../../redux/reducers/mayTinhReducer";
 
 export default function PageHome() {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ export default function PageHome() {
   let { arrNhanVien } = useSelector((state) => state.nhanVienReducer);
   let { arrThietBi } = useSelector((state) => state.thietBiReducer);
   let { arrPhanMem } = useSelector((state) => state.phanMemReducer);
+  let { arrMayTinh } = useSelector((state) => state.mayTinhReducer);
   useEffect(() => {
     //
     if (status) {
@@ -75,6 +77,10 @@ export default function PageHome() {
     //
     if (arrNhanVien.length === 0) {
       dispatch(getAllNhanVienApi);
+    }
+    // 
+    if(arrMayTinh.length === 0) {
+      dispatch(getAllMayTinhApi);
     }
 
     // btn update

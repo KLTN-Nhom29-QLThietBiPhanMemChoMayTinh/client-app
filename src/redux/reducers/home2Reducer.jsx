@@ -7,7 +7,7 @@ import {
   setObjThongTinByPhongMay,
   setObjThongTinByTang,
 } from "./homeReducer";
-import { setArrPhongMay_GhiChuAction } from "./phongMayReducer";
+import { getAllPhongMay_GhiChuApi, setArrPhongMay_GhiChuAction } from "./phongMayReducer";
 //phuc vụ cho ghi chú
 const initialState = {
   objThongTinGhiChu: {
@@ -100,7 +100,8 @@ export const updateGhiChu_PhongMay_PM_btnSuaPM = (
         }
         return item;
       });
-      dispatch(setArrPhongMay_GhiChuAction([...arrPhongMayNew]));
+      // dispatch(setArrPhongMay_GhiChuAction([...arrPhongMayNew]));
+      dispatch(getAllPhongMay_GhiChuApi);
       // giups reload laij page home
       dispatch(setObjThongTinByTang(tang, arrPhongMayNew));
     } catch (error) {
@@ -195,7 +196,8 @@ export const updateGhiChu_MayTinh_PM = (
         }
         return item;
       });
-      dispatch(setArrPhongMay_GhiChuAction([...arrPhongMayNew]));
+      // dispatch(setArrPhongMay_GhiChuAction([...arrPhongMayNew]));
+      dispatch(getAllPhongMay_GhiChuApi);
       // giups reload laij page home
       dispatch(setObjThongTinByTang(tang, arrPhongMayNew));
     } catch (error) {

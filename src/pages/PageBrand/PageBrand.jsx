@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FaInstagram,
   FaTwitch,
@@ -10,9 +10,23 @@ import {
 import { useNavigate } from "react-router-dom";
 import { USER_LOGIN, getStoreJSON } from "../../util/config";
 import { formatNameByQuyen } from "../../util/formatString";
+import { getPhongByFirst } from "../../redux/reducers/homeReducer";
+import { useDispatch } from "react-redux";
+import { getAllToaNhaApi } from "../../redux/reducers/toaNhaReducer";
+import { getAllPhongMayApi, getAllPhongMay_GhiChuApi } from "../../redux/reducers/phongMayReducer";
+import { getAllMayTinhApi } from "../../redux/reducers/mayTinhReducer";
 
 export default function PageBrand() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllMayTinhApi);
+    dispatch(getPhongByFirst);
+    dispatch(getAllToaNhaApi);
+    dispatch(getAllPhongMayApi);
+    dispatch(getAllPhongMay_GhiChuApi);
+  }, [])
 
   // render
 

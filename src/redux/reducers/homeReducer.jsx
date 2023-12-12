@@ -217,6 +217,8 @@ export const setObjThongTinByPhongMay = (valPhong) => {
  * */
 export const setObjThongTinByTang = (valTang, arrPhongMay) => {
   // valTang = {} tang duoc chon
+  console.log("setObjThongTinByTang()");
+  // console.log(arrPhongMay);
   return async (dispatch) => {
     try {
       // phong: { maPhong,tenPhong,moTa},
@@ -238,25 +240,20 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
       console.log("Chua co api lay list Phong theo maTang");
       // let resultArrPhong = await http.get("/DSPhongMay2");
 
-      // duyet tim phong trong ds co maTang dang chonj
-      // arrPhongH = resultArrPhong.data.filter((item) => {
-
-      // tim ds ghi chu
-      // arrPhongMay.forEach(async (item) => {
-      //   let result_DsGhiChuPM = await http.get(
-      //     `/DSGhiChuPhongMayTheoPhongMay/${item.maPhong}`
-      //   );
-
+      // arrPhongMay.forEach((item) => {
       //   if (item.tang.maTang === objThongTin.tang.maTang) {
-      //     arrPhongH.push({ ...item, dsGhiChuPM: [...result_DsGhiChuPM.data] });
+      //     arrPhongH.push({ ...item });
       //   }
       // });
-      //
-      arrPhongMay.forEach((item) => {
+
+      for (let i = 0; i < arrPhongMay.length; i++) {
+        let item = arrPhongMay[i];
+        console.log(item);
         if (item.tang.maTang === objThongTin.tang.maTang) {
-          arrPhongH.push({...item});
+          arrPhongH.push({ ...item });
         }
-      });
+      }
+      console.log(arrPhongH);
 
       //
       setTimeout(async () => {
@@ -297,23 +294,21 @@ export const setObjThongTinByTang = (valTang, arrPhongMay) => {
               let result_GhiChu = await http.get(
                 `/DSGhiChuMayTinhTheoMayTinh/${item.maMay}`
               );
-
               arrMayTinhH.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
             });
           }
         }
-      }, 400);
-      //
-      setTimeout(() => {
-
-        dispatch(
-          setObjThongTinByTangAction({
-            objThongTin,
-            arrPhongH: [...arrPhongH],
-            arrMayTinh: [...arrMayTinhH],
-          })
-        );
-      }, 600);
+        //
+        setTimeout(() => {
+          dispatch(
+            setObjThongTinByTangAction({
+              objThongTin,
+              arrPhongH: [...arrPhongH],
+              arrMayTinh: [...arrMayTinhH],
+            })
+          );
+        }, 300);
+      }, 300);
     } catch (error) {
       console.log("🚀 ~ file: homeReducer.jsx:202 ~ return ~ error:", error);
     }
@@ -341,7 +336,7 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
       //
       let arrTangH = [];
       let arrPhongH = [];
-      let arrMayTinh = [];
+      let arrMayTinhH = [];
       ///
       let resultArrTang = await http.get(`/TangTheoToaNha/${idSelect}`);
       arrTangH = resultArrTang.data;
@@ -397,7 +392,7 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
                 `/DSGhiChuMayTinhTheoMayTinh/${item.maMay}`
               );
 
-              arrMayTinh.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
+              arrMayTinhH.push({ ...item, dsGhiChu: [...result_GhiChu.data] });
             });
           }
         }
@@ -410,7 +405,7 @@ export const setObjThongTinByToaNha = (idSelect, arrPhongMay) => {
             arrTangH,
             objThongTin,
             arrPhongH,
-            arrMayTinh,
+            arrMayTinh: [...arrMayTinhH],
           })
         );
       }, 500);
@@ -435,7 +430,7 @@ export const getPhongByFirst = async (dispatch) => {
     let result_GhiChuPhongMay = await http.get(
       `/DSGhiChuPhongMayTheoPhongMay/${maPhong}`
     );
-    let dsGhiChuPM = [ ...result_GhiChuPhongMay.data];
+    let dsGhiChuPM = [...result_GhiChuPhongMay.data];
     //
     let arrMayTinhH = [];
 
@@ -517,7 +512,7 @@ export const getPhongByFirst = async (dispatch) => {
       );
 
       dispatch(setStatusDataMoi(false));
-    }, 350);
+    }, 400);
     // dispatch(setArrTangHomeAction(resultTang.data));
   } catch (error) {
     console.log(

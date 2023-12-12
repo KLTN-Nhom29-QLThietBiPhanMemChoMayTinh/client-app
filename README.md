@@ -194,3 +194,13 @@
 ### fix error
 * Cannot add property 2, object is not extensible - structuredClone() ( [Link Fix](https://stackoverflow.com/questions/59648434/material-table-typeerror-cannot-add-property-tabledata-object-is-not-extensibl) )
     - một đối tượng có thể mở rộng và có thể thêm các thuộc tính mới vào nó. Tuy nhiên, trong trường hợp này, Object.preventExtensions()một đối tượng đã được đánh dấu là không thể mở rộng được nữa, do đó nó sẽ không bao giờ có các thuộc tính vượt quá những thuộc tính mà nó có tại thời điểm nó được đánh dấu là không thể mở rộng được.
+* lỗi giới cảnh báo thời gian vượi quá tgian default của redux - gây cảnh không đợi request chạy xong redux đã chạy 
+    - phongMayReducer.jsx:437 SerializableStateInvariantMiddleware took 65ms, which is more than the warning threshold of 32ms. 
+    - If your state or actions are very large, you may want to disable the middleware as it might cause too much of a slowdown in development mode. See https://redux-toolkit.js.org/api/getDefaultMiddleware for instructions.
+    It is disabled in production builds, so you don't need to worry about that.
+    - translate: 
+        + SerializableStateInvariantMiddleware mất 65 mili giây, nhiều hơn ngưỡng cảnh báo là 32 mili giây.
+        + Nếu trạng thái hoặc hành động của bạn rất lớn, bạn có thể muốn tắt phần mềm trung gian vì nó có thể gây ra tình trạng chậm quá nhiều trong chế độ phát triển. Xem https://redux-toolkit.js.org/api/getDefaultMiddleware để biết hướng dẫn.
+        + Nó bị vô hiệu hóa trong các bản dựng sản xuất, vì vậy bạn không cần phải lo lắng về điều đó.
+
+    - link fix: https://stackoverflow.com/questions/65217815/redux-handling-really-large-state-object

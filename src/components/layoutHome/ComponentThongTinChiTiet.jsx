@@ -5,9 +5,11 @@ import { BiEditAlt, BiSolidDetail } from "react-icons/bi";
 import ComponentModalDetaiGhiChulMayTinh from "./ComponentModalDetaiGhiChulMayTinh";
 import { updateGhiChu_MayTinh_Tbi_btnSuaTbi, updateGhiChu_PhongMay_PM_btnSuaPM } from "../../redux/reducers/home2Reducer";
 import { formatNameByHocVi, formatStringDate4 } from "../../util/config";
+import { useNavigate } from "react-router-dom";
 
 export default function ComponentThongTinChiTiet() {
   //
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   //
   let { objThongTin } = useSelector((state) => state.homeReducer);
@@ -222,7 +224,19 @@ export default function ComponentThongTinChiTiet() {
       ) {
         return <span>{mayTinh.trangThai}</span>;
       }
-      return <span style={{ color: "red" }}>{mayTinh.trangThai}</span>;
+      return <>
+        <span style={{ color: "red" }}>{mayTinh.trangThai}</span>
+        <button
+            type="button"
+            className="btn btn-outline-primary mx-2 px-2"
+            style={{ padding: "2px" }}
+            onClick={() => {
+              navigate(`/quan-ly/may-tinh/update?id=${mayTinh.maMay}`)
+            }}
+          >
+            <BiEditAlt size={20} />
+          </button>
+      </>;
     };
     //
     const renderBtnDSGhiChu = () => {

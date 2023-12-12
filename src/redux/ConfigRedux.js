@@ -51,4 +51,8 @@ export const store = configureStore({
     monHocReducer: monHocReducer,
     thietBiReducer: thietBiReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    immutableCheck: { warnAfter: 128 },
+    serializableCheck: { warnAfter: 128 },
+  })
 });

@@ -208,7 +208,7 @@ export const getAllPhongMay_GhiChuApi = async (dispatch) => {
     });
     setTimeout(() => {
       dispatch(setArrPhongMay_GhiChuAction([...arrData]));
-    }, 100);
+    }, 200);
   } catch (error) {
     console.log(
       "🚀 ~ file: phongMayReducer.jsx:30 ~ getAllPhongMayApi ~ error:",
