@@ -1,5 +1,7 @@
 # App Quản lý thiết bị phần mềm cho phòng máy tính DHCN
 
+## Video demo
+* [Link youtube](https://youtu.be/ATnjDelQRqI)
 ## ảnh minh họa
 ![...](./AnhMinhHoa/img_minhHoa.png)
 ![...](./AnhMinhHoa/img_code.png)
